@@ -15,7 +15,7 @@
 
 @font-face {
   font-family: 'Matahari'; 
-  src: url('Matahari 400 Regular.otf');
+  src: url('Font/Matahari/Matahari 400 Regular.otf');
   font-weight: 400;
   font-style: normal;
 }
@@ -44,7 +44,7 @@ html{
 }
 body{
   background-color:$secondary-color;
-  font-family:Matahari;
+  font-family: 'Matahari', sans-serif;
   overflow-y: hidden; /* Hide vertical scrollbar */
 }
 section.section{
