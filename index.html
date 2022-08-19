@@ -46,11 +46,11 @@
         </section>
         <section class="section me" data-scroll-section>
             <div class="container">
-                <!-- <div class="img-container">
+                <div class="img-container">
                     <img class="portrait img-fluid lazyloaded"
                         src="https://www.darw.it/wp-content/uploads/2022/06/1200x1200_Darwin-Vegher_22.jpg" alt="darwin"
                         data-no-retina="" data-scroll data-scroll-speed="-70" data-scroll-direction="horizontal">
-                </div> -->
+                </div>
                 <div class="col-12 col-md-8">
                     <h2 class="serif primary-color pl-3" data-scroll data-scroll-speed="-6"
                         data-scroll-direction="horizontal" data-scroll-delay=".5">Ciao!</h2>
@@ -272,11 +272,11 @@
         const locoScroll = new LocomotiveScroll({
             el: document.querySelector(".smooth-scroll"),
             smooth: true,
-            lerp: 0.01, // Linear Interpolation, 0 > 1 // Try 0.01 --> all'inizio era 0.03
+            lerp: 0.03, // Linear Interpolation, 0 > 1 // Try 0.01
             multiplier: 1.4, // Effect Multiplier
             reloadOnContextChange: true,
             touchMultiplier: 2,
-            smoothMobile: 0,
+            smoothMobile: 1, //0
             smartphone: {
                 smooth: !0,
                 breakpoint: 767
