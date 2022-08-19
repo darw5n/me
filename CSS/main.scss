@@ -54,11 +54,11 @@ body{
   overflow-y: hidden; /* Hide vertical scrollbar */
 }
 section.section{
-  // min-height: 100vh;
+  min-height: 100vh;
   display: grid;
   place-items: center;
-  padding-top: 4rem;
-  padding-bottom: 4rem;
+  // padding-top: 4rem;
+  // padding-bottom: 4rem;
 
   //link
   a{
@@ -330,9 +330,7 @@ p.forced {
   white-space: nowrap;
   max-width: 2000px;
   width: fit-content;
-  h3{
-    // white-space: nowrap;
-  }
+
   &:first-child{
     padding-left: 33vw;
   }
