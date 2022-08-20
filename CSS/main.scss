@@ -15,7 +15,7 @@
 
 @font-face {
   font-family: 'Matahari'; 
-  src: url('../Font/Matahari/Matahari\ 400\ Regular.otf');
+  src: url('www.darw.it/wp-content/themes/ryse-child/Font/Matahari/Matahari 400 Regular.otf');
   font-weight: 400;
   font-style: normal;
 }
@@ -54,11 +54,11 @@ body{
   overflow-y: hidden; /* Hide vertical scrollbar */
 }
 section.section{
-  min-height: 100vh;
+  // min-height: 100vh;
   display: grid;
   place-items: center;
-  // padding-top: 4rem;
-  // padding-bottom: 4rem;
+  padding-top: 4rem;
+  padding-bottom: 4rem;
 
   //link
   a{
@@ -369,3 +369,17 @@ section.afterHorizontal {
   margin-top: -100vh;
 }
 
+
+/* ----- split text anm ---- */
+.splitting .char {
+  animation: slide-in .6s cubic-bezier(.5, 0, .5, 1) both;
+  animation-delay: calc(3ms * var(--char-index) + 1000ms );
+}
+
+
+@keyframes slide-in {
+  from {
+    transform: translateY(1.5em);
+    opacity: 0;
+  }
+}
