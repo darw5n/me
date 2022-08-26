@@ -231,6 +231,9 @@ section.section{
     z-index:-1;
     -webkit-animation: 3s ease 0s normal forwards 1 fadein;
     animation: 3s ease 0s normal forwards 1 fadein;
+    @media (max-width: 575.98px) {
+      position:static;
+    }
   }
   @keyframes fadein {
     0% {
