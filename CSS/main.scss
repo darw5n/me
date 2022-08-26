@@ -20,6 +20,24 @@
   font-style: normal;
 }
 @font-face {
+  font-family: 'Matahari'; 
+  src: url('../Font/Matahari/Matahari\ 400\ Regular\ Oblique.otf');
+  font-weight: 400;
+  font-style: italic;
+}
+@font-face {
+  font-family: 'Matahari'; 
+  src: url('../Font/Matahari/Matahari\ 700\ Bold.otf');
+  font-weight: 700;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Matahari'; 
+  src: url('../Font/Matahari/Matahari\ 700\ Bold\ Oblique.otf');
+  font-weight: 700;
+  font-style: italic;
+}
+@font-face {
   font-family: 'Nognathy'; 
   src: url('../Font/Nognathy/Nognathy.otf');
   font-weight: 400;
@@ -33,18 +51,26 @@ $primary-color:#da5800;/*e27e2d*/
 $secondary-color:#f7d99a;
 $alternative-color:#f4f4f4;
 
-$primary-ultralight: mix(white, $primary-color, 60%);
-$primary-light: mix(white, $primary-color, 20%);
-$primary-dark: mix(black, $primary-color, 20%);
-$primary-ultradark: mix(black, $primary-color, 60%);
+// $primary-ultralight: mix(white, $primary-color, 60%);
+// $primary-light: mix(white, $primary-color, 20%);
+// $primary-dark: mix(black, $primary-color, 20%);
+// $primary-ultradark: mix(black, $primary-color, 60%);
 
-$secondary-ultralight: #fdf6e7;
-$secondary-light: #fdf6e7;
-$secondary-dark: mix(#eeaf2a, $secondary-color, 20%);
-$secondary-ultradark: mix(#eeaf2a, $secondary-color, 60%);
+$primary-ultralight: #FF8D40;
+$primary-light: #FF6C09;
+$primary-dark: #B04700;
+$primary-ultradark: #8E3A00;
+
+$secondary-ultralight: #FDF6E8;
+$secondary-light: #FDF6E8;
+$secondary-dark: #F1BE54;
+$secondary-ultradark: #EDA91B;
+
 $black:#333;
 $white:#fff;
 
+
+// ---- Base -----
 html{
   scroll-behavior: smooth;
 }
@@ -55,16 +81,34 @@ body{
 }
 section.section{
   // min-height: 100vh;
-  display: grid;
-  place-items: center;
+  &.hero{
+    display: grid;
+    place-items: center;
+  }
   padding-top: 4rem;
   padding-bottom: 4rem;
 
+  //child
+  &:nth-child(2n){
+    background-color: $secondary-light;
+  }
+
   //link
   a{
-    color:$primary-light;
-    text-decoration: underline;
+    color:$secondary-dark;
+    text-decoration: none;
+    transition:all .5s ease-in-out;
+    @media (min-width: 992px) {  
+      &:hover{
+        color:$primary-ultradark;
+      }
+    }
   }
+  //italic
+  .italic{
+    font-style: italic;
+  }
+  
 }
 .section:first-child, .section:last-child{
   min-height: 100vh;
@@ -148,8 +192,14 @@ section.section{
     flex-wrap: wrap;
     max-width: 800px;
   }
-  .social-icons .social-icon{
-    color:#333;
+  // social link
+  .social-icons {
+    display: flex;
+    justify-content: space-evenly;
+    flex-direction: row;
+    & .social-icon{
+      color: $black;
+    }
   }
   .designer{
     color:$secondary-dark;
@@ -220,6 +270,11 @@ section.section{
   }
 }
 
+.exp{
+  margin-bottom: 2rem;
+}
+
+
 /* -- fluid text -- */
 
 html {
@@ -231,7 +286,11 @@ html {
     font-size: calc(4vw + 10 * ((100vw - 320px) / 880));
   }
 }
-
+@media screen and (min-width: 768px) {
+  html {
+    font-size: calc(2vw + 10 * (100vw - 320px) / 880); //test 
+  }
+}
 @media screen and (min-width: 1200px) {
   html {
     font-size: 2vw;
@@ -279,6 +338,12 @@ p {
   &.big {
     font-size: clamp(1.3rem, 15vw, 1.6rem);
   }
+  &.small {
+    font-size: clamp(.65rem, 15vw, .8rem);
+  }
+}
+strong{
+  font-weight: 700;
 }
 
 .serif{

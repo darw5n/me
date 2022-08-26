@@ -7,6 +7,24 @@
   font-style: normal;
 }
 @font-face {
+  font-family: "Matahari";
+  src: url("../Font/Matahari/Matahari 400 Regular Oblique.otf");
+  font-weight: 400;
+  font-style: italic;
+}
+@font-face {
+  font-family: "Matahari";
+  src: url("../Font/Matahari/Matahari 700 Bold.otf");
+  font-weight: 700;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Matahari";
+  src: url("../Font/Matahari/Matahari 700 Bold Oblique.otf");
+  font-weight: 700;
+  font-style: italic;
+}
+@font-face {
   font-family: "Nognathy";
   src: url("../Font/Nognathy/Nognathy.otf");
   font-weight: 400;
@@ -25,14 +43,28 @@ body {
 }
 
 section.section {
-  display: grid;
-  place-items: center;
   padding-top: 4rem;
   padding-bottom: 4rem;
 }
+section.section.hero {
+  display: grid;
+  place-items: center;
+}
+section.section:nth-child(2n) {
+  background-color: #FDF6E8;
+}
 section.section a {
-  color: #e17933;
-  text-decoration: underline;
+  color: #F1BE54;
+  text-decoration: none;
+  transition: all 0.5s ease-in-out;
+}
+@media (min-width: 992px) {
+  section.section a:hover {
+    color: #8E3A00;
+  }
+}
+section.section .italic {
+  font-style: italic;
 }
 
 .section:first-child, .section:last-child {
@@ -40,35 +72,35 @@ section.section a {
 }
 
 .square:nth-child(1) {
-  background-color: #f0bc99;
+  background-color: #FF8D40;
 }
 
 .square:nth-child(2) {
-  background-color: #e17933;
+  background-color: #FF6C09;
 }
 
 .square:nth-child(3) {
-  background-color: #ae4600;
+  background-color: #B04700;
 }
 
 .square:nth-child(4) {
-  background-color: #572300;
+  background-color: #8E3A00;
 }
 
 .square:nth-child(5) {
-  background-color: #fdf6e7;
+  background-color: #FDF6E8;
 }
 
 .square:nth-child(6) {
-  background-color: #fdf6e7;
+  background-color: #FDF6E8;
 }
 
 .square:nth-child(7) {
-  background-color: #f5d184;
+  background-color: #F1BE54;
 }
 
 .square:nth-child(8) {
-  background-color: #f2c057;
+  background-color: #EDA91B;
 }
 
 /* -- colors -- */
@@ -119,11 +151,16 @@ section.section a {
   flex-wrap: wrap;
   max-width: 800px;
 }
+.hero .social-icons {
+  display: flex;
+  justify-content: space-evenly;
+  flex-direction: row;
+}
 .hero .social-icons .social-icon {
   color: #333;
 }
 .hero .designer {
-  color: #f5d184;
+  color: #F1BE54;
   position: absolute;
   bottom: 25%;
   left: 20%;
@@ -177,6 +214,10 @@ section.section a {
   flex-wrap: wrap;
   max-width: 800px;
 }
+.exp {
+  margin-bottom: 2rem;
+}
+
 /* -- fluid text -- */
 html {
   font-size: 4vw;
@@ -185,6 +226,11 @@ html {
 @media screen and (min-width: 320px) {
   html {
     font-size: calc(4vw + 10 * (100vw - 320px) / 880);
+  }
+}
+@media screen and (min-width: 768px) {
+  html {
+    font-size: calc(2vw + 10 * (100vw - 320px) / 880);
   }
 }
 @media screen and (min-width: 1200px) {
@@ -227,6 +273,13 @@ p {
 }
 p.big {
   font-size: clamp(1.3rem, 15vw, 1.6rem);
+}
+p.small {
+  font-size: clamp(0.65rem, 15vw, 0.8rem);
+}
+
+strong {
+  font-weight: 700;
 }
 
 .serif {
