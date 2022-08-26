@@ -155,9 +155,19 @@ section.section .italic {
   display: flex;
   justify-content: space-evenly;
   flex-direction: row;
+  flex-wrap: wrap;
+  width: 100%;
 }
 .hero .social-icons .social-icon {
   color: #333;
+}
+@media (max-width: 767.98px) {
+  .hero .social-icons .social-icon {
+    flex: 25%;
+    justify-content: center;
+    display: flex;
+    padding-bottom: 2rem;
+  }
 }
 .hero .designer {
   color: #F1BE54;
@@ -278,6 +288,10 @@ p.small {
   font-size: clamp(0.65rem, 15vw, 0.8rem);
 }
 
+.social-icon i {
+  font-size: clamp(1rem, 15vw, 1.1rem);
+}
+
 strong {
   font-weight: 700;
 }
@@ -299,13 +313,6 @@ p.forced {
 }
 
 /* -- Social Icon -- */
-.social-icons li {
-  vertical-align: top;
-  display: inline-flex;
-  height: 100px;
-  padding: 1rem;
-}
-
 /* -- Smooth scroll -- */
 .smooth-scroll {
   overflow: hidden !important;

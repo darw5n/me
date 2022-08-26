@@ -197,8 +197,17 @@ section.section{
     display: flex;
     justify-content: space-evenly;
     flex-direction: row;
+    flex-wrap: wrap;
+    width: 100%;
     & .social-icon{
       color: $black;
+      @media (max-width: 767.98px) {
+        flex: 25%;
+        justify-content: center;
+        display: flex;
+        padding-bottom: 2rem;
+      }
+
     }
   }
   .designer{
@@ -342,6 +351,9 @@ p {
     font-size: clamp(.65rem, 15vw, .8rem);
   }
 }
+.social-icon i{
+  font-size: clamp(1rem, 15vw, 1.1rem);
+}
 strong{
   font-weight: 700;
 }
@@ -364,11 +376,11 @@ p.forced {
   max-width: 800px;
 }
 /* -- Social Icon -- */
-.social-icons li {
-  vertical-align: top;
-  display:inline-flex;
-  height: 100px;
-  padding: 1rem;
+.social-icons i {
+  // vertical-align: top;
+  // display:inline-flex;
+  // height: 100px;
+  // padding: 1rem;
 }
 
 /* -- Smooth scroll -- */
