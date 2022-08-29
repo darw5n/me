@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Darwin Vegher - Multisciplinary Designer</title>
 
     <!-- style -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/locomotive-scroll@3.5.4/dist/locomotive-scroll.css">
@@ -50,8 +50,8 @@
         <section class="section me" data-scroll-section>
             <div class="row d-flex fluid-container">
                 <div class="col-12">
-                    <div class="title">
-                        <h1 class="serif" data-scroll data-scroll-speed="-3" data-scroll-direction="horizontal">Hi! <span class="ec ec-wave"></span>
+                    <div class="hi">
+                        <h1 class="serif" data-scroll data-scroll-speed="-3" data-scroll-direction="horizontal">Hi! <span class="ec ec-wave emoji"></span>
                         </h1>
                         <h3 class="serif primary-color" data-scroll data-scroll-speed="1" data-scroll-direction="horizontal">How you
                             doin?</h3>
@@ -72,13 +72,13 @@
         <section class="section " data-scroll-section>
             <div class="row d-flex fluid-container">
                 <div class="col-12 col-lg-5" data-scroll data-scroll-speed="4">
-                    <p class="big"><strong>I’m a sunny and determined person.</strong></p>
+                    <p class="big"><strong>I’m a sunny <span class="ec ec-sun-with-face"></span> and determined person.</strong></p>
                     <p>I like to be inspired by the latest trends, finding new ideas and staying up-to-date.</p>
                 </div>
                 <div class="col-12 col-lg-6" data-scroll data-scroll-speed="4" data-scroll-delay="0.5">
                     <p>I dislike labels, but if I had to define myself, I would say that <strong>I'm a Multisciplinary
                             Designer</strong>.</p>
-                    <p>I can do a bit of everything although I’m specialized in some areas in particular.</p>
+                    <p>I can do a bit of everything <span class="ec ec-firecracker"></span> although I’m specialized in some areas in particular.</p>
                 </div>
             </div>
         </section>
@@ -223,7 +223,7 @@
 
 
         <!-- thx and contacts-->
-        <section class="section hero thanks" data-scroll-section>
+        <section class="section hero thanks d-flex" data-scroll-section>
             <div class="hero-container titleAnimation">
                 <!-- thank you -->
                 <h1 class="title serif big" data-scroll>
@@ -246,7 +246,7 @@
             </div>
             <div class="container">
                 <!-- contact me -->
-                <p class="contact-info text-center" data-scroll data-scroll-speed="4">
+                <p class="contact-info text-center mt-4" data-scroll data-scroll-speed="4">
                     If you want to contact me, you can write an e-mail to <a
                         href="mailto:darwin.vegher@gmail.com"><strong>darwin.vegher@gmail.com</strong></a> or send a
                     telegram to <a href="https://t.me/Darwiiiin" target="_blank"><strong>@darwiiiin</strong></a>
@@ -434,7 +434,7 @@
                         scroller: '.smooth-scroll',
                         start: 'top center',
                         end: () => `+=${section.scrollWidth}`,
-                        markers: false, //abilitare i markers
+                        markers: false, //true to view markers 
                         scrub: true,
 
                     }

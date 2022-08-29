@@ -83,10 +83,6 @@ section.section{
   padding-top: 4rem;
   padding-bottom: 4rem;
  
-  //child
-  &:nth-child(2n){
-    // background-color: $secondary-light;
-  }
 
   //link
   a{
@@ -230,7 +226,11 @@ font-style: italic;
     }
   }
 }
-
+.hi{
+  .emoji{
+    font-size: clamp(1.6rem, 15vw, 2.12rem) !important;
+  }
+}
 .me{
   .portrait{
     position:absolute;

@@ -156,8 +156,9 @@ section.section a:active, section.section aa:visited {
   flex-wrap: wrap;
   max-width: 800px;
 }
-@media (max-width: 767.98px) {
+@media (max-width: 991.98px) {
   .hero p.big {
+    right: -10%;
     top: 2rem;
   }
 }
@@ -188,6 +189,10 @@ section.section a:active, section.section aa:visited {
   .hero .designer {
     left: 20%;
   }
+}
+
+.hi .emoji {
+  font-size: clamp(1.6rem, 15vw, 2.12rem) !important;
 }
 
 .me .portrait {
