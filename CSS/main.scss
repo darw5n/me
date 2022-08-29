@@ -104,11 +104,17 @@ section.section{
       }
     }
   }
-  //italic
-  .italic{
-    font-style: italic;
-  }
-  
+}
+//italic
+.italic{
+font-style: italic;
+}
+//container
+.fluid-container{
+  padding: 0 3rem;
+}
+.exp-edu{
+  align-items: flex-end;
 }
 .section:first-child, .section:last-child{
   min-height: 100vh;
@@ -219,7 +225,7 @@ section.section{
 }
 
 .me{
-  .portrait{
+  .portrait, .portfolio{
     position:absolute;
     display: block;
     width: 600px;

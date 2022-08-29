@@ -63,8 +63,17 @@ section.section a {
     color: #8E3A00;
   }
 }
-section.section .italic {
+
+.italic {
   font-style: italic;
+}
+
+.fluid-container {
+  padding: 0 3rem;
+}
+
+.exp-edu {
+  align-items: flex-end;
 }
 
 .section:first-child, .section:last-child {
@@ -176,7 +185,7 @@ section.section .italic {
   left: 20%;
 }
 
-.me .portrait {
+.me .portrait, .me .portfolio {
   position: absolute;
   display: block;
   width: 600px;
@@ -190,7 +199,7 @@ section.section .italic {
   animation: 3s ease 0s normal forwards 1 fadein;
 }
 @media (max-width: 575.98px) {
-  .me .portrait {
+  .me .portrait, .me .portfolio {
     position: static;
   }
 }
