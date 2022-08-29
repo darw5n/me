@@ -47,27 +47,21 @@
 
 /* ---- Color  ----- */
 
-$primary-color:#da5800;/*e27e2d*/
-$secondary-color:#f7d99a;
-$alternative-color:#f4f4f4;
+//primary
+$primary-color-50: #fcf4f4;
+$primary-color-100: #fae6e7;
+$primary-color-200: #f7d1d2;
+$primary-color-300: #f1b0b2;
+$primary-color-400: #e5797d;
+$primary-color-500: #d95a5f;
+$primary-color-600: #bc3a3f;
+$primary-color-700: #a53034;
+$primary-color-800: #892b2e;
+$primary-color-900: #73292c;
 
-// $primary-ultralight: mix(white, $primary-color, 60%);
-// $primary-light: mix(white, $primary-color, 20%);
-// $primary-dark: mix(black, $primary-color, 20%);
-// $primary-ultradark: mix(black, $primary-color, 60%);
 
-$primary-ultralight: #FF8D40;
-$primary-light: #FF6C09;
-$primary-dark: #B04700;
-$primary-ultradark: #8E3A00;
-
-$secondary-ultralight: #FDF6E8;
-$secondary-light: #FDF6E8;
-$secondary-dark: #F1BE54;
-$secondary-ultradark: #EDA91B;
-
-$black:#333;
-$white:#fff;
+$black:#190606;
+$white:#fdf7f7;
 
 
 // ---- Base -----
@@ -75,9 +69,10 @@ html{
   scroll-behavior: smooth;
 }
 body{
-  background-color:$secondary-color;
+  background-color: $primary-color-50;
   font-family: 'Matahari', sans-serif;
   overflow-y: hidden; /* Hide vertical scrollbar */
+  color:$black;
 }
 section.section{
   // min-height: 100vh;
@@ -90,17 +85,42 @@ section.section{
  
   //child
   &:nth-child(2n){
-    background-color: $secondary-light;
+    // background-color: $secondary-light;
   }
 
   //link
   a{
-    color:$secondary-dark;
+    color:$primary-color-400;
+    position: relative;
     text-decoration: none;
     transition:all .5s ease-in-out;
+    transform: skewX(20);
+    // opacity: .6;
+    
+    &:active, &a:visited{
+      color: $primary-color-900;
+    }
     @media (min-width: 992px) {  
       &:hover{
-        color:$primary-ultradark;
+        opacity: 1;
+        color:$primary-color-600;
+        &::before{
+          transform: scaleX(1);
+          transform-origin: left center;
+        }
+      }
+      &::before{
+        display: block;
+        content: "";
+        position: absolute;
+        bottom: -0.2rem;
+        left: 0;
+        transform: scaleX(0);
+        width: 100%;
+        height: 0.056rem;
+        background: currentColor;
+        transition: transform .7s cubic-bezier(0.19, 1, 0.22, 1);
+        transform-origin: right center;
       }
     }
   }
@@ -125,34 +145,10 @@ font-style: italic;
 .section:nth-child(2n){
   // background-color: $secondary-dark;
 }
-.square:nth-child(1){
-  background-color:$primary-ultralight;
-}
-.square:nth-child(2){
-  background-color:$primary-light;
-}
-.square:nth-child(3){
-  background-color:$primary-dark;
-}
-.square:nth-child(4){
-  background-color:$primary-ultradark;
-}
-.square:nth-child(5){
-  background-color:$secondary-ultralight;
-}
-.square:nth-child(6){
-  background-color:$secondary-light;
-}
-.square:nth-child(7){
-  background-color:$secondary-dark;
-}
-.square:nth-child(8){
-  background-color:$secondary-ultradark;
-}
 
 /* -- colors -- */
 .primary-color{
-  color:$primary-color !important;
+  color: $primary-color-600 !important;
 }
 /* -- hero -- */
 .hero{
@@ -169,7 +165,7 @@ font-style: italic;
   }
 
   h1 span{
-    color: $primary-color;
+    color:  $primary-color-600;
     position: relative;
 
     &:nth-child(2){
@@ -220,7 +216,7 @@ font-style: italic;
     }
   }
   .designer{
-    color:$secondary-dark;
+    color:$primary-color-400;
     position: absolute;
     bottom: 25%;
     left: 20%;
@@ -375,11 +371,11 @@ strong{
 }
 
 /* span a capo */
-p.forced {
+p.forced, h3.forced {
   position: relative;
   display: flex;
   flex-direction: column;
-  margin-left: auto;
+  // margin-left: auto;
   line-height: 140%;
   z-index: 2;
   // align-items: flex-start;
@@ -428,14 +424,14 @@ p.forced {
   }
   &:nth-child(4n+1){
     font-family:Nognathy !important;
-    color:$primary-color;
+    color: $primary-color-700;
     text-transform: uppercase;
   }
   &:nth-child(4n+2){
     font-weight: 200;
   }
   &:nth-child(4n+3){
-    color:#ca9932;
+    color:$primary-color-400;
     text-transform: uppercase;
   }
   &:nth-child(4n+3){
