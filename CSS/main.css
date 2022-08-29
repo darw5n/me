@@ -50,12 +50,6 @@ section.section.hero {
   display: grid;
   place-items: center;
 }
-@media (max-width: 767.98px) {
-  section.section {
-    padding-top: 1.5rem;
-    padding-bottom: 1.5rem;
-  }
-}
 section.section:nth-child(2n) {
   background-color: #FDF6E8;
 }
@@ -76,6 +70,11 @@ section.section a {
 
 .fluid-container {
   padding: 0 3rem;
+}
+@media (max-width: 767.98px) {
+  .fluid-container {
+    padding: 0 1.5rem;
+  }
 }
 
 .exp-edu {
