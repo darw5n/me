@@ -185,7 +185,7 @@ section.section a {
   left: 20%;
 }
 
-.me .portrait, .me .portfolio {
+.me .portrait {
   position: absolute;
   display: block;
   width: 600px;
@@ -199,7 +199,7 @@ section.section a {
   animation: 3s ease 0s normal forwards 1 fadein;
 }
 @media (max-width: 575.98px) {
-  .me .portrait, .me .portfolio {
+  .me .portrait {
     position: static;
   }
 }
