@@ -50,6 +50,12 @@ section.section.hero {
   display: grid;
   place-items: center;
 }
+@media (max-width: 767.98px) {
+  section.section {
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+  }
+}
 section.section:nth-child(2n) {
   background-color: #FDF6E8;
 }

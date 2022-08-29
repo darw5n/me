@@ -87,7 +87,10 @@ section.section{
   }
   padding-top: 4rem;
   padding-bottom: 4rem;
-
+  @media (max-width: 767.98px) {
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+  }
   //child
   &:nth-child(2n){
     background-color: $secondary-light;
