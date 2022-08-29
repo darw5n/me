@@ -103,6 +103,9 @@ section.section a:active, section.section aa:visited {
 
 .section:first-child, .section:last-child {
   min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 /* -- colors -- */
@@ -153,6 +156,11 @@ section.section a:active, section.section aa:visited {
   flex-wrap: wrap;
   max-width: 800px;
 }
+@media (max-width: 767.98px) {
+  .hero p.big {
+    top: 2rem;
+  }
+}
 .hero .social-icons {
   display: flex;
   justify-content: space-evenly;
@@ -175,7 +183,11 @@ section.section a:active, section.section aa:visited {
   color: #e5797d;
   position: absolute;
   bottom: 25%;
-  left: 20%;
+}
+@media (min-width: 768px) {
+  .hero .designer {
+    left: 20%;
+  }
 }
 
 .me .portrait {
@@ -293,6 +305,11 @@ p.big {
 }
 p.small {
   font-size: clamp(0.65rem, 15vw, 0.8rem);
+}
+@media (max-width: 767.98px) {
+  p.small {
+    font-size: clamp(0.8rem, 15vw, 0.9rem);
+  }
 }
 
 .social-icon i {
