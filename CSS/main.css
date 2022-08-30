@@ -35,11 +35,12 @@
   color: #bc3a3f !important;
 }
 
+:root {
+  --app-height: 100%;
+}
+
 html {
   scroll-behavior: smooth;
-  height: -moz-available;
-  height: fill-available;
-  height: -webkit-fill-available;
 }
 
 body {
@@ -47,16 +48,20 @@ body {
   font-family: "Matahari", sans-serif;
   overflow-y: hidden; /* Hide vertical scrollbar */
   color: #190606;
-  /* mobile viewport bug fix */
-  min-height: 100vh;
-  min-height: -moz-available;
-  min-height: fill-available;
-  min-height: -webkit-fill-available;
 }
 @media (min-width: 992px) {
   body {
     background-color: #fae6e7;
   }
+}
+
+html, body {
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
+  width: 100vw;
+  height: 100vh;
+  height: var(--app-height);
 }
 
 section.section {
