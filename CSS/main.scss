@@ -59,6 +59,9 @@ $primary-color-700: #a53034;
 $primary-color-800: #892b2e;
 $primary-color-900: #73292c;
 
+//#da4d08 --> arancione
+//#fff1c0 --> sfondo
+
 //alternative
 $alternative-color:#6750A4;
 
@@ -143,7 +146,8 @@ section.section{
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  justify-content:center;
+  // justify-content:center;
+  justify-content: space-around;
 }
 
 //italic
@@ -519,20 +523,23 @@ section.afterHorizontal {
 }
 
 /* ----- bg animation ---- */
-.bg {
-  position: fixed;
-  top: -50%;
-  left: -50%;
-  right: -50%;
-  bottom: -50%;
-  width: 200vw;
-  height: 200vh;
-  background: transparent url('http://assets.iceable.com/img/noise-transparent.png') repeat 0 0;
-  background-repeat: repeat;
-  animation: bg-animation .2s infinite;
-  opacity: .5;
-  visibility: visible;
+@media (min-width: 992px) {  
+  .bg {
+    position: fixed;
+    top: -50%;
+    left: -50%;
+    right: -50%;
+    bottom: -50%;
+    width: 200vw;
+    height: 200vh;
+    background: transparent url('http://assets.iceable.com/img/noise-transparent.png') repeat 0 0;
+    background-repeat: repeat;
+    animation: bg-animation .2s infinite;
+    opacity: .5;
+    visibility: visible;
+  }
 }
+
 @keyframes bg-animation {
   0% { transform: translate(0,0) }
   10% { transform: translate(-5%,-5%) }

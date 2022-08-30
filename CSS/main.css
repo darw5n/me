@@ -97,7 +97,7 @@ section.section a:active, section.section aa:visited {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-around;
 }
 
 .italic {
@@ -439,22 +439,23 @@ section.afterHorizontal {
   }
 }
 /* ----- bg animation ---- */
-.bg {
-  position: fixed;
-  top: -50%;
-  left: -50%;
-  right: -50%;
-  bottom: -50%;
-  width: 200vw;
-  height: 200vh;
-  background: transparent url("http://assets.iceable.com/img/noise-transparent.png") repeat 0 0;
-  background-repeat: repeat;
-  -webkit-animation: bg-animation 0.2s infinite;
-          animation: bg-animation 0.2s infinite;
-  opacity: 0.5;
-  visibility: visible;
+@media (min-width: 992px) {
+  .bg {
+    position: fixed;
+    top: -50%;
+    left: -50%;
+    right: -50%;
+    bottom: -50%;
+    width: 200vw;
+    height: 200vh;
+    background: transparent url("http://assets.iceable.com/img/noise-transparent.png") repeat 0 0;
+    background-repeat: repeat;
+    -webkit-animation: bg-animation 0.2s infinite;
+            animation: bg-animation 0.2s infinite;
+    opacity: 0.5;
+    visibility: visible;
+  }
 }
-
 @-webkit-keyframes bg-animation {
   0% {
     transform: translate(0, 0);
@@ -490,7 +491,6 @@ section.afterHorizontal {
     transform: translate(5%, 0);
   }
 }
-
 @keyframes bg-animation {
   0% {
     transform: translate(0, 0);
