@@ -620,10 +620,6 @@ section.afterHorizontal {
   -webkit-animation: rotation 14s infinite linear;
           animation: rotation 14s infinite linear;
 }
-.circle-elements .one svg {
-  -webkit-animation: rotation 4s infinite linear;
-          animation: rotation 4s infinite linear;
-}
 @media (max-width: 991.98px) {
   .circle-elements .one svg {
     transform: scale(0.8) !important;

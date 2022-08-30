@@ -645,7 +645,7 @@ $circle-height:160px;
     animation: rotation 14s infinite linear;
 
     svg{
-      animation: rotation 4s infinite linear;
+      // animation: rotation 4s infinite linear;  <------
       @media (max-width: 991.98px) {
         transform: scale(.8) !important;
       }
