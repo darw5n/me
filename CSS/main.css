@@ -71,7 +71,7 @@ section.section.hero {
 
 .section.thanks {
   min-height: calc(100vh - 80px);
-  justify-content: flex-end;
+  justify-content: center;
 }
 
 a, footer a {
