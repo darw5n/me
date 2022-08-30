@@ -75,6 +75,7 @@ $white:#fdf7f7;
 // ---- Base -----
 html{
   scroll-behavior: smooth;
+  height: -webkit-fill-available;
 }
 body{
   background-color: $primary-color-100;
@@ -87,6 +88,9 @@ body{
   font-family: 'Matahari', sans-serif;
   overflow-y: hidden; /* Hide vertical scrollbar */
   color:$black;
+  
+   /* mobile viewport bug fix */
+   min-height: -webkit-fill-available;
 
   @media (min-width: 992px) {  
     background-color: $primary-color-100;

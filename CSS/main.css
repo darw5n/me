@@ -37,6 +37,7 @@
 
 html {
   scroll-behavior: smooth;
+  height: -webkit-fill-available;
 }
 
 body {
@@ -44,6 +45,8 @@ body {
   font-family: "Matahari", sans-serif;
   overflow-y: hidden; /* Hide vertical scrollbar */
   color: #190606;
+  /* mobile viewport bug fix */
+  min-height: -webkit-fill-available;
 }
 @media (min-width: 992px) {
   body {
