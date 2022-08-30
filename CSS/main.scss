@@ -74,7 +74,7 @@ html{
   scroll-behavior: smooth;
 }
 body{
-  background-color: $primary-color-200;
+  background-color: $primary-color-100;
   
   // background-color: #fae6e7;
   // background-image:  radial-gradient(#d95a5f 0.7000000000000001px, transparent 0.7000000000000001px), radial-gradient(#d95a5f 0.7000000000000001px, #fae6e7 0.7000000000000001px);
@@ -84,6 +84,7 @@ body{
   font-family: 'Matahari', sans-serif;
   overflow-y: hidden; /* Hide vertical scrollbar */
   color:$black;
+
   @media (min-width: 992px) {  
     background-color: $primary-color-100;
   }
@@ -524,12 +525,12 @@ section.afterHorizontal {
   left: -50%;
   right: -50%;
   bottom: -50%;
-  width: 200%;
+  width: 200vw;
   height: 200vh;
   background: transparent url('http://assets.iceable.com/img/noise-transparent.png') repeat 0 0;
   background-repeat: repeat;
   animation: bg-animation .2s infinite;
-  opacity: .9;
+  opacity: .5;
   visibility: visible;
 }
 @keyframes bg-animation {
