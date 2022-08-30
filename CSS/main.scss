@@ -96,7 +96,6 @@ body{
 
 // ---- Section -----
 section.section{
-
   // min-height: 100vh;
   &.hero{
     display: grid;
@@ -104,51 +103,53 @@ section.section{
   }
   padding-top: 4rem;
   padding-bottom: 4rem;
- 
-  //link
-  a{
-    color:$primary-color-400;
-    position: relative;
-    text-decoration: none;
-    transition:all .5s ease-in-out;
-    transform: skewX(20);
-    // opacity: .6;
-    
-    &:active, &a:visited{
-      color: $primary-color-900;
-    }
-    @media (min-width: 992px) {  
-      &:hover{
-        opacity: 1;
-        color:$primary-color-600;
-        &::before{
-          transform: scaleX(1);
-          transform-origin: left center;
-        }
-      }
-      &::before{
-        display: block;
-        content: "";
-        position: absolute;
-        bottom: -0.2rem;
-        left: 0;
-        transform: scaleX(0);
-        width: 100%;
-        height: 0.056rem;
-        background: currentColor;
-        transition: transform .7s cubic-bezier(0.19, 1, 0.22, 1);
-        transform-origin: right center;
-      }
-    }
-  }
+
 }
 
-.section:first-child, .section:last-child{
+.section:first-child, .section.thanks{
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   // justify-content:center;
   // justify-content: space-around;
+  // justify-content: flex-end;
+}
+
+//link
+a, footer a{
+  color:$primary-color-400;
+  position: relative;
+  text-decoration: none;
+  transition:all .5s ease-in-out;
+  transform: skewX(20);
+  // opacity: .6;
+  
+  &:active, &a:visited{
+    color: $primary-color-900;
+  }
+  @media (min-width: 992px) {  
+    &:hover{
+      opacity: 1;
+      color:$primary-color-600;
+      &::before{
+        transform: scaleX(1);
+        transform-origin: left center;
+      }
+    }
+    &::before{
+      display: block;
+      content: "";
+      position: absolute;
+      bottom: -0.2rem;
+      left: 0;
+      transform: scaleX(0);
+      width: 100%;
+      height: 0.056rem;
+      background: currentColor;
+      transition: transform .7s cubic-bezier(0.19, 1, 0.22, 1);
+      transform-origin: right center;
+    }
+  }
 }
 
 //italic
@@ -450,6 +451,7 @@ p {
     }
   }
 }
+
 .social-icon i{
   font-size: clamp(1rem, 15vw, 1.1rem);
 }
@@ -723,5 +725,30 @@ $circle-height:160px;
   }
   to {
     transform: rotate(359deg);
+  }
+}
+
+
+// footer
+footer{
+  min-height: 80px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  border-top: 2px solid $primary-color-200;
+
+  &>div{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  // background-color: #6750A4;
+
+  // testo
+  p{
+    font-size: .6rem;
+    margin-bottom: 0;
   }
 }

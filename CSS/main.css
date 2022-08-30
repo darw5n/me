@@ -59,26 +59,33 @@ section.section.hero {
   display: grid;
   place-items: center;
 }
-section.section a {
+
+.section:first-child, .section.thanks {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+a, footer a {
   color: #e5797d;
   position: relative;
   text-decoration: none;
   transition: all 0.5s ease-in-out;
   transform: skewX(20);
 }
-section.section a:active, section.section aa:visited {
+a:active, aa:visited, footer a:active, footer aa:visited {
   color: #73292c;
 }
 @media (min-width: 992px) {
-  section.section a:hover {
+  a:hover, footer a:hover {
     opacity: 1;
     color: #bc3a3f;
   }
-  section.section a:hover::before {
+  a:hover::before, footer a:hover::before {
     transform: scaleX(1);
     transform-origin: left center;
   }
-  section.section a::before {
+  a::before, footer a::before {
     display: block;
     content: "";
     position: absolute;
@@ -91,12 +98,6 @@ section.section a:active, section.section aa:visited {
     transition: transform 0.7s cubic-bezier(0.19, 1, 0.22, 1);
     transform-origin: right center;
   }
-}
-
-.section:first-child, .section:last-child {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
 }
 
 .italic {
@@ -714,4 +715,20 @@ section.afterHorizontal {
   to {
     transform: rotate(359deg);
   }
+}
+footer {
+  min-height: 80px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-top: 2px solid #f7d1d2;
+}
+footer > div {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+footer p {
+  font-size: 0.6rem;
+  margin-bottom: 0;
 }/*# sourceMappingURL=main.css.map */
