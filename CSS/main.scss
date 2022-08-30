@@ -74,13 +74,13 @@ html{
   scroll-behavior: smooth;
 }
 body{
-  background-color: $primary-color-50;
+  background-color: $primary-color-100;
   font-family: 'Matahari', sans-serif;
   overflow-y: hidden; /* Hide vertical scrollbar */
   color:$black;
-  @media (min-width: 992px) {  
-    background-color: $primary-color-100;
-  }
+  // @media (min-width: 992px) {  
+  //   background-color: $primary-color-50;
+  // }
 }
 
 // ---- Section -----

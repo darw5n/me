@@ -40,15 +40,10 @@ html {
 }
 
 body {
-  background-color: #fcf4f4;
+  background-color: #fae6e7;
   font-family: "Matahari", sans-serif;
   overflow-y: hidden; /* Hide vertical scrollbar */
   color: #190606;
-}
-@media (min-width: 992px) {
-  body {
-    background-color: #fae6e7;
-  }
 }
 
 section.section {
