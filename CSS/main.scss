@@ -73,10 +73,6 @@ $white:#fdf7f7;
 }
 
 // ---- Base -----
-:root {
-  --app-height: 100%;
-}
-
 html{
   scroll-behavior: smooth;
 }
@@ -97,14 +93,6 @@ body{
   }
 }
 
-html,body {
-    padding: 0;
-    margin: 0;
-    overflow: hidden;
-    width: 100vw;
-    height: 100vh;
-    height: var(--app-height);
-}
 
 // ---- Section -----
 section.section{
@@ -271,8 +259,51 @@ section.section{
 .hi{
   .emoji{
     font-size: clamp(1.6rem, 15vw, 2.12rem) !important;
+
+    //animation
+    animation-name: wave-animation;  /* Refers to the name of your @keyframes element below */
+    animation-duration: 2.5s;        /* Change to speed up or slow down */
+    animation-iteration-count: infinite;  /* Never stop waving :) */
+    transform-origin: 70% 70%;       /* Pivot around the bottom-left palm */
+    display: inline-block;
   }
 }
+@keyframes wave-animation {
+  0% {
+    transform: rotate(0.0deg)
+  }
+
+  10% {
+    transform: rotate(14.0deg)
+  }
+
+  /* The following five values can be played with to make the waving more or less extreme */
+  20% {
+    transform: rotate(-8.0deg)
+  }
+
+  30% {
+    transform: rotate(14.0deg)
+  }
+
+  40% {
+    transform: rotate(-4.0deg)
+  }
+
+  50% {
+    transform: rotate(10.0deg)
+  }
+
+  60% {
+    transform: rotate(0.0deg)
+  }
+
+  /* Reset for the last half to pause */
+  100% {
+    transform: rotate(0.0deg)
+  }
+}
+
 
 // me container
 .me{
@@ -565,4 +596,62 @@ section.afterHorizontal {
   80% { transform: translate(-15%,0) }
   90% { transform: translate(10%,5%) }
   100% { transform: translate(5%,0) }
+}
+.circle-elements{
+  height: 100vh;
+  width: 100vw;
+  position: fixed;
+
+  .one,.three{
+    position: fixed;
+    top: 0%;
+    right: -25%;
+    width: 50%;
+    animation: rotation 10s infinite linear;
+    svg{
+      animation: rotation 4s infinite linear;
+    }
+    path{
+      fill:$primary-color-300;
+    }
+  }
+  .two, .four{
+    position: fixed;
+    bottom: 0%;
+    left: -25%;
+    width: 50%;
+    // background-color: #6750A4;
+    animation: rotation 8s infinite linear;
+    animation-delay:1s;
+    svg{
+      animation: rotation 4s infinite linear;
+    }
+    path{
+      fill:$primary-color-200;
+    }
+  }
+  .three{
+    animation-delay: 5s;
+    // background-color: #6750A4;
+
+    path{
+      transform: scale(.7);
+    }
+  }
+  .four{
+    background-color: #6750A4;
+
+    animation-delay: 5s !important;
+    path{
+      transform: scale(.7);
+    }
+  }
+}
+@keyframes rotation {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(359deg);
+  }
 }

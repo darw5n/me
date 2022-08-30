@@ -35,10 +35,6 @@
   color: #bc3a3f !important;
 }
 
-:root {
-  --app-height: 100%;
-}
-
 html {
   scroll-behavior: smooth;
 }
@@ -53,15 +49,6 @@ body {
   body {
     background-color: #fae6e7;
   }
-}
-
-html, body {
-  padding: 0;
-  margin: 0;
-  overflow: hidden;
-  width: 100vw;
-  height: 100vh;
-  height: var(--app-height);
 }
 
 section.section {
@@ -217,8 +204,73 @@ section.section a:active, section.section aa:visited {
 
 .hi .emoji {
   font-size: clamp(1.6rem, 15vw, 2.12rem) !important;
+  -webkit-animation-name: wave-animation;
+          animation-name: wave-animation; /* Refers to the name of your @keyframes element below */
+  -webkit-animation-duration: 2.5s;
+          animation-duration: 2.5s; /* Change to speed up or slow down */
+  -webkit-animation-iteration-count: infinite;
+          animation-iteration-count: infinite; /* Never stop waving :) */
+  transform-origin: 70% 70%; /* Pivot around the bottom-left palm */
+  display: inline-block;
 }
 
+@-webkit-keyframes wave-animation {
+  0% {
+    transform: rotate(0deg);
+  }
+  10% {
+    transform: rotate(14deg);
+  }
+  /* The following five values can be played with to make the waving more or less extreme */
+  20% {
+    transform: rotate(-8deg);
+  }
+  30% {
+    transform: rotate(14deg);
+  }
+  40% {
+    transform: rotate(-4deg);
+  }
+  50% {
+    transform: rotate(10deg);
+  }
+  60% {
+    transform: rotate(0deg);
+  }
+  /* Reset for the last half to pause */
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+@keyframes wave-animation {
+  0% {
+    transform: rotate(0deg);
+  }
+  10% {
+    transform: rotate(14deg);
+  }
+  /* The following five values can be played with to make the waving more or less extreme */
+  20% {
+    transform: rotate(-8deg);
+  }
+  30% {
+    transform: rotate(14deg);
+  }
+  40% {
+    transform: rotate(-4deg);
+  }
+  50% {
+    transform: rotate(10deg);
+  }
+  60% {
+    transform: rotate(0deg);
+  }
+  /* Reset for the last half to pause */
+  100% {
+    transform: rotate(0deg);
+  }
+}
 .me .portrait {
   position: absolute;
   display: block;
@@ -536,5 +588,75 @@ section.afterHorizontal {
   }
   100% {
     transform: translate(5%, 0);
+  }
+}
+.circle-elements {
+  height: 100vh;
+  width: 100vw;
+  position: fixed;
+}
+.circle-elements .one, .circle-elements .three {
+  position: fixed;
+  top: 0%;
+  right: -25%;
+  width: 50%;
+  -webkit-animation: rotation 10s infinite linear;
+          animation: rotation 10s infinite linear;
+}
+.circle-elements .one svg, .circle-elements .three svg {
+  -webkit-animation: rotation 4s infinite linear;
+          animation: rotation 4s infinite linear;
+}
+.circle-elements .one path, .circle-elements .three path {
+  fill: #f1b0b2;
+}
+.circle-elements .two, .circle-elements .four {
+  position: fixed;
+  bottom: 0%;
+  left: -25%;
+  width: 50%;
+  -webkit-animation: rotation 8s infinite linear;
+          animation: rotation 8s infinite linear;
+  -webkit-animation-delay: 1s;
+          animation-delay: 1s;
+}
+.circle-elements .two svg, .circle-elements .four svg {
+  -webkit-animation: rotation 4s infinite linear;
+          animation: rotation 4s infinite linear;
+}
+.circle-elements .two path, .circle-elements .four path {
+  fill: #f7d1d2;
+}
+.circle-elements .three {
+  -webkit-animation-delay: 5s;
+          animation-delay: 5s;
+}
+.circle-elements .three path {
+  transform: scale(0.7);
+}
+.circle-elements .four {
+  background-color: #6750A4;
+  -webkit-animation-delay: 5s !important;
+          animation-delay: 5s !important;
+}
+.circle-elements .four path {
+  transform: scale(0.7);
+}
+
+@-webkit-keyframes rotation {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(359deg);
+  }
+}
+
+@keyframes rotation {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(359deg);
   }
 }/*# sourceMappingURL=main.css.map */
