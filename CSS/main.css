@@ -594,53 +594,74 @@ section.afterHorizontal {
   height: 100vh;
   width: 100vw;
   position: fixed;
+  -webkit-animation: 3s ease 0s normal forwards 1 fadein;
+  animation: 3s ease 0s normal forwards 1 fadein;
 }
-.circle-elements .one, .circle-elements .three {
+.circle-elements .one {
   position: fixed;
-  top: 0%;
-  right: -25%;
-  width: 50%;
-  -webkit-animation: rotation 10s infinite linear;
-          animation: rotation 10s infinite linear;
+  width: 50vw;
+  height: 160px;
+  z-index: 99;
+  min-width: calc(320px + 2rem);
+  top: -80px;
+  right: calc(-25vw - 2rem);
+  -webkit-animation: rotation 12s infinite linear;
+          animation: rotation 12s infinite linear;
 }
-.circle-elements .one svg, .circle-elements .three svg {
+.circle-elements .one svg {
   -webkit-animation: rotation 4s infinite linear;
           animation: rotation 4s infinite linear;
 }
-.circle-elements .one path, .circle-elements .three path {
+.circle-elements .one svg + svg {
+  right: 0;
+  position: absolute;
+}
+.circle-elements .one svg + svg path {
   fill: #f1b0b2;
 }
-.circle-elements .two, .circle-elements .four {
-  position: fixed;
-  bottom: 0%;
-  left: -25%;
-  width: 50%;
-  -webkit-animation: rotation 8s infinite linear;
-          animation: rotation 8s infinite linear;
-  -webkit-animation-delay: 1s;
-          animation-delay: 1s;
+@media (max-width: 767.98px) {
+  .circle-elements .one svg + svg path {
+    opacity: 0.3;
+  }
 }
-.circle-elements .two svg, .circle-elements .four svg {
+.circle-elements .one path {
+  fill: #f7d1d2;
+}
+@media (max-width: 767.98px) {
+  .circle-elements .one path {
+    opacity: 0.3;
+  }
+}
+.circle-elements .two {
+  position: fixed;
+  width: 50vw;
+  height: 160px;
+  min-width: calc(320px + 2rem);
+  bottom: -80px;
+  left: calc(-25vw - 2rem);
+  -webkit-animation: rotation 12s infinite linear;
+          animation: rotation 12s infinite linear;
+  -webkit-animation-delay: 1.5s;
+          animation-delay: 1.5s;
+}
+.circle-elements .two svg {
   -webkit-animation: rotation 4s infinite linear;
           animation: rotation 4s infinite linear;
 }
-.circle-elements .two path, .circle-elements .four path {
+.circle-elements .two svg + svg {
+  right: 0;
+  position: absolute;
+}
+.circle-elements .two svg + svg path {
+  fill: #f1b0b2;
+}
+@media (max-width: 767.98px) {
+  .circle-elements .two svg + svg path {
+    opacity: 0.2;
+  }
+}
+.circle-elements .two path {
   fill: #f7d1d2;
-}
-.circle-elements .three {
-  -webkit-animation-delay: 5s;
-          animation-delay: 5s;
-}
-.circle-elements .three path {
-  transform: scale(0.7);
-}
-.circle-elements .four {
-  background-color: #6750A4;
-  -webkit-animation-delay: 5s !important;
-          animation-delay: 5s !important;
-}
-.circle-elements .four path {
-  transform: scale(0.7);
 }
 
 @-webkit-keyframes rotation {
