@@ -61,9 +61,16 @@ section.section.hero {
 }
 
 .section:first-child, .section.thanks {
-  min-height: 100vh;
   display: flex;
   flex-direction: column;
+}
+
+.section:first-child {
+  min-height: 100vh;
+}
+
+.section.thanks {
+  min-height: calc(100vh - 80px);
 }
 
 a, footer a {
