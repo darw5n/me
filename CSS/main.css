@@ -37,6 +37,8 @@
 
 html {
   scroll-behavior: smooth;
+  height: -moz-available;
+  height: fill-available;
   height: -webkit-fill-available;
 }
 
@@ -46,6 +48,9 @@ body {
   overflow-y: hidden; /* Hide vertical scrollbar */
   color: #190606;
   /* mobile viewport bug fix */
+  min-height: 100vh;
+  min-height: -moz-available;
+  min-height: fill-available;
   min-height: -webkit-fill-available;
 }
 @media (min-width: 992px) {
@@ -100,7 +105,6 @@ section.section a:active, section.section aa:visited {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
 }
 
 .italic {

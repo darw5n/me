@@ -75,6 +75,7 @@ $white:#fdf7f7;
 // ---- Base -----
 html{
   scroll-behavior: smooth;
+  height: fill-available;
   height: -webkit-fill-available;
 }
 body{
@@ -89,8 +90,10 @@ body{
   overflow-y: hidden; /* Hide vertical scrollbar */
   color:$black;
   
-   /* mobile viewport bug fix */
-   min-height: -webkit-fill-available;
+  /* mobile viewport bug fix */
+  min-height: 100vh;
+  min-height: fill-available;
+  min-height: -webkit-fill-available;
 
   @media (min-width: 992px) {  
     background-color: $primary-color-100;
@@ -151,7 +154,7 @@ section.section{
   display: flex;
   flex-direction: column;
   // justify-content:center;
-  justify-content: space-around;
+  // justify-content: space-around;
 }
 
 //italic
