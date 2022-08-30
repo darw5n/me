@@ -71,6 +71,7 @@ section.section.hero {
 
 .section.thanks {
   min-height: calc(100vh - 80px);
+  justify-content: flex-end;
 }
 
 a, footer a {
@@ -667,23 +668,19 @@ section.afterHorizontal {
   -webkit-animation-delay: 2s;
           animation-delay: 2s;
 }
-.circle-elements .two svg {
-  -webkit-animation: rotation 4s infinite linear;
-          animation: rotation 4s infinite linear;
-}
 @media (max-width: 991.98px) {
   .circle-elements .two svg {
-    transform: scale(0.8) !important;
+    transform: scale(0.85) !important;
   }
 }
 @media (max-width: 767.98px) {
   .circle-elements .two svg {
-    transform: scale(0.6) !important;
+    transform: scale(0.7) !important;
   }
 }
 @media (max-width: 575.98px) {
   .circle-elements .two svg {
-    transform: scale(0.4) !important;
+    transform: scale(0.5) !important;
   }
 }
 .circle-elements .two svg + svg {

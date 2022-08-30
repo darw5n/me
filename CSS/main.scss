@@ -118,6 +118,7 @@ section.section{
 }
 .section.thanks{
   min-height: calc(100vh - 80px);
+  justify-content: flex-end;
 }
 
 //link
@@ -695,15 +696,16 @@ $circle-height:160px;
     animation-delay:2s;
 
     svg{
-      animation: rotation 4s infinite linear;
+      // animation: rotation 4s infinite linear;  <------
+
       @media (max-width: 991.98px) {
-        transform: scale(.8) !important;
+        transform: scale(.85) !important;
       }
       @media (max-width: 767.98px) {
-        transform: scale(.6) !important;
+        transform: scale(.7) !important;
       }
       @media (max-width: 575.98px) { 
-        transform: scale(.4) !important;
+        transform: scale(.5) !important;
        }
       &+svg{
         right: 0;
