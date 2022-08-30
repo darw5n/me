@@ -59,10 +59,15 @@ $primary-color-700: #a53034;
 $primary-color-800: #892b2e;
 $primary-color-900: #73292c;
 
+//alternative
+$alternative-color:#6750A4;
 
 $black:#190606;
 $white:#fdf7f7;
 
+.primary-color{
+  color: $primary-color-600 !important;
+}
 
 // ---- Base -----
 html{
@@ -73,8 +78,14 @@ body{
   font-family: 'Matahari', sans-serif;
   overflow-y: hidden; /* Hide vertical scrollbar */
   color:$black;
+  @media (min-width: 992px) {  
+    background-color: $primary-color-100;
+  }
 }
+
+// ---- Section -----
 section.section{
+
   // min-height: 100vh;
   &.hero{
     display: grid;
@@ -83,7 +94,6 @@ section.section{
   padding-top: 4rem;
   padding-bottom: 4rem;
  
-
   //link
   a{
     color:$primary-color-400;
@@ -121,20 +131,7 @@ section.section{
     }
   }
 }
-//italic
-.italic{
-font-style: italic;
-}
-//container
-.fluid-container{
-  padding: 0 3rem;
-  @media (max-width: 767.98px) {
-    padding: 0 1.5rem;
-  }
-}
-.exp-edu{
-  align-items: flex-end;
-}
+
 .section:first-child, .section:last-child{
   min-height: 100vh;
   display: flex;
@@ -142,10 +139,29 @@ font-style: italic;
   justify-content:center;
 }
 
-/* -- colors -- */
-.primary-color{
-  color: $primary-color-600 !important;
+//italic
+.italic{
+  font-style: italic;
 }
+
+//container fluid
+.fluid-container{
+  padding: 0 3rem;
+  @media (max-width: 767.98px) {
+    padding: 0 1.5rem;
+  }
+  &.min{
+    padding: 0 5rem;
+    @media (max-width: 767.98px) {
+      padding: 0 2rem;
+    }
+  }
+}
+.exp-edu{
+  align-items: flex-end;
+}
+
+
 /* -- hero -- */
 .hero{
   .hero-container{
@@ -195,7 +211,7 @@ font-style: italic;
 
     //spazio di xx
     @media (max-width: 991.98px) {
-      right: -10%;
+      top: 2rem;
       margin-right: 2rem;
     }
   }
@@ -226,11 +242,15 @@ font-style: italic;
     }
   }
 }
+
+// emoji
 .hi{
   .emoji{
     font-size: clamp(1.6rem, 15vw, 2.12rem) !important;
   }
 }
+
+// me container
 .me{
   .portrait{
     position:absolute;
@@ -277,6 +297,8 @@ font-style: italic;
   }
 }
 
+
+// bio container 
 .bio{
   .labels{
     position: relative;
@@ -384,6 +406,8 @@ strong{
   font-family:Nognathy !important;
 }
 
+
+
 /* span a capo */
 p.forced, h3.forced {
   position: relative;
@@ -397,6 +421,9 @@ p.forced, h3.forced {
   flex-wrap: wrap;
   max-width: 800px;
 }
+
+
+
 /* -- Social Icon -- */
 .social-icons i {
   // vertical-align: top;
@@ -424,7 +451,7 @@ p.forced, h3.forced {
   padding-right: 50px;
 }
 
-
+// item horizontal carousel 
 .item {
   white-space: nowrap;
   max-width: 2000px;
@@ -470,6 +497,7 @@ section.afterHorizontal {
 
 
 /* ----- split text anm ---- */
+
 .splitting .char {
   animation: slide-in .6s cubic-bezier(.5, 0, .5, 1) both;
   animation-delay: calc(3ms * var(--char-index) + 1000ms );

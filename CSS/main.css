@@ -31,6 +31,10 @@
   font-style: normal;
 }
 /* ---- Color  ----- */
+.primary-color {
+  color: #bc3a3f !important;
+}
+
 html {
   scroll-behavior: smooth;
 }
@@ -40,6 +44,11 @@ body {
   font-family: "Matahari", sans-serif;
   overflow-y: hidden; /* Hide vertical scrollbar */
   color: #190606;
+}
+@media (min-width: 992px) {
+  body {
+    background-color: #fae6e7;
+  }
 }
 
 section.section {
@@ -84,6 +93,13 @@ section.section a:active, section.section aa:visited {
   }
 }
 
+.section:first-child, .section:last-child {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
 .italic {
   font-style: italic;
 }
@@ -96,21 +112,17 @@ section.section a:active, section.section aa:visited {
     padding: 0 1.5rem;
   }
 }
+.fluid-container.min {
+  padding: 0 5rem;
+}
+@media (max-width: 767.98px) {
+  .fluid-container.min {
+    padding: 0 2rem;
+  }
+}
 
 .exp-edu {
   align-items: flex-end;
-}
-
-.section:first-child, .section:last-child {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-/* -- colors -- */
-.primary-color {
-  color: #bc3a3f !important;
 }
 
 /* -- hero -- */
@@ -158,7 +170,7 @@ section.section a:active, section.section aa:visited {
 }
 @media (max-width: 991.98px) {
   .hero p.big {
-    right: -10%;
+    top: 2rem;
     margin-right: 2rem;
   }
 }
