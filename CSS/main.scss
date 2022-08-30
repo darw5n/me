@@ -477,6 +477,9 @@ p.forced, h3.forced {
   max-width: 800px;
 }
 
+.portfolio h3.forced{
+  line-height: 110%;
+}
 
 
 /* -- Social Icon -- */
@@ -632,11 +635,19 @@ $circle-height:160px;
 
     // background-color: #6750A4;
 
-    animation: rotation 12s infinite linear;
+    animation: rotation 14s infinite linear;
 
     svg{
       animation: rotation 4s infinite linear;
-
+      @media (max-width: 991.98px) {
+        transform: scale(.8) !important;
+      }
+      @media (max-width: 767.98px) {
+        transform: scale(.6) !important;
+      }
+      @media (max-width: 575.98px) { 
+        transform: scale(.4) !important;
+       }
       &+svg{
         right: 0;
         position: absolute;
@@ -674,18 +685,26 @@ $circle-height:160px;
     // background-color: #6750A4;
 
     animation: rotation 12s infinite linear;
-    animation-delay:1.5s;
+    animation-delay:2s;
 
     svg{
       animation: rotation 4s infinite linear;
-
+      @media (max-width: 991.98px) {
+        transform: scale(.8) !important;
+      }
+      @media (max-width: 767.98px) {
+        transform: scale(.6) !important;
+      }
+      @media (max-width: 575.98px) { 
+        transform: scale(.4) !important;
+       }
       &+svg{
         right: 0;
         position: absolute;
         
         path{
           fill:$primary-color-300;
-
+          
           @media (max-width: 767.98px) {
             opacity: .2;
           }

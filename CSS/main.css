@@ -416,6 +416,10 @@ p.forced, h3.forced {
   max-width: 800px;
 }
 
+.portfolio h3.forced {
+  line-height: 110%;
+}
+
 /* -- Social Icon -- */
 /* -- Smooth scroll -- */
 .smooth-scroll {
@@ -605,12 +609,27 @@ section.afterHorizontal {
   min-width: calc(320px + 2rem);
   top: -80px;
   right: calc(-25vw - 2rem);
-  -webkit-animation: rotation 12s infinite linear;
-          animation: rotation 12s infinite linear;
+  -webkit-animation: rotation 14s infinite linear;
+          animation: rotation 14s infinite linear;
 }
 .circle-elements .one svg {
   -webkit-animation: rotation 4s infinite linear;
           animation: rotation 4s infinite linear;
+}
+@media (max-width: 991.98px) {
+  .circle-elements .one svg {
+    transform: scale(0.8) !important;
+  }
+}
+@media (max-width: 767.98px) {
+  .circle-elements .one svg {
+    transform: scale(0.6) !important;
+  }
+}
+@media (max-width: 575.98px) {
+  .circle-elements .one svg {
+    transform: scale(0.4) !important;
+  }
 }
 .circle-elements .one svg + svg {
   right: 0;
@@ -641,12 +660,27 @@ section.afterHorizontal {
   left: calc(-25vw - 2rem);
   -webkit-animation: rotation 12s infinite linear;
           animation: rotation 12s infinite linear;
-  -webkit-animation-delay: 1.5s;
-          animation-delay: 1.5s;
+  -webkit-animation-delay: 2s;
+          animation-delay: 2s;
 }
 .circle-elements .two svg {
   -webkit-animation: rotation 4s infinite linear;
           animation: rotation 4s infinite linear;
+}
+@media (max-width: 991.98px) {
+  .circle-elements .two svg {
+    transform: scale(0.8) !important;
+  }
+}
+@media (max-width: 767.98px) {
+  .circle-elements .two svg {
+    transform: scale(0.6) !important;
+  }
+}
+@media (max-width: 575.98px) {
+  .circle-elements .two svg {
+    transform: scale(0.4) !important;
+  }
 }
 .circle-elements .two svg + svg {
   right: 0;
