@@ -40,20 +40,34 @@ html {
 }
 
 body {
-  background-color: #fae6e7;
+  background-color: #78c32e;
   font-family: "Matahari", sans-serif;
   overflow-y: hidden; /* Hide vertical scrollbar */
   color: #190606;
 }
 @media (min-width: 992px) {
   body {
-    background-color: #fae6e7;
+    background-color: #78c32e;
   }
 }
 
+::-moz-selection { /* Code for Firefox */
+  background: rgba(165, 48, 52, 0.1411764706);
+}
+
+::selection {
+  background: rgba(165, 48, 52, 0.1411764706);
+}
+
 section.section {
+  min-height: 100vh;
   padding-top: 4rem;
   padding-bottom: 4rem;
+}
+@supports (height: 100dvh) {
+  section.section {
+    height: 100dvh;
+  }
 }
 section.section.hero {
   display: grid;
@@ -63,7 +77,7 @@ section.section.hero {
 .section:first-child, .section.thanks {
   display: flex;
   flex-direction: column;
-  height: calc(100vh - env(safe-area-inset-bottom));
+  height: 100dvh;
 }
 
 .section.thanks {
