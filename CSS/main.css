@@ -63,14 +63,10 @@ section.section.hero {
 .section:first-child, .section.thanks {
   display: flex;
   flex-direction: column;
-}
-
-.section:first-child {
-  min-height: 100vh;
+  height: calc(100vh - env(safe-area-inset-bottom));
 }
 
 .section.thanks {
-  min-height: calc(100vh - 80px);
   justify-content: center;
 }
 

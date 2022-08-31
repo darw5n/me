@@ -112,12 +112,13 @@ section.section{
   // justify-content:center;
   // justify-content: space-around;
   // justify-content: flex-end;
+  height: calc(100vh - env(safe-area-inset-bottom));
 }
 .section:first-child{
-  min-height: 100vh;
+  // min-height: 100vh;
 }
 .section.thanks{
-  min-height: calc(100vh - 80px);
+  // min-height: calc(100vh - 80px);
   justify-content: center;
 }
 
