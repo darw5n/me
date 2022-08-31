@@ -40,14 +40,14 @@ html {
 }
 
 body {
-  background-color: #e5712d;
+  background-color: #df117b;
   font-family: "Matahari", sans-serif;
   overflow-y: hidden; /* Hide vertical scrollbar */
   color: #190606;
 }
 @media (min-width: 992px) {
   body {
-    background-color: #e5712d;
+    background-color: #df117b;
   }
 }
 
@@ -71,7 +71,6 @@ section.section.hero {
 .section:first-child, .section.thanks {
   display: flex;
   flex-direction: column;
-  height: 100dvh;
 }
 
 .section:first-child {
@@ -85,7 +84,6 @@ section.section.hero {
 
 .section.thanks {
   min-height: calc(100vh - 80px);
-  min-height: 100vh;
   justify-content: center;
 }
 @supports (height: 100dvh) {

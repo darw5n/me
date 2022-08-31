@@ -50,7 +50,7 @@
 //primary
 $primary-color-50: #fcf4f4;
 // $primary-color-100: #fae6e7;
-$primary-color-100: #e5712d;
+$primary-color-100: #df117b;
 $primary-color-200: #f7d1d2;
 $primary-color-300: #f1b0b2;
 $primary-color-400: #e5797d;
@@ -120,7 +120,6 @@ section.section{
   // justify-content:center;
   // justify-content: space-around;
   // justify-content: flex-end;
-  height: 100dvh;
   // height: calc(100vh - env(safe-area-inset-bottom));
 }
 .section:first-child{
@@ -133,7 +132,6 @@ section.section{
 }
 .section.thanks{
   min-height: calc(100vh - 80px);
-  min-height: 100vh;
 
   @supports(height: 100dvh) {
     min-height: calc(100dvh - 80px);
