@@ -50,7 +50,7 @@
 //primary
 $primary-color-50: #fcf4f4;
 // $primary-color-100: #fae6e7;
-$primary-color-100: #78c32e;
+$primary-color-100: #8abad5;
 $primary-color-200: #f7d1d2;
 $primary-color-300: #f1b0b2;
 $primary-color-400: #e5797d;
@@ -106,7 +106,7 @@ body{
 section.section{
   min-height: 100vh;
   @supports(height: 100dvh) {
-    height: 100dvh;
+    min-height: 100dvh;
   }
   &.hero{
     display: grid;
