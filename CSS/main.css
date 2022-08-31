@@ -40,14 +40,14 @@ html {
 }
 
 body {
-  background-color: #8abad5;
+  background-color: #e5712d;
   font-family: "Matahari", sans-serif;
   overflow-y: hidden; /* Hide vertical scrollbar */
   color: #190606;
 }
 @media (min-width: 992px) {
   body {
-    background-color: #8abad5;
+    background-color: #e5712d;
   }
 }
 
@@ -60,14 +60,8 @@ body {
 }
 
 section.section {
-  min-height: 100vh;
   padding-top: 4rem;
   padding-bottom: 4rem;
-}
-@supports (height: 100dvh) {
-  section.section {
-    min-height: 100dvh;
-  }
 }
 section.section.hero {
   display: grid;
@@ -80,8 +74,24 @@ section.section.hero {
   height: 100dvh;
 }
 
+.section:first-child {
+  min-height: 100vh;
+}
+@supports (height: 100dvh) {
+  .section:first-child {
+    min-height: 100dvh;
+  }
+}
+
 .section.thanks {
+  min-height: calc(100vh - 80px);
+  min-height: 100vh;
   justify-content: center;
+}
+@supports (height: 100dvh) {
+  .section.thanks {
+    min-height: calc(100dvh - 80px);
+  }
 }
 
 a, footer a {

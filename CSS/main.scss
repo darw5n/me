@@ -50,7 +50,7 @@
 //primary
 $primary-color-50: #fcf4f4;
 // $primary-color-100: #fae6e7;
-$primary-color-100: #8abad5;
+$primary-color-100: #e5712d;
 $primary-color-200: #f7d1d2;
 $primary-color-300: #f1b0b2;
 $primary-color-400: #e5797d;
@@ -104,10 +104,7 @@ body{
 
 // ---- Section -----
 section.section{
-  min-height: 100vh;
-  @supports(height: 100dvh) {
-    min-height: 100dvh;
-  }
+
   &.hero{
     display: grid;
     place-items: center;
@@ -127,10 +124,21 @@ section.section{
   // height: calc(100vh - env(safe-area-inset-bottom));
 }
 .section:first-child{
-  // min-height: 100vh;
+  min-height: 100vh;
+
+  @supports(height: 100dvh) {
+    min-height: 100dvh;
+  }
+
 }
 .section.thanks{
-  // min-height: calc(100vh - 80px);
+  min-height: calc(100vh - 80px);
+  min-height: 100vh;
+
+  @supports(height: 100dvh) {
+    min-height: calc(100dvh - 80px);
+  }
+
   justify-content: center;
 }
 
