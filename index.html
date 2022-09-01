@@ -1,12 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Darwin Vegher - Multisciplinary Designer</title>
-
+    <title>Darwin Vegher - Multidisciplinary Designer - Trento</title>
+    <meta name="description" content="Hi! I'm a Multidisciplinary Designer. I’m specialized in User Interface, Visual design, Motion graphic and Video Editing.">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Darwin Vegher - Multidisciplinary Designer - Trento">
+    <meta property="og:description" content="Hi! I'm a Multidisciplinary Designer. I’m specialized in User Interface, Visual design, Motion graphic and Video Editing.">
+    <meta property="og:image" content="Img/1200x630_Og-Darw5n_v01.jpg">
     <!-- style -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/locomotive-scroll@3.5.4/dist/locomotive-scroll.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css">
@@ -17,9 +20,11 @@
 
 </head>
 
-<body>
+\<body>
     <!-- noise -->
     <div class="bg"></div>
+
+    <!--circle elements-->
     <div class="circle-elements">
         <div class="one">
             <svg width="154" height="160" viewBox="0 0 154 160" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -37,9 +42,8 @@
                 <path fill-rule="evenodd" clip-rule="evenodd" d="M144.892 50.741C129.918 15.6695 81.5577 3.31786 46.4862 18.292C11.4147 33.2662 -0.351254 71.2895 14.6229 106.361C29.5971 141.432 70.1671 157.725 105.239 142.75C140.31 127.776 159.866 85.8125 144.892 50.741ZM148.156 49.3473C131.643 10.6704 89.9563 -10.1572 51.2793 6.35641C12.6023 22.87 -10.8982 69.1839 5.61534 107.861C22.1289 146.538 63.5175 170.212 102.195 153.698C140.871 137.184 164.67 88.0243 148.156 49.3473Z"/>
             </svg>
         </div>
-    
-       
     </div>
+
     <!-- content -->
     <div data-scroll-container class="smooth-scroll">
 
@@ -315,14 +319,6 @@
             </div>
         </section>
         
-        <!-- <footer data-scroll-section>
-            <div class="fluid-container">
-                <p id="year">© <span class="d-none d-md-inline">August</span> 2022 — Italy</p>
-                <div class="d-flex">
-                    <p><a href="https://www.iubenda.com/privacy-policy/96504814/legal">Privacy</a> / <a href="/cookies/">Cookies</a></p>
-                </div>
-            </div>
-        </footer> -->
 
         <footer id="colophon" class="site-footer" data-scroll-section>
             <div class="footerContent fluid-container" data-scroll data-scroll-direction="vertical" data-scroll-speed="-4" data-scroll-target="#colophon" data-scroll-position="bottom">
@@ -334,10 +330,9 @@
         </footer>
 
     </div>
-
-    
-
     <!-- end content -->
+
+
 
     <!-- script -->
     <script src="Script/locomotive-scroll.min.js"></script>
@@ -345,53 +340,9 @@
     <script src="https://unpkg.co/gsap@3/dist/gsap.min.js"></script>
     <script src="https://unpkg.com/gsap@3/dist/ScrollTrigger.min.js"></script>
     <script src="https://unpkg.com/splitting/dist/splitting.min.js"></script>
-    <!-- <script src="https://unpkg.com/splitting/dist/splitting.min.js"></script> -->
-    <!-- <script src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/16327/SplitText3.min.js"></script> -->
-    <!-- <script src="https://assets.codepen.io/16327/SplitText3.min.js"></script> -->
+
     <script>
-        /* --- Load Locomotive --- */
-
-        // const scroll = new LocomotiveScroll({
-        //     el: document.querySelector('[data-scroll-container]'),
-        //     smooth: true,
-        //     lerp: 0.03, // Linear Interpolation, 0 > 1 // Try 0.01
-        //     multiplier: 1.4, // Effect Multiplier
-        //     reloadOnContextChange: true,
-        //     touchMultiplier: 2,
-        //     smoothMobile: 0,
-        //     smartphone: {
-        //         smooth: !0,
-        //         breakpoint: 767
-        //     },
-        //     tablet: {
-        //         smooth: !1,
-        //         breakpoint: 1024
-        //     },
-        // });
-
-
-        /* --- Split the text, Burrowing Owl --- */
-
-        // function setupSplits() {
-
-        //     var tlSplitBurrowing = gsap.timeline(),
-        //         SplitBurrowing = new SplitText(".titleAnimation", { type: "words,chars" }),
-        //         chars = SplitBurrowing.chars; //an array of all the divs that wrap each character
-
-        //     tlSplitBurrowing.from(chars, {
-        //         delay:0.5,
-        //         duration: 0.8,
-        //         opacity: 0,
-        //         y: 400,
-        //         ease: "circ.out",
-        //         stagger: 0.02,
-        //     }, "+=0");
-        // };
-
-
-        // ScrollTrigger.addEventListener("refresh", setupSplits);
-        // setupSplits();
-
+  
         /* --- Scroll text right to left --- */
 
         console.clear();
