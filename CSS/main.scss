@@ -1,45 +1,45 @@
 /* ---- Import ---- */
 @import url(https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css);
 
-// @font-face {
-//   font-family: 'besom'; !important
-//   src: url('fonts/besom/besom.eot');
-//   src: url('fonts/besom/besom.eot?#iefix') format('embedded-opentype'),
-//        url('fonts/besom/besom.woff2') format('woff2'),
-//        url('fonts/besom/besom.woff') format('woff'),
-//        url('fonts/besom/besom.ttf') format('truetype'),
-//        url('fonts/besom/besom.svg#besom_2regular') format('svg');
-//   font-weight: normal;
-//   font-style: normal;
-// }
+@font-face {
+  font-family: 'Matahari';
+  src: url('../Font/Font/Matahari/matahari_400_regular.otf');
+  src: url('../Font/Font/Matahari/matahari_400_regular-webfont.woff2') format('woff2'),
+       url('../Font/Font/Matahari/matahari_400_regular-webfont.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Matahari';
+  src: url('../Font/Font/Matahari/matahari_400_regular_oblique.otf');
+  src: url('../Font/Font/Matahari/matahari_400_regular_oblique-webfont.woff2') format('woff2'),
+       url('../Font/Font/Matahari/matahari_400_regular_oblique-webfont.woff') format('woff');
+  font-weight: 400;
+  font-style: italic;
+}
+@font-face {
+  font-family: 'Matahari';
+  src: url('../Font/Font/Matahari/matahari_700_bold.otf');
+  src: url('../Font/Font/Matahari/matahari_700_bold-webfont.woff2') format('woff2'),
+       url('../Font/Font/Matahari/matahari_700_bold-webfont.woff') format('woff');
+  font-weight: 700;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Matahari';
+  src: url('../Font/Font/Matahari/matahari_700_bold_oblique.otf');
+  src: url('../Font/Font/Matahari/matahari_700_bold_oblique-webfont.woff2') format('woff2'),
+       url('../Font/Font/Matahari/matahari_700_bold_oblique-webfont.woff') format('woff');
+  font-weight: 700;
+  font-style: italic;
+}
 
 @font-face {
-  font-family: 'Matahari'; 
-  src: url('../Font/Matahari/Matahari\ 400\ Regular.otf');
-  font-weight: 400;
-  font-style: normal;
-}
-@font-face {
-  font-family: 'Matahari'; 
-  src: url('../Font/Matahari/Matahari\ 400\ Regular\ Oblique.otf');
-  font-weight: 400;
-  font-style: italic;
-}
-@font-face {
-  font-family: 'Matahari'; 
-  src: url('../Font/Matahari/Matahari\ 700\ Bold.otf');
-  font-weight: 700;
-  font-style: normal;
-}
-@font-face {
-  font-family: 'Matahari'; 
-  src: url('../Font/Matahari/Matahari\ 700\ Bold\ Oblique.otf');
-  font-weight: 700;
-  font-style: italic;
-}
-@font-face {
-  font-family: 'Nognathy'; 
+  font-family: 'Nognathy';
   src: url('../Font/Nognathy/Nognathy.otf');
+  src: url('../Font/Nognathy/Nognathy.woff2') format('woff2'),
+       url('../Font/Nognathy/Nognathy.woff') format('woff'),
+       url('../Font/Nognathy/Nognathy.ttf') format('truetype');
   font-weight: 400;
   font-style: normal;
 }
