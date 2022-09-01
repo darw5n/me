@@ -2,29 +2,29 @@
 @import url(https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css);
 @font-face {
   font-family: "Matahari";
-  src: url("../Font/Font/Matahari/matahari_400_regular.otf");
-  src: url("../Font/Font/Matahari/matahari_400_regular-webfont.woff2") format("woff2"), url("../Font/Font/Matahari/matahari_400_regular-webfont.woff") format("woff");
+  src: url("../Font/Matahari/matahari_400_regular.otf");
+  src: url("../Font/Matahari/matahari_400_regular-webfont.woff2") format("woff2"), url("../Font/Matahari/matahari_400_regular-webfont.woff") format("woff");
   font-weight: 400;
   font-style: normal;
 }
 @font-face {
   font-family: "Matahari";
-  src: url("../Font/Font/Matahari/matahari_400_regular_oblique.otf");
-  src: url("../Font/Font/Matahari/matahari_400_regular_oblique-webfont.woff2") format("woff2"), url("../Font/Font/Matahari/matahari_400_regular_oblique-webfont.woff") format("woff");
+  src: url("../Font/Matahari/matahari_400_regular_oblique.otf");
+  src: url("../Font/Matahari/matahari_400_regular_oblique-webfont.woff2") format("woff2"), url("../Font/Matahari/matahari_400_regular_oblique-webfont.woff") format("woff");
   font-weight: 400;
   font-style: italic;
 }
 @font-face {
   font-family: "Matahari";
-  src: url("../Font/Font/Matahari/matahari_700_bold.otf");
-  src: url("../Font/Font/Matahari/matahari_700_bold-webfont.woff2") format("woff2"), url("../Font/Font/Matahari/matahari_700_bold-webfont.woff") format("woff");
+  src: url("../Font/Matahari/matahari_700_bold.otf");
+  src: url("../Font/Matahari/matahari_700_bold-webfont.woff2") format("woff2"), url("../Font/Matahari/matahari_700_bold-webfont.woff") format("woff");
   font-weight: 700;
   font-style: normal;
 }
 @font-face {
   font-family: "Matahari";
-  src: url("../Font/Font/Matahari/matahari_700_bold_oblique.otf");
-  src: url("../Font/Font/Matahari/matahari_700_bold_oblique-webfont.woff2") format("woff2"), url("../Font/Font/Matahari/matahari_700_bold_oblique-webfont.woff") format("woff");
+  src: url("../Font/Matahari/matahari_700_bold_oblique.otf");
+  src: url("../Font/Matahari/matahari_700_bold_oblique-webfont.woff2") format("woff2"), url("../Font/Matahari/matahari_700_bold_oblique-webfont.woff") format("woff");
   font-weight: 700;
   font-style: italic;
 }
