@@ -107,10 +107,12 @@ a, footer a {
 a:active, aa:visited, footer a:active, footer aa:visited {
   color: #73292c;
 }
+a:hover, footer a:hover {
+  color: #bc3a3f;
+}
 @media (min-width: 992px) {
   a:hover, footer a:hover {
     opacity: 1;
-    color: #bc3a3f;
   }
   a:hover::before, footer a:hover::before {
     transform: scaleX(1);

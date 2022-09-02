@@ -151,10 +151,12 @@ a, footer a{
   &:active, &a:visited{
     color: $primary-color-900;
   }
+  &:hover{
+    color:$primary-color-600;
+  }
   @media (min-width: 992px) {  
     &:hover{
       opacity: 1;
-      color:$primary-color-600;
       &::before{
         transform: scaleX(1);
         transform-origin: left center;
