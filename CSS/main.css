@@ -412,9 +412,12 @@ h6 {
 
 p {
   font-size: clamp(1rem, 15vw, 1.1rem);
+  line-height: 150%;
+  letter-spacing: 0.01rem;
 }
 p.big {
   font-size: clamp(1.3rem, 15vw, 1.6rem);
+  line-height: 135%;
 }
 p.small {
   font-size: clamp(0.65rem, 15vw, 0.8rem);
