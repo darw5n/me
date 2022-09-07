@@ -758,8 +758,4 @@ footer > div {
 footer p {
   font-size: 0.6rem;
   margin-bottom: 0;
-}
-
-.stop-flickering {
-  -webkit-transform: translate3d(0, 0, 0);
 }/*# sourceMappingURL=main.css.map */
