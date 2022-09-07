@@ -83,11 +83,6 @@ body{
   overflow-y: hidden; /* Hide vertical scrollbar */
   color:$black;
 
-  -webkit-transform:translate3d(0,0,0); // fix the flickering problem with Safari
-
-  @media (min-width: 992px) {  
-    background-color: $primary-color-100;
-  }
 }
 ::-moz-selection { /* Code for Firefox */
   background:#a5303424;
@@ -781,3 +776,6 @@ footer{
     margin-bottom: 0;
   }
 }
+
+//flikering
+.stop-flickering {-webkit-transform:translate3d(0,0,0);}

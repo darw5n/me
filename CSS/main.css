@@ -49,12 +49,6 @@ body {
   font-family: "Matahari", sans-serif;
   overflow-y: hidden; /* Hide vertical scrollbar */
   color: #190606;
-  -webkit-transform: translate3d(0, 0, 0);
-}
-@media (min-width: 992px) {
-  body {
-    background-color: #fae6e7;
-  }
 }
 
 ::-moz-selection { /* Code for Firefox */
@@ -760,4 +754,8 @@ footer > div {
 footer p {
   font-size: 0.6rem;
   margin-bottom: 0;
+}
+
+.stop-flickering {
+  -webkit-transform: translate3d(0, 0, 0);
 }/*# sourceMappingURL=main.css.map */
