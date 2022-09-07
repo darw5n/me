@@ -49,6 +49,7 @@ body {
   font-family: "Matahari", sans-serif;
   overflow-y: hidden; /* Hide vertical scrollbar */
   color: #190606;
+  -webkit-transform: translate3d(0, 0, 0);
 }
 @media (min-width: 992px) {
   body {

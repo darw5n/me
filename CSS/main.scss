@@ -79,14 +79,11 @@ html{
 body{
   background-color: $primary-color-100;
   
-  // background-color: #fae6e7;
-  // background-image:  radial-gradient(#d95a5f 0.7000000000000001px, transparent 0.7000000000000001px), radial-gradient(#d95a5f 0.7000000000000001px, #fae6e7 0.7000000000000001px);
-  // background-size: 28px 28px;
-  // background-position: 0 0,14px 14px;
-
   font-family: 'Matahari', sans-serif;
   overflow-y: hidden; /* Hide vertical scrollbar */
   color:$black;
+
+  -webkit-transform:translate3d(0,0,0); // fix the flickering problem with Safari
 
   @media (min-width: 992px) {  
     background-color: $primary-color-100;
