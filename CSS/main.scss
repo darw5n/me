@@ -594,7 +594,7 @@ section.afterHorizontal {
 }
 
 /* ----- bg animation ---- */
-@media (min-width: 992px) {  
+// @media (min-width: 992px) {  
   .bg {
     position: fixed;
     top: -50%;
@@ -617,7 +617,7 @@ section.afterHorizontal {
         opacity: .5;
     }
   }
-}
+// }
 
 
 @keyframes noise {
