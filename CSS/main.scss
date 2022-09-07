@@ -115,11 +115,11 @@ section.section{
 }
 .section:first-child{
   min-height: 100vh;
-
-  @supports(height: 100dvh) {
-    min-height: 100dvh;
+  @media (max-width: 991.98px) {
+    @supports(height: 100dvh) {
+      min-height: 100dvh;
+    }
   }
-
 }
 .section.thanks{
   min-height: calc(100vh - 80px);
