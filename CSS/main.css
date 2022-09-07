@@ -477,6 +477,7 @@ p.forced, h3.forced {
 [data-scroll-in-section] {
   display: inline-flex;
   padding-right: 50px;
+  align-items: baseline;
 }
 
 .item {
@@ -563,72 +564,72 @@ section.afterHorizontal {
 }
 @-webkit-keyframes bg-animation {
   0% {
-    transform: translate(0, 0);
+    transform: translate3d(0, 0);
   }
   10% {
-    transform: translate(-5%, -5%);
+    transform: translate3d(-5%, -5%, 0);
   }
   20% {
-    transform: translate(-10%, 5%);
+    transform: translate3d(-10%, 5%, 0);
   }
   30% {
-    transform: translate(5%, -10%);
+    transform: translate3d(5%, -10%, 0);
   }
   40% {
-    transform: translate(-5%, 15%);
+    transform: translate3d(-5%, 15%, 0);
   }
   50% {
-    transform: translate(-10%, 5%);
+    transform: translate3d(-10%, 5%, 0);
   }
   60% {
-    transform: translate(15%, 0);
+    transform: translate3d(15%, 0, 0);
   }
   70% {
-    transform: translate(0, 10%);
+    transform: translate3d(0, 10%, 0);
   }
   80% {
-    transform: translate(-15%, 0);
+    transform: translate3d(-15%, 0, 0);
   }
   90% {
-    transform: translate(10%, 5%);
+    transform: translate3d(10%, 5%, 0);
   }
   100% {
-    transform: translate(5%, 0);
+    transform: translate3d(5%, 0, 0);
   }
 }
 @keyframes bg-animation {
   0% {
-    transform: translate(0, 0);
+    transform: translate3d(0, 0);
   }
   10% {
-    transform: translate(-5%, -5%);
+    transform: translate3d(-5%, -5%, 0);
   }
   20% {
-    transform: translate(-10%, 5%);
+    transform: translate3d(-10%, 5%, 0);
   }
   30% {
-    transform: translate(5%, -10%);
+    transform: translate3d(5%, -10%, 0);
   }
   40% {
-    transform: translate(-5%, 15%);
+    transform: translate3d(-5%, 15%, 0);
   }
   50% {
-    transform: translate(-10%, 5%);
+    transform: translate3d(-10%, 5%, 0);
   }
   60% {
-    transform: translate(15%, 0);
+    transform: translate3d(15%, 0, 0);
   }
   70% {
-    transform: translate(0, 10%);
+    transform: translate3d(0, 10%, 0);
   }
   80% {
-    transform: translate(-15%, 0);
+    transform: translate3d(-15%, 0, 0);
   }
   90% {
-    transform: translate(10%, 5%);
+    transform: translate3d(10%, 5%, 0);
   }
   100% {
-    transform: translate(5%, 0);
+    transform: translate3d(5%, 0, 0);
   }
 }
 .circle-elements {
