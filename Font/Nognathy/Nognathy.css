@@ -1,0 +1,10 @@
+/* Webfont: Nognathy Regular */@font-face {
+    font-family: 'Nognathy';
+    src: url('Nognathy.woff') format('woff'), /* Modern Browsers */
+         url('Nognathy.woff2') format('woff2'), /* Modern Browsers */
+         url('Nognathy.otf') format('opentype'); /* Safari, Android, iOS */
+             font-style: normal;
+    font-weight: normal;
+    text-rendering: optimizeLegibility;
+}
+

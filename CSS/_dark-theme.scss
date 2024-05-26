@@ -1,0 +1,87 @@
+@import 'variables';
+
+.dark-theme {
+  background-color: $black-dark;
+  color: $white-dark;
+  transition: all .5s ease-in-out;
+
+  // ---- Pre loader ---- ---- ----
+
+  #preloader {
+    background-color: $violet-color-400;
+  }
+
+  #loader {
+    background-color: $violet-color-800;
+  }
+
+  #progress {
+    background-color: $violet-color-500;
+  }
+
+  // ---- Hero ---- ---- ----
+  .hero {
+    &.thanks{
+      // background-color: $grey-color-500;
+    }
+    h1 span {
+      color: $violet-color-400;
+    }
+
+    .designer {
+      color: $primary-color-dark-500;
+    }
+  }
+
+/* -- me -- */
+.me {
+
+}
+
+  // ---- Social Icon ---- ---- ----
+
+  .social-icons {
+    & .social-icon {
+      color: $white-dark;
+    }
+  }
+
+  // --- Link ---- ---- ----
+  a,
+  footer a {
+    color: $primary-color-dark-500;
+
+    &:active,
+    &:visited {
+      color: $primary-color-dark-600;
+    }
+
+    &:hover {
+      color: $primary-color-dark-300;
+    }
+  }
+
+  // ---- title section in horizontal scroll
+  .item {
+    &.txt{
+      h2{
+        color: $violet-color-400;
+      }
+    }
+  }
+  // --- linea nel p dell'horizontal scroll
+  .content p:first-child{
+    color: $grey-color-600;
+    &::after{
+      border: 1px solid $grey-color-600;;
+    }
+  }
+  /* ----- accordion ---- */
+  .acnav {
+    .separator{
+      border-bottom:1px solid $white-dark; 
+    }
+  } 
+}
+
+
