@@ -294,7 +294,6 @@ footer a.small {
   background-color: #FDF4F3;
   color: #0b0b0b;
   transition: all 0.5s ease-in-out;
-  /* -- me -- */
   /* ----- accordion ---- */
 }
 .light-theme #preloader {
@@ -345,7 +344,6 @@ footer a.small {
   background-color: #161616;
   color: rgba(250, 250, 250, 0.8);
   transition: all 0.5s ease-in-out;
-  /* -- me -- */
   /* ----- accordion ---- */
 }
 .dark-theme #preloader {
