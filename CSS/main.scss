@@ -389,7 +389,7 @@ section.section {
     li{
       display: flex;
       gap: .75rem;
-      flex: 1 1 12rem; // <--- da rivedere
+      flex: 1 1 45%; // <--- da rivedere
     }
   }
   .logo{
@@ -470,7 +470,8 @@ section.section {
       padding-left: 2rem;
     }
     @media (max-width: 991.98px) {
-      width: 60vw;
+      width: fit-content;
+      min-width: 80vw;
     }
     
   }
