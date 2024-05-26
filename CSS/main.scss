@@ -392,7 +392,10 @@ section.section {
     li{
       display: flex;
       gap: .75rem;
-      flex: 1 1 45%; // <--- da rivedere
+      flex: 1 1 12rem; // <--- da rivedere
+      @media (max-width: 767.98px) {
+        flex: 1 1 45%; 
+      }
     }
   }
   .logo{

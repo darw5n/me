@@ -719,7 +719,12 @@ section.section.me > div {
 .fav-tools ul li {
   display: flex;
   gap: 0.75rem;
-  flex: 1 1 45%;
+  flex: 1 1 12rem;
+}
+@media (max-width: 767.98px) {
+  .fav-tools ul li {
+    flex: 1 1 45%;
+  }
 }
 .fav-tools .logo {
   min-width: 1.5rem;
