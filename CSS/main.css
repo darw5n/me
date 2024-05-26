@@ -630,6 +630,12 @@ section.section.me > div {
 .is-open > .acnav__list--level2 .content .period {
   text-align: right;
 }
+@media (max-width: 767.98px) {
+  .is-open > .acnav__list--level2 .content {
+    margin-right: 0.5vw;
+    margin-left: 0.5vw;
+  }
+}
 
 /* Ruota la freccia di 45 gradi quando l'accordion è aperto */
 .has-children.is-open > .acnav__label::before {
