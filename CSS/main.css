@@ -53,7 +53,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: url("http://assets.iceable.com/img/noise-transparent.png");
+  background: url("../Img/noise-transparent.png");
   animation: 0.2s infinite noise;
   pointer-events: none;
   opacity: 0.75;
@@ -542,7 +542,6 @@ section.section.me > div {
   }
 }
 
-/* -- me -- */
 /* ----- split text anm ---- */
 .splitting .char {
   animation: slide-in 0.6s cubic-bezier(0.5, 0, 0.5, 1) both;

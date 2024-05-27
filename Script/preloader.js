@@ -1,3 +1,8 @@
+
+window.onload = function() {
+    preload();
+};
+
 document.addEventListener("DOMContentLoaded", function () {
     // Quando il DOM è completamente caricato, avviamo la funzione di pre-caricamento
     preload();
