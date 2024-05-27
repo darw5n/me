@@ -190,13 +190,6 @@ section.section {
   }
 }
 
-
-/* -- me -- */
-.me {
-  // height: 100vh;
-}
-
-
 /* ----- split text anm ---- */
 
 .splitting .char {
@@ -322,14 +315,6 @@ section.section {
   transition: all 0.5s cubic-bezier(0.18, 0.89, 0.32, 1.28); /* Aggiunge una transizione fluida */
   margin-top: 1rem;
 }
-.has-children.is-open > .acnav__label .acnav_title{
-//  letter-spacing: 20px;
-//  text-transform: uppercase;
-
-}
-
-
-
 
 /* Aggiungi questa regola per animare il cambiamento dell'emoji */
 
@@ -515,10 +500,6 @@ section.section {
 .sectionLeftAndRight .section-inner {
   display: grid;
   grid-template-columns: 1fr 1fr;
-}
-
-section.afterHorizontal {
-  // margin-top: -60vh;
 }
 
 .now{
