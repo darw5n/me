@@ -1,24 +1,29 @@
 function accordion() {
-  document.querySelectorAll(".acnav__label").forEach(acnav => {
+  document.querySelectorAll(".acnav__label").forEach((acnav) => {
     $(acnav).click(function () {
       var label = $(this);
-      var parent = label.parent('.has-children');
-      var list = label.siblings('.acnav__list');
-      var animlist = list.find('.animlist');
+      var parent = label.parent(".has-children");
+      var list = label.siblings(".acnav__list");
+      var animlist = list.find(".animlist");
 
       var Q = gsap.timeline({ paused: true });
 
-      Q.fromTo(animlist, {
-        opacity: 0,
-        y: 0,
-      }, {
-        y: 0,
-        opacity: 1,
-        stagger: 0.1,
-        duration: 0.2,
-      }, 0.2);
+      Q.fromTo(
+        animlist,
+        {
+          opacity: 0,
+          y: 0,
+        },
+        {
+          y: 0,
+          opacity: 1,
+          stagger: 0.1,
+          duration: 0.2,
+        },
+        0.2
+      );
 
-      if (parent.hasClass('is-open')) {
+      if (parent.hasClass("is-open")) {
         gsap.to(animlist, {
           y: 0,
           opacity: 0,
@@ -32,9 +37,9 @@ function accordion() {
           immediateRender: false,
           ease: "expo.inOut",
           onComplete: function () {
-            parent.removeClass('is-open');
-            ScrollTrigger.refresh();
-            locoScroll.update();
+            parent.removeClass("is-open");
+            // ScrollTrigger.refresh();
+            // locoScroll.update();
           },
         });
       } else {
@@ -48,12 +53,14 @@ function accordion() {
           ease: "expo.inOut",
           immediateRender: false,
           onComplete: function () {
-            ScrollTrigger.refresh();
-            locoScroll.update();
+            parent.addClass("is-open");
+            Q.play();
+            // ScrollTrigger.refresh(); // il problema del lag sta qui
+            // locoScroll.update();
           },
         });
 
-        parent.addClass('is-open');
+        parent.addClass("is-open");
         Q.play();
       }
     });
