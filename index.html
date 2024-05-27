@@ -802,7 +802,7 @@
                         scroller: '.smooth-scroll',
                         start: 'center center',
                         end: () => `+=${section.scrollWidth}`,
-                        markers: true,
+                        markers: false,
                         scrub: true
                     }
                 });
@@ -816,10 +816,10 @@
         });
 
         //EventListener per il ridimensionamento della finestra che aggiorna ScrollTrigger e Locomotive Scroll
-        window.addEventListener('resize', function() {
-            ScrollTrigger.refresh();
-            locoScroll.update();
-        });
+        // window.addEventListener('resize', function() {
+        //     ScrollTrigger.refresh();
+        //     locoScroll.update();
+        // });
 
         // Esegui il refresh iniziale
         ScrollTrigger.update();
