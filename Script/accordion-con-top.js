@@ -51,6 +51,16 @@ function accordion() {
           },
         });
       } else {
+        // Scorrere la pagina verso l'alto per portare il titolo in vista
+        locoScroll.scrollTo(label, {
+          duration: 600, // Durata dello scroll in millisecondi
+          offset: -20, // Offset per posizionare leggermente sopra il titolo
+          callback: function () {
+            ScrollTrigger.refresh();
+            locoScroll.update();
+          },
+        });
+
         // Apertura dell'elemento padre
         gsap.set(list, {
           height: "auto",
