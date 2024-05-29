@@ -46,77 +46,16 @@
     <meta name="theme-color" content="#ffffff">
 </head>
 
-<body>
-
-    <button id="theme-toggle">
-        <span class="theme-icon" id="theme-icon"></span>
-    </button>
-
-    <!-- noise -->
-    <div class="bg stop-flickering"></div>
-
-    <!-- Preloader -->
-    <div id="preloader" class="hidden">
-        <div id="loader">
-            <div id="progress"></div>
-        </div>
-        <div id="percentage" class="big strong">0%</div>
-    </div>
-
-    <!-- content -->
     <div id="page-content" data-scroll-container class="smooth-scroll">
-        <div data-scroll-container class="smooth-scroll">
-
-            <!-- hero section -->
-            <section class="section hero" data-scroll-section>
-                <div class="hero-container titleAnimation" data-splitting>
-                    <h1 class="title serif big" data-scroll>
-                        <span data-scroll="" data-scroll-delay="0.18" data-scroll-speed="7"
-                            data-scroll-position="center">D</span>
-                        <span data-scroll="" data-scroll-delay="0.14" data-scroll-speed="10">A</span>
-                        <span data-scroll="" data-scroll-delay="0.12" data-scroll-speed="4">R</span>
-                        <span data-scroll="" data-scroll-delay="0.1" data-scroll-speed="7">W</span>
-                        <span data-scroll="" data-scroll-delay="0.08" data-scroll-speed="12">I</span>
-                        <span data-scroll="" data-scroll-delay="0.12" data-scroll-speed="5">N</span>
-                    </h1>
-                    <p class="big" data-scroll data-scroll-speed="4" data-scroll-direction="horizontal">
-                        <span>chi</span>
-                        <span>sono</span>
-                        <span>e cosa</span>
-                        <span>faccio.</span>
-                    </p>
-                    <p class="designer forced" data-scroll data-scroll-speed="10">
-                        <span>multidisciplinary</span>
-                        <span>designer</span>
-                    </p>
-                </div>
-            </section>
-
-            <!-- Me -->
-            <section class="section me" data-scroll-section>
-                <div class="row d-flex fluid-container">
-                    <div class="col-12 col-md-6 col-lg-7 mb-5 mb-md-0">
-                        <div class="image-container" data-no-retina="" data-scroll data-scroll-speed="-5"
-                            data-scroll-direction="horizontal">
-                            <img class="portrait img-fluid lazyloaded" src="Img/1200x1200_darwin_low.jpg" alt="darwin"
-                                data-no-retina="" data-scroll data-scroll-speed="-20" data-scroll-direction="horizontal"
-                                loading="lazy">
-                        </div>
-                    </div>
-                    <div class="col-12 col-md-6 col-lg-5">
-                        <p><span class="about-start">I</span>'m <a><span class="hover-word"
-                                    data-image="Img/1200x1200_darwin_low.jpg">Darwin</span></a>, a designer with an
-                            insatiable passion for all things digital. I live in the middle of the enchanting <a><span
-                                    class="hover-word"
-                                    data-image="https://www.shutterstock.com/shutterstock/photos/552162193/display_1500/stock-photo-famous-best-alpine-place-of-the-world-santa-maddalena-village-with-magical-dolomites-mountains-in-552162193.jpg">Dolomites</span></a>,
-                            but my mind is always on new creative adventures.</p>
-                    </div>
-
-                </div>
-            </section>
-
+        <section data-bgcolor="#bcb8ad" data-textcolor="#032f35">
+            <div>
+              <h1 data-scroll data-scroll-speed="1"><span>Horizontal</span> <span>scroll</span> <span>section</span></h1>
+              <p data-scroll data-scroll-speed="2" data-scroll-delay="0.2">with GSAP ScrollTrigger & Locomotive Scroll</p>
+            </div>
+      
+          </section>
             <!-- Experiences and education -->
-            <section class="section" data-scroll-section style="padding-bottom: 0;">
+            <section class="section"  style="padding-bottom: 0;">
                 <div class="row d-flex fluid-container exp-edu">
                     <div class="col-12 mb-5">
                         <!-- titolo -->
@@ -124,8 +63,8 @@
                             Experiences
                         </h3>
                         <!-- <h3 class="serif" data-scroll data-scroll-speed="-2" data-scroll-direction="horizontal">
-                            Experiences
-                        </h3> -->
+                                        Experiences
+                                    </h3> -->
                         <!-- elenco -->
                         <div>
                             <div class="nav-wrap">
@@ -255,8 +194,8 @@
                             Education
                         </h3>
                         <!-- <h3 class="serif" data-scroll data-scroll-speed="2" data-scroll-direction="horizontal">
-                            Education
-                        </h3> -->
+                                        Education
+                                    </h3> -->
                         <!-- elenco -->
                         <div>
                             <div class="nav-wrap">
@@ -376,20 +315,9 @@
                         </div>
                     </div>
             </section>
-            <section class="section now" data-scroll-section>
-                <div class="row d-flex fluid-container pb-4">
-                    <h1 id="lastdance" class="serif big" style="text-align: center;" data-scroll
-                        data-scroll-speed="-10">
-                        The last dances
-                    </h1>
-                </div>
-            </section>
-            <!-- Horizonal Skill -->
-            <div data-scroll-container>
-                <section class="horizontalScrolling section" data-scroll-section>
-                    <div class="section-inner" data-scroll data-scroll-speed="0" data-scroll-direction="horizontal">
-                        <section data-scroll-in-section>
-                            <!-- 1  -->
+          <section id="sectionPin">
+            <div class="pin-wrap">
+                <!-- 1  -->
                             <div class="item txt" data-scroll data-scroll-speed="0">
                                 <div class="content">
                                     <p class="small text-uppercase">Last</p>
@@ -519,185 +447,12 @@
                                 <img class="img-fluid lazyloaded vinyl" src="Img/Cosmo-music.webp"
                                     alt="Cosmo - Sulle ali del cavallo bianco">
                             </div>
-
-                        </section>
-                    </div>
-                </section>
+      
             </div>
-
-            <!-- Plus -->
-            <section class="section fav-tools" data-scroll-section>
-                <div class="row d-flex fluid-container">
-                    <h3 class="serif" data-scroll data-scroll-speed="-2" data-scroll-direction="horizontal">
-                        Fav tools
-                    </h3>
-                    <div class="col-12">
-                        <ul>
-                            <li>
-                                <div class="logo">
-                                    <img class="" src="Img/Logo/Figma-logo.svg">
-                                </div>
-                                <div>
-                                    Figma
-                                    <p class="small">For crafting awesome designs together.</p>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="logo">
-                                    <img class="" src="Img/Logo/raycast.svg">
-                                </div>
-                                <div>
-                                    Raycast
-                                    <p class="small">For zipping through tasks like a pro.</p>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="logo">
-                                    <img class="" src="Img/Logo/Reclaim.svg">
-                                </div>
-                                <div>
-                                    ReclaimAi
-                                    <p class="small">For magically organizing my schedule.</p>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="logo">
-                                    <img class="" src="Img/Logo/Notion-logo.svg">
-                                </div>
-                                <div>
-                                    Notion
-                                    <p class="small">For turning chaos into order in my life and job.</p>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="logo">
-                                    <img class="" src="Img/Logo/Spotify_logo_without_text.svg.png">
-                                </div>
-                                <div>
-                                    Spotify
-                                    <p class="small">For jamming while I create.</p>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="logo">
-                                    <img class="" src="Img/Logo/Screen-studio.png">
-                                </div>
-                                <div>
-                                    Screen Studio
-                                    <p class="small">For recording my screen like a boss.</p>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="logo">
-                                    <img class="" src="Img/Logo/Arc_(browser)_logo.svg">
-                                </div>
-                                <div>
-                                    Arc browser
-                                    <p class="small">For surfing the web in a cool way.</p>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="logo">
-                                    <img class="" src="Img/Logo/Google_Sheets_logo_(2014-2020).svg">
-                                </div>
-                                <div>
-                                    Sheet
-                                    <p class="small">For making data my best friend and managing my cash flow.</p>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="logo">
-                                    <img class="" src="Img/Logo/Visual_Studio_Code_1.35_icon.svg">
-                                </div>
-                                <div>
-                                    Visual Studio Code
-                                    <p class="small">For coding with superpowers.</p>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </section>
-
-
-
-            <!-- Thx and contacts-->
-            <section class="section hero thanks d-flex" data-scroll-section>
-                <div class="hero-container titleAnimation">
-                    <!-- thank you -->
-                    <h1 class="title serif big" data-scroll>
-                        <span data-scroll="" data-scroll-delay="0.18" data-scroll-speed="7"
-                            data-scroll-position="center">T</span>
-                        <span data-scroll="" data-scroll-delay="0.14" data-scroll-speed="10">H</span>
-                        <span data-scroll="" data-scroll-delay="0.12" data-scroll-speed="4">A</span>
-                        <span data-scroll="" data-scroll-delay="0.1" data-scroll-speed="7">N</span>
-                        <span data-scroll="" data-scroll-delay="0.08" data-scroll-speed="12">K</span>
-                        <span class="d-none d-md-block" data-scroll="" data-scroll-delay="0.12"
-                            data-scroll-speed="5"></span>
-                        <span class="d-none d-md-block" data-scroll="" data-scroll-delay="0.18" data-scroll-speed="7"
-                            data-scroll-position="center">Y</span>
-                        <span class="d-none d-md-block" data-scroll="" data-scroll-delay="0.14"
-                            data-scroll-speed="10">O</span>
-                        <span class="d-none d-md-block" data-scroll="" data-scroll-delay="0.12"
-                            data-scroll-speed="4">U</span>
-                        <span class="d-block d-md-none" data-scroll="" data-scroll-delay="0.12"
-                            data-scroll-speed="4">S</span>
-                    </h1>
-                </div>
-                <div class="fluid-container min">
-                    <!-- contact me -->
-                    <p class="contact-info text-center mt-2 mt-xl-3" data-scroll data-scroll-speed="4">
-                        If you want to contact me, you can write a mail to <span id="email"></span>
-                        or send a telegram to <a href="https://t.me/Darwiiiin"
-                            target="_blank"><strong>@darwiiiin</strong></a>
-                    </p>
-                    <!-- social -->
-                    <div class="d-flex" data-scroll data-scroll-speed="4">
-                        <div class="social-icons">
-                            <a href="https://it.linkedin.com/in/darwinvegher" class="social-icon" target="_blank">
-                                <i class="fa-brands fa-linkedin-in"></i>
-                            </a>
-                            <a href="http://be.net/darwinvegher" class="social-icon" target="_blank">
-                                <i class="fa-brands fa-behance"></i>
-                            </a>
-                            <a href="https://dribbble.com/darwinvegher" class="social-icon" target="_blank">
-                                <i class="fa-brands fa-dribbble"></i>
-                            </a>
-                            <a href="https://www.instagram.com/darwiiiin/" class="social-icon" target="_blank">
-                                <i class="fa-brands fa-instagram"></i>
-                            </a>
-                            <a href="https://vimeo.com/darwinvegher" class="social-icon" target="_blank">
-                                <i class="fa-brands fa-vimeo-v"></i>
-                            </a>
-                            <a href="https://unsplash.com/@darwiiiin" class="social-icon" target="_blank">
-                                <i class="fa-brands fa-unsplash"></i>
-                            </a>
-                            <a href="https://www.figma.com/@darwinzen" class="social-icon" target="_blank">
-                                <i class="fa-brands fa-figma"></i>
-                            </a>
-                            <a href="https://codepen.io/darwiiiin" class="social-icon" target="_blank">
-                                <i class="fa-brands fa-codepen"></i>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        </div>
-
-        <!-- footer with links -->
-        <footer id="colophon" class="site-footer" data-scroll-section>
-            <div class="footerContent fluid-container" data-scroll data-scroll-direction="vertical"
-                data-scroll-speed="-4" data-scroll-target="#colophon" data-scroll-position="bottom">
-                <p id="year">© <span class="d-none d-md-inline">August</span> 2022 <span
-                        class="d-none d-md-inline xsmall">(Last edit: 10 may 24) </span>— Italy</p>
-                <div class="d-flex">
-                    <p>
-                        <a href="https://www.iubenda.com/privacy-policy/96504814/legal">Privacy</a>
-                        <!-- / <a href="/cookies/">Cookies</a> -->
-                    </p>
-                </div>
-            </div>
-        </footer>
+          </section>
+          <section data-bgcolor="#e3857a" data-textcolor="#f1dba7"><img src="https://images.pexels.com/photos/4791474/pexels-photo-4791474.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500" alt="">
+            <h2 data-scroll data-scroll-speed="1" class="credit"><a href="https://thisisadvantage.com" target="_blank">Made by Advantage</a></h2>
+          </section>
     </div>
 
     <!-- script -->
@@ -708,10 +463,9 @@
     <script src="https://unpkg.com/splitting/dist/splitting.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.8/ScrollMagic.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/SplitText.min.js"></script>
+    <script src="Script/Accordion.js"></script>
     <script src="Script/script.js"></script>
     <script src="Script/email.js"></script>
-    <!-- <script src="Script/Accordion.js"></script> -->
-       
 </body>
 
-</html>

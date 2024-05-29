@@ -413,6 +413,7 @@ section.section {
 .horizontalScrolling {
   // padding-top: 3rem;
   padding-bottom: 1rem;
+  // box-shadow: 10px -52px 255px -12px #808;
 }
 
 .horizontalScrolling .section-inner {
@@ -420,11 +421,15 @@ section.section {
 }
 
 [data-scroll-in-section] {
-  display: inline-flex;
-  align-items: center;
-  flex-direction: row;
+  // display: inline-flex;
+  // align-items: center;
+  // flex-direction: row;
   margin-left: 101vw;
   padding-right: 101vw;
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  flex-wrap: nowrap;
 }
 
 .item {
@@ -454,7 +459,7 @@ section.section {
     }
   }
   &.txt{
-    width: 40vw;
+    min-width: 40vw;
     overflow: hidden;
     h2{
       line-height: 3.7rem;
@@ -497,10 +502,10 @@ section.section {
   }
 }
 
-.sectionLeftAndRight .section-inner {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-}
+// .sectionLeftAndRight .section-inner {
+//   display: grid;
+//   grid-template-columns: 1fr 1fr;
+// }
 
 .now{
   overflow: hidden;
@@ -520,3 +525,17 @@ section.section {
     transform: rotate(360deg);
    }
 }
+
+// test
+// section + section:nth-child(odd) {
+//   background: pink;
+// }
+// .horizontalScrolling{
+//   background-color: yellow;
+// }
+// .section-inner{
+//   background-color: green;
+//   section{
+//     background-color: blue;
+//   }
+// }

@@ -758,11 +758,12 @@ section.section.me > div {
 }
 
 [data-scroll-in-section] {
-  display: inline-flex;
-  align-items: center;
-  flex-direction: row;
   margin-left: 101vw;
   padding-right: 101vw;
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  flex-wrap: nowrap;
 }
 
 .item {
@@ -788,7 +789,7 @@ section.section.me > div {
   transition: all 0.5s ease-in-out;
 }
 .item.txt {
-  width: 40vw;
+  min-width: 40vw;
   overflow: hidden;
 }
 .item.txt h2 {
@@ -821,11 +822,6 @@ section.section.me > div {
 }
 .item + .item.txt {
   margin-left: 10rem;
-}
-
-.sectionLeftAndRight .section-inner {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
 }
 
 .now {

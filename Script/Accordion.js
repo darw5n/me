@@ -1,3 +1,5 @@
+let totalHeight = 0;
+
 function accordion() {
   // Seleziona tutti gli elementi con la classe "acnav__label" e itera su ciascuno di essi
   document.querySelectorAll(".acnav__label").forEach((acnav) => {
@@ -6,6 +8,8 @@ function accordion() {
       var parent = label.parent(".has-children"); // Il genitore dell'etichetta con la classe "has-children"
       var list = label.siblings(".acnav__list"); // Lista associata all'etichetta
       var animlist = list.find(".animlist"); // Elementi all'interno della lista che hanno la classe "animlist"
+      
+      var listHeight = list.outerHeight(true); // Ottieni l'altezza corrente della lista
 
       // Definisce una timeline GSAP per animazioni che sono inizialmente in pausa
       var Q = gsap.timeline({ paused: true });
@@ -44,9 +48,12 @@ function accordion() {
           ease: "expo.inOut",
           onComplete: function () {
             parent.removeClass("is-open"); // Rimuove la classe "is-open" dal genitore
-            // ScrollTrigger.refresh();
-            // locoScroll.update();
-            // ScrollTrigger.refresh();
+            totalHeight -= listHeight; // Sottrae l'altezza del contenitore
+            console.log("Total height:", totalHeight);
+            updateScrollSection(); // Aggiorna la posizione y della sezione
+            locoScroll.update();
+            ScrollTrigger.update();
+            // ScrollTrigger.refresh();  
           },
         });
       } else {
@@ -64,8 +71,11 @@ function accordion() {
           onComplete: function () {
             parent.addClass("is-open"); // Aggiunge la classe "is-open" al genitore
             Q.play(); // Esegue l'animazione degli elementi "animlist"
-            // ScrollTrigger.refresh(); // Il problema del lag potrebbe essere qui
-            // locoScroll.update();
+            totalHeight += list.outerHeight(true); // Aggiunge l'altezza del contenitore
+            console.log("Total height:", totalHeight);
+            updateScrollSection(); // Aggiorna la posizione y della sezione
+            locoScroll.update();
+            ScrollTrigger.update();
             // ScrollTrigger.refresh();
           },
         });
@@ -77,5 +87,28 @@ function accordion() {
   });
 }
 
+// Funzione per aggiornare la posizione y della sezione
+// function updateScrollSection() {
+//   gsap.to("section[data-scroll-in-section]", {
+//     y: -totalHeight,
+//     duration: 0.4,
+//     ease: "expo.inOut",
+//   });
+// }
+
+// ScrollTrigger per eseguire updateScrollSection quando il contenitore entra in vista
+// ScrollTrigger.create({
+//   trigger: ".horizontalScrolling",
+//   start: "top top", // Quando il bordo superiore del trigger entra nel viewport inferiore
+//   onEnter: function() {
+//     updateScrollSection();
+//   },
+//   onUpdate: function() {
+//     updateScrollSection();
+//   }
+// });
 // Esegue la funzione accordion per inizializzare il comportamento del menu
 accordion();
+
+
+
