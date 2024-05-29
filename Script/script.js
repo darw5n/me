@@ -1,3 +1,5 @@
+//script che funziona
+
 // Definizione di una funzione chiamata 'accordion'
 function accordion() {
   // Selezione di tutti gli elementi con classe CSS ".acnav__label"
