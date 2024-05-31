@@ -481,8 +481,11 @@
          <footer id="colophon" class="site-footer" data-scroll-section>
             <div class="footerContent fluid-container" data-scroll data-scroll-direction="vertical"
                 data-scroll-speed="-4" data-scroll-target="#colophon" data-scroll-position="bottom">
-                <p id="year">© <span class="d-none d-md-inline">August</span> 2022 — 
-                    <span id="lastModified"class="d-none d-md-inline xsmall"> </span></p>
+                <p id="year">
+                    © <span class="d-none d-md-inline">August</span> 2022 
+                    <!-- <span id="lastModified" class="d-none d-md-inline xsmall"> </span> -->
+                    — Italy
+                </p>
                 <div class="d-flex">
                     <p>
                         <a href="https://www.iubenda.com/privacy-policy/96504814/legal">Privacy</a>
@@ -628,7 +631,7 @@
             var day = lastModified.getDate();
             var month = lastModified.toLocaleString('default', { month: 'short' });
             var year = lastModified.getFullYear().toString().slice(-2);
-            var formattedDate = `Last edit: ${day} ${month} ${year}`;
+            var formattedDate = `(Last edit: ${day} ${month} ${year}) `;
             document.getElementById("lastModified").innerText = formattedDate;
         });
     
