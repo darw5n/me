@@ -19,7 +19,7 @@ body {
   font-family: 'Matahari', sans-serif;
   // Hide vertical scrollbar
   overflow-y: hidden;
-  
+
 }
 
 // ---- Pre loader ---- ---- ----
@@ -60,13 +60,16 @@ section.section {
 
   padding-top: 4rem;
   padding-bottom: 4rem;
+
   &.hero {
     display: grid;
     place-items: center;
   }
-  &.me{
+
+  &.me {
     padding-top: 1rem;
-    &>div{
+
+    &>div {
       align-items: flex-end;
     }
   }
@@ -94,11 +97,9 @@ section.section {
 
 .section.thanks {
   min-height: calc(100vh - 80px);
-
   @supports(height: 100dvh) {
     min-height: calc(100dvh - 80px);
   }
-
   justify-content: center;
 }
 
@@ -215,59 +216,70 @@ section.section {
 
 .acnav {
   width: 100%;
-  .separator{
-    margin-top:1vh; 
-    border-bottom:1px solid blue; 
-    width:100vw;
+
+  .separator {
+    margin-top: 1vh;
+    border-bottom: 1px solid blue;
+    width: 100vw;
   }
 }
+
 .acnav__list {
   padding: 0;
   margin: 0;
   list-style: none;
-  overflow:hidden;
+  overflow: hidden;
 }
+
 .acnav__list--level1 {
   border: none;
 }
 
-.acnav__link, .acnav__label {
-  display: flex; 
+.acnav__link,
+.acnav__label {
+  display: flex;
   align-items: baseline;
   flex-direction: row;
   padding: .5vw;
   margin: 0;
   // width:80vw; // <------ da rivedere
   //cursor: pointer; // <------ da rivedere
-  gap:.5rem;
+  gap: .5rem;
 }
 
-.acnav__link--level2, .acnav__label--level2 {
+.acnav__link--level2,
+.acnav__label--level2 {
   padding-left: 5vw;
 
 }
 
-.acnav__link--level3, .acnav__label--level3 {
+.acnav__link--level3,
+.acnav__label--level3 {
   padding-left: 10vw;
 }
 
-.atext { 
-  padding-top: 2.5vh; padding-bottom: 5vh;} 
+.atext {
+  padding-top: 2.5vh;
+  padding-bottom: 5vh;
+}
 
-.acnav__link--level4, .acnav__label--level4 {
+.acnav__link--level4,
+.acnav__label--level4 {
   padding-left: 15vw;
 }
 
-.acnav__list--level2, .acnav__list--level3, .acnav__list--level4 {
+.acnav__list--level2,
+.acnav__list--level3,
+.acnav__list--level4 {
   display: none;
-  
+
 }
 
-.is-open > .acnav__list--level2 {
+.is-open>.acnav__list--level2 {
   display: block;
 
   //content container
-  & .content{
+  & .content {
     display: flex;
     flex-direction: column;
     gap: .25rem;
@@ -276,74 +288,86 @@ section.section {
     margin-left: calc(.5vw + 40px + .5rem);
     margin-bottom: 3.5rem;
 
-    & h6, .period+p{
+    & h6,
+    .period+p {
       padding-top: .75rem;
     }
-    .period{
+
+    .period {
       text-align: right;
     }
+
     @media (max-width: 767.98px) {
-      margin-right:0.5vw;;
-      margin-left: 0.5vw;;
+      margin-right: 0.5vw;
+      ;
+      margin-left: 0.5vw;
+      ;
     }
   }
 }
+
 /* Ruota la freccia di 45 gradi quando l'accordion è aperto */
-.has-children.is-open > .acnav__label::before {
+.has-children.is-open>.acnav__label::before {
   transform: rotate(-90deg) scale(1, 1);
 }
 
 .arrow-box {
-  width: 40px; /* Larghezza desiderata */
-  height: 40px; /* Altezza desiderata */
+  width: 40px;
+  /* Larghezza desiderata */
+  height: 40px;
+  /* Altezza desiderata */
   // border: 1px solid black; /* Opzionale, per il bordo */
   display: inline-block;
   text-align: center;
-  transition: transform 0.5s cubic-bezier(0.18, 0.89, 0.32, 1.28); /* Aggiunge una transizione fluida */
+  transition: transform 0.5s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+  /* Aggiunge una transizione fluida */
 }
+
 .arrow-content {
   line-height: 40px;
   transform-origin: center;
 }
 
 /* Ruota il quadrato invece della freccia */
-.has-children.is-open > .acnav__label .arrow-box {
+.has-children.is-open>.acnav__label .arrow-box {
   transform: rotate(270deg);
 }
 
-.has-children > .acnav__label .acnav_title{
-  transition: all 0.5s cubic-bezier(0.18, 0.89, 0.32, 1.28); /* Aggiunge una transizione fluida */
+.has-children>.acnav__label .acnav_title {
+  transition: all 0.5s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+  /* Aggiunge una transizione fluida */
   margin-top: 1rem;
 }
 
 /* Aggiungi questa regola per animare il cambiamento dell'emoji */
 
 #theme-toggle {
-    /* Resetta tutti i margini, i padding e i bordi */
-    margin: 0;
-    padding: 0;
-    border: none;
-    /* Resetta il background, il colore del testo e la dimensione del font */
-    background: none;
-    color: inherit;
-    font: inherit;
-    /* Resetta lo stile del cursore */
-    cursor: pointer;
-    /* Resetta il comportamento del testo selezionato */
-    -webkit-tap-highlight-color: transparent;
-    tap-highlight-color: transparent;
-    /* Resetta lo stile del bordo quando il button è attivo */
-    outline: none;
-    z-index: 9999 !important;
-    position: fixed !important;
-    right: 0;
-    padding: .5rem;
-    transition: all 0.3s ease-out;
+  /* Resetta tutti i margini, i padding e i bordi */
+  margin: 0;
+  padding: 0;
+  border: none;
+  /* Resetta il background, il colore del testo e la dimensione del font */
+  background: none;
+  color: inherit;
+  font: inherit;
+  /* Resetta lo stile del cursore */
+  cursor: pointer;
+  /* Resetta il comportamento del testo selezionato */
+  -webkit-tap-highlight-color: transparent;
+  tap-highlight-color: transparent;
+  /* Resetta lo stile del bordo quando il button è attivo */
+  outline: none;
+  z-index: 9999 !important;
+  position: fixed !important;
+  right: 0;
+  padding: .5rem;
+  transition: all 0.3s ease-out;
 
 }
 
 #theme-icon {
   transition: all 0.3s ease-out;
+
   @media (max-width: 991.98px) {
     font-size: 2.5rem;
   }
@@ -351,9 +375,9 @@ section.section {
 
 
 // image
-.image-container{
+.image-container {
   position: relative;
-  
+
   & img {
     // position: absolute;
     display: block;
@@ -369,7 +393,7 @@ section.section {
   }
 }
 
-.fav-tools{
+.fav-tools {
   ul {
     display: flex;
     flex-wrap: wrap;
@@ -377,17 +401,19 @@ section.section {
     // gap: 3.02rem;
     justify-content: space-evenly;
     padding-left: 0px;
-    
-    li{
+
+    li {
       display: flex;
       gap: .75rem;
       flex: 1 1 12rem; // <--- da rivedere
+
       @media (max-width: 767.98px) {
-        flex: 1 1 45%; 
+        flex: 1 1 45%;
       }
     }
   }
-  .logo{
+
+  .logo {
     min-width: 1.5rem;
     height: 1.5rem;
     background: #ffffff3d;
@@ -396,7 +422,8 @@ section.section {
     display: flex;
     justify-content: center;
     align-items: center;
-    img{
+
+    img {
       max-width: 60%;
       max-height: 60%;
     }
@@ -438,45 +465,53 @@ section.section {
   flex-direction: column;
   align-items: flex-end;
   gap: 2rem;
-  &:hover{
-    .image-link{
-      & p{
+
+  &:hover {
+    .image-link {
+      & p {
         // display:block;
         opacity: .7;
       }
     }
   }
-  .image-link{
+
+  .image-link {
     display: flex;
     flex-direction: column;
     align-items: flex-end;
     gap: .25rem;
-    & p{
+
+    & p {
       position: absolute;
       bottom: -2.6rem;
       opacity: 0;
       transition: all 0.5s ease-in-out;
     }
   }
-  &.txt{
+
+  &.txt {
     min-width: 40vw;
     overflow: hidden;
-    h2{
+
+    h2 {
       line-height: 3.7rem;
       font-style: italic;
       // margin-left: -2rem;
     }
-    p{
+
+    p {
       padding-left: 2rem;
     }
+
     @media (max-width: 991.98px) {
       width: fit-content;
       min-width: 80vw;
     }
-    
+
   }
-  .content p:first-child{
-    &::after{
+
+  .content p:first-child {
+    &::after {
       content: " ";
       width: 100%;
       position: absolute;
@@ -485,19 +520,21 @@ section.section {
       margin-left: 2rem;
     }
   }
-  
-  img{
+
+  img {
     max-width: 14rem;
   }
+
   @media (max-width: 991.98px) {
     // width: 90vw;
   }
 
 }
 
-.item + .item {
+.item+.item {
   margin-left: 3rem;
-  &.txt{
+
+  &.txt {
     margin-left: 10rem;
   }
 }
@@ -507,23 +544,24 @@ section.section {
   grid-template-columns: 1fr 1fr;
 }
 
-.now{
+.now {
   overflow: hidden;
 }
 
 
 // --- vinyl animation ----
-.vinyl{
+.vinyl {
   animation: playMusic 2s linear infinite;
 }
 
 @keyframes playMusic {
- 0%{
+  0% {
     transform: rotate(0deg);
-   }
-100%{
+  }
+
+  100% {
     transform: rotate(360deg);
-   }
+  }
 }
 
 // test

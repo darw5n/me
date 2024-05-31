@@ -499,8 +499,6 @@
     <!-- end content -->
     
 
-
-
     <!-- script -->
     <script src="Script/locomotive-scroll.min.js"></script>
     <script src="Script/Age.js"></script>
@@ -626,14 +624,14 @@
         //split
         Splitting();
 
-        document.addEventListener("DOMContentLoaded", function() {
-            var lastModified = new Date(document.lastModified);
-            var day = lastModified.getDate();
-            var month = lastModified.toLocaleString('default', { month: 'short' });
-            var year = lastModified.getFullYear().toString().slice(-2);
-            var formattedDate = `(Last edit: ${day} ${month} ${year}) `;
-            document.getElementById("lastModified").innerText = formattedDate;
-        });
+        // document.addEventListener("DOMContentLoaded", function() {
+        //     var lastModified = new Date(document.lastModified);
+        //     var day = lastModified.getDate();
+        //     var month = lastModified.toLocaleString('default', { month: 'short' });
+        //     var year = lastModified.getFullYear().toString().slice(-2);
+        //     var formattedDate = `(Last edit: ${day} ${month} ${year}) `;
+        //     document.getElementById("lastModified").innerText = formattedDate;
+        // });
     
     </script>
 </body>
