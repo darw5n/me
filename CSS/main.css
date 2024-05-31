@@ -586,7 +586,6 @@ section.section.me > div {
   flex-direction: row;
   padding: 0.5vw;
   margin: 0;
-  cursor: pointer;
   gap: 0.5rem;
 }
 
@@ -759,10 +758,10 @@ section.section.me > div {
 
 [data-scroll-in-section] {
   margin-left: 101vw;
-  padding-right: 101vw;
+  margin-right: 101vw;
   display: flex;
-  align-items: center;
   flex-direction: row;
+  align-items: center;
   flex-wrap: nowrap;
 }
 
@@ -822,6 +821,11 @@ section.section.me > div {
 }
 .item + .item.txt {
   margin-left: 10rem;
+}
+
+.sectionLeftAndRight .section-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
 }
 
 .now {
