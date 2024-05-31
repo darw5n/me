@@ -235,43 +235,11 @@ a:hover, footer a:hover {
 
 .hi .emoji {
   font-size: clamp(1.6rem, 15vw, 2.12rem) !important;
-  -webkit-animation-name: wave-animation;
-          animation-name: wave-animation; /* Refers to the name of your @keyframes element below */
-  -webkit-animation-duration: 2.5s;
-          animation-duration: 2.5s; /* Change to speed up or slow down */
-  -webkit-animation-iteration-count: infinite;
-          animation-iteration-count: infinite; /* Never stop waving :) */
+  animation-name: wave-animation; /* Refers to the name of your @keyframes element below */
+  animation-duration: 2.5s; /* Change to speed up or slow down */
+  animation-iteration-count: infinite; /* Never stop waving :) */
   transform-origin: 70% 70%; /* Pivot around the bottom-left palm */
   display: inline-block;
-}
-
-@-webkit-keyframes wave-animation {
-  0% {
-    transform: rotate(0deg);
-  }
-  10% {
-    transform: rotate(14deg);
-  }
-  /* The following five values can be played with to make the waving more or less extreme */
-  20% {
-    transform: rotate(-8deg);
-  }
-  30% {
-    transform: rotate(14deg);
-  }
-  40% {
-    transform: rotate(-4deg);
-  }
-  50% {
-    transform: rotate(10deg);
-  }
-  60% {
-    transform: rotate(0deg);
-  }
-  /* Reset for the last half to pause */
-  100% {
-    transform: rotate(0deg);
-  }
 }
 
 @keyframes wave-animation {
@@ -312,7 +280,6 @@ a:hover, footer a:hover {
   bottom: 0;
   margin: auto;
   z-index: -1;
-  -webkit-animation: 3s ease 0s normal forwards 1 fadein;
   animation: 3s ease 0s normal forwards 1 fadein;
 }
 @media (max-width: 575.98px) {
@@ -321,17 +288,6 @@ a:hover, footer a:hover {
   }
 }
 @keyframes fadein {
-  0% {
-    opacity: 0;
-  }
-  66% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
-}
-@-webkit-keyframes fadein {
   0% {
     opacity: 0;
   }
@@ -466,7 +422,6 @@ p.forced, h3.forced {
 }
 
 .horizontalScrolling .section-inner {
-  min-height: -webkit-max-content;
   min-height: -moz-max-content;
   min-height: max-content;
 }
@@ -480,7 +435,6 @@ p.forced, h3.forced {
 .item {
   white-space: nowrap;
   max-width: 2000px;
-  width: -webkit-fit-content;
   width: -moz-fit-content;
   width: fit-content;
 }
@@ -522,17 +476,8 @@ section.afterHorizontal {
 
 /* ----- split text anm ---- */
 .splitting .char {
-  -webkit-animation: slide-in 0.6s cubic-bezier(0.5, 0, 0.5, 1) both;
-          animation: slide-in 0.6s cubic-bezier(0.5, 0, 0.5, 1) both;
-  -webkit-animation-delay: calc(3ms * var(--char-index) + 1000ms);
-          animation-delay: calc(3ms * var(--char-index) + 1000ms);
-}
-
-@-webkit-keyframes slide-in {
-  from {
-    transform: translateY(1.5em);
-    opacity: 0;
-  }
+  animation: slide-in 0.6s cubic-bezier(0.5, 0, 0.5, 1) both;
+  animation-delay: calc(3ms * var(--char-index) + 1000ms);
 }
 
 @keyframes slide-in {
@@ -560,43 +505,9 @@ section.afterHorizontal {
   width: 100%;
   height: 100%;
   background: url("http://assets.iceable.com/img/noise-transparent.png");
-  -webkit-animation: 0.2s infinite noise;
-          animation: 0.2s infinite noise;
+  animation: 0.2s infinite noise;
   pointer-events: none;
   opacity: 0.5;
-}
-
-@-webkit-keyframes noise {
-  0%, 100% {
-    background-position: 0 0;
-  }
-  10% {
-    background-position: -5% -10%;
-  }
-  20% {
-    background-position: -15% 5%;
-  }
-  30% {
-    background-position: 7% -25%;
-  }
-  40% {
-    background-position: 20% 25%;
-  }
-  50% {
-    background-position: -25% 10%;
-  }
-  60% {
-    background-position: 15% 5%;
-  }
-  70% {
-    background-position: 0% 15%;
-  }
-  80% {
-    background-position: 25% 35%;
-  }
-  90% {
-    background-position: -10% 10%;
-  }
 }
 
 @keyframes noise {
@@ -635,7 +546,6 @@ section.afterHorizontal {
   height: 100vh;
   width: 100vw;
   position: fixed;
-  -webkit-animation: 3s ease 0s normal forwards 1 fadein;
   animation: 3s ease 0s normal forwards 1 fadein;
 }
 .circle-elements .one {
@@ -646,8 +556,7 @@ section.afterHorizontal {
   min-width: calc(320px + 2rem);
   top: -80px;
   right: calc(-25vw - 2rem);
-  -webkit-animation: rotation 14s infinite linear;
-          animation: rotation 14s infinite linear;
+  animation: rotation 14s infinite linear;
 }
 @media (max-width: 991.98px) {
   .circle-elements .one svg {
@@ -691,10 +600,8 @@ section.afterHorizontal {
   min-width: calc(320px + 2rem);
   bottom: -80px;
   left: calc(-25vw - 2rem);
-  -webkit-animation: rotation 12s infinite linear;
-          animation: rotation 12s infinite linear;
-  -webkit-animation-delay: 2s;
-          animation-delay: 2s;
+  animation: rotation 12s infinite linear;
+  animation-delay: 2s;
 }
 @media (max-width: 991.98px) {
   .circle-elements .two svg {
@@ -725,15 +632,6 @@ section.afterHorizontal {
 }
 .circle-elements .two path {
   fill: #f7d1d2;
-}
-
-@-webkit-keyframes rotation {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(359deg);
-  }
 }
 
 @keyframes rotation {
