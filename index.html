@@ -1,19 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Darwin Vegher - Multidisciplinary Designer - Trento</title>
-    <meta name="description"
-        content="Hi! I'm a Multidisciplinary Designer. I’m specialized in User Interface, Visual design, Motion graphic and Video Editing.">
+    <meta name="description" content="Hi! I'm a Multidisciplinary Designer. I’m specialized in User Interface, Visual design, Motion graphic and Video Editing.">
     <meta property="og:type" content="website">
     <meta property="og:title" content="Darwin Vegher - Multidisciplinary Designer - Trento">
-    <meta property="og:description"
-        content="Hi! I'm a Multidisciplinary Designer. I’m specialized in User Interface, Visual design, Motion graphic and Video Editing.">
+    <meta property="og:description" content="Hi! I'm a Multidisciplinary Designer. I’m specialized in User Interface, Visual design, Motion graphic and Video Editing.">
     <meta property="og:image" content="Img/1200x630_Og-Darw5n_v01.jpg">
-
     <!-- style -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/locomotive-scroll@3.5.4/dist/locomotive-scroll.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css">
@@ -22,22 +18,17 @@
     <link rel="stylesheet" href="https://unpkg.com/splitting/dist/splitting.css">
     <link rel="stylesheet" href="https://unpkg.com/splitting/dist/splitting-cells.css">
 
-    <!-- script -->
-    <script src="Script/theme.js"></script>
-    <script src="Script/preloader.js"></script>
-    <script src="https://unpkg.co/gsap@3/dist/gsap.min.js"></script>
-
     <!-- favicon -->
     <link rel="apple-touch-icon" sizes="57x57" href="favicon/apple-icon-57x57.png">
     <link rel="apple-touch-icon" sizes="60x60" href="favicon/apple-icon-60x60.png">
-    <link rel="apple-touch-icon" sizes="72x72" href="favicon/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="faviconapple-icon-72x72.png">
     <link rel="apple-touch-icon" sizes="76x76" href="favicon/apple-icon-76x76.png">
     <link rel="apple-touch-icon" sizes="114x114" href="favicon/apple-icon-114x114.png">
     <link rel="apple-touch-icon" sizes="120x120" href="favicon/apple-icon-120x120.png">
     <link rel="apple-touch-icon" sizes="144x144" href="favicon/apple-icon-144x144.png">
     <link rel="apple-touch-icon" sizes="152x152" href="favicon/apple-icon-152x152.png">
     <link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-icon-180x180.png">
-    <link rel="icon" type="image/png" sizes="192x192" href="favicon/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="192x192"  href="favicon/android-icon-192x192.png">
     <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="96x96" href="favicon/favicon-96x96.png">
     <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
@@ -47,674 +38,443 @@
 </head>
 
 <body>
-
-    <button id="theme-toggle">
-        <span class="theme-icon" id="theme-icon"></span>
-    </button>
-
     <!-- noise -->
     <div class="bg stop-flickering"></div>
 
-    <!-- Preloader -->
-    <div id="preloader" class="hidden">
-        <div id="loader">
-            <div id="progress"></div>
+    <!--circle elements-->
+    <div class="circle-elements">
+        <div class="one">
+            <svg width="154" height="160" viewBox="0 0 154 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M144.892 50.741C129.918 15.6695 81.5577 3.31786 46.4862 18.292C11.4147 33.2662 -0.351254 71.2895 14.6229 106.361C29.5971 141.432 70.1671 157.725 105.239 142.75C140.31 127.776 159.866 85.8125 144.892 50.741ZM148.156 49.3473C131.643 10.6704 89.9563 -10.1572 51.2793 6.35641C12.6023 22.87 -10.8982 69.1839 5.61534 107.861C22.1289 146.538 63.5175 170.212 102.195 153.698C140.871 137.184 164.67 88.0243 148.156 49.3473Z"/>
+            </svg>
+            <svg width="154" height="160" viewBox="0 0 154 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M144.892 50.741C129.918 15.6695 81.5577 3.31786 46.4862 18.292C11.4147 33.2662 -0.351254 71.2895 14.6229 106.361C29.5971 141.432 70.1671 157.725 105.239 142.75C140.31 127.776 159.866 85.8125 144.892 50.741ZM148.156 49.3473C131.643 10.6704 89.9563 -10.1572 51.2793 6.35641C12.6023 22.87 -10.8982 69.1839 5.61534 107.861C22.1289 146.538 63.5175 170.212 102.195 153.698C140.871 137.184 164.67 88.0243 148.156 49.3473Z"/>
+            </svg>
         </div>
-        <div id="percentage" class="big strong">0%</div>
+        <div class="two">
+            <svg width="154" height="160" viewBox="0 0 154 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M144.892 50.741C129.918 15.6695 81.5577 3.31786 46.4862 18.292C11.4147 33.2662 -0.351254 71.2895 14.6229 106.361C29.5971 141.432 70.1671 157.725 105.239 142.75C140.31 127.776 159.866 85.8125 144.892 50.741ZM148.156 49.3473C131.643 10.6704 89.9563 -10.1572 51.2793 6.35641C12.6023 22.87 -10.8982 69.1839 5.61534 107.861C22.1289 146.538 63.5175 170.212 102.195 153.698C140.871 137.184 164.67 88.0243 148.156 49.3473Z"/>
+            </svg>
+            <svg width="154" height="160" viewBox="0 0 154 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M144.892 50.741C129.918 15.6695 81.5577 3.31786 46.4862 18.292C11.4147 33.2662 -0.351254 71.2895 14.6229 106.361C29.5971 141.432 70.1671 157.725 105.239 142.75C140.31 127.776 159.866 85.8125 144.892 50.741ZM148.156 49.3473C131.643 10.6704 89.9563 -10.1572 51.2793 6.35641C12.6023 22.87 -10.8982 69.1839 5.61534 107.861C22.1289 146.538 63.5175 170.212 102.195 153.698C140.871 137.184 164.67 88.0243 148.156 49.3473Z"/>
+            </svg>
+        </div>
     </div>
 
     <!-- content -->
-    <div id="page-content" data-scroll-container class="smooth-scroll">
-        <div data-scroll-container class="smooth-scroll">
+    <div data-scroll-container class="smooth-scroll">
 
-            <!-- hero section -->
-            <section class="section hero" data-scroll-section>
-                <div class="hero-container titleAnimation" data-splitting>
-                    <h1 class="title serif big" data-scroll>
-                        <span data-scroll="" data-scroll-delay="0.18" data-scroll-speed="7"
-                            data-scroll-position="center">D</span>
-                        <span data-scroll="" data-scroll-delay="0.14" data-scroll-speed="10">A</span>
-                        <span data-scroll="" data-scroll-delay="0.12" data-scroll-speed="4">R</span>
-                        <span data-scroll="" data-scroll-delay="0.1" data-scroll-speed="7">W</span>
-                        <span data-scroll="" data-scroll-delay="0.08" data-scroll-speed="12">I</span>
-                        <span data-scroll="" data-scroll-delay="0.12" data-scroll-speed="5">N</span>
-                    </h1>
-                    <p class="big" data-scroll data-scroll-speed="4" data-scroll-direction="horizontal">
-                        <span>chi</span>
-                        <span>sono</span>
-                        <span>e cosa</span>
-                        <span>faccio.</span>
-                    </p>
-                    <p class="designer forced" data-scroll data-scroll-speed="10">
-                        <span>multidisciplinary</span>
-                        <span>designer!!!!</span>
-                    </p>
-                </div>
-            </section>
-
-            <!-- Me -->
-            <section class="section me" data-scroll-section>
-                <div class="row d-flex fluid-container">
-                    <div class="col-12 col-md-6 col-lg-7 mb-5 mb-md-0">
-                        <div class="image-container" data-no-retina="" data-scroll data-scroll-speed="-5"
-                            data-scroll-direction="horizontal">
-                            <img class="portrait img-fluid lazyloaded" src="Img/1200x1200_darwin_low.jpg" alt="darwin"
-                                data-no-retina="" data-scroll data-scroll-speed="-20" data-scroll-direction="horizontal"
-                                loading="lazy">
-                        </div>
-                    </div>
-                    <div class="col-12 col-md-6 col-lg-5">
-                        <p><span class="about-start">I</span>'m <a><span class="hover-word"
-                                    data-image="Img/1200x1200_darwin_low.jpg">Darwin</span></a>, a designer with an
-                            insatiable passion for all things digital. I live in the middle of the enchanting <a><span
-                                    class="hover-word"
-                                    data-image="https://www.shutterstock.com/shutterstock/photos/552162193/display_1500/stock-photo-famous-best-alpine-place-of-the-world-santa-maddalena-village-with-magical-dolomites-mountains-in-552162193.jpg">Dolomites</span></a>,
-                            but my mind is always on new creative adventures.</p>
-                    </div>
-
-                </div>
-            </section>
-
-            <!-- Experiences and education -->
-            <section class="section" data-scroll-section style="padding-bottom: 0;">
-                <div class="row d-flex fluid-container exp-edu">
-                    <div class="col-12 mb-5">
-                        <!-- titolo -->
-                        <h3 class="serif">
-                            Experiences
-                        </h3>
-                        <!-- <h3 class="serif" data-scroll data-scroll-speed="-2" data-scroll-direction="horizontal">
-                            Experiences
-                        </h3> -->
-                        <!-- elenco -->
-                        <div>
-                            <div class="nav-wrap">
-                                <nav class="acnav" role="navigation">
-                                    <ul class="acnav__list acnav__list--level1">
-
-                                        <!-- - - - - - - - 1 - - - - - - - - - -->
-
-                                        <li class="has-children">
-                                            <div class="acnav__label">
-                                                <div class="arrow-box">
-                                                    <div class="arrow-content">
-                                                        ↘
-                                                    </div>
-                                                </div>
-                                                <h5 class="acnav_title">Product Designer at Fiscozen</h5>
-                                            </div>
-
-                                            <div class="separator">
-                                            </div>
-
-                                            <!-- start level 2 -->
-
-                                            <div class="acnav__list acnav__list--level2">
-                                                <div class="content">
-                                                    <h5 class="period">Sep 2022 → <span class="now">Now</span></h6>
-                                                        <h6 class="strong">Role</h6>
-                                                        <p>As a Product Designer, I play a key role in identifying and
-                                                            developing design opportunities from discovery through
-                                                            delivery,
-                                                            working closely with Product Managers and Tech Team Leaders.
-                                                        </p>
-                                                        <h6 class="strong">Key responsibilities</h6>
-                                                        <ul>
-                                                            <li>Conducting user research activities with our valued
-                                                                customers and stakeholders to gain valuable
-                                                                insights. Analyzing data from qualitative research
-                                                                to continuously improve our product and ensure a
-                                                                great user experience.</li>
-                                                            <li>Leading the Product Squad in design-related matters,
-                                                                coordinating the research and development of
-                                                                innovative features that address the needs and pain
-                                                                points of our valued customers.</li>
-                                                            <li>Actively contribute to the evolution of our design
-                                                                system, adding new components and patterns in line
-                                                                with design guidelines and brand identity.</li>
-                                                        </ul>
-                                                </div>
-                                                <div class="animlist separator"></div>
-                                            </div>
-                                        </li>
-
-                                        <!-- - - - - - - - 2 - - - - - - - - - -->
-
-                                        <li class="has-children">
-                                            <div class="acnav__label">
-                                                <div class="arrow-box">
-                                                    <div class="arrow-content">
-                                                        ↘
-                                                    </div>
-                                                </div>
-                                                <h5 class="acnav_title">Full Stack Designer at Erickson</h5>
-                                            </div>
-
-                                            <div class="separator">
-                                            </div>
-
-                                            <!-- start level 2 -->
-
-                                            <div class="acnav__list acnav__list--level2">
-                                                <div class="content">
-                                                    <h5 class="period">Mar 2017 → Aug 2022</h6>
-                                                        <h6 class="strong">Role</h6>
-                                                        <p> My primary focus was on executing graphic projects for the
-                                                            company's digital channels, including the website, social
-                                                            media, and direct email marketing (DEM) campaigns.
-                                                        </p>
-                                                        <p>
-                                                            I was responsible for designing, developing, and managing
-                                                            landing pages and other digital assets for Erickson's
-                                                            website (Erickson.it). I also played an integral role in
-                                                            shaping the visual identity for digital communication
-                                                            campaigns, both at the corporate level and to promote
-                                                            specific products such as books, educational projects, and
-                                                            digital services.
-                                                        </p>
-                                                        <h6 class="strong">Key responsibilities</h6>
-                                                        <p>Creating innovative and impactful graphics for various
-                                                            digital platforms was a crucial aspect of my work. To
-                                                            achieve this, I used wireframing and mockup design skills,
-                                                            optimized for target channels, and implemented front-end
-                                                            development using HTML and CSS.
-                                                        </p>
-                                                        <p>
-                                                            Improving the user experience (UX) and user interface (UI)
-                                                            of the existing website was another important part of my
-                                                            role. I used tools like HotJar and Google Analytics to
-                                                            monitor the performance of digital channels and make
-                                                            necessary improvements and optimizations.
-                                                        </p>
-                                                        <p>
-                                                            In addition to my graphic expertise, I also conducted photo
-                                                            shoots for the company's needs and created animation and
-                                                            motion graphics to add dynamism and engagement to Erickson's
-                                                            digital content. I was also involved in video projects, from
-                                                            set organization to shooting and editing, which allowed me
-                                                            to expand my multimedia production skills and deliver
-                                                            high-quality video content to Erickson's clients.
-                                                        </p>
-                                                        <p>
-                                                            Throughout my tenure, I had the privilege of coordinating
-                                                            two fellow designers, particularly in the collaborative
-                                                            alignment of ideas and graphics.
-                                                        </p>
-                                                </div>
-                                                <div class="animlist separator"></div>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                </nav>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-12">
-                        <!-- title -->
-                        <h3 class="serif">
-                            Education
-                        </h3>
-                        <!-- <h3 class="serif" data-scroll data-scroll-speed="2" data-scroll-direction="horizontal">
-                            Education
-                        </h3> -->
-                        <!-- elenco -->
-                        <div>
-                            <div class="nav-wrap">
-                                <nav class="acnav" role="navigation">
-                                    <ul class="acnav__list acnav__list--level1">
-
-                                        <!-- - - - - - - - 1 - - - - - - - - - -->
-
-                                        <li class="has-children">
-                                            <div class="acnav__label">
-                                                <div class="arrow-box">
-                                                    <div class="arrow-content">
-                                                        ↘
-                                                    </div>
-                                                </div>
-                                                <h5 class="acnav_title">Master in Ui Design at Talent Garden</h5>
-                                            </div>
-
-                                            <div class="separator">
-                                            </div>
-
-                                            <!-- start level 2 -->
-
-                                            <div class="acnav__list acnav__list--level2">
-                                                <div class="content">
-                                                    <h5 class="period">Feb 2022 → May 2022</h5>
-                                                    <p>Graduating from the UI Design Master program at Talent
-                                                        Garden, I
-                                                        gained expertise in designing user interfaces using modern
-                                                        processes and tools like Figma and Framer. </p>
-                                                    <p>Throughout the program, I focused on creating intuitive and
-                                                        responsive digital interfaces, collaborating effectively
-                                                        with
-                                                        diverse teams to deliver user-centric design solutions.</p>
-                                                </div>
-                                                <div class="animlist separator"></div>
-                                            </div>
-                                        </li>
-
-                                        <!-- - - - - - - - 2 - - - - - - - - - -->
-
-                                        <li class="has-children">
-                                            <div class="acnav__label">
-                                                <div class="arrow-box">
-                                                    <div class="arrow-content">
-                                                        ↘
-                                                    </div>
-                                                </div>
-                                                <h5 class="acnav_title">Bachelor degree in Graphic Design Multimedia at
-                                                    LABA</h5>
-                                            </div>
-
-                                            <div class="separator"></div>
-
-
-                                            <!-- start level 2 -->
-
-                                            <div class="acnav__list acnav__list--level2">
-                                                <div class="content">
-                                                    <h5 class="period">Sept 2013 → Feb 2017</h5>
-                                                    <p>My Bachelor's degree in Graphic Design Multimedia from LABA
-                                                        provided me with a versatile skill set for visual
-                                                        communication.
-                                                    </p>
-                                                    <p>Proficient in the Adobe Creative Suite, I developed a strong
-                                                        foundation in creating visual content across various
-                                                        mediums,
-                                                        from logo design to motion graphics, with a focus on
-                                                        engaging
-                                                        storytelling.
-                                                    </p>
-                                                </div>
-                                                <div class="animlist separator"></div>
-
-                                            </div>
-                                        </li>
-
-                                        <!-- - - - - - - - 3 - - - - - - - - - -->
-
-                                        <li class="has-children">
-                                            <div class="acnav__label">
-                                                <div class="arrow-box">
-                                                    <div class="arrow-content">
-                                                        ↘
-                                                    </div>
-                                                </div>
-                                                <h5 class="acnav_title">HS diploma in Computer Science at ITT G.Marconi
-                                                </h5>
-                                            </div>
-
-                                            <div class="animlist separator"></div>
-
-
-                                            <!-- start level 2 -->
-
-                                            <div class="acnav__list acnav__list--level2">
-                                                <div class="content">
-                                                    <h5 class="period">Sept 2008 → Jun 2013</h5>
-                                                    <p>My high school education at ITT G.Marconi, specializing in
-                                                        Computer Science, equipped me with fundamental skills in
-                                                        software development and telecommunications technologies.
-                                                    </p>
-                                                    <p>Proficient in languages like HTML, CSS, JavaScript, C#, and
-                                                        SQL,
-                                                        I gained valuable experience in problem-solving and
-                                                        analytical
-                                                        thinking, preparing me for a career in technology.</p>
-                                                </div>
-                                                <div class="animlist separator"></div>
-
-                                            </div>
-                                        </li>
-
-                                    </ul>
-                                </nav>
-                            </div>
-                        </div>
-                    </div>
-            </section>
-       
-            <section class="section now" data-scroll-section>
-                <div class="row d-flex fluid-container pb-4">
-                    <h1 id="lastdance" class="serif big" style="text-align: center;" data-scroll
-                        data-scroll-speed="-10">
-                        The last dances
-                    </h1>
-                </div>
-            </section>
-            <!-- Horizonal Skill -->
-            <div data-scroll-container>
-                <section class="horizontalScrolling section" data-scroll-section>
-                    <div class="section-inner" data-scroll data-scroll-speed="0" data-scroll-direction="horizontal">
-                        <section data-scroll-in-section>
-                            <!-- 1  -->
-                            <div class="item txt" data-scroll data-scroll-speed="0">
-                                <div class="content">
-                                    <p class="small text-uppercase">Last</p>
-                                    <h2 class="serif text-uppercase">
-                                        Personal projects
-                                    </h2>
-                                    <p>I'm always excited to learn new things and work on fresh projects. Whether it's a
-                                        new design concept or a coding challenge, I dive in with enthusiasm and
-                                        creativity.</p>
-                                </div>
-                            </div>
-                            <div class="item" data-scroll data-scroll-speed="0">
-                                <div class="image-link">
-                                    <img class="img-fluid lazyloaded" src="Img/figma-page-organizer.webp"
-                                        alt="Figma Pages Organizer">
-                                    <a class="small"
-                                        href="https://www.figma.com/community/plugin/1211948941103422489/pages-organizer"
-                                        target="_blank">Check it out</a>
-                                </div>
-                            </div>
-                            <div class="item" data-scroll data-scroll-speed="0">
-                                <div class="image-link">
-                                    <img class="img-fluid lazyloaded" src="Img/Massimo Vignelli - Wallpaper - 12.png"
-                                        alt="Massimo Vignelli - Wallpaper">
-                                    <a class="small"
-                                        href="https://www.figma.com/community/file/1222593249394750953/massimo-vignelli-wallpaper"
-                                        target="_blank">Download</a>
-                                </div>
-                                <div class="image-link">
-                                    <img class="img-fluid lazyloaded" src="Img/Repository - Notion.webp"
-                                        alt="My Repository - Notion">
-                                    <a class="small"
-                                        href="https://darwinvegher.notion.site/c246f4d89ac44d08be6d7f4bad3bdba1?v=0cf61a2d48484c5f9e9c1742b0a33d86&pvs=25"
-                                        target="_blank">View the resources</a>
-                                </div>
-                            </div>
-
-                            <!-- 2 -->
-                            <div class="item txt" data-scroll data-scroll-speed="0">
-                                <div class="content">
-                                    <p class="small text-uppercase">Last</p>
-                                    <h2 class="serif text-uppercase">
-                                        Trip
-                                    </h2>
-                                    <p>In November '23, I explored Japan's major cities
-                                        over 20 days, savoring its rich culture and vibrant landscapes.</p>
-                                    <p>As a perfectionist, I meticulously planned every detail of the trip, <a
-                                            href="https://darwinvegher.notion.site/Japan-7c028a69c1dd476493b7e0d70b51ece2?pvs=74"
-                                            target="_blank">take a look here</a>.</p>
-                                </div>
-                            </div>
-                            <div class="item" data-scroll data-scroll-speed="0">
-                                <div class="image-link">
-                                    <img class="img-fluid lazyloaded" src="Img/Tokyo-23-XS-043.webp"
-                                        alt="Tokyo - Japan">
-                                    <p class="small" href="">Tokyo - Skytree tower</p>
-                                </div>
-                            </div>
-                            <div class="item" data-scroll data-scroll-speed="0">
-                                <div class="image-link">
-                                    <img class="img-fluid lazyloaded" src="Img/Hiroshima-23-XS-39.webp"
-                                        alt="Hiroshima - Japan">
-                                    <p class="small" href="">Hiroshima - Hiroshima Castle</p>
-                                </div>
-                            </div>
-                            <div class="item" data-scroll data-scroll-speed="0">
-                                <div class="image-link">
-                                    <img class="img-fluid lazyloaded" src="Img/Kyoto-23-XS-119.webp"
-                                        alt="Kyoto - Japan">
-                                    <p class="small" href="">Kyoto - Fushimi Inari Shrine</p>
-                                </div>
-                            </div>
-                            <div class="item" data-scroll data-scroll-speed="0">
-                                <div class="image-link">
-                                    <img class="img-fluid lazyloaded" src="Img/Hakone-23-XS-29.webp"
-                                        alt="Hakone - Japan">
-                                    <p class="small" href="">Hakone - Mount Fuji</p>
-                                </div>
-                            </div>
-                            <div class="item" data-scroll data-scroll-speed="0">
-                                <div class="image-link">
-                                    <img class="img-fluid lazyloaded" src="Img/Tokyo-23-XS-133.webp"
-                                        alt="Tokyo - Japan">
-                                    <p class="small" href="">Tokyo - Nightlife</p>
-                                </div>
-                            </div>
-
-                            <!-- 3  -->
-                            <div class="item txt" data-scroll data-scroll-speed="0">
-                                <div class="content">
-                                    <p class="small text-uppercase">Last</p>
-                                    <h2 class="serif text-uppercase">
-                                        Movies <br>& books
-                                    </h2>
-                                    <p>I love cinema in all its forms and always have a subscription to catch the latest
-                                        releases. </p>
-                                    <p>There's nothing like the experience of watching a movie on the big screen.</p>
-                                </div>
-                            </div>
-                            <div class="item" data-scroll data-scroll-speed="0">
-                                <img class="img-fluid lazyloaded"
-                                    src="https://m.media-amazon.com/images/M/MV5BMTM3OTU0ZGUtNzYwYy00ODU3LWI3YjgtOWZlODliMmRiMWEzXkEyXkFqcGdeQXVyMTAyMjQ3NzQ1._V1_FMjpg_UY2047_.jpg"
-                                    alt="Aftersun - Movie">
-                            </div>
-                            <div class="item" data-scroll data-scroll-speed="0">
-                                <img class="img-fluid lazyloaded"
-                                    src="https://m.media-amazon.com/images/M/MV5BYjI2Njc4MGQtYzYwNC00MDQ1LTkyMzQtODY0NDk4NzZjNGMyXkEyXkFqcGdeQXVyMTM1NjM2ODg1._V1_FMjpg_UY6150_.jpg"
-                                    alt="Perfect days - Movie">
-                            </div>
-                            <div class="item" data-scroll data-scroll-speed="0">
-                                <img class="img-fluid lazyloaded" src="Img/wonder-book.webp" alt="Wonder - Book">
-                            </div>
-                            <div class="item txt" data-scroll data-scroll-speed="0">
-                                <div class="content">
-                                    <p class="small text-uppercase">Last</p>
-                                    <h2 class="serif text-uppercase">
-                                        Fav Vinyl
-                                    </h2>
-                                    <p>I've been into vinyl for years. My small but mighty selection features artists
-                                        like Bonobo, Caribou, The xx, and more.</p>
-                                    <p>Listen <a
-                                            href="https://open.spotify.com/playlist/7idVp3xjrCIwuYfRIvuSHO?si=421389d91f544f79"
-                                            target="_blank">my playlist</a>.</p>
-                                </div>
-                            </div>
-                            <div class="item" data-scroll data-scroll-speed="0">
-                                <img class="img-fluid lazyloaded vinyl" src="Img/Cosmo-music.webp"
-                                    alt="Cosmo - Sulle ali del cavallo bianco">
-                            </div>
-
-                        </section>
-                    </div>
-                </section>
+        <!-- hero section -->
+        <section class="section hero" data-scroll-section>
+            <div class="hero-container titleAnimation" data-splitting>
+                <h1 class="title serif big" data-scroll>
+                    <span data-scroll="" data-scroll-delay="0.18" data-scroll-speed="7"
+                        data-scroll-position="center">D</span>
+                    <span data-scroll="" data-scroll-delay="0.14" data-scroll-speed="10">A</span>
+                    <span data-scroll="" data-scroll-delay="0.12" data-scroll-speed="4">R</span>
+                    <span data-scroll="" data-scroll-delay="0.1" data-scroll-speed="7">W</span>
+                    <span data-scroll="" data-scroll-delay="0.08" data-scroll-speed="12">I</span>
+                    <span data-scroll="" data-scroll-delay="0.12" data-scroll-speed="5">N</span>
+                </h1>
+                <p class="big" data-scroll data-scroll-speed="4" data-scroll-direction="horizontal">
+                    <span>chi</span>
+                    <span>sono</span>
+                    <span>e cosa</span>
+                    <span>faccio.</span>
+                </p>
+                <p class="designer forced" data-scroll data-scroll-speed="10">
+                    <span>multidisciplinary</span>
+                    <span>designer</span>
+                </p>
             </div>
+        </section>
 
-            <!-- Plus -->
-            <section class="section fav-tools" data-scroll-section>
-                <div class="row d-flex fluid-container">
-                    <h3 class="serif" data-scroll data-scroll-speed="-2" data-scroll-direction="horizontal">
-                        Fav tools
+        <!-- Info -->
+        <section class="section me" data-scroll-section>
+            <div class="row d-flex fluid-container">
+                <div class="col-12">
+                    <div class="hi">
+                        <h1 class="serif" data-scroll data-scroll-speed="-3" data-scroll-direction="horizontal">Hi!
+                            <span class="ec ec-wave emoji"></span></h1>
+                        <h3 class="serif primary-color" data-scroll data-scroll-speed="1"
+                            data-scroll-direction="horizontal">How you doin?</h3>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-8">
+                    <p> My name is <strong>Darwin</strong> 👨‍💻, I’m <span data-birthday="05/03/1994" id="age"></span>
+                        and I
+                        live in Zambana, a location that’s famous for asparagus in North Italy, in the middle of the
+                        beautiful Dolomites <span class="ec ec-mountain-snow"></span>.</p>
+                </div>
+                <div class="img-container mt-5 mt-lg-0">
+                    <img class="portrait img-fluid lazyloaded"
+                        src="Img/1200x1200_darwin_low.jpg" alt="darwin"
+                        data-no-retina="" data-scroll data-scroll-speed="-30" data-scroll-direction="horizontal">
+                </div>
+            </div>
+        </section>
+
+        <section class="section" data-scroll-section>
+            <div class="row d-flex fluid-container">
+                <div class="col-12 col-lg-5" data-scroll data-scroll-speed="4">
+                    <p class="big"><strong>I’m a sunny <span class="ec ec-sun-with-face"></span> and determined
+                            person.</strong></p>
+                    <p>I like to be inspired by the latest trends, finding new ideas and staying up-to-date.</p>
+                </div>
+                <div class="col-12 col-lg-6 mt-3 mt-lg-5" data-scroll data-scroll-speed="4" data-scroll-delay="1">
+                    <p>I dislike labels, but if I had to define myself, I would say that <strong>I'm a Multidisciplinary
+                            Designer</strong>.</p>
+                    <p>I can do a bit of everything <span class="ec ec-firecracker"></span> although I’m specialized in
+                        some areas in particular.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Experiences and education -->
+        <section class="section" data-scroll-section>
+            <div class="row d-flex fluid-container exp-edu">
+                <div class="col-12 col-md-6">
+                    <!-- titolo -->
+                    <h4 class="serif" data-scroll data-scroll-speed="-2" data-scroll-direction="horizontal">Experiences
+                    </h4>
+                    <!-- elenco -->
+                    <div class="exp">
+                        <p class="small mt-4 mb-1">2022 - <span class="italic primary-color"><strong>Now</strong></span>
+                        </p>
+                        <p class="italic mb-0">
+                            <strong>Product Designer</strong>
+                        </p>
+                        <p class="small">at <a href="https://www.fiscozen.it">Fiscozen</a></p>
+                    </div>
+                    <div class="exp">
+                        <p class="small mt-4 mb-1">2017 - 2022</p>
+                        <p class="italic mb-0">
+                            <strong>Multidisciplinary Designer</strong>
+                        </p>
+                        <p class="small">at <a href="https://www.erickson.it/">Edizioni Erickson</a></p>
+                    </div>
+                    <div class="exp">
+                        <p class="small mt-4 mb-1">2016</p>
+                        <p class="italic mb-0">
+                            <strong>Web Designer</strong>
+                        </p>
+                        <p class="small">at <a href="https://archimede.nu/">Archimede</a></p>
+                    </div>
+                    <div class="exp">
+                        <p class="small mt-4 mb-1">2015</p>
+                        <p class="italic mb-0">
+                            <span><strong>Sports Photographer</strong></span>
+                        </p>
+                        <p class="small">at <a href="https://www.fotostudio3.com/">Foto Studio 3</a></p>
+                    </div>
+                </div>
+                <div class="col-12 col-md-6">
+                    <h4 class="serif mt-5 mt-lg-0" data-scroll data-scroll-speed="2" data-scroll-direction="horizontal">
+                        Education
+                    </h4>
+                    <div class="exp">
+                        <p class="small mt-4 mb-0">2022</p>
+                        <p class="italic mb-0">
+                            <strong>Ui Design</strong>
+                        </p>
+                        <p class="small">Master - <a
+                                href="https://talentgarden.org/it/innovation-school/italy/ui-design-master/">Talent
+                                Garden</a></p>
+                    </div>
+                    <div class="exp">
+                        <p class="small mt-4 mb-1">2013 - 2017</p>
+                        <p class="italic mb-0">
+                            <strong>Graphic Design Multimedia</strong>
+                        </p>
+                        <p class="small">Bachelor Degree - <a href="https://laba.edu/">Laba Brescia</a></p>
+                    </div>
+                    <div class="exp">
+                        <p class="small mt-4 mb-1">2008 - 2013</p>
+                        <p class="italic mb-0">
+                            <strong>Computer Science</strong>
+                        </p>
+                        <p class="small">HS Diploma - ITT G. Marconi</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Horizonal Skill -->
+        <section class="horizontalScrolling skill" data-scroll-section>
+            <div class="row d-flex fluid-container pb-4">
+                <div class="col-12 col-md-6" data-scroll data-scroll-speed="4">
+                    <p>Over the years, I have cultivated <strong>many passions</strong> and <strong>studied many
+                            things</strong>, and as a result I have gained different skills in various fields:</p>
+                </div>
+            </div>
+            <div class="section-inner" data-scroll data-scroll-speed="0" data-scroll-direction="horizontal">
+                <div data-scroll-in-section>
+                    <div class="item">
+                        <h3>User interface</h3>
+                    </div>
+                    <div class="item">
+                        <h3>Visual Design</h3>
+                    </div>
+                    <div class="item">
+                        <h3>Photography</h3>
+                    </div>
+                    <div class="item">
+                        <h3>Social Media</h3>
+                    </div>
+                    <div class="item">
+                        <h3>Web Development</h3>
+                    </div>
+                    <div class="item">
+                        <h3>Marketing</h3>
+                    </div>
+                    <div class="item">
+                        <h3>Video Editing</h3>
+                    </div>
+                    <div class="item">
+                        <h3>User Experience</h3>
+                    </div>
+                    <div class="item">
+                        <h3>Motion Graphics</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="row d-flex fluid-container mt-4">
+                <div class="col-12 col-md-8" data-scroll data-scroll-speed="0">
+                    <p>This multi-potential makes life easier for me in approaching different types of projects and in
+                        creating productive dialogues between people from different fields.</pc>
+                </div>
+            </div>
+        </section>
+
+        <!-- Portfolio-->
+        <section class="section portfolio" data-scroll-section>
+            <div class="row d-flex fluid-container justify-content-end">
+                <div class="col-12 col-lg-6">
+                    <h3 class="big forced serif">
+                        <span data-scroll data-scroll-speed="-1"
+                            data-scroll-direction="horizontal"><strong>Would</strong></span>
+                        <span data-scroll data-scroll-speed="2" data-scroll-direction="horizontal"><strong>you like to
+                                see</strong></span>
+                        <span data-scroll data-scroll-speed="-3" data-scroll-direction="horizontal"><strong>some
+                                work?</strong></span>
                     </h3>
-                    <div class="col-12">
-                        <ul>
-                            <li>
-                                <div class="logo">
-                                    <img class="" src="Img/Logo/Figma-logo.svg">
-                                </div>
-                                <div>
-                                    Figma
-                                    <p class="small">For crafting awesome designs together.</p>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="logo">
-                                    <img class="" src="Img/Logo/raycast.svg">
-                                </div>
-                                <div>
-                                    Raycast
-                                    <p class="small">For zipping through tasks like a pro.</p>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="logo">
-                                    <img class="" src="Img/Logo/Reclaim.svg">
-                                </div>
-                                <div>
-                                    ReclaimAi
-                                    <p class="small">For magically organizing my schedule.</p>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="logo">
-                                    <img class="" src="Img/Logo/Notion-logo.svg">
-                                </div>
-                                <div>
-                                    Notion
-                                    <p class="small">For turning chaos into order in my life and job.</p>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="logo">
-                                    <img class="" src="Img/Logo/Spotify_logo_without_text.svg.png">
-                                </div>
-                                <div>
-                                    Spotify
-                                    <p class="small">For jamming while I create.</p>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="logo">
-                                    <img class="" src="Img/Logo/Screen-studio.png">
-                                </div>
-                                <div>
-                                    Screen Studio
-                                    <p class="small">For recording my screen like a boss.</p>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="logo">
-                                    <img class="" src="Img/Logo/Arc_(browser)_logo.svg">
-                                </div>
-                                <div>
-                                    Arc browser
-                                    <p class="small">For surfing the web in a cool way.</p>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="logo">
-                                    <img class="" src="Img/Logo/Google_Sheets_logo_(2014-2020).svg">
-                                </div>
-                                <div>
-                                    Sheet
-                                    <p class="small">For making data my best friend and managing my cash flow.</p>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="logo">
-                                    <img class="" src="Img/Logo/Visual_Studio_Code_1.35_icon.svg">
-                                </div>
-                                <div>
-                                    Visual Studio Code
-                                    <p class="small">For coding with superpowers.</p>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </section>
-
-
-
-            <!-- Thx and contacts-->
-            <section class="section hero thanks d-flex" data-scroll-section>
-                <div class="hero-container titleAnimation">
-                    <!-- thank you -->
-                    <h1 class="title serif big" data-scroll>
-                        <span data-scroll="" data-scroll-delay="0.18" data-scroll-speed="7"
-                            data-scroll-position="center">T</span>
-                        <span data-scroll="" data-scroll-delay="0.14" data-scroll-speed="10">H</span>
-                        <span data-scroll="" data-scroll-delay="0.12" data-scroll-speed="4">A</span>
-                        <span data-scroll="" data-scroll-delay="0.1" data-scroll-speed="7">N</span>
-                        <span data-scroll="" data-scroll-delay="0.08" data-scroll-speed="12">K</span>
-                        <span class="d-none d-md-block" data-scroll="" data-scroll-delay="0.12"
-                            data-scroll-speed="5"></span>
-                        <span class="d-none d-md-block" data-scroll="" data-scroll-delay="0.18" data-scroll-speed="7"
-                            data-scroll-position="center">Y</span>
-                        <span class="d-none d-md-block" data-scroll="" data-scroll-delay="0.14"
-                            data-scroll-speed="10">O</span>
-                        <span class="d-none d-md-block" data-scroll="" data-scroll-delay="0.12"
-                            data-scroll-speed="4">U</span>
-                        <span class="d-block d-md-none" data-scroll="" data-scroll-delay="0.12"
-                            data-scroll-speed="4">S</span>
-                    </h1>
-                </div>
-                <div class="fluid-container min">
-                    <!-- contact me -->
-                    <p class="contact-info text-center mt-2 mt-xl-3" data-scroll data-scroll-speed="4">
-                        If you want to contact me, you can write a mail to <span id="email"></span>
-                        or send a telegram to <a href="https://t.me/Darwiiiin"
-                            target="_blank"><strong>@darwiiiin</strong></a>
+                    <p data-scroll class="big forced">
+                        <span><i class="ec ec-point-right"></i> <a href="https://bit.ly/3asVjwy" target="_blank">Click here</a></span> 
+                        <span> to view my Portfolio.</span>
                     </p>
-                    <!-- social -->
-                    <div class="d-flex" data-scroll data-scroll-speed="4">
-                        <div class="social-icons">
-                            <a href="https://it.linkedin.com/in/darwinvegher" class="social-icon" target="_blank">
-                                <i class="fa-brands fa-linkedin-in"></i>
-                            </a>
-                            <a href="http://be.net/darwinvegher" class="social-icon" target="_blank">
-                                <i class="fa-brands fa-behance"></i>
-                            </a>
-                            <a href="https://dribbble.com/darwinvegher" class="social-icon" target="_blank">
-                                <i class="fa-brands fa-dribbble"></i>
-                            </a>
-                            <a href="https://www.instagram.com/darwiiiin/" class="social-icon" target="_blank">
-                                <i class="fa-brands fa-instagram"></i>
-                            </a>
-                            <a href="https://vimeo.com/darwinvegher" class="social-icon" target="_blank">
-                                <i class="fa-brands fa-vimeo-v"></i>
-                            </a>
-                            <a href="https://unsplash.com/@darwiiiin" class="social-icon" target="_blank">
-                                <i class="fa-brands fa-unsplash"></i>
-                            </a>
-                            <a href="https://www.figma.com/@darwinzen" class="social-icon" target="_blank">
-                                <i class="fa-brands fa-figma"></i>
-                            </a>
-                            <a href="https://codepen.io/darwiiiin" class="social-icon" target="_blank">
-                                <i class="fa-brands fa-codepen"></i>
-                            </a>
-                        </div>
+                    <p class="mt-5 pt-3" data-scroll data-scroll-speed="12" data-scroll-direction="horizontal">Or <a
+                            href="https://bit.ly/3asVjwy" target="_blank">here</a>. <span
+                            class="ec ec-point-left"></span></p>
+                </div>
+            </div>
+            <div class="d-flex fluid-container justify-content-start">
+                <p class="forced big" data-scroll data-scroll-speed="20">
+                    <span>Or <a href="https://bit.ly/3asVjwy" target="_blank">here</a>.</span>
+                    <span class="ec ec-point-up-2" style="margin:0 auto;"></span>
+                </p>
+            </div>
+        </section>
+
+        <!-- Thx and contacts-->
+        <section class="section hero thanks d-flex" data-scroll-section>
+            <div class="hero-container titleAnimation">
+                <!-- thank you -->
+                <h1 class="title serif big" data-scroll>
+                    <span data-scroll="" data-scroll-delay="0.18" data-scroll-speed="7"
+                        data-scroll-position="center">T</span>
+                    <span data-scroll="" data-scroll-delay="0.14" data-scroll-speed="10">H</span>
+                    <span data-scroll="" data-scroll-delay="0.12" data-scroll-speed="4">A</span>
+                    <span data-scroll="" data-scroll-delay="0.1" data-scroll-speed="7">N</span>
+                    <span data-scroll="" data-scroll-delay="0.08" data-scroll-speed="12">K</span>
+                    <span class="d-none d-md-block" data-scroll="" data-scroll-delay="0.12"
+                        data-scroll-speed="5"></span>
+                    <span class="d-none d-md-block" data-scroll="" data-scroll-delay="0.18" data-scroll-speed="7"
+                        data-scroll-position="center">Y</span>
+                    <span class="d-none d-md-block" data-scroll="" data-scroll-delay="0.14"
+                        data-scroll-speed="10">O</span>
+                    <span class="d-none d-md-block" data-scroll="" data-scroll-delay="0.12"
+                        data-scroll-speed="4">U</span>
+                    <span class="d-block d-md-none" data-scroll="" data-scroll-delay="0.12"
+                        data-scroll-speed="4">S</span>
+                </h1>
+            </div>
+            <div class="fluid-container min">
+                <!-- contact me -->
+                <p class="contact-info text-center mt-2 mt-xl-3" data-scroll data-scroll-speed="4">
+                    If you want to contact me, you can write a mail to <a href=""><strong>darwin.vegher[at]gmail.com</strong></a> 
+                    or send a telegram to <a href="https://t.me/Darwiiiin" target="_blank"><strong>@darwiiiin</strong></a>
+                </p>
+                <!-- social -->
+                <div class="d-flex" data-scroll data-scroll-speed="4">
+                    <div class="social-icons">
+                        <a href="https://it.linkedin.com/in/darwinvegher" class="social-icon" target="_blank">
+                            <i class="fa-brands fa-linkedin-in"></i>
+                        </a>
+                        <a href="http://be.net/darwinvegher" class="social-icon" target="_blank">
+                            <i class="fa-brands fa-behance"></i>
+                        </a>
+                        <a href="https://dribbble.com/darwinvegher" class="social-icon" target="_blank">
+                            <i class="fa-brands fa-dribbble"></i>
+                        </a>
+                        <a href="https://www.instagram.com/darwiiiin/" class="social-icon" target="_blank">
+                            <i class="fa-brands fa-instagram"></i>
+                        </a>
+                        <a href="https://vimeo.com/darwinvegher" class="social-icon" target="_blank">
+                            <i class="fa-brands fa-vimeo-v"></i>
+                        </a>
+                        <a href="https://unsplash.com/@darwiiiin" class="social-icon" target="_blank">
+                            <i class="fa-brands fa-unsplash"></i>
+                        </a>
+                        <a href="https://www.figma.com/@darwinzen" class="social-icon" target="_blank">
+                            <i class="fa-brands fa-figma"></i>
+                        </a>
+                        <a href="https://codepen.io/darwiiiin" class="social-icon" target="_blank">
+                            <i class="fa-brands fa-codepen"></i>
+                        </a>
+                        <!-- <a href="https://t.me/Darwiiiin" class="social-icon" target="_blank">
+                            <i class="fa-brands fa-telegram"></i>
+                        </a> -->
                     </div>
                 </div>
-            </section>
-        </div>
+            </div>
+        </section>
+        
 
-        <!-- footer with links -->
         <footer id="colophon" class="site-footer" data-scroll-section>
-            <div class="footerContent fluid-container" data-scroll data-scroll-direction="vertical"
-                data-scroll-speed="-4" data-scroll-target="#colophon" data-scroll-position="bottom">
-                <p id="year">© <span class="d-none d-md-inline">August</span> 2022 <span
-                        class="d-none d-md-inline xsmall">(Last edit: 10 may 24) </span>— Italy</p>
+            <div class="footerContent fluid-container" data-scroll data-scroll-direction="vertical" data-scroll-speed="-4" data-scroll-target="#colophon" data-scroll-position="bottom">
+                <p id="year">© <span class="d-none d-md-inline">August</span> 2022 — Italy</p>
                 <div class="d-flex">
-                    <p>
-                        <a href="https://www.iubenda.com/privacy-policy/96504814/legal">Privacy</a>
-                        <!-- / <a href="/cookies/">Cookies</a> -->
-                    </p>
+                    <p><a href="https://www.iubenda.com/privacy-policy/96504814/legal">Privacy</a> / <a href="/cookies/">Cookies</a></p>
                 </div>
             </div>
         </footer>
+
     </div>
+    <!-- end content -->
+
+
 
     <!-- script -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="Script/locomotive-scroll.min.js"></script>
-    <!-- <script src="Script/Age.js"></script> -->
-    <!-- <script src="Script/hover-img.js"></script> -->
+    <script src="Script/Age.js"></script>
+    <script src="https://unpkg.co/gsap@3/dist/gsap.min.js"></script>
     <script src="https://unpkg.com/gsap@3/dist/ScrollTrigger.min.js"></script>
     <script src="https://unpkg.com/splitting/dist/splitting.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.8/ScrollMagic.min.js"></script>
-    <script src="Script/script.js"></script>
-    <script src="Script/email.js"></script>
-    <!-- <script src="Script/Accordion.js"></script> -->
-       
+
     <script>
-        
+  
+        /* --- Scroll text right to left --- */
+
+        console.clear();
+
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Using Locomotive Scroll from Locomotive https://github.com/locomotivemtl/locomotive-scroll
+
+        const locoScroll = new LocomotiveScroll({
+            el: document.querySelector(".smooth-scroll"),
+            smooth: true,
+            lerp: 0.05, // Linear Interpolation, 0 > 1 // Try 0.01
+            multiplier: 1, // Effect Multiplier 1.4
+            reloadOnContextChange: true,
+            touchMultiplier: 3, //2
+            smoothMobile: 0,
+            smartphone: {
+                smooth: !0,
+                breakpoint: 767
+            },
+            tablet: {
+                smooth: !0,//1
+                breakpoint: 1024
+            },
+        });
+
+
+        // each time Locomotive Scroll updates, tell ScrollTrigger to update too (sync positioning)
+        locoScroll.on("scroll", ScrollTrigger.update);
+
+        // tell ScrollTrigger to use these proxy methods for the ".smooth-scroll" element since Locomotive Scroll is hijacking things
+        ScrollTrigger.scrollerProxy(".smooth-scroll", {
+            scrollTop(value) {
+                return arguments.length ? locoScroll.scrollTo(value, 0, 0) : locoScroll.scroll.instance.scroll.y;
+            }, // we don't have to define a scrollLeft because we're only scrolling vertically.
+            getBoundingClientRect() {
+                return { top: 0, left: 0, width: window.innerWidth, height: window.innerHeight };
+            },
+            // LocomotiveScroll handles things completely differently on mobile devices
+            // - it doesn't even transform the container at all! So to get the correct behavior and avoid jitters, 
+            // we should pin things with position: fixed on mobile. We sense it by checking to see if there's a transform applied 
+            // to the container (the LocomotiveScroll-controlled element).
+            pinType: document.querySelector(".smooth-scroll").style.transform ? "transform" : "fixed"
+        });
+
+        const sections = gsap.utils.toArray('section')
+
+        sections.forEach(function (section) {
+
+            const inner = section.classList.contains('sectionLeftAndRight') ? section.querySelector('.leftText') : section.querySelector('.section-inner')
+
+            if (!section.classList.contains('horizontalScrolling')) {
+
+                ScrollTrigger.create({
+
+                    scroller: '.smooth-scroll',
+                    trigger: section,
+                    start: section.scrollHeight <= window.innerHeight ? 'top top' : 'bottom bottom',
+                    end: '+=100%',
+                    pin: inner,
+                    pinSpacing: false,
+                    pinType: 'transform'
+
+                })
+
+            } else {
+
+                const scroll = section.querySelector('[data-scroll-in-section]');
+
+                // the tween and the pinning have two different ScrollTriggers, because the will need different durations for that overlaying-effect to show
+
+                ScrollTrigger.create({
+
+                    scroller: '.smooth-scroll',
+                    trigger: section,
+                    start: 'center center',
+                    end: () => `+=${section.scrollWidth + window.innerHeight}`, // added an extra window.innerHeight to the end here in comparison to the tween
+                    pin: inner,
+                    pinSpacing: true,
+                    pinType: 'transform',
+                    anticipatePin: 1,
+
+                })
+
+                gsap.to(scroll, {
+                    x: () => `${-(section.scrollWidth - document.documentElement.clientWidth)}px`,
+                    ease: 'none',
+                    scrollTrigger: {
+                        trigger: scroll,
+                        scroller: '.smooth-scroll',
+                        start: 'top center',
+                        end: () => `+=${section.scrollWidth}`,
+                        markers: false, //true to view markers 
+                        scrub: true,
+
+                    }
+                });
+
+            }
+
+
+        })
+
+        // each time the window updates, we should refresh ScrollTrigger and then update LocomotiveScroll. 
+        ScrollTrigger.addEventListener("refresh", () => locoScroll.update());
+
+        // after everything is set up, refresh() ScrollTrigger and update LocomotiveScroll because padding may have been added for pinning, etc.
+        ScrollTrigger.refresh();
+
+        //split
+        Splitting();
+    
     </script>
 </body>
 
