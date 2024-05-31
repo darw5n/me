@@ -5,16 +5,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Darwin Vegher - Multidisciplinary Designer - Trento</title>
-    <meta name="description" content="Hi! I'm a Multidisciplinary Designer. I’m specialized in User Interface, Visual design, Motion graphic and Video Editing.">
+    <meta name="description"
+        content="Hi! I'm a Multidisciplinary Designer. I’m specialized in User Interface, Visual design, Motion graphic and Video Editing.">
     <meta property="og:type" content="website">
     <meta property="og:title" content="Darwin Vegher - Multidisciplinary Designer - Trento">
     <meta property="og:description" content="Hi! I'm a Multidisciplinary Designer. I’m specialized in User Interface, Visual design, Motion graphic and Video Editing.">
     <meta property="og:image" content="Img/1200x630_Og-Darw5n_v01.jpg">
-
-    <!-- script -->
-    <script src="Script/theme.js"></script>
-    <script src="Script/preloader.js"></script>
-    <script src="https://unpkg.co/gsap@3/dist/gsap.min.js"></script>
 
     <!-- style -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/locomotive-scroll@3.5.4/dist/locomotive-scroll.css">
@@ -24,17 +20,22 @@
     <link rel="stylesheet" href="https://unpkg.com/splitting/dist/splitting.css">
     <link rel="stylesheet" href="https://unpkg.com/splitting/dist/splitting-cells.css">
 
+    <!-- script -->
+    <script src="Script/theme.js"></script>
+    <script src="Script/preloader.js"></script>
+    <script src="https://unpkg.co/gsap@3/dist/gsap.min.js"></script>
+
     <!-- favicon -->
     <link rel="apple-touch-icon" sizes="57x57" href="favicon/apple-icon-57x57.png">
     <link rel="apple-touch-icon" sizes="60x60" href="favicon/apple-icon-60x60.png">
-    <link rel="apple-touch-icon" sizes="72x72" href="favicon/android-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="favicon/apple-icon-72x72.png">
     <link rel="apple-touch-icon" sizes="76x76" href="favicon/apple-icon-76x76.png">
     <link rel="apple-touch-icon" sizes="114x114" href="favicon/apple-icon-114x114.png">
     <link rel="apple-touch-icon" sizes="120x120" href="favicon/apple-icon-120x120.png">
     <link rel="apple-touch-icon" sizes="144x144" href="favicon/apple-icon-144x144.png">
     <link rel="apple-touch-icon" sizes="152x152" href="favicon/apple-icon-152x152.png">
     <link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-icon-180x180.png">
-    <link rel="icon" type="image/png" sizes="192x192"  href="favicon/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="favicon/android-icon-192x192.png">
     <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="96x96" href="favicon/favicon-96x96.png">
     <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
@@ -480,8 +481,8 @@
          <footer id="colophon" class="site-footer" data-scroll-section>
             <div class="footerContent fluid-container" data-scroll data-scroll-direction="vertical"
                 data-scroll-speed="-4" data-scroll-target="#colophon" data-scroll-position="bottom">
-                <p id="year">© <span class="d-none d-md-inline">August</span> 2022 <span
-                        class="d-none d-md-inline xsmall">(Last edit: 10 may 24) </span>— Italy</p>
+                <p id="year">© <span class="d-none d-md-inline">August</span> 2022 — 
+                    <span id="lastModified"class="d-none d-md-inline xsmall"> </span></p>
                 <div class="d-flex">
                     <p>
                         <a href="https://www.iubenda.com/privacy-policy/96504814/legal">Privacy</a>
@@ -493,6 +494,7 @@
 
     </div>
     <!-- end content -->
+    
 
 
 
@@ -620,6 +622,15 @@
 
         //split
         Splitting();
+
+        document.addEventListener("DOMContentLoaded", function() {
+            var lastModified = new Date(document.lastModified);
+            var day = lastModified.getDate();
+            var month = lastModified.toLocaleString('default', { month: 'short' });
+            var year = lastModified.getFullYear().toString().slice(-2);
+            var formattedDate = `Last edit: ${day} ${month} ${year}`;
+            document.getElementById("lastModified").innerText = formattedDate;
+        });
     
     </script>
 </body>
