@@ -580,7 +580,8 @@ section.section.me > div {
   border: none;
 }
 
-.acnav__link, .acnav__label {
+.acnav__link,
+.acnav__label {
   display: flex;
   align-items: baseline;
   flex-direction: row;
@@ -589,11 +590,13 @@ section.section.me > div {
   gap: 0.5rem;
 }
 
-.acnav__link--level2, .acnav__label--level2 {
+.acnav__link--level2,
+.acnav__label--level2 {
   padding-left: 5vw;
 }
 
-.acnav__link--level3, .acnav__label--level3 {
+.acnav__link--level3,
+.acnav__label--level3 {
   padding-left: 10vw;
 }
 
@@ -602,11 +605,14 @@ section.section.me > div {
   padding-bottom: 5vh;
 }
 
-.acnav__link--level4, .acnav__label--level4 {
+.acnav__link--level4,
+.acnav__label--level4 {
   padding-left: 15vw;
 }
 
-.acnav__list--level2, .acnav__list--level3, .acnav__list--level4 {
+.acnav__list--level2,
+.acnav__list--level3,
+.acnav__list--level4 {
   display: none;
 }
 
@@ -622,7 +628,8 @@ section.section.me > div {
   margin-left: calc(0.5vw + 40px + 0.5rem);
   margin-bottom: 3.5rem;
 }
-.is-open > .acnav__list--level2 .content h6, .is-open > .acnav__list--level2 .content .period + p {
+.is-open > .acnav__list--level2 .content h6,
+.is-open > .acnav__list--level2 .content .period + p {
   padding-top: 0.75rem;
 }
 .is-open > .acnav__list--level2 .content .period {
@@ -641,11 +648,14 @@ section.section.me > div {
 }
 
 .arrow-box {
-  width: 40px; /* Larghezza desiderata */
-  height: 40px; /* Altezza desiderata */
+  width: 40px;
+  /* Larghezza desiderata */
+  height: 40px;
+  /* Altezza desiderata */
   display: inline-block;
   text-align: center;
-  transition: transform 0.5s cubic-bezier(0.18, 0.89, 0.32, 1.28); /* Aggiunge una transizione fluida */
+  transition: transform 0.5s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+  /* Aggiunge una transizione fluida */
 }
 
 .arrow-content {
@@ -659,7 +669,8 @@ section.section.me > div {
 }
 
 .has-children > .acnav__label .acnav_title {
-  transition: all 0.5s cubic-bezier(0.18, 0.89, 0.32, 1.28); /* Aggiunge una transizione fluida */
+  transition: all 0.5s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+  /* Aggiunge una transizione fluida */
   margin-top: 1rem;
 }
 
