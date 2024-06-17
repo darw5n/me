@@ -44,7 +44,7 @@
             ease: "expo.inOut", // Tipo di animazione
             onComplete: function () {
               parent.removeClass('is-open'); // Rimuove la classe "is-open" dal genitore
-              // ScrollTrigger.refresh();
+              ScrollTrigger.refresh();
               locoScroll.update();
             },
           });
@@ -60,7 +60,7 @@
               ease: "expo.inOut", // Tipo di animazione
               immediateRender: false,
               onComplete: function () {
-                // ScrollTrigger.refresh();
+                ScrollTrigger.refresh(); // refresh all'apertura dell'elemento
                 locoScroll.update();
               },
             });
