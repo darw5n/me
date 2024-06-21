@@ -243,7 +243,7 @@ section.section {
   padding: .5vw;
   margin: 0;
   // width:80vw; // <------ da rivedere
-  //cursor: pointer; // <------ da rivedere
+  cursor: pointer; // <------ da rivedere
   gap: .5rem;
 }
 
@@ -272,7 +272,6 @@ section.section {
 .acnav__list--level3,
 .acnav__list--level4 {
   display: none;
-
 }
 
 .is-open>.acnav__list--level2 {
