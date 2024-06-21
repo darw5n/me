@@ -760,6 +760,7 @@ section.section.me > div {
 
 .horizontalScrolling {
   padding-bottom: 1rem;
+  overflow: hidden; /* Aggiungi questa linea <----- modifica qui  */
 }
 
 .horizontalScrolling .section-inner {
@@ -831,11 +832,6 @@ section.section.me > div {
 }
 .item + .item.txt {
   margin-left: 10rem;
-}
-
-.sectionLeftAndRight .section-inner {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
 }
 
 .now {

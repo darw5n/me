@@ -129,7 +129,7 @@
 
                                     <!-- - - - - - - - 1 - - - - - - - - - -->
 
-                                    <li class="has-children is-open">
+                                    <li class="has-children">
                                         <div class="acnav__label">
                                             <div class="arrow-box">
                                                 <div class="arrow-content">
@@ -373,8 +373,7 @@
 
         <section class="section now" data-scroll-section>
             <div class="row d-flex fluid-container pb-4">
-                <h1 id="lastdance" class="serif big" style="text-align: center;" data-scroll
-                    data-scroll-speed="-10">
+                <h1 id="lastdance" class="serif big" style="text-align: center;" data-scroll data-scroll-speed="-10">
                     The last dances
                 </h1>
             </div>
@@ -701,13 +700,13 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <!-- <script src="Script/script.js"></script> -->
     <script src="Script/email.js"></script>
-    <!-- <script src="Script/Accordion.js"></script> -->
+    <script src="Script/Accordion.js"></script>
 
     <script>
 
         /* --- Scroll text right to left --- */
 
-        console.clear();
+        // console.clear();
 
         gsap.registerPlugin(ScrollTrigger);
 
@@ -750,72 +749,50 @@
             pinType: document.querySelector(".smooth-scroll").style.transform ? "transform" : "fixed"
         });
 
-        const sections = gsap.utils.toArray('section')
+        // Seleziona la sezione specifica
+        const section = document.querySelector('.horizontalScrolling');
 
-        sections.forEach(function (section) {
+        if (section) {
+            const inner = section.querySelector('.section-inner');
+            const scroll = section.querySelector('[data-scroll-in-section]');
 
-            const inner = section.classList.contains('sectionLeftAndRight') ? section.querySelector('.leftText') : section.querySelector('.section-inner')
+            // Configura ScrollTrigger per l'intera sezione
+            ScrollTrigger.create({
+                scroller: '.smooth-scroll',
+                trigger: section,
+                start: 'center center',
+                end: () => `+=${section.scrollWidth + window.innerHeight}`,
+                pin: inner,
+                pinSpacing: true,
+                pinType: 'transform',
+                anticipatePin: 1,
+            });
 
-            if (!section.classList.contains('horizontalScrolling')) {
-
-                ScrollTrigger.create({
-
+            // Anima l'elemento all'interno della sezione
+            gsap.to(scroll, {
+                x: () => `${-(section.scrollWidth - document.documentElement.clientWidth)}px`,
+                ease: 'none',
+                scrollTrigger: {
+                    trigger: scroll,
                     scroller: '.smooth-scroll',
-                    trigger: section,
-                    start: section.scrollHeight <= window.innerHeight ? 'top top' : 'bottom bottom',
-                    end: '+=100%',
-                    pin: inner,
-                    pinSpacing: false,
-                    pinType: 'transform'
-
-                })
-
-            } else {
-
-                const scroll = section.querySelector('[data-scroll-in-section]');
-
-                // the tween and the pinning have two different ScrollTriggers, because the will need different durations for that overlaying-effect to show
-
-                ScrollTrigger.create({
-
-                    scroller: '.smooth-scroll',
-                    trigger: section,
                     start: 'center center',
-                    end: () => `+=${section.scrollWidth + window.innerHeight}`, // added an extra window.innerHeight to the end here in comparison to the tween
-                    pin: inner,
-                    pinSpacing: true,
-                    pinType: 'transform',
-                    anticipatePin: 1,
-
-                })
-
-                gsap.to(scroll, {
-                    x: () => `${-(section.scrollWidth - document.documentElement.clientWidth)}px`,
-                    ease: 'none',
-                    scrollTrigger: {
-                        trigger: scroll,
-                        scroller: '.smooth-scroll',
-                        start: 'top center',
-                        end: () => `+=${section.scrollWidth}`,
-                        markers: false, //true to view markers 
-                        scrub: true,
-
-                    }
-                });
-
-            }
+                    end: () => `+=${section.scrollWidth}`,
+                    markers: true,
+                    scrub: true,
+                }
+            });
+        }
 
 
-        })
 
-        // each time the window updates, we should refresh ScrollTrigger and then update LocomotiveScroll. 
-        ScrollTrigger.addEventListener("refresh", () => locoScroll.update());
+            // each time the window updates, we should refresh ScrollTrigger and then update LocomotiveScroll. 
+            ScrollTrigger.addEventListener("refresh", () => locoScroll.update());
 
-        // after everything is set up, refresh() ScrollTrigger and update LocomotiveScroll because padding may have been added for pinning, etc.
-        ScrollTrigger.refresh();
+            // after everything is set up, refresh() ScrollTrigger and update LocomotiveScroll because padding may have been added for pinning, etc.
+            ScrollTrigger.refresh();
 
-        //split
-        Splitting();
+            //split
+            Splitting();
 
         // document.addEventListener("DOMContentLoaded", function() {
         //     var lastModified = new Date(document.lastModified);
