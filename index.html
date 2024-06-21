@@ -113,6 +113,7 @@
             </div>
         </section>
 
+
         <!-- Experiences and education -->
         <section class="section" data-scroll-section style="padding-bottom: 0;">
             <div class="row d-flex fluid-container exp-edu">
@@ -775,7 +776,7 @@
                 scrollTrigger: {
                     trigger: scroll,
                     scroller: '.smooth-scroll',
-                    start: 'center center',
+                    start: 'center top',
                     end: () => `+=${section.scrollWidth}`,
                     // markers: true,
                     scrub: true,
@@ -784,15 +785,16 @@
         }
 
 
+        // each time the window updates, we should refresh ScrollTrigger and then update LocomotiveScroll. 
+        ScrollTrigger.addEventListener("refresh", () => locoScroll.update());
 
-            // each time the window updates, we should refresh ScrollTrigger and then update LocomotiveScroll. 
-            ScrollTrigger.addEventListener("refresh", () => locoScroll.update());
+        // after everything is set up, refresh() ScrollTrigger and update LocomotiveScroll because padding may have been added for pinning, etc.
+        ScrollTrigger.refresh();
 
-            // after everything is set up, refresh() ScrollTrigger and update LocomotiveScroll because padding may have been added for pinning, etc.
-            ScrollTrigger.refresh();
+        //split
+        Splitting();
 
-            //split
-            Splitting();
+        
 
         // document.addEventListener("DOMContentLoaded", function() {
         //     var lastModified = new Date(document.lastModified);
