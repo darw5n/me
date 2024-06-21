@@ -434,13 +434,14 @@ section.section {
 
 /* -- Smooth scroll -- */
 .smooth-scroll {
-  overflow: hidden !important;
+   overflow: hidden !important; //<----- modifica qui
 }
 
 .horizontalScrolling {
   // padding-top: 3rem;
   padding-bottom: 1rem;
   // box-shadow: 10px -52px 255px -12px #808;
+  overflow: hidden; /* Aggiungi questa linea <----- modifica qui  */ 
 }
 
 .horizontalScrolling .section-inner {
@@ -539,10 +540,10 @@ section.section {
   }
 }
 
-.sectionLeftAndRight .section-inner {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-}
+// .sectionLeftAndRight .section-inner {
+//   display: grid;
+//   grid-template-columns: 1fr 1fr;
+// }
 
 .now {
   overflow: hidden;
@@ -564,12 +565,12 @@ section.section {
   }
 }
 
-// test
+//test
 // section + section:nth-child(odd) {
 //   background: pink;
 // }
 // .horizontalScrolling{
-//   background-color: yellow;
+//   background-color: yellow !important;
 // }
 // .section-inner{
 //   background-color: green;
