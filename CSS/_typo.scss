@@ -33,7 +33,7 @@ h2 {
     font-size: clamp(3rem, 15vw, 3.75rem);
 
     &.big {
-        font-size: clamp(6.4rem, 15vw, 9rem);
+        font-size: clamp(4.25rem, 15vw, 9rem);
     }
 }
 
@@ -41,7 +41,7 @@ h3 {
     font-size: clamp(1.8rem, 15vw, 3rem);
 
     // &.big {
-    //   font-size: clamp(4.2rem, 15vw, 7.4rem);
+    //   font-size: clamp(2.7rem, 15vw, 7.4rem);
     // }
 }
 
@@ -174,4 +174,14 @@ footer a {
     @media (max-width: 767.98px) {
         font-size: clamp(.8rem, 15vw, .9rem);
     }
+}
+
+.line-height-xs{
+    line-height: 85%;
+}
+.line-height-sm{
+    line-height: 100%;
+}
+.line-height-md{
+    line-height: 120%;
 }

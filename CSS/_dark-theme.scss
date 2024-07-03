@@ -62,18 +62,17 @@
     }
   }
   // --- linea nel p dell'horizontal scroll
-  .content p:first-child{
+  .horizontalScrolling .content p:first-child{
     color: $grey-color-600;
     &::after{
       border: 1px solid $grey-color-600;;
     }
   }
   /* ----- accordion ---- */
-  .acnav {
+  .acnav,.sticky-titles-section {
     .separator{
       border-bottom:1px solid $white-dark; 
     }
   } 
 }
-
 
