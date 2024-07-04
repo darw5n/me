@@ -18,8 +18,7 @@ html {
 body {
   font-family: 'Matahari', sans-serif;
   // Hide vertical scrollbar
-  overflow-y: hidden;
-
+  // overflow-y: hidden; <------------------------------------- modifica qui per sticky
 }
 
 // ---- Pre loader ---- ---- ----
@@ -60,6 +59,8 @@ section.section {
 
   padding-top: 4rem;
   padding-bottom: 4rem;
+  // padding-top: 6rem;
+  // padding-bottom: 6rem;
 
   &.hero {
     display: grid;
@@ -68,10 +69,16 @@ section.section {
 
   &.me {
     padding-top: 1rem;
+    height: 100vh;
+    min-height: 80vh;
 
     &>div {
       align-items: flex-end;
     }
+  }
+
+  &.fav-tools {
+    padding-top: 2rem;
   }
 }
 
@@ -97,9 +104,11 @@ section.section {
 
 .section.thanks {
   min-height: calc(100vh - 80px);
+
   @supports(height: 100dvh) {
     min-height: calc(100dvh - 80px);
   }
+
   justify-content: center;
 }
 
@@ -433,14 +442,15 @@ section.section {
 
 /* -- Smooth scroll -- */
 .smooth-scroll {
-   overflow: hidden !important; //<----- modifica qui
+  overflow: hidden !important; //<----- modifica qui
 }
 
 .horizontalScrolling {
   // padding-top: 3rem;
   padding-bottom: 1rem;
   // box-shadow: 10px -52px 255px -12px #808;
-  overflow: hidden; /* Aggiungi questa linea <----- modifica qui  */ 
+  overflow: hidden;
+  /* Aggiungi questa linea <----- modifica qui  */
 }
 
 .horizontalScrolling .section-inner {
@@ -577,3 +587,118 @@ section.section {
 //     background-color: blue;
 //   }
 // }
+
+
+// .sticky-titles-section {
+//   position: relative;
+//   padding: 100px 0; /* Aggiusta secondo le tue necessità */
+// }
+
+// .sticky-title {
+//   position: -webkit-sticky; /* For Safari */
+//   position: sticky;
+//   top: 0;
+//   z-index: 1;
+//   background: white; /* Aggiungi un colore di sfondo per rendere il titolo visibile */
+//   padding: 10px 0; /* Aggiusta secondo le tue necessità */
+//   font-size: 24px; /* Aggiusta secondo le tue necessità */
+// }
+
+// [data-scroll-container] {
+//   height: 100vh;
+//   overflow: hidden;
+// }
+
+// .sticky-titles-section {
+//   position: relative;
+// }
+
+
+// [data-scroll-container] {
+//   height: 100vh;
+//   overflow: hidden;
+// }
+
+.sticky-titles-section {
+  // position: relative;
+  // .subsection {
+  //   position: relative;
+  //   padding: 100px 20px;
+  // }
+
+  // .sticky-title {
+  //   position: -webkit-sticky;
+  //   position: sticky;
+  //   top: 0;
+  //   background: #fff;
+  //   z-index: 10;
+  // }
+
+  // .content {
+  //   padding: 20px;
+  //   border-bottom: 1px solid #ccc;
+  // }
+  h2 {
+    // color:#8D6BE7;
+  }
+}
+
+
+.sticky-titles-section {
+  // background-color: #441b1b;
+  // padding-bottom: 20vh !important;
+
+  .sticky-title {
+
+    h1,
+    h2 {
+      position: relative;
+      left: -0.25rem;
+    }
+
+    padding-bottom: 25vh;
+    // &.last-child{
+    //   padding-bottom: 0;
+    // }
+  }
+
+  .fluid-container {
+    // gap: 2rem;
+    padding-top: 1rem;
+    padding-bottom: 0;
+  }
+
+  .content {
+    margin-top: -15vh;
+    padding-bottom: 4rem;
+  }
+
+  p:last-child {
+    margin-bottom: 0;
+  }
+
+  .separator {
+    // height: 4rem;
+    margin-bottom: 4rem;
+  }
+
+  .section-inner {
+    //  margin-top: 25vh;
+  }
+
+  /* Stile per i puntini degli elenchi */
+  // li::before {
+  //     content: "•";
+  //     display: inline-block;
+  //     margin-right: 0.5em;
+  //     font-size: 1em;
+  //     color: white;
+  //     opacity: 1;
+  //     transition: opacity 0.3s ease-out;
+  // }
+  li+li {
+    margin-bottom: .5rem;
+  }
+
+
+}

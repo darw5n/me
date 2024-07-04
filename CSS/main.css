@@ -157,7 +157,7 @@ h2 {
   font-size: clamp(3rem, 15vw, 3.75rem);
 }
 h2.big {
-  font-size: clamp(6.4rem, 15vw, 9rem);
+  font-size: clamp(4.25rem, 15vw, 9rem);
 }
 
 h3 {
@@ -290,6 +290,18 @@ footer a.small {
   }
 }
 
+.line-height-xs {
+  line-height: 85%;
+}
+
+.line-height-sm {
+  line-height: 100%;
+}
+
+.line-height-md {
+  line-height: 120%;
+}
+
 .light-theme {
   background-color: #FDF4F3;
   color: #0b0b0b;
@@ -330,13 +342,13 @@ footer a.small {
 .light-theme .item.txt h2 {
   color: #BC3A3F;
 }
-.light-theme .content p:first-child {
+.light-theme .horizontalScrolling .content p:first-child {
   color: #EFB5B2;
 }
-.light-theme .content p:first-child::after {
+.light-theme .horizontalScrolling .content p:first-child::after {
   border: 1px solid #EFB5B2;
 }
-.light-theme .acnav .separator {
+.light-theme .acnav .separator, .light-theme .sticky-titles-section .separator {
   border-bottom: 1px solid #0b0b0b;
 }
 
@@ -380,13 +392,13 @@ footer a.small {
 .dark-theme .item.txt h2 {
   color: #B5A4F1;
 }
-.dark-theme .content p:first-child {
+.dark-theme .horizontalScrolling .content p:first-child {
   color: #6a6a6a;
 }
-.dark-theme .content p:first-child::after {
+.dark-theme .horizontalScrolling .content p:first-child::after {
   border: 1px solid #6a6a6a;
 }
-.dark-theme .acnav .separator {
+.dark-theme .acnav .separator, .dark-theme .sticky-titles-section .separator {
   border-bottom: 1px solid rgba(250, 250, 250, 0.8);
 }
 
@@ -397,7 +409,6 @@ html {
 
 body {
   font-family: "Matahari", sans-serif;
-  overflow-y: hidden;
 }
 
 #preloader {
@@ -437,9 +448,14 @@ section.section.hero {
 }
 section.section.me {
   padding-top: 1rem;
+  height: 100vh;
+  min-height: 80vh;
 }
 section.section.me > div {
   align-items: flex-end;
+}
+section.section.fav-tools {
+  padding-top: 2rem;
 }
 
 .section:first-child,
@@ -761,7 +777,8 @@ section.section.me > div {
 
 .horizontalScrolling {
   padding-bottom: 1rem;
-  overflow: hidden; /* Aggiungi questa linea <----- modifica qui  */
+  overflow: hidden;
+  /* Aggiungi questa linea <----- modifica qui  */
 }
 
 .horizontalScrolling .section-inner {
@@ -850,4 +867,32 @@ section.section.me > div {
   100% {
     transform: rotate(360deg);
   }
+}
+.sticky-titles-section {
+  /* Stile per i puntini degli elenchi */
+}
+.sticky-titles-section .sticky-title {
+  padding-bottom: 25vh;
+}
+.sticky-titles-section .sticky-title h1,
+.sticky-titles-section .sticky-title h2 {
+  position: relative;
+  left: -0.25rem;
+}
+.sticky-titles-section .fluid-container {
+  padding-top: 1rem;
+  padding-bottom: 0;
+}
+.sticky-titles-section .content {
+  margin-top: -15vh;
+  padding-bottom: 4rem;
+}
+.sticky-titles-section p:last-child {
+  margin-bottom: 0;
+}
+.sticky-titles-section .separator {
+  margin-bottom: 4rem;
+}
+.sticky-titles-section li + li {
+  margin-bottom: 0.5rem;
 }/*# sourceMappingURL=main.css.map */

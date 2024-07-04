@@ -61,14 +61,14 @@
     }
   }
   // --- linea nel p dell'horizontal scroll
-  .content p:first-child{
+  .horizontalScrolling .content p:first-child{
     color: $primary-color-light-300;
     &::after{
       border: 1px solid $primary-color-light-300;
     }
   }
   /* ----- accordion ---- */
-  .acnav {
+  .acnav, .sticky-titles-section {
     .separator{
       border-bottom:1px solid $black-light; 
     }
