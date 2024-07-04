@@ -73,5 +73,14 @@
       border-bottom:1px solid $black-light; 
     }
   } 
+  
+  // sticky element
+  .sticky-titles-section {
+    .sticky-title {
+      h1,h2 {
+        color: $primary-color-light-600;
+      }
+    }
+  }
 }
 
