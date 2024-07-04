@@ -351,6 +351,9 @@ footer a.small {
 .light-theme .acnav .separator, .light-theme .sticky-titles-section .separator {
   border-bottom: 1px solid #0b0b0b;
 }
+.light-theme .sticky-titles-section .sticky-title h1, .light-theme .sticky-titles-section .sticky-title h2 {
+  color: #BC3A3F;
+}
 
 .dark-theme {
   background-color: #161616;
@@ -868,9 +871,17 @@ section.section.fav-tools {
     transform: rotate(360deg);
   }
 }
-.sticky-titles-section {
-  /* Stile per i puntini degli elenchi */
+.exp-title {
+  margin-bottom: 5rem;
 }
+.exp-title .container {
+  display: flex;
+  flex-direction: column;
+}
+.exp-title .container h1 {
+  position: absolute;
+}
+
 .sticky-titles-section .sticky-title {
   padding-bottom: 25vh;
 }
@@ -892,7 +903,4 @@ section.section.fav-tools {
 }
 .sticky-titles-section .separator {
   margin-bottom: 4rem;
-}
-.sticky-titles-section li + li {
-  margin-bottom: 0.5rem;
 }/*# sourceMappingURL=main.css.map */

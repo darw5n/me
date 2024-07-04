@@ -102,33 +102,31 @@
                     </div>
                 </div>
                 <div class="col-12 col-md-9 col-lg-7 col-xl-5">
-                    <p><span class="about-start">I</span>'m <a><span class="hover-word"
-                                data-image="Img/1200x1200_darwin_low.jpg">Darwin</span></a>, a designer with an
-                        insatiable passion for all things digital. I live in the middle of the enchanting 
-                        <a><span class="hover-word" data-image="https://www.shutterstock.com/shutterstock/photos/552162193/display_1500/stock-photo-famous-best-alpine-place-of-the-world-santa-maddalena-village-with-magical-dolomites-mountains-in-552162193.jpg">Dolomites</span></a>,
-                        but my mind is always on new creative adventures.</p>
+                    <p>
+                        <span class="about-start">I</span>'m Darwin, a designer with an
+                        insatiable passion for all things digital. I live in the middle of the enchanting Dolomites,
+                        but my mind is always on new creative adventures.
+                    </p>
                 </div>
             </div>
         </section>
 
         <!-- Sticky Titles Section -->
-        <section data-scroll-section>
+        <!-- <section data-scroll-section class="exp-title">
             <div class="row d-flex fluid-container">
                 <div class="col-12 col-md-10 offset-md-2 col-lg-9 offset-lg-3 col-xl-8 offset-xl-4">
-                    <div>
+                    <div class="container">
                         <h3 class="serif" data-scroll data-scroll-speed="-5"
                         data-scroll-direction="horizontal">Experiences</h3>
-                        <div>
                         <h1 data-scroll>
                             <span class="about-start">&</span>
                         </h1>
                         <h3 class="serif" data-scroll data-scroll-speed="7"
                         data-scroll-direction="horizontal">Education</h3>
-                        </div>
                     <h3>
                 </div>
             </div>
-        </section>
+        </section> -->
         <section data-scroll-section class="sticky-titles-section">
             <div class="sticky-titles-section-a section-inner">
                 <div class="row fluid-container">
@@ -149,20 +147,17 @@
                                 opportunities from
                                 discovery through delivery, working closely with Product Managers and Tech Team Leaders.
                             </p>
-                            <h6 class="strong">Key responsibilities</h6>
-                            <ul>
-                                <li><p>Conducting user research activities with our valued customers and stakeholders to
+                            <h6 class="strong mt-5">Key responsibilities</h6>
+                            <p>Conducting user research activities with our valued customers and stakeholders to
                                     gain valuable insights. Analyzing data from qualitative research to continuously improve
-                                    our product and ensure a great user experience.</p></li>
-                                <li>Leading the Product Squad in design-related matters, coordinating the research and
+                                    our product and ensure a great user experience.</p>
+                                <p>Leading the Product Squad in design-related matters, coordinating the research and
                                     development of innovative features that address the needs and pain points of our
-                                    valued customers.</li>
-                                <li>Actively contribute to the evolution of our design system, adding new components and
-                                    patterns in line with design guidelines and brand identity.</li>
-                            </ul>
+                                    valued customers.</p>
+                                <p>Actively contribute to the evolution of our design system, adding new components and
+                                    patterns in line with design guidelines and brand identity.</p>
                         </div>
                     </div>
-                    <!-- <div class="separator"></div> -->
                 </div>
             </div>
             <div class="sticky-titles-section section-inner">
@@ -754,12 +749,12 @@
                     // Applica l'animazione di dissolvenza a ciascuna parola con easing
                     gsap.to(word, {
                         opacity: 0,
-                        ease: "power2.inOut", // Cambia la curva dell'animazione qui
+                        ease: "power2.out", // Cambia la curva dell'animazione qui
                         scrollTrigger: {
                             trigger: word,
                             scroller: '.smooth-scroll',
                             start: 'top 50%',
-                            end: 'top 25%',
+                            end: 'top 40%', // da rivedere
                             scrub: true
                         }
                     });
