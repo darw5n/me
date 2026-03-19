@@ -49,7 +49,18 @@
                     document.getElementById('preloader').classList.add('hidden');
                 }
             });
-            gsap.to('#page-content', { opacity: 1, duration: 0.5, delay: 0.3 });
+            gsap.to('#page-content', {
+                opacity: 1,
+                duration: 0.5,
+                delay: 0.3,
+                onStart: function () {
+                    // Riabilita lo scroll appena il contenuto comincia ad apparire
+                    document.body.classList.remove('is-loading');
+                    if (typeof locoScroll !== 'undefined') {
+                        locoScroll.start();
+                    }
+                }
+            });
         }, 200);
     }
 
