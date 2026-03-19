@@ -1,7 +1,4 @@
 function accordion() {
-  // Dopo la fine dell'animazione: ScrollTrigger.refresh() ricalcola i pin
-  // (scroll orizzontale) e triggera internamente locoScroll.update().
-  // Il timeout lascia al browser il tempo di stabilizzare il layout.
   const refreshSmoothScroll = () => {
     setTimeout(() => {
       if (typeof ScrollTrigger !== "undefined") {
@@ -19,26 +16,11 @@ function accordion() {
       var list = label.parentElement.querySelector(".acnav__list");
       var animlist = list.querySelectorAll(".animlist");
 
-      var Q = gsap.timeline({ paused: true });
-
-      Q.fromTo(
-        animlist,
-        {
-          opacity: 0,
-          y: 0,
-        },
-        {
-          y: 0,
-          opacity: 1,
-          stagger: 0.1,
-          duration: 0.2,
-        },
-        0.2
-      );
+      // Previene accumulo di animazioni su click rapidi
+      gsap.killTweensOf([list, animlist]);
 
       if (parent.classList.contains("is-open")) {
         gsap.to(animlist, {
-          y: 0,
           opacity: 0,
           stagger: -0.02,
           duration: 0.2,
@@ -55,9 +37,16 @@ function accordion() {
           },
         });
       } else {
-        gsap.set(list, {
-          height: 0,
-        });
+        gsap.set(list, { height: 0 });
+
+        // Timeline creata solo all'apertura, dove viene effettivamente usata
+        var Q = gsap.timeline({ paused: true });
+        Q.fromTo(
+          animlist,
+          { opacity: 0 },
+          { opacity: 1, stagger: 0.1, duration: 0.2 },
+          0.2
+        );
 
         gsap.to(list, {
           height: "auto",
