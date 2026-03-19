@@ -15,10 +15,7 @@ document.addEventListener("DOMContentLoaded", function () {
         body.classList.remove('dark-theme', 'light-theme');
 
         // Aggiungi la classe specificata (theme) al corpo del documento.
-        //   body.classList.add(theme); <!-- abilita se vuoi che non ci sia un timout
-        setTimeout(() => {
-            body.classList.add(theme);
-        }, 10); // Aggiungi un piccolo ritardo prima di applicare la classe
+        body.classList.add(theme);
 
         // Salva la preferenza del tema nel localStorage del browser in modo da mantenerla tra le visite.
         localStorage.setItem('themePreference', theme);

@@ -22,9 +22,6 @@ body {
 }
 
 // ---- Pre loader ---- ---- ----
-// #preloader.hidden {
-//   display: none;
-// }
 #preloader {
   position: fixed;
   top: 0;
@@ -35,6 +32,15 @@ body {
   display: flex;
   flex-direction: row;
   align-items: flex-end;
+  background-color: $black-dark; // fallback prima che il tema venga applicato
+}
+
+#preloader.hidden {
+  display: none;
+}
+
+#page-content {
+  opacity: 0; // rivelato da preloader.js al termine del caricamento
 }
 
 #loader {
