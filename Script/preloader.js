@@ -3,17 +3,25 @@
     var percentageEl = null;
     var startTime = null;
     var isFullyLoaded = false;
+
+    // Tre fasi: 'ease' → 'creep' → 'rush'
+    var phase = 'ease';
     var rushStart = null;
-    var currentAtRush = 0;
+    var rushStartValue = 0;
+    var currentValue = 0;
 
-    // Durata dell'animazione ease-in verso l'85% (in ms)
-    var EASE_DURATION = 2800;
-    // Percentuale target mentre si aspetta window.load
-    var EASE_TARGET = 85;
-    // Velocità di completamento dopo window.load (% al secondo)
-    var RUSH_SPEED = 80;
+    var EASE_DURATION = 2500;  // ms per la curva principale 0% → 80%
+    var EASE_TARGET   = 80;    // % target della fase ease
+    var CREEP_SPEED   = 0.004; // % per frame in attesa di window.load (quasi impercettibile)
+    var RUSH_DURATION = 600;   // ms per completare dopo window.load
 
-    // Segna il caricamento completo al window.load
+    // easeInOutQuint: parte lenta, accelera al centro, rallenta in uscita
+    function easeInOutQuint(t) {
+        return t < 0.5
+            ? 16 * t * t * t * t * t
+            : 1 - Math.pow(-2 * t + 2, 5) / 2;
+    }
+
     window.addEventListener('load', function () {
         isFullyLoaded = true;
     });
@@ -46,7 +54,6 @@
     }
 
     function tick(timestamp) {
-        // Aspetta che gli elementi del DOM esistano (pochi frame dopo il <body>)
         if (!findElements()) {
             requestAnimationFrame(tick);
             return;
@@ -54,23 +61,30 @@
 
         if (!startTime) startTime = timestamp;
 
-        var current;
-
-        if (!isFullyLoaded) {
-            // Curva ease-in (t²): parte lenta, accelera verso l'85%
-            var t = Math.min((timestamp - startTime) / EASE_DURATION, 1);
-            current = t * t * EASE_TARGET;
-        } else {
-            // window.load scattato: corsa lineare verso il 100%
-            if (!rushStart) {
-                rushStart = timestamp;
-                currentAtRush = parseFloat(progressEl.style.width) || 0;
-            }
-            var elapsed = (timestamp - rushStart) / 1000;
-            current = Math.min(currentAtRush + elapsed * RUSH_SPEED, 100);
+        // Transizione a rush non appena window.load scatta
+        if (isFullyLoaded && phase !== 'rush') {
+            phase = 'rush';
+            rushStart = timestamp;
+            rushStartValue = currentValue;
         }
 
-        var rounded = setProgress(current);
+        if (phase === 'ease') {
+            var t = Math.min((timestamp - startTime) / EASE_DURATION, 1);
+            currentValue = easeInOutQuint(t) * EASE_TARGET;
+            if (t >= 1) phase = 'creep';
+
+        } else if (phase === 'creep') {
+            // La barra si muove sempre — non si blocca mai visivamente
+            currentValue = Math.min(currentValue + CREEP_SPEED, 95);
+
+        } else if (phase === 'rush') {
+            // Ease-out cubic: scatta veloce e rallenta verso il 100%
+            var rt = Math.min((timestamp - rushStart) / RUSH_DURATION, 1);
+            var rushEased = 1 - Math.pow(1 - rt, 3);
+            currentValue = rushStartValue + rushEased * (100 - rushStartValue);
+        }
+
+        var rounded = setProgress(currentValue);
 
         if (rounded < 100) {
             requestAnimationFrame(tick);
