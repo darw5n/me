@@ -1,8 +1,16 @@
 function accordion() {
+  // Debounce: se più accordion vengono aperti/chiusi in rapida sequenza,
+  // refresha una volta sola dopo che tutto si è stabilizzato.
+  var refreshTimer = null;
   const refreshSmoothScroll = () => {
-    if (typeof locoScroll !== "undefined" && locoScroll && typeof locoScroll.update === "function") {
-      requestAnimationFrame(() => locoScroll.update());
-    }
+    clearTimeout(refreshTimer);
+    refreshTimer = setTimeout(() => {
+      if (typeof ScrollTrigger !== "undefined") {
+        ScrollTrigger.refresh();
+      } else if (typeof locoScroll !== "undefined" && locoScroll && typeof locoScroll.update === "function") {
+        locoScroll.update();
+      }
+    }, 300);
   };
 
   document.querySelectorAll(".acnav__label").forEach((acnav) => {
