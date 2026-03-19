@@ -794,13 +794,14 @@ body.animations-ready .splitting .char {
 }
 
 .horizontalScrolling {
-  padding-bottom: 1rem;
   overflow: hidden;
-  /* Aggiungi questa linea <----- modifica qui  */
+  height: 100vh;
+  display: flex;
+  align-items: center;
 }
 
 .horizontalScrolling .section-inner {
-  min-height: max-content;
+  width: 100%;
 }
 
 [data-scroll-in-section] {
