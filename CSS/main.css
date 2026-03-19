@@ -799,9 +799,7 @@ body.animations-ready .splitting .char {
 }
 
 .horizontalScrolling .section-inner {
-  height: 100%;
-  display: flex;
-  align-items: center;
+  min-height: max-content;
 }
 
 [data-scroll-in-section] {

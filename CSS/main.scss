@@ -463,15 +463,10 @@ body.animations-ready .splitting .char {
   // box-shadow: 10px -52px 255px -12px #808;
   overflow: hidden;
   height: 100vh;
-  // NON usare display:flex qui: cambia come il browser calcola scrollWidth,
-  // che tornerebbe clientWidth invece del contenuto overflow (11080px → 1392px),
-  // rompendo getXValue e getEndValue.
 }
 
 .horizontalScrolling .section-inner {
-  height: 100%;
-  display: flex;
-  align-items: center; // centra gli item verticalmente nella sezione 100vh
+  min-height: max-content;
 }
 
 [data-scroll-in-section] {
