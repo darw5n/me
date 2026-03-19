@@ -55,18 +55,22 @@
                 delay: 0.3,
                 onStart: function () {
                     document.body.classList.remove('is-loading');
-                    if (typeof locoScroll !== 'undefined') {
-                        // start() solo se smooth scroll era attivo —
-                        // in native scroll mode (Firefox mobile) non va chiamato:
-                        // causa opacity: 0 permanente su #page-content
-                        if (window._locomotiveSmoothActive) {
-                            locoScroll.start();
-                        }
-                        // Sempre: ricalcola posizioni dopo che il contenuto è visibile
-                        requestAnimationFrame(function () {
-                            locoScroll.update();
-                        });
+                    if (typeof locoScroll !== 'undefined' && window._locomotiveSmoothActive) {
+                        locoScroll.start();
                     }
+                },
+                onComplete: function () {
+                    if (typeof locoScroll === 'undefined') return;
+                    // Aspetta che i font siano applicati al layout prima di ricalcolare.
+                    // Su Firefox, i font non vengono misurati mentre il contenuto è a
+                    // opacity:0, causando offset parallax sbagliati (translateY -1096px ecc).
+                    // document.fonts.ready garantisce calcoli corretti su tutti i browser.
+                    document.fonts.ready.then(function () {
+                        locoScroll.update();
+                        if (typeof ScrollTrigger !== 'undefined') {
+                            ScrollTrigger.refresh();
+                        }
+                    });
                 }
             });
         }, 200);
