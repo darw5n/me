@@ -993,12 +993,16 @@
             const getEndValue = () => `+=${getScrollWidth() + window.innerHeight}`;
             const getXValue = () => `${-(getScrollWidth() - document.documentElement.clientWidth)}px`;
 
+            // pin: section (non il figlio inner) — il trigger e il pin coincidono,
+            // lo spacer viene creato fuori dalla sezione e non ne altera l'altezza.
+            // start: 'top top' — il pin scatta quando la sezione entra nel viewport,
+            // così section-inner è visibile dall'inizio.
             ScrollTrigger.create({
                 scroller: '.smooth-scroll',
                 trigger: section,
-                start: 'center center',
+                start: 'top top',
                 end: getEndValue,
-                pin: inner,
+                pin: section,
                 pinSpacing: true,
                 pinType: scrollerPinType,
                 anticipatePin: 1,
@@ -1009,9 +1013,9 @@
                 x: getXValue,
                 ease: 'none',
                 scrollTrigger: {
-                    trigger: scroll,
+                    trigger: section,
                     scroller: '.smooth-scroll',
-                    start: 'center top',
+                    start: 'top top',
                     end: () => `+=${getScrollWidth()}`,
                     scrub: 1,
                     invalidateOnRefresh: true,
