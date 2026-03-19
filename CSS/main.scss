@@ -461,8 +461,9 @@ body.animations-ready .splitting .char {
   // padding-top: 3rem;
   padding-bottom: 1rem;
   // box-shadow: 10px -52px 255px -12px #808;
-  overflow: hidden;
-  /* Aggiungi questa linea <----- modifica qui  */
+  // overflow: hidden rimosso: clippava .section-inner pinned da ScrollTrigger.
+  // Il clipping degli item (margin-left: 101vw) è gestito da Locomotive
+  // che imposta overflow: hidden sul container .smooth-scroll.
 }
 
 .horizontalScrolling .section-inner {
