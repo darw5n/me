@@ -1,16 +1,25 @@
 function accordion() {
-  // Funzione di utilità per riallineare Locomotive senza bloccare lo scroll
+  // Aggiorna Locomotive durante e dopo l'animazione, poi ricalcola ScrollTrigger.
+  // Il doppio rAF garantisce che Locomotive abbia propagato i nuovi valori
+  // prima che ScrollTrigger ricalcoli il pin dello scroll orizzontale.
   const refreshSmoothScroll = () => {
-    // Piccolo delay per assicurarsi che il layout sia aggiornato dopo le animazioni GSAP
     if (typeof locoScroll !== "undefined" && locoScroll && typeof locoScroll.update === "function") {
       requestAnimationFrame(() => {
         locoScroll.update();
-        // ScrollTrigger deve ricalcolare i pin (es. scroll orizzontale)
-        // dopo che Locomotive ha aggiornato le altezze
-        if (typeof ScrollTrigger !== "undefined") {
-          ScrollTrigger.refresh();
-        }
+        requestAnimationFrame(() => {
+          if (typeof ScrollTrigger !== "undefined") {
+            ScrollTrigger.refresh();
+          }
+        });
       });
+    }
+  };
+
+  // Aggiorna Locomotive ad ogni frame della animazione height,
+  // così lo scroll rimane funzionante mentre l'accordion si apre/chiude.
+  const onUpdateLoco = () => {
+    if (typeof locoScroll !== "undefined" && locoScroll && typeof locoScroll.update === "function") {
+      locoScroll.update();
     }
   };
 
@@ -51,6 +60,7 @@ function accordion() {
           duration: 0.4,
           immediateRender: false,
           ease: "expo.inOut",
+          onUpdate: onUpdateLoco,
           onComplete: function () {
             parent.classList.remove("is-open");
             refreshSmoothScroll();
@@ -66,6 +76,7 @@ function accordion() {
           duration: 0.7,
           ease: "expo.inOut",
           immediateRender: false,
+          onUpdate: onUpdateLoco,
           onComplete: function () {
             refreshSmoothScroll();
           },
