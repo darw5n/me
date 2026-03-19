@@ -940,8 +940,14 @@
         },
     });
 
-    // Blocca lo scroll virtuale di Locomotive durante il preloader
-    if (document.body.classList.contains('is-loading')) {
+    // Rende accessibile lo stato smooth al preloader (definito in <head>)
+    window._locomotiveSmoothActive = useSmoothMobile;
+
+    // Blocca lo scroll virtuale solo in smooth mode — in native scroll (Firefox mobile)
+    // è sufficiente body.is-loading { overflow: hidden } già applicato via CSS.
+    // locoScroll.stop() in native mode lascia il container in stato anomalo
+    // causando opacity: 0 permanente su #page-content dopo il preloader.
+    if (document.body.classList.contains('is-loading') && useSmoothMobile) {
         locoScroll.stop();
     }
 

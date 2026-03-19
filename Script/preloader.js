@@ -54,10 +54,18 @@
                 duration: 0.5,
                 delay: 0.3,
                 onStart: function () {
-                    // Riabilita lo scroll appena il contenuto comincia ad apparire
                     document.body.classList.remove('is-loading');
                     if (typeof locoScroll !== 'undefined') {
-                        locoScroll.start();
+                        // start() solo se smooth scroll era attivo —
+                        // in native scroll mode (Firefox mobile) non va chiamato:
+                        // causa opacity: 0 permanente su #page-content
+                        if (window._locomotiveSmoothActive) {
+                            locoScroll.start();
+                        }
+                        // Sempre: ricalcola posizioni dopo che il contenuto è visibile
+                        requestAnimationFrame(function () {
+                            locoScroll.update();
+                        });
                     }
                 }
             });
