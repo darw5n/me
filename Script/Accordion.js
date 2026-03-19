@@ -10,11 +10,11 @@ function accordion() {
   };
 
   document.querySelectorAll(".acnav__label").forEach((acnav) => {
-    $(acnav).click(function () {
-      var label = $(this);
-      var parent = label.parent(".has-children");
-      var list = label.siblings(".acnav__list");
-      var animlist = list.find(".animlist");
+    acnav.addEventListener("click", function () {
+      var label = this;
+      var parent = label.closest(".has-children");
+      var list = label.parentElement.querySelector(".acnav__list");
+      var animlist = list.querySelectorAll(".animlist");
 
       var Q = gsap.timeline({ paused: true });
 
@@ -33,7 +33,7 @@ function accordion() {
         0.2
       );
 
-      if (parent.hasClass("is-open")) {
+      if (parent.classList.contains("is-open")) {
         gsap.to(animlist, {
           y: 0,
           opacity: 0,
@@ -47,8 +47,7 @@ function accordion() {
           immediateRender: false,
           ease: "expo.inOut",
           onComplete: function () {
-            parent.removeClass("is-open");
-            console.log("Accordion closed, refreshing smooth scroll");
+            parent.classList.remove("is-open");
             refreshSmoothScroll();
           },
         });
@@ -63,12 +62,11 @@ function accordion() {
           ease: "expo.inOut",
           immediateRender: false,
           onComplete: function () {
-            console.log("Accordion opened, refreshing smooth scroll");
             refreshSmoothScroll();
           },
         });
 
-        parent.addClass("is-open");
+        parent.classList.add("is-open");
         Q.play();
       }
     });
