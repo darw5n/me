@@ -1,41 +1,36 @@
 function accordion() {
-  // Funzione di utilità per riallineare Locomotive senza bloccare lo scroll
+  // Debounce: se più accordion vengono aperti/chiusi in rapida sequenza,
+  // refresha una volta sola dopo che tutto si è stabilizzato.
+  var refreshTimer = null;
   const refreshSmoothScroll = () => {
-    // Piccolo delay per assicurarsi che il layout sia aggiornato dopo le animazioni GSAP
-    if (typeof locoScroll !== "undefined" && locoScroll && typeof locoScroll.update === "function") {
-      requestAnimationFrame(() => {
+    clearTimeout(refreshTimer);
+    refreshTimer = setTimeout(() => {
+      if (typeof ScrollTrigger !== "undefined") {
+        ScrollTrigger.refresh();
+      } else if (typeof locoScroll !== "undefined" && locoScroll && typeof locoScroll.update === "function") {
         locoScroll.update();
-      });
-    }
+      }
+    }, 300);
   };
 
   document.querySelectorAll(".acnav__label").forEach((acnav) => {
-    $(acnav).click(function () {
-      var label = $(this);
-      var parent = label.parent(".has-children");
-      var list = label.siblings(".acnav__list");
-      var animlist = list.find(".animlist");
+    acnav.addEventListener("click", function () {
+      var label = this;
+      var parent = label.closest(".has-children");
+      var list = label.parentElement.querySelector(".acnav__list");
+      var animlist = list.querySelectorAll(".animlist");
 
       var Q = gsap.timeline({ paused: true });
 
       Q.fromTo(
         animlist,
-        {
-          opacity: 0,
-          y: 0,
-        },
-        {
-          y: 0,
-          opacity: 1,
-          stagger: 0.1,
-          duration: 0.2,
-        },
+        { opacity: 0 },
+        { opacity: 1, stagger: 0.1, duration: 0.2 },
         0.2
       );
 
-      if (parent.hasClass("is-open")) {
+      if (parent.classList.contains("is-open")) {
         gsap.to(animlist, {
-          y: 0,
           opacity: 0,
           stagger: -0.02,
           duration: 0.2,
@@ -47,15 +42,12 @@ function accordion() {
           immediateRender: false,
           ease: "expo.inOut",
           onComplete: function () {
-            parent.removeClass("is-open");
-            console.log("Accordion closed, refreshing smooth scroll");
+            parent.classList.remove("is-open");
             refreshSmoothScroll();
           },
         });
       } else {
-        gsap.set(list, {
-          height: 0,
-        });
+        gsap.set(list, { height: 0 });
 
         gsap.to(list, {
           height: "auto",
@@ -63,12 +55,11 @@ function accordion() {
           ease: "expo.inOut",
           immediateRender: false,
           onComplete: function () {
-            console.log("Accordion opened, refreshing smooth scroll");
             refreshSmoothScroll();
           },
         });
 
-        parent.addClass("is-open");
+        parent.classList.add("is-open");
         Q.play();
       }
     });
