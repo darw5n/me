@@ -462,14 +462,16 @@ body.animations-ready .splitting .char {
   // padding-bottom: 1rem;
   // box-shadow: 10px -52px 255px -12px #808;
   overflow: hidden;
-  height: 100vh; // altezza esplicita: con pin:section la sezione deve avere
-                 // dimensioni definite indipendentemente dal caricamento delle immagini
-  display: flex;
-  align-items: center;
+  height: 100vh;
+  // NON usare display:flex qui: cambia come il browser calcola scrollWidth,
+  // che tornerebbe clientWidth invece del contenuto overflow (11080px → 1392px),
+  // rompendo getXValue e getEndValue.
 }
 
 .horizontalScrolling .section-inner {
-  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center; // centra gli item verticalmente nella sezione 100vh
 }
 
 [data-scroll-in-section] {

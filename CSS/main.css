@@ -796,12 +796,12 @@ body.animations-ready .splitting .char {
 .horizontalScrolling {
   overflow: hidden;
   height: 100vh;
-  display: flex;
-  align-items: center;
 }
 
 .horizontalScrolling .section-inner {
-  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
 }
 
 [data-scroll-in-section] {
