@@ -5,6 +5,11 @@ function accordion() {
     if (typeof locoScroll !== "undefined" && locoScroll && typeof locoScroll.update === "function") {
       requestAnimationFrame(() => {
         locoScroll.update();
+        // ScrollTrigger deve ricalcolare i pin (es. scroll orizzontale)
+        // dopo che Locomotive ha aggiornato le altezze
+        if (typeof ScrollTrigger !== "undefined") {
+          ScrollTrigger.refresh();
+        }
       });
     }
   };
