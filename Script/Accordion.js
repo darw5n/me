@@ -1,26 +1,15 @@
 function accordion() {
-  // Aggiorna Locomotive durante e dopo l'animazione, poi ricalcola ScrollTrigger.
-  // Il doppio rAF garantisce che Locomotive abbia propagato i nuovi valori
-  // prima che ScrollTrigger ricalcoli il pin dello scroll orizzontale.
+  // Dopo la fine dell'animazione: ScrollTrigger.refresh() ricalcola i pin
+  // (scroll orizzontale) e triggera internamente locoScroll.update().
+  // Il timeout lascia al browser il tempo di stabilizzare il layout.
   const refreshSmoothScroll = () => {
-    if (typeof locoScroll !== "undefined" && locoScroll && typeof locoScroll.update === "function") {
-      requestAnimationFrame(() => {
+    setTimeout(() => {
+      if (typeof ScrollTrigger !== "undefined") {
+        ScrollTrigger.refresh();
+      } else if (typeof locoScroll !== "undefined" && locoScroll && typeof locoScroll.update === "function") {
         locoScroll.update();
-        requestAnimationFrame(() => {
-          if (typeof ScrollTrigger !== "undefined") {
-            ScrollTrigger.refresh();
-          }
-        });
-      });
-    }
-  };
-
-  // Aggiorna Locomotive ad ogni frame della animazione height,
-  // così lo scroll rimane funzionante mentre l'accordion si apre/chiude.
-  const onUpdateLoco = () => {
-    if (typeof locoScroll !== "undefined" && locoScroll && typeof locoScroll.update === "function") {
-      locoScroll.update();
-    }
+      }
+    }, 50);
   };
 
   document.querySelectorAll(".acnav__label").forEach((acnav) => {
@@ -60,7 +49,6 @@ function accordion() {
           duration: 0.4,
           immediateRender: false,
           ease: "expo.inOut",
-          onUpdate: onUpdateLoco,
           onComplete: function () {
             parent.classList.remove("is-open");
             refreshSmoothScroll();
@@ -76,7 +64,6 @@ function accordion() {
           duration: 0.7,
           ease: "expo.inOut",
           immediateRender: false,
-          onUpdate: onUpdateLoco,
           onComplete: function () {
             refreshSmoothScroll();
           },
