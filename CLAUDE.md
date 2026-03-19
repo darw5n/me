@@ -84,11 +84,13 @@ bisogna chiamare `locoScroll.update()` per ricalcolare le altezze.
   Firefox mobile gestisce diversamente `overflow: hidden` + `transform`
 - **Branch:** `update-2026/fix-firefox-mobile`
 
-### [update-2026] Fix preloader
-- **Problema:** Il contenuto del sito era visibile prima che il preloader finisse
-- **Causa:** `#page-content` non aveva `opacity: 0` come stile iniziale inline/CSS,
-  e il preloader partiva dopo il primo paint
-- **Branch:** `update-2026/fix-preloader`
+### [update-2026] Fix preloader (branch: fix-preloader + fix-preloader-animation)
+- **Problema 1:** Contenuto visibile sotto il preloader trasparente
+- **Fix:** Rimosso `class="hidden"` dal `#preloader`; aggiunto `opacity: 0` a `#page-content`; fallback background in CSS; rimosso `setTimeout` in theme.js
+- **Problema 2:** Su connessione lenta il preloader stava a 0% per secondi poi correva a 100%
+- **Causa:** `DOMContentLoaded` era bloccato dai body scripts CDN (jQuery, ScrollMagic, ecc.)
+- **Fix:** Il preloader usa `requestAnimationFrame` dall'inizio (no `DOMContentLoaded`), curva ease-in (t²), si ferma all'85% e aspetta `window.load`, poi corre a 100%
+- **Fix tema:** Inline script a inizio `<body>` applica la classe tema prima del primo paint
 
 ### [update-2026] Fix conflitto accordion ↔ scroll orizzontale
 - **Problema:** Aprire/chiudere un accordion mentre si è nella sezione orizzontale

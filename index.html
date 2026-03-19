@@ -47,6 +47,14 @@
 </head>
 
 <body>
+    <!-- Applica il tema prima del primo paint per evitare flash e dare sfondo al preloader -->
+    <script>
+        (function () {
+            var saved = localStorage.getItem('themePreference');
+            var theme = saved || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark-theme' : 'light-theme');
+            document.body.className = theme;
+        })();
+    </script>
     <button id="theme-toggle">
         <span class="theme-icon" id="theme-icon"></span>
     </button>
