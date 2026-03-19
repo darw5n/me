@@ -74,6 +74,12 @@
         <div id="percentage" class="big strong">0%</div>
     </div>
 
+    <!-- Overlay blocca-scroll durante il preloader.
+         Usa position:fixed invece di body{overflow:hidden}: su Firefox,
+         overflow:hidden sul body altera le dimensioni che Locomotive usa
+         nelle formule parallax, causando translateY errati su tutti gli elementi. -->
+    <div id="scroll-blocker" style="position:fixed;inset:0;z-index:99;touch-action:none;"></div>
+
     <!-- content -->
     <div data-scroll-container class="smooth-scroll" id="page-content">
 

@@ -23,11 +23,6 @@ body {
 
 // ---- Pre loader ---- ---- ----
 
-// Blocca lo scroll del sito mentre il preloader è attivo
-body.is-loading {
-  overflow: hidden;
-}
-
 #preloader {
   position: fixed;
   top: 0;

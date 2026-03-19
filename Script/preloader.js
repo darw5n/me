@@ -54,6 +54,9 @@
                 duration: 0.5,
                 delay: 0.3,
                 onStart: function () {
+                    // Rimuove l'overlay blocca-scroll
+                    var blocker = document.getElementById('scroll-blocker');
+                    if (blocker) blocker.remove();
                     document.body.classList.remove('is-loading');
                     if (typeof locoScroll !== 'undefined' && window._locomotiveSmoothActive) {
                         locoScroll.start();
