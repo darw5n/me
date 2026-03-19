@@ -211,9 +211,15 @@ section.section {
 
 .splitting .char {
   animation: slide-in .6s cubic-bezier(.5, 0, .5, 1) both;
-  animation-delay: calc(3ms * var(--char-index) + 3000ms);
+  animation-delay: calc(40ms * var(--char-index));
+  animation-play-state: paused; // in attesa che il preloader finisca
 }
 
+// Quando il preloader completa, body riceve .animations-ready
+// e le animazioni partono sincronizzate con la comparsa del contenuto
+body.animations-ready .splitting .char {
+  animation-play-state: running;
+}
 
 @keyframes slide-in {
   from {

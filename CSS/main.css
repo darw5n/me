@@ -578,7 +578,12 @@ section.section.fav-tools {
 /* ----- split text anm ---- */
 .splitting .char {
   animation: slide-in 0.6s cubic-bezier(0.5, 0, 0.5, 1) both;
-  animation-delay: calc(3ms * var(--char-index) + 3000ms);
+  animation-delay: calc(40ms * var(--char-index));
+  animation-play-state: paused;
+}
+
+body.animations-ready .splitting .char {
+  animation-play-state: running;
 }
 
 @keyframes slide-in {

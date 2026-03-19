@@ -63,11 +63,14 @@
                     }
                 },
                 onComplete: function () {
+                    // Avvia le animazioni di entrata (lettere dal basso)
+                    // ora che il contenuto è completamente visibile
+                    document.body.classList.add('animations-ready');
+
                     if (typeof locoScroll === 'undefined') return;
                     // Aspetta che i font siano applicati al layout prima di ricalcolare.
                     // Su Firefox, i font non vengono misurati mentre il contenuto è a
                     // opacity:0, causando offset parallax sbagliati (translateY -1096px ecc).
-                    // document.fonts.ready garantisce calcoli corretti su tutti i browser.
                     document.fonts.ready.then(function () {
                         locoScroll.update();
                         if (typeof ScrollTrigger !== 'undefined') {
