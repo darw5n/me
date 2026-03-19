@@ -112,6 +112,7 @@ feat-something
 - Branch di lavoro: `fix-<cosa>` per bug, `feat-<cosa>` per nuove funzionalità
 - Ogni branch nasce da `update-2026` e viene mergiato su `update-2026`
 - `update-2026` → `main` solo quando tutto è verificato e testato
+- **Non eseguire mai `git merge` senza conferma esplicita dell'utente** — prima mostrare il riepilogo del branch e aspettare il via libera
 - Anno e data si leggono dalla data del commit, non serve nel nome del branch
 - Nota: Git non permette `update-2026/fix-*` perché `update-2026` esiste già come ref
 
