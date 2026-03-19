@@ -11,8 +11,8 @@
 // ---- Base ---- ---- ----
 
 html {
-  scroll-behavior: smooth;
   overflow-x: hidden;
+  // scroll-behavior: smooth rimosso: conflitto con Locomotive Scroll su tutti i browser
 }
 
 body {
@@ -452,10 +452,9 @@ section.section {
 
 // item horizontal carousel 
 
-/* -- Smooth scroll -- */
-.smooth-scroll {
-  overflow: hidden !important; //<----- modifica qui
-}
+// .smooth-scroll: overflow: hidden NON va forzato via CSS.
+// Locomotive lo gestisce autonomamente via JS. Forzarlo causerebbe il collasso
+// delle sezioni su Firefox mobile dove Locomotive usa native scroll.
 
 .horizontalScrolling {
   // padding-top: 3rem;

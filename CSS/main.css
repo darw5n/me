@@ -410,7 +410,6 @@ footer a.small {
 }
 
 html {
-  scroll-behavior: smooth;
   overflow-x: hidden;
 }
 
@@ -791,11 +790,6 @@ section.section.fav-tools {
 .fav-tools .logo img {
   max-width: 60%;
   max-height: 60%;
-}
-
-/* -- Smooth scroll -- */
-.smooth-scroll {
-  overflow: hidden !important;
 }
 
 .horizontalScrolling {
