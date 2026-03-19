@@ -54,11 +54,29 @@
                 duration: 0.5,
                 delay: 0.3,
                 onStart: function () {
-                    // Riabilita lo scroll appena il contenuto comincia ad apparire
+                    // Rimuove l'overlay blocca-scroll
+                    var blocker = document.getElementById('scroll-blocker');
+                    if (blocker) blocker.remove();
                     document.body.classList.remove('is-loading');
-                    if (typeof locoScroll !== 'undefined') {
+                    if (typeof locoScroll !== 'undefined' && window._locomotiveSmoothActive) {
                         locoScroll.start();
                     }
+                },
+                onComplete: function () {
+                    // Avvia le animazioni di entrata (lettere dal basso)
+                    // ora che il contenuto è completamente visibile
+                    document.body.classList.add('animations-ready');
+
+                    if (typeof locoScroll === 'undefined') return;
+                    // Aspetta che i font siano applicati al layout prima di ricalcolare.
+                    // Su Firefox, i font non vengono misurati mentre il contenuto è a
+                    // opacity:0, causando offset parallax sbagliati (translateY -1096px ecc).
+                    document.fonts.ready.then(function () {
+                        locoScroll.update();
+                        if (typeof ScrollTrigger !== 'undefined') {
+                            ScrollTrigger.refresh();
+                        }
+                    });
                 }
             });
         }, 200);

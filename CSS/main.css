@@ -410,16 +410,11 @@ footer a.small {
 }
 
 html {
-  scroll-behavior: smooth;
   overflow-x: hidden;
 }
 
 body {
   font-family: "Matahari", sans-serif;
-}
-
-body.is-loading {
-  overflow: hidden;
 }
 
 #preloader {
@@ -583,7 +578,12 @@ section.section.fav-tools {
 /* ----- split text anm ---- */
 .splitting .char {
   animation: slide-in 0.6s cubic-bezier(0.5, 0, 0.5, 1) both;
-  animation-delay: calc(3ms * var(--char-index) + 3000ms);
+  animation-delay: calc(40ms * var(--char-index));
+  animation-play-state: paused;
+}
+
+body.animations-ready .splitting .char {
+  animation-play-state: running;
 }
 
 @keyframes slide-in {
@@ -791,11 +791,6 @@ section.section.fav-tools {
 .fav-tools .logo img {
   max-width: 60%;
   max-height: 60%;
-}
-
-/* -- Smooth scroll -- */
-.smooth-scroll {
-  overflow: hidden !important;
 }
 
 .horizontalScrolling {

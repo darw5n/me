@@ -74,6 +74,12 @@
         <div id="percentage" class="big strong">0%</div>
     </div>
 
+    <!-- Overlay blocca-scroll durante il preloader.
+         Usa position:fixed invece di body{overflow:hidden}: su Firefox,
+         overflow:hidden sul body altera le dimensioni che Locomotive usa
+         nelle formule parallax, causando translateY errati su tutti gli elementi. -->
+    <div id="scroll-blocker" style="position:fixed;inset:0;z-index:99;touch-action:none;"></div>
+
     <!-- content -->
     <div data-scroll-container class="smooth-scroll" id="page-content">
 
@@ -913,9 +919,18 @@
 
     <script>
     
+    /* --- Splitting.js: crea gli span .char prima di tutto il resto --- */
+    Splitting();
+
     /* --- Scroll animations with Locomotive Scroll & GSAP --- */
 
     gsap.registerPlugin(ScrollTrigger);
+
+    // Firefox mobile: Locomotive smooth scroll non funziona su Gecko mobile —
+    // usa native scroll come fallback per garantire layout corretto su Firefox.
+    const isFirefox = /firefox/i.test(navigator.userAgent);
+    const isMobileViewport = window.innerWidth <= 1024;
+    const useSmoothMobile = !(isFirefox && isMobileViewport);
 
     const locoScroll = new LocomotiveScroll({
         el: document.querySelector(".smooth-scroll"),
@@ -923,33 +938,48 @@
         lerp: 0.05,
         multiplier: 1,
         reloadOnContextChange: true,
-        touchMultiplier: 3,
-        smoothMobile: 0,
+        touchMultiplier: 2,
         smartphone: {
-            smooth: true,
+            smooth: useSmoothMobile,
             breakpoint: 767
         },
         tablet: {
-            smooth: true,
+            smooth: useSmoothMobile,
             breakpoint: 1024
         },
     });
 
-    // Blocca lo scroll virtuale di Locomotive durante il preloader
-    if (document.body.classList.contains('is-loading')) {
+    // Rende accessibile lo stato smooth al preloader (definito in <head>)
+    window._locomotiveSmoothActive = useSmoothMobile;
+
+    // Blocca lo scroll virtuale solo in smooth mode — in native scroll (Firefox mobile)
+    // è sufficiente body.is-loading { overflow: hidden } già applicato via CSS.
+    // locoScroll.stop() in native mode lascia il container in stato anomalo
+    // causando opacity: 0 permanente su #page-content dopo il preloader.
+    if (document.body.classList.contains('is-loading') && useSmoothMobile) {
         locoScroll.stop();
     }
 
     locoScroll.on("scroll", ScrollTrigger.update);
 
+    // pinType: 'transform' se Locomotive usa virtual scroll, 'fixed' se native scroll
+    const scrollerPinType = useSmoothMobile ? "transform" : "fixed";
+
     ScrollTrigger.scrollerProxy(".smooth-scroll", {
         scrollTop(value) {
-            return arguments.length ? locoScroll.scrollTo(value, 0, 0) : locoScroll.scroll.instance.scroll.y;
+            if (arguments.length) {
+                return locoScroll.scrollTo(value, 0, 0);
+            }
+            // Fallback sicuro: se scroll.instance non è disponibile (native scroll),
+            // legge direttamente window.scrollY
+            return locoScroll.scroll && locoScroll.scroll.instance
+                ? locoScroll.scroll.instance.scroll.y
+                : window.scrollY;
         },
         getBoundingClientRect() {
             return { top: 0, left: 0, width: window.innerWidth, height: window.innerHeight };
         },
-        pinType: document.querySelector(".smooth-scroll").style.transform ? "transform" : "fixed"
+        pinType: scrollerPinType
     });
 
     const section = document.querySelector('.horizontalScrolling');
@@ -970,7 +1000,7 @@
                 end: getEndValue,
                 pin: inner,
                 pinSpacing: true,
-                pinType: 'transform',
+                pinType: scrollerPinType,
                 anticipatePin: 1,
                 invalidateOnRefresh: true,
             });
