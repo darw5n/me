@@ -418,6 +418,10 @@ body {
   font-family: "Matahari", sans-serif;
 }
 
+body.is-loading {
+  overflow: hidden;
+}
+
 #preloader {
   position: fixed;
   top: 0;

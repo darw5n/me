@@ -52,7 +52,7 @@
         (function () {
             var saved = localStorage.getItem('themePreference');
             var theme = saved || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark-theme' : 'light-theme');
-            document.body.className = theme;
+            document.body.className = theme + ' is-loading';
         })();
     </script>
     <button id="theme-toggle">
@@ -933,6 +933,11 @@
             breakpoint: 1024
         },
     });
+
+    // Blocca lo scroll virtuale di Locomotive durante il preloader
+    if (document.body.classList.contains('is-loading')) {
+        locoScroll.stop();
+    }
 
     locoScroll.on("scroll", ScrollTrigger.update);
 
