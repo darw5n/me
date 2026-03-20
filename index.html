@@ -1031,15 +1031,22 @@
         }
     }
 
-    ScrollTrigger.addEventListener("refresh", () => locoScroll.update());
+    // updateHeight va chiamata PRIMA di locoScroll.update() ad ogni refresh:
+    // font custom e immagini caricano in modo asincrono dopo l'init, cambiando
+    // scroll.scrollWidth e quindi totalScrollable. Se l'altezza della sezione
+    // non viene ricalcolata, Locomotive esce dalla sezione troppo presto.
+    ScrollTrigger.addEventListener("refresh", () => {
+        if (window._updateHorizontalHeight) window._updateHorizontalHeight();
+        locoScroll.update();
+    });
     ScrollTrigger.refresh();
 
     let resizeTimer;
     window.addEventListener('resize', () => {
         clearTimeout(resizeTimer);
         resizeTimer = setTimeout(() => {
-            if (window._updateHorizontalHeight) window._updateHorizontalHeight();
-            locoScroll.update();
+            // ScrollTrigger.refresh() triggera il listener sopra che fa
+            // updateHeight() + locoScroll.update() nell'ordine corretto
             ScrollTrigger.refresh();
         }, 250);
     });
