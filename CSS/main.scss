@@ -11,8 +11,8 @@
 // ---- Base ---- ---- ----
 
 html {
-  scroll-behavior: smooth;
   overflow-x: hidden;
+  // scroll-behavior: smooth rimosso: conflitto con Locomotive Scroll su tutti i browser
 }
 
 body {
@@ -22,9 +22,7 @@ body {
 }
 
 // ---- Pre loader ---- ---- ----
-// #preloader.hidden {
-//   display: none;
-// }
+
 #preloader {
   position: fixed;
   top: 0;
@@ -35,6 +33,15 @@ body {
   display: flex;
   flex-direction: row;
   align-items: flex-end;
+  background-color: $black-dark; // fallback prima che il tema venga applicato
+}
+
+#preloader.hidden {
+  display: none;
+}
+
+#page-content {
+  opacity: 0; // rivelato da preloader.js al termine del caricamento
 }
 
 #loader {
@@ -204,9 +211,15 @@ section.section {
 
 .splitting .char {
   animation: slide-in .6s cubic-bezier(.5, 0, .5, 1) both;
-  animation-delay: calc(3ms * var(--char-index) + 3000ms);
+  animation-delay: calc(40ms * var(--char-index));
+  animation-play-state: paused; // in attesa che il preloader finisca
 }
 
+// Quando il preloader completa, body riceve .animations-ready
+// e le animazioni partono sincronizzate con la comparsa del contenuto
+body.animations-ready .splitting .char {
+  animation-play-state: running;
+}
 
 @keyframes slide-in {
   from {
@@ -440,21 +453,20 @@ section.section {
 
 // item horizontal carousel 
 
-/* -- Smooth scroll -- */
-.smooth-scroll {
-  overflow: hidden !important; //<----- modifica qui
-}
+// .smooth-scroll: overflow: hidden NON va forzato via CSS.
+// Locomotive lo gestisce autonomamente via JS. Forzarlo causerebbe il collasso
+// delle sezioni su Firefox mobile dove Locomotive usa native scroll.
 
 .horizontalScrolling {
   // padding-top: 3rem;
-  padding-bottom: 1rem;
+  // padding-bottom: 1rem;
   // box-shadow: 10px -52px 255px -12px #808;
   overflow: hidden;
-  /* Aggiungi questa linea <----- modifica qui  */
+  // height rimossa: deve crescere con lo spacer di ScrollTrigger (~scrollWidth px)
 }
 
 .horizontalScrolling .section-inner {
-  min-height: max-content;
+  height: 100vh;
 }
 
 [data-scroll-in-section] {
@@ -463,6 +475,7 @@ section.section {
   flex-direction: row;
   margin-left: 101vw;
   margin-right: 101vw;
+  height: 100vh; // centra verticalmente gli items nel viewport via align-items:center
   // display: flex;
   // flex-direction: row;
   // align-items: center;
@@ -510,7 +523,7 @@ section.section {
     }
 
     p {
-      padding-left: 2rem;
+      padding-left: 2rem; 
     }
 
     @media (max-width: 991.98px) {
