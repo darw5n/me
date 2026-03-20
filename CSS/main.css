@@ -798,8 +798,6 @@ body.animations-ready .splitting .char {
 
 .horizontalScrolling .section-inner {
   height: 100vh;
-  display: flex;
-  align-items: center;
 }
 
 [data-scroll-in-section] {
@@ -808,9 +806,7 @@ body.animations-ready .splitting .char {
   flex-direction: row;
   margin-left: 101vw;
   margin-right: 101vw;
-  flex-shrink: 0;
-  min-width: -moz-max-content;
-  min-width: max-content;
+  height: 100vh;
 }
 
 .item {

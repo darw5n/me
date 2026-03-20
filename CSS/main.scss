@@ -467,8 +467,6 @@ body.animations-ready .splitting .char {
 
 .horizontalScrolling .section-inner {
   height: 100vh;
-  display: flex;
-  align-items: center;
 }
 
 [data-scroll-in-section] {
@@ -477,8 +475,7 @@ body.animations-ready .splitting .char {
   flex-direction: row;
   margin-left: 101vw;
   margin-right: 101vw;
-  flex-shrink: 0; // evita compressione quando .section-inner è display:flex
-  min-width: max-content;
+  height: 100vh; // centra verticalmente gli items nel viewport via align-items:center
   // display: flex;
   // flex-direction: row;
   // align-items: center;
@@ -526,7 +523,7 @@ body.animations-ready .splitting .char {
     }
 
     p {
-      padding-left: 2rem;
+      padding-left: 2rem; 
     }
 
     @media (max-width: 991.98px) {
