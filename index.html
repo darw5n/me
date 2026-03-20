@@ -989,38 +989,36 @@
         const scroll = section.querySelector('[data-scroll-in-section]');
 
         if (inner && scroll) {
-            const getScrollWidth = () => section.scrollWidth;
-            const getEndValue = () => `+=${getScrollWidth() + window.innerHeight}`;
-            const getXValue = () => `${-(getScrollWidth() - document.documentElement.clientWidth)}px`;
+            // I margini sono simmetrici (margin-left: 101vw, margin-right: 101vw).
+            // La formula deve includere ENTRAMBI: il sinistro porta gli items nel
+            // viewport, il destro li porta fuori. Senza margin-right il totalScrollable
+            // è ~1630px troppo corto e l'ultimo item appare solo all'ultimo frame.
+            const getTotalScrollable = () => scroll.offsetLeft * 2 + scroll.scrollWidth - document.documentElement.clientWidth;
+            const getTotalHeight = () => getTotalScrollable() + window.innerHeight;
 
-            // pin: section (non il figlio inner) — il trigger e il pin coincidono,
-            // lo spacer viene creato fuori dalla sezione e non ne altera l'altezza.
-            // start: 'top top' — il pin scatta quando la sezione entra nel viewport,
-            // così section-inner è visibile dall'inizio.
-            ScrollTrigger.create({
-                scroller: '.smooth-scroll',
-                trigger: section,
-                start: 'top top',
-                end: getEndValue,
-                pin: section,
-                pinSpacing: true,
-                pinType: scrollerPinType,
-                anticipatePin: 1,
-                invalidateOnRefresh: true,
+            // L'altezza della sezione va impostata manualmente: Locomotive la usa
+            // per calcolare lo spazio di scroll virtuale.
+            const updateHeight = () => {
+                section.style.height = `${getTotalHeight()}px`;
+            };
+            updateHeight();
+
+            // Pin e animazione x gestiti tramite eventi Locomotive — nessun
+            // ScrollTrigger per questa sezione. Vantaggio: section.offsetTop è
+            // un valore live, si aggiorna automaticamente dopo ogni accordion
+            // senza bisogno di ScrollTrigger.refresh().
+            locoScroll.on('scroll', ({ scroll: s }) => {
+                const sectionTop = section.offsetTop;
+                const totalScrollable = getTotalScrollable();
+                const progress = Math.min(Math.max((s.y - sectionTop) / totalScrollable, 0), 1);
+
+                // Pin: compensa il movimento del container per tenere inner fermo
+                gsap.set(inner, { y: progress * totalScrollable });
+                // Scroll orizzontale
+                gsap.set(scroll, { x: -progress * totalScrollable });
             });
 
-            gsap.to(scroll, {
-                x: getXValue,
-                ease: 'none',
-                scrollTrigger: {
-                    trigger: section,
-                    scroller: '.smooth-scroll',
-                    start: 'top top',
-                    end: () => `+=${getScrollWidth()}`,
-                    scrub: 1,
-                    invalidateOnRefresh: true,
-                }
-            });
+            window._updateHorizontalHeight = updateHeight;
         }
     }
 
@@ -1031,6 +1029,7 @@
     window.addEventListener('resize', () => {
         clearTimeout(resizeTimer);
         resizeTimer = setTimeout(() => {
+            if (window._updateHorizontalHeight) window._updateHorizontalHeight();
             locoScroll.update();
             ScrollTrigger.refresh();
         }, 250);

@@ -462,11 +462,13 @@ body.animations-ready .splitting .char {
   // padding-bottom: 1rem;
   // box-shadow: 10px -52px 255px -12px #808;
   overflow: hidden;
-  height: 100vh;
+  // height rimossa: deve crescere con lo spacer di ScrollTrigger (~scrollWidth px)
 }
 
 .horizontalScrolling .section-inner {
-  min-height: max-content;
+  height: 100vh;
+  display: flex;
+  align-items: center;
 }
 
 [data-scroll-in-section] {
@@ -475,6 +477,8 @@ body.animations-ready .splitting .char {
   flex-direction: row;
   margin-left: 101vw;
   margin-right: 101vw;
+  flex-shrink: 0; // evita compressione quando .section-inner è display:flex
+  min-width: max-content;
   // display: flex;
   // flex-direction: row;
   // align-items: center;

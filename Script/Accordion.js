@@ -39,6 +39,10 @@ function accordion() {
           },
         });
       } else {
+        // classList.add prima di gsap.set: l'elemento diventa display:block
+        // e height:0 vengono applicati nello stesso tick JS sincrono —
+        // il browser non fa paint nel mezzo, nessun flash visivo.
+        parent.classList.add("is-open");
         gsap.set(list, { height: 0 });
 
         gsap.to(list, {
@@ -51,7 +55,6 @@ function accordion() {
           },
         });
 
-        parent.classList.add("is-open");
         Q.play();
       }
     });
