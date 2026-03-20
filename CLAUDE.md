@@ -103,7 +103,8 @@ bisogna chiamare `locoScroll.update()` per ricalcolare le altezze.
 
 ```
 main              ← produzione stabile
-update-2026       ← branch di integrazione (merge da tutti i fix/feat)
+update-2026       ← branch di integrazione ATTIVO (merge da tutti i fix/feat)
+update-2025       ← branch legacy, non usare per nuovo lavoro
 fix-preloader     ← esempio branch fix
 fix-firefox-mobile
 feat-something
