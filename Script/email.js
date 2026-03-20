@@ -1,9 +1,11 @@
-var user = "darwin.vegher"; // Nome utente
-var domain = "gmail.com"; // Dominio
-var element = document.getElementById("email"); // ID dell'elemento dove vuoi visualizzare l'email
+function rot13(s) {
+    return s.replace(/[a-zA-Z]/g, function(c) {
+        var base = c <= 'Z' ? 65 : 97;
+        return String.fromCharCode(((c.charCodeAt(0) - base + 13) % 26) + base);
+    });
+}
 
-// Costruisci l'indirizzo email
-var email = user + "@" + domain;
-
-// Sostituisci il contenuto dell'elemento con l'indirizzo email
-element.innerHTML = '<a href="mailto:' + email + '">' + email + "</a>";
+var encoded = "qnejva.irture@tznvy.pbz";
+var email = rot13(encoded);
+var element = document.getElementById("email");
+element.innerHTML = '<a href="mailto:' + email + '">' + email + '</a>';
