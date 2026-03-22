@@ -941,8 +941,26 @@
     // Firefox mobile: Locomotive smooth scroll non funziona su Gecko mobile —
     // usa native scroll come fallback per garantire layout corretto su Firefox.
     const isFirefox = /firefox/i.test(navigator.userAgent);
-    const isMobileViewport = window.innerWidth <= 1024;
+    const isMobileViewport = window.matchMedia("(max-width: 767px)").matches;
     const useSmoothMobile = !(isFirefox && isMobileViewport);
+
+    // Fix mobile: Locomotive calcola middle_y con offset ~-1372px su mobile,
+    // producendo transform enormi su span h1 e p nella hero.
+    // window.innerWidth non è affidabile al momento dello script in Firefox
+    // responsive mode — usiamo matchMedia che restituisce il valore corretto.
+    // Azzeriamo data-scroll-speed prima dell'init: il posizionamento resta al CSS.
+    if (isMobileViewport) {
+        document.querySelectorAll("h1.title > span[data-scroll-speed]").forEach(function(el) {
+            el.setAttribute("data-scroll-speed", "0");
+        });
+        document.querySelectorAll(".hero p[data-scroll-speed]").forEach(function(el) {
+            el.setAttribute("data-scroll-speed", "0");
+        });
+        var ic = document.querySelector(".image-container");
+        if (ic) ic.setAttribute("data-scroll-speed", "0");
+        var portrait = document.querySelector(".image-container img[data-scroll-speed]");
+        if (portrait) portrait.setAttribute("data-scroll-speed", "0");
+    }
 
     const locoScroll = new LocomotiveScroll({
         el: document.querySelector(".smooth-scroll"),
@@ -1038,9 +1056,21 @@
     // font custom e immagini caricano in modo asincrono dopo l'init, cambiando
     // scroll.scrollWidth e quindi totalScrollable. Se l'altezza della sezione
     // non viene ricalcolata, Locomotive esce dalla sezione troppo presto.
+    // Fix mobile: dopo ScrollTrigger.refresh() la sezione orizzontale ha
+    // l'altezza definitiva, ma Locomotive non aggiorna limit.y. La sezione
+    // .thanks (top ~10473px) risulta irraggiungibile. Forziamo il valore corretto.
+    const fixLocoLimit = () => {
+        if (!locoScroll.scroll || !locoScroll.scroll.instance) return;
+        const correct = document.documentElement.scrollHeight - window.innerHeight;
+        if (locoScroll.scroll.instance.limit.y < correct) {
+            locoScroll.scroll.instance.limit.y = correct;
+        }
+    };
+
     ScrollTrigger.addEventListener("refresh", () => {
         if (window._updateHorizontalHeight) window._updateHorizontalHeight();
         locoScroll.update();
+        fixLocoLimit();
     });
     ScrollTrigger.refresh();
 
@@ -1055,6 +1085,7 @@
     });
 
     </script>
+    <script src="Script/debug-mobile.js"></script>
 </body>
 
 </html>
