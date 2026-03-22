@@ -775,7 +775,6 @@ body.animations-ready .splitting .char {
   bottom: 0;
   margin: auto;
   z-index: -1 !important;
-  -webkit-animation: 3s ease 0s normal forwards 1 fadein;
   animation: 3s ease 0s normal forwards 1 fadein;
 }
 
@@ -862,6 +861,7 @@ body.animations-ready .splitting .char {
 }
 @media (max-width: 991.98px) {
   .item.txt {
+    width: -moz-fit-content;
     width: fit-content;
     min-width: 80vw;
   }
@@ -932,6 +932,4 @@ body.animations-ready .splitting .char {
 }
 .sticky-titles-section .separator {
   margin-bottom: 4rem;
-}
-
-/*# sourceMappingURL=main.css.map */
+}/*# sourceMappingURL=main.css.map */
