@@ -19,6 +19,13 @@ body {
   font-family: 'Matahari', sans-serif;
   // Hide vertical scrollbar
   // overflow-y: hidden; <------------------------------------- modifica qui per sticky
+
+  // Blocca lo scroll mentre il preloader è attivo.
+  // Su Firefox Android il scroll-blocker div (touch-action:none) non è sufficiente
+  // perché non blocca lo scroll via barra/momentum. Rimosso da preloader.js.
+  &.is-loading {
+    overflow: hidden;
+  }
 }
 
 // ---- Pre loader ---- ---- ----
@@ -28,7 +35,10 @@ body {
   top: 0;
   left: 0;
   width: 100%;
-  height: 100%;
+  // height: 100% su position:fixed è imprevedibile su Firefox Android:
+  // può risolvere a 0 o all'altezza del contenuto invece che al viewport.
+  // 100vh è esplicito e affidabile su tutti i browser mobile.
+  height: 100vh;
   z-index: 100;
   display: flex;
   flex-direction: row;
