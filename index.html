@@ -941,12 +941,22 @@
     // Firefox mobile: Locomotive smooth scroll non funziona su Gecko mobile —
     // usa native scroll come fallback per garantire layout corretto su Firefox.
     const isFirefox = /firefox/i.test(navigator.userAgent);
-    const isMobileViewport = window.innerWidth <= 1024;
+    const isMobileViewport = window.matchMedia("(max-width: 767px)").matches;
     const useSmoothMobile = !(isFirefox && isMobileViewport);
+
+    // Fix mobile: nella sezione thanks, a fine pagina il parallax ha accumulato
+    // spostamenti grandi (K speed=12 → -164px, S speed=4 → -61px → spread 103px).
+    // Su mobile zerare i speed e affidarsi solo al CSS staircase (×0.73 ereditato
+    // da .hero h1 span) produce un'onda statica corretta, simile al desktop.
+    if (isMobileViewport) {
+        document.querySelectorAll(".thanks h1.title > span[data-scroll-speed]").forEach(function(el) {
+            el.setAttribute("data-scroll-speed", "0");
+        });
+    }
 
     const locoScroll = new LocomotiveScroll({
         el: document.querySelector(".smooth-scroll"),
-        smooth: true,
+        smooth: useSmoothMobile,
         lerp: 0.05,
         multiplier: 1,
         reloadOnContextChange: true,
@@ -963,6 +973,19 @@
 
     // Rende accessibile lo stato smooth al preloader (definito in <head>)
     window._locomotiveSmoothActive = useSmoothMobile;
+
+    // Fix mobile: window.innerHeight al momento dell'init di Locomotive è sbagliato —
+    // Firefox responsive mode non ha ancora applicato le dimensioni simulate (stesso bug
+    // di window.innerWidth). Locomotive calcola windowMiddle.y = innerHeight/2 sbagliato
+    // (es. 1594 invece di 398), causando transform enormi su tutti gli elementi con speed.
+    // Su window.load le dimensioni sono corrette: locoScroll.resize() le rilegge e
+    // ricalcola windowMiddle e le posizioni di tutti gli elementi.
+    // Il contenuto è ancora nascosto dal preloader, quindi l'utente non vede lo stato errato.
+    if (isMobileViewport) {
+        window.addEventListener('load', function() {
+            locoScroll.scroll.resize();
+        }, { once: true });
+    }
 
     // Blocca lo scroll virtuale solo in smooth mode — in native scroll (Firefox mobile)
     // è sufficiente body.is-loading { overflow: hidden } già applicato via CSS.
@@ -1038,9 +1061,21 @@
     // font custom e immagini caricano in modo asincrono dopo l'init, cambiando
     // scroll.scrollWidth e quindi totalScrollable. Se l'altezza della sezione
     // non viene ricalcolata, Locomotive esce dalla sezione troppo presto.
+    // Fix mobile: dopo ScrollTrigger.refresh() la sezione orizzontale ha
+    // l'altezza definitiva, ma Locomotive non aggiorna limit.y. La sezione
+    // .thanks (top ~10473px) risulta irraggiungibile. Forziamo il valore corretto.
+    const fixLocoLimit = () => {
+        if (!locoScroll.scroll || !locoScroll.scroll.instance) return;
+        const correct = document.documentElement.scrollHeight - window.innerHeight;
+        if (locoScroll.scroll.instance.limit.y < correct) {
+            locoScroll.scroll.instance.limit.y = correct;
+        }
+    };
+
     ScrollTrigger.addEventListener("refresh", () => {
         if (window._updateHorizontalHeight) window._updateHorizontalHeight();
         locoScroll.update();
+        fixLocoLimit();
     });
     ScrollTrigger.refresh();
 
