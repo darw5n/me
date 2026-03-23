@@ -39,10 +39,17 @@ body {
   // può risolvere a 0 o all'altezza del contenuto invece che al viewport.
   // 100vh è esplicito e affidabile su tutti i browser mobile.
   height: 100vh;
+  // 100svh (small viewport) esclude la chrome del browser (barra indirizzi + nav bar):
+  // evita che il contenuto vada dietro le barre del browser su mobile.
+  @supports (height: 100svh) {
+    height: 100svh;
+  }
   z-index: 100;
   display: flex;
   flex-direction: row;
   align-items: flex-end;
+  // padding-bottom per safe area (notch / barra gesture su iOS e Android)
+  padding-bottom: env(safe-area-inset-bottom);
   background-color: $black-dark; // fallback prima che il tema venga applicato
 }
 
