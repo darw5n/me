@@ -117,6 +117,15 @@ section.section {
   }
 
   justify-content: center;
+
+  // Su mobile speed=0: il title non si sposta con il parallax,
+  // il top: 2rem ereditato da .hero .title causerebbe overlap col paragrafo.
+  @media (max-width: 767.98px) {
+    .title {
+      top: 0;
+      margin-bottom: 2rem;
+    }
+  }
 }
 
 

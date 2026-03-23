@@ -944,6 +944,15 @@
     const isMobileViewport = window.matchMedia("(max-width: 767px)").matches;
     const useSmoothMobile = !(isFirefox && isMobileViewport);
 
+    // Fix mobile: nella sezione thanks, a fine pagina il parallax ha accumulato
+    // spostamenti grandi (K speed=12 → -164px, S speed=4 → -61px → spread 103px).
+    // Su mobile zerare i speed e affidarsi solo al CSS staircase (×0.73 ereditato
+    // da .hero h1 span) produce un'onda statica corretta, simile al desktop.
+    if (isMobileViewport) {
+        document.querySelectorAll(".thanks h1.title > span[data-scroll-speed]").forEach(function(el) {
+            el.setAttribute("data-scroll-speed", "0");
+        });
+    }
 
     const locoScroll = new LocomotiveScroll({
         el: document.querySelector(".smooth-scroll"),
@@ -1081,7 +1090,6 @@
     });
 
     </script>
-    <script src="Script/debug-mobile.js"></script>
 </body>
 
 </html>
