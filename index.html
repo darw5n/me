@@ -1089,6 +1089,11 @@
         }, 250);
     });
 
+    // Segnala al preloader che Locomotive e ScrollTrigger sono pronti.
+    // Su Android Firefox con CDN lenti, window.load può precedere questo punto —
+    // il preloader aspetta entrambi prima di completare.
+    window.dispatchEvent(new Event('pageReady'));
+
     </script>
 </body>
 

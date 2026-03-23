@@ -22,8 +22,37 @@
             : 1 - Math.pow(-2 * t + 2, 5) / 2;
     }
 
+    // isFullyLoaded diventa true solo quando ENTRAMBI i segnali arrivano:
+    // - window.load: tutte le risorse (inclusi CDN script) caricate
+    // - pageReady: lo script di init Locomotive ha finito di girare
+    // Fallback: se pageReady non arriva entro 10s, parte comunque.
+    var loadFired = false;
+    var pageReadyFired = false;
+    var fallbackTimer = null;
+
+    function checkReady() {
+        if (loadFired && pageReadyFired) {
+            isFullyLoaded = true;
+        }
+    }
+
     window.addEventListener('load', function () {
-        isFullyLoaded = true;
+        loadFired = true;
+        // Avvia il fallback: se pageReady non arriva entro 10s, procedi comunque
+        fallbackTimer = setTimeout(function () {
+            pageReadyFired = true;
+            checkReady();
+        }, 10000);
+        checkReady();
+    });
+
+    window.addEventListener('pageReady', function () {
+        pageReadyFired = true;
+        if (fallbackTimer) {
+            clearTimeout(fallbackTimer);
+            fallbackTimer = null;
+        }
+        checkReady();
     });
 
     function findElements() {
