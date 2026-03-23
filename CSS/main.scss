@@ -117,6 +117,15 @@ section.section {
   }
 
   justify-content: center;
+
+  // Su mobile speed=0: il title non si sposta con il parallax,
+  // il top: 2rem ereditato da .hero .title causerebbe overlap col paragrafo.
+  @media (max-width: 767.98px) {
+    .title {
+      top: 0;
+      margin-bottom: 2rem;
+    }
+  }
 }
 
 
@@ -156,6 +165,18 @@ section.section {
 
     &:nth-child(6) {
       top: -.3rem;
+    }
+
+    // Su mobile speed=0 rimuove il parallax: solo il CSS crea la scalinata.
+    // I valori in rem risultano proporzionalmente più grandi rispetto al desktop
+    // (font mobile ~96px, rem=17.5px → ratio 18.2% vs 13.3% desktop).
+    // Fattore ×0.73 riporta le proporzioni al valore corretto.
+    @media (max-width: 767.98px) {
+      &:nth-child(2) { top: .73rem; }
+      &:nth-child(3) { top: -.44rem; }
+      &:nth-child(4) { top: .37rem; }
+      &:nth-child(5) { top: .95rem; }
+      &:nth-child(6) { top: -.22rem; }
     }
   }
 
@@ -399,6 +420,7 @@ body.animations-ready .splitting .char {
 .image-container {
   position: relative;
 
+  
   & img {
     // position: absolute;
     display: block;
