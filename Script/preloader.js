@@ -69,6 +69,14 @@
     }
 
     function complete() {
+        // Primo update mentre il preloader copre ancora tutto:
+        // window.load è già scattato, quindi le risorse ci sono.
+        // Serve per avere le posizioni degli elementi pronte prima che
+        // l'utente veda la pagina (evita parallax rotto al primo scroll).
+        if (typeof locoScroll !== 'undefined') {
+            locoScroll.update();
+        }
+
         setTimeout(function () {
             gsap.to('#preloader', {
                 y: '100%',
@@ -81,7 +89,8 @@
             gsap.to('#page-content', {
                 opacity: 1,
                 duration: 0.5,
-                delay: 0.3,
+                // delay rimosso: il contenuto parte insieme al preloader che scivola via,
+                // evita il flash di sfondo noise tra le due animazioni
                 onStart: function () {
                     // Rimuove l'overlay blocca-scroll
                     var blocker = document.getElementById('scroll-blocker');
@@ -97,15 +106,13 @@
                     document.body.classList.add('animations-ready');
 
                     if (typeof locoScroll === 'undefined') return;
-                    // Aspetta che i font siano applicati al layout prima di ricalcolare.
-                    // Su Firefox, i font non vengono misurati mentre il contenuto è a
-                    // opacity:0, causando offset parallax sbagliati (translateY -1096px ecc).
-                    document.fonts.ready.then(function () {
-                        locoScroll.update();
-                        if (typeof ScrollTrigger !== 'undefined') {
-                            ScrollTrigger.refresh();
-                        }
-                    });
+                    // Secondo update dopo che il contenuto è a opacity:1:
+                    // su Firefox i font non vengono misurati a opacity:0,
+                    // questo corregge gli offset parallax.
+                    locoScroll.update();
+                    if (typeof ScrollTrigger !== 'undefined') {
+                        ScrollTrigger.refresh();
+                    }
                 }
             });
         }, 200);
