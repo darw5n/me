@@ -426,10 +426,18 @@ body.is-loading {
   left: 0;
   width: 100%;
   height: 100vh;
+}
+@supports (height: 100svh) {
+  #preloader {
+    height: 100svh;
+  }
+}
+#preloader {
   z-index: 100;
   display: flex;
   flex-direction: row;
   align-items: flex-end;
+  padding-bottom: env(safe-area-inset-bottom);
   background-color: #161616;
 }
 
@@ -942,5 +950,3 @@ body.animations-ready .splitting .char {
 .sticky-titles-section .separator {
   margin-bottom: 4rem;
 }
-
-/*# sourceMappingURL=main.css.map */
