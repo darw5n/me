@@ -1,11 +1,21 @@
-function rot13(s) {
-    return s.replace(/[a-zA-Z]/g, function(c) {
-        var base = c <= 'Z' ? 65 : 97;
-        return String.fromCharCode(((c.charCodeAt(0) - base + 13) % 26) + base);
-    });
-}
+// Email obfuscation — anti-Googlebot
+// La mail viene costruita da CSS (content: attr()), non da JS al load.
+// Il link mailto viene aggiunto solo al primo click, così Googlebot
+// (che esegue JS ma non simula click utente) non indicizza l'indirizzo.
 
-var encoded = "qnejva.irture@tznvy.pbz";
-var email = rot13(encoded);
-var element = document.getElementById("email");
-element.innerHTML = '<a href="mailto:' + email + '">' + email + '</a>';
+(function () {
+    var el = document.querySelector('.obf-email');
+    if (!el) return;
+
+    el.addEventListener('click', function handler() {
+        var address = el.getAttribute('data-a') + '@' + el.getAttribute('data-b');
+        var link = document.createElement('a');
+        link.href = 'mailto:' + address;
+        link.style.display = 'none';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        // Rimuove il listener dopo il primo click
+        el.removeEventListener('click', handler);
+    }, { once: true });
+})();
