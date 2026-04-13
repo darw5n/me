@@ -46,6 +46,20 @@
 
 
 
+// --- Email obfuscation (anti-Googlebot) ---- ---- ----
+// Il testo viene generato via CSS content: Google non indicizza
+// i valori generati da content:, quindi la mail non appare nei snippet.
+// Il mailto link viene aggiunto via JS solo al click (email.js).
+
+.obf-email {
+  cursor: pointer;
+  transition: color .5s ease-in-out;
+
+  &::before {
+    content: attr(data-a) "\0040" attr(data-b);
+  }
+}
+
 // --- Noise background ---- ---- ----
 
 .bg {
