@@ -40,7 +40,8 @@
 
   // --- Link ---- ---- ----
   a,
-  footer a {
+  footer a,
+  .obf-email {
     color: $primary-color-dark-500;
 
     &:active,
