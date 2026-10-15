@@ -102,27 +102,35 @@ bisogna chiamare `locoScroll.update()` per ricalcolare le altezze.
 ## Strategia branch e commit
 
 ```
-main              ← produzione stabile
-update-2026       ← branch di integrazione ATTIVO (merge da tutti i fix/feat)
-update-2025       ← branch legacy, non usare per nuovo lavoro
-fix-preloader     ← esempio branch fix
-fix-firefox-mobile
-feat-something
+main              ← produzione: il push su main pubblica il sito
+fix-<cosa>        ← un branch per ogni richiesta, nasce da main
+feat-<cosa>
 ```
 
-- Branch di lavoro: `fix-<cosa>` per bug, `feat-<cosa>` per nuove funzionalità
-- Ogni branch nasce da `update-2026` e viene mergiato su `update-2026`
-- `update-2026` → `main` solo quando tutto è verificato e testato
-- **Non eseguire mai `git merge` senza conferma esplicita dell'utente** — prima mostrare il riepilogo del branch e aspettare il via libera
+- Branch di lavoro: `fix-<cosa>` per bug, `feat-<cosa>` per nuove funzionalità. Nascono da `main` e tornano su `main`.
+- `update-2026` è stato unito in `main` il 13/04/2026 e non esiste più; `update-2025` è legacy, non usarlo.
+- **Non eseguire mai `git merge` o `git push` senza conferma esplicita dell'utente** — prima mostrare il riepilogo del branch e aspettare il via libera
 - Anno e data si leggono dalla data del commit, non serve nel nome del branch
-- Nota: Git non permette `update-2026/fix-*` perché `update-2026` esiste già come ref
+- Non includere nei commit i `.DS_Store` né `Script/debug-mobile.js` (file locali di Darwin)
+
+## Testi del sito
+I testi su Darwin (titolo, intro, esperienze, strumenti) seguono la cartella `~/Documents/GitHub/storytelling/`
+(fonte dei fatti: `strategia/fatti.md`). Se cambi un testo qui, controlla che sia coerente con quella cartella.
+Il sito è **pubblico**: niente link al portfolio privato.
+
+- **Fav tools:** le icone sono quelle delle app macOS, in `Img/Logo/apps/` (96×96 PNG). Per estrarne una nuova:
+  `sips -s format png -z 96 96 "/Applications/<App>.app/Contents/Resources/<icona>.icns" --out Img/Logo/apps/<nome>.png`
+  (il nome del file `.icns` è in `Contents/Info.plist`, chiave `CFBundleIconFile`). `alt=""` perché il nome è già scritto accanto.
+- **Footer:** "© August 2022" resta così: è l'anno di creazione del sito (scelta di Darwin).
 
 ---
 
 ## Note SCSS
 
 - Editare sempre i file `_*.scss`, mai `main.css` direttamente
-- Dopo aver salvato un partial, ricompilare: `sass CSS/main.scss CSS/main.css`
+- Dopo aver salvato un partial, ricompilare: `sass CSS/main.scss CSS/main.css` (o `npx sass …` se `sass` non è installato)
+- Il `main.css` in repo era compilato con autoprefixer (es. `width: -moz-fit-content`): la CLI sass non aggiunge i
+  prefissi, quindi dopo la compilazione controlla il diff e rimetti quelli spariti
 - `main.css` è nel repo per compatibilità (nessun build step in produzione),
   ma non va editato manualmente
 
