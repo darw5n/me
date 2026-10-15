@@ -459,13 +459,14 @@ body.animations-ready .splitting .char {
     flex-wrap: wrap;
     gap: 2rem;
     // gap: 3.02rem;
-    justify-content: space-evenly;
+    justify-content: flex-start;
     padding-left: 0px;
 
     li {
       display: flex;
       gap: .75rem;
-      flex: 1 1 12rem; // <--- da rivedere
+      // 3 colonne fisse: con 8 strumenti l'ultima riga resta allineata alla griglia invece di allargarsi
+      flex: 0 1 calc((100% - 4rem) / 3);
 
       @media (max-width: 767.98px) {
         flex: 1 1 45%;
@@ -473,19 +474,16 @@ body.animations-ready .splitting .char {
     }
   }
 
+  // icone delle app (macOS): hanno già il loro sfondo, quindi niente cerchio e dimensione piena
   .logo {
-    min-width: 1.5rem;
-    height: 1.5rem;
-    background: #ffffff3d;
-    border-radius: 100%;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    flex: 0 0 2rem;
+    width: 2rem;
+    height: 2rem;
 
     img {
-      max-width: 60%;
-      max-height: 60%;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
     }
   }
 }
