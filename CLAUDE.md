@@ -1,5 +1,9 @@
 # CLAUDE.md — Istruzioni per il progetto "me" (sito personale)
 
+> **Questo file è pubblico** (il repo `darw5n/me` è pubblico). Niente dati personali, password, informazioni
+> prese da Goldfish o dettagli di lavoro qui o in `.claude/`. È escluso dal sito con `_config.yml`, ma resta
+> leggibile su GitHub.
+
 ## Contesto del progetto
 
 Sito personale / portfolio di Darwin. Progetto vanilla: HTML + SCSS + JavaScript.

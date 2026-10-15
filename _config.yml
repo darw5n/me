@@ -1,0 +1,5 @@
+# GitHub Pages (Jekyll): file del repo che non devono finire sul sito pubblico.
+# Restano visibili nel codice su GitHub, ma non su darw.it.
+exclude:
+  - CLAUDE.md
+  - README.md
