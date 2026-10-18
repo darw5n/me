@@ -119,7 +119,7 @@ feat-<cosa>
 
 ## Testi del sito
 I testi su Darwin (titolo, intro, esperienze, strumenti) seguono la cartella `~/Documents/GitHub/storytelling/`
-(fonte dei fatti: `strategia/fatti.md`). Se cambi un testo qui, controlla che sia coerente con quella cartella.
+(fonte dei fatti: `strategy/facts.md`). Se cambi un testo qui, controlla che sia coerente con quella cartella.
 Il sito è **pubblico**: niente link al portfolio privato.
 
 - **Fav tools:** le icone sono quelle delle app macOS, in `Img/Logo/apps/` (96×96 PNG). Per estrarne una nuova:
