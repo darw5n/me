@@ -868,10 +868,59 @@
 }
 
 // ---- Books ------------------------------------------------------------------------
-// A real cover, with a hint of spine on the left and the thickness of the pages below.
-.book {
-  position: relative;
+// Drawn, not photographed: each spine borrows the colours and the type of its real cover.
+.book-stack {
   display: block;
+
+  svg {
+    width: 100%;
+    height: auto;
+    overflow: visible;
+    filter: drop-shadow(0 3px 2px rgba(0, 0, 0, 0.35)) drop-shadow(4px 10px 10px rgba(0, 0, 0, 0.25));
+  }
+
+  .book-stack__serif {
+    font: 400 12px var(--font-text);
+  }
+
+  .book-stack__sans {
+    font: 500 13px var(--font-ui);
+  }
+
+  .book-stack__bold {
+    font: 700 14px var(--font-ui);
+    letter-spacing: 0.02em;
+  }
+
+  .book-stack__tight {
+    letter-spacing: -0.01em;
+  }
+
+  .book-stack__hand {
+    font: 400 20px var(--font-chalk);
+  }
+
+  .book-stack__small {
+    font-size: 9.5px;
+  }
+
+  // A long title on a narrow spine
+  .book-stack__long {
+    font-size: 10px;
+  }
+}
+
+// The Italian Dream, the book being read: white cover, red serif title, AMERICAN struck out
+.italian-dream {
+  position: relative;
+  display: grid;
+  align-content: start;
+  aspect-ratio: 2 / 3;
+  padding: 0.9em 0.9em 0.8em 1.1em;
+  background:
+    linear-gradient(90deg, rgba(0, 0, 0, 0.14) 0 5px, rgba(255, 255, 255, 0.6) 5px 7px, transparent 7px),
+    #fbfaf6;
+  color: #1d1d1b;
   border-radius: 2px 5px 5px 2px;
   box-shadow:
     0 1px 0 #e8e4d8,
@@ -879,27 +928,46 @@
     0 4px 2px rgba(0, 0, 0, 0.35),
     6px 14px 18px -8px rgba(0, 0, 0, 0.55);
 
-  img {
-    width: 100%;
-    border-radius: inherit;
+  &__author {
+    font: 400 1.2rem/1 var(--font-text);
+    letter-spacing: 0.02em;
   }
 
-  // Spine fold
-  &::before {
-    content: "";
-    position: absolute;
-    inset: 0 auto 0 0;
-    width: 9px;
-    border-radius: 2px 0 0 2px;
-    background: linear-gradient(90deg, rgba(0, 0, 0, 0.28), rgba(255, 255, 255, 0.18) 60%, transparent);
-    pointer-events: none;
+  &__title {
+    margin-top: 0.45em;
+    font: 400 1.25rem/1.02 var(--font-text);
+    color: #c8202a;
   }
 
-  // "Reading now": a strip of tape across the bottom corner, clear of title and author
-  .book__note {
+  // AMERICAN, in black, crossed out in red
+  &__crossed {
+    position: relative;
+    width: max-content;
+    color: #1d1d1b;
+
+    &::after {
+      content: "";
+      position: absolute;
+      left: 34%;
+      top: 50%;
+      width: 26%;
+      height: 2px;
+      background: #c8202a;
+      transform: rotate(-35deg);
+    }
+  }
+
+  &__subtitle {
+    margin-top: 0.6em;
+    font: italic 400 0.75rem/1.1 var(--font-text);
+    color: #6a6a66;
+  }
+
+  // "Reading now": a strip of tape across the bottom corner
+  &__note {
     position: absolute;
     z-index: 2;
-    bottom: 14px;
+    bottom: 16px;
     left: -18px;
     padding: 0.25em 0.8em;
     background: var(--tape);
@@ -910,8 +978,7 @@
     transform: rotate(-6deg);
   }
 
-  // A ribbon bookmark coming out of the pages
-  .book__ribbon {
+  &__ribbon {
     position: absolute;
     right: 22px;
     bottom: -16px;
@@ -924,8 +991,9 @@
 
 @include mouse {
   @include motion-ok {
-    .item:hover .book {
-      --ly: -5px;
+    .item:hover .italian-dream,
+    .item:hover .book-stack {
+      --ly: -4px;
     }
   }
 }

@@ -307,22 +307,58 @@
         </div>
 
 
-        <!-- BOOKS: the essays Darwin has read, the one he is reading, and the Vignelli Canon.
-             Covers from Open Library (English editions; The Italian Dream exists only in Italian). -->
-        <div class="item" data-cluster="words" data-at="0,470" data-width="128" data-rotate="-4" data-material="prop">
-          <div class="item__body book"><img src="Img/books/thinking-fast-and-slow.webp" alt="Thinking, Fast and Slow by Daniel Kahneman, the cover" width="386" height="500" draggable="false"></div>
+        <!-- BOOKS: a stack of what Darwin has read (and the Vignelli Canon), and the book he is reading.
+             Drawn here, in the colours and type of the real covers (English editions). -->
+        <div class="item" data-cluster="words" data-at="0,470" data-width="300" data-rotate="-2" data-material="prop">
+          <div class="item__body book-stack">
+            <svg viewBox="0 0 300 232" role="img" aria-label="A stack of books I have read: Thinking, Fast and Slow by Daniel Kahneman; Rich Dad Poor Dad by Robert T. Kiyosaki; How to Be Everything by Emilie Wapnick; and The Vignelli Canon by Massimo Vignelli">
+              <!-- Thinking, Fast and Slow: cream, spaced serif capitals, a yellow pencil -->
+              <g transform="translate(14 2) rotate(-1.5 130 22)">
+                <rect width="262" height="42" rx="3" fill="#f6f2e8"/><rect y="36" width="262" height="6" rx="3" fill="#000" fill-opacity=".07"/>
+                <text x="14" y="26" class="book-stack__serif book-stack__long" fill="#1d1d1b" letter-spacing=".6">THINKING, FAST AND SLOW</text>
+                <path d="M171 21h7" stroke="#f2b632" stroke-width="4"/><path d="M178 21h3" stroke="#e8c9a0" stroke-width="4"/><path d="M169 21h2" stroke="#e98a8a" stroke-width="4"/>
+                <text x="250" y="27" text-anchor="end" class="book-stack__serif book-stack__small" fill="#1d1d1b" letter-spacing=".6">KAHNEMAN</text>
+              </g>
+              <!-- Rich Dad Poor Dad: purple, bold yellow and white -->
+              <g transform="translate(4 46) rotate(1 140 22)">
+                <rect width="282" height="44" rx="3" fill="#5a2a86"/><rect y="38" width="282" height="6" rx="3" fill="#000" fill-opacity=".2"/>
+                <text x="14" y="29" class="book-stack__bold" fill="#ffd21f">RICH DAD</text>
+                <text x="96" y="29" class="book-stack__sans" fill="#fff">POOR DAD</text>
+                <text x="268" y="28" text-anchor="end" class="book-stack__serif book-stack__small" fill="#fff" letter-spacing=".8">KIYOSAKI</text>
+              </g>
+              <!-- How to Be Everything: charcoal, a yellow scribble burst, the title half handwritten -->
+              <g transform="translate(10 92) rotate(-.8 135 22)">
+                <rect width="270" height="44" rx="3" fill="#2a2a29"/><rect y="38" width="270" height="6" rx="3" fill="#000" fill-opacity=".25"/>
+                <path d="M104 12l8 20 6-22 8 24 6-24 8 24 8-22 8 22 8-20 8 18" fill="none" stroke="#f3e42b" stroke-width="3" stroke-linejoin="round" stroke-linecap="round" opacity=".55"/>
+                <text x="14" y="28" class="book-stack__bold book-stack__tight" fill="#fff">HOW TO BE</text>
+                <text x="112" y="30" class="book-stack__hand" fill="#fff6a8">Everything</text>
+                <text x="258" y="28" text-anchor="end" class="book-stack__sans book-stack__small" fill="#fff" letter-spacing="1.2">WAPNICK</text>
+              </g>
+              <!-- The Vignelli Canon: red-orange, white sans capitals -->
+              <g transform="translate(0 138) rotate(1.2 145 26)">
+                <rect width="290" height="50" rx="3" fill="#ee4e22"/><rect y="44" width="290" height="6" rx="3" fill="#000" fill-opacity=".18"/>
+                <text x="16" y="31" class="book-stack__bold" fill="#fff" letter-spacing="1.5">THE VIGNELLI CANON</text>
+              </g>
+              <!-- The stack sits on a last, thick book seen from the side: just pages -->
+              <g transform="translate(8 190) rotate(-.5 140 18)">
+                <rect width="276" height="36" rx="3" fill="#ebe5d6"/><path d="M6 8h264M6 14h264M6 20h264M6 26h264" stroke="#cfc7b2" stroke-width="1"/>
+              </g>
+            </svg>
+          </div>
         </div>
-        <div class="item" data-cluster="words" data-at="110,500" data-width="120" data-rotate="3" data-material="prop">
-          <div class="item__body book"><img src="Img/books/rich-dad-poor-dad.webp" alt="Rich Dad Poor Dad by Robert T. Kiyosaki, the cover" width="333" height="500" draggable="false"></div>
-        </div>
-        <div class="item" data-cluster="words" data-at="220,470" data-width="120" data-rotate="-2" data-material="prop">
-          <div class="item__body book"><img src="Img/books/how-to-be-everything.webp" alt="How to Be Everything by Emilie Wapnick, the cover" width="264" height="400" draggable="false"></div>
-        </div>
-        <div class="item" data-cluster="words" data-at="360,480" data-width="140" data-rotate="5" data-material="prop">
-          <div class="item__body book"><span class="book__note" aria-hidden="true">Reading now</span><span class="book__ribbon" aria-hidden="true"></span><img src="Img/books/the-italian-dream.webp" alt="The Italian Dream by Alec Ross, the cover. I am reading it now" width="315" height="500" draggable="false"></div>
-        </div>
-        <div class="item" data-cluster="work" data-at="790,40" data-width="150" data-rotate="3" data-material="prop">
-          <div class="item__body book"><img src="Img/books/the-vignelli-canon.webp" alt="The Vignelli Canon by Massimo Vignelli, the cover" width="352" height="500" draggable="false"></div>
+        <div class="item" data-cluster="words" data-at="330,470" data-width="170" data-rotate="5" data-material="prop">
+          <div class="item__body italian-dream" role="img" aria-label="The Italian Dream by Alec Ross: the book I am reading now">
+            <span class="italian-dream__author" aria-hidden="true">ALEC ROSS</span>
+            <span class="italian-dream__title" aria-hidden="true">
+              <span class="line">THE</span>
+              <span class="line italian-dream__crossed">AMERICAN</span>
+              <span class="line">ITALIAN</span>
+              <span class="line">DREAM</span>
+            </span>
+            <span class="italian-dream__subtitle" aria-hidden="true">Riprendersi il futuro</span>
+            <span class="italian-dream__note" aria-hidden="true">Reading now</span>
+            <span class="italian-dream__ribbon" aria-hidden="true"></span>
+          </div>
         </div>
 
         <!-- The phone: a Nothing Phone (3), transparent back, three cameras and the round dot-matrix

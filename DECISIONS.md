@@ -115,8 +115,9 @@ jumps came from width changes (text re-wrapping) and from objects disappearing a
 **Decision.** Pushpins join the tape: cards and the quote are pinned (red, yellow, blue,
 green heads), prints and sheets keep their tape. New objects, all drafts: a stack of three
 essays Darwin has read (Thinking, Fast and Slow; Rich Dad Poor Dad; How to Be Everything)
-and the one he is reading (The Italian Dream, Alec Ross), plus The Vignelli Canon. Real
-covers (Darwin's choice: the English editions; The Italian Dream exists only in Italian),
-downloaded from Open Library and kept in `Img/books/`; his Nothing Phone (3) and Nothing Headphone (1), as simplified drawings, not
+and the one he is reading (The Italian Dream, Alec Ross), plus The Vignelli Canon. Tried with
+the real covers, then back to a drawn stack (Darwin preferred it): each spine borrows the
+colours and type of its real English cover; The Italian Dream, drawn like its Italian cover
+(the only edition); his Nothing Phone (3) and Nothing Headphone (1), as simplified drawings, not
 product photos. They carry information, so they stay under Tidy up and have a text
 alternative.
