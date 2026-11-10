@@ -28,6 +28,39 @@
   }
 }
 
+// ---- Pushpin -------------------------------------------------------------------
+// A round plastic head with a highlight, pressed through the top of a card.
+.tack {
+  --tack: #e2361b;
+  position: absolute;
+  z-index: 2;
+  top: -9px;
+  left: 50%;
+  width: 22px;
+  height: 22px;
+  margin-left: -11px;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 35% 30%, rgba(255, 255, 255, 0.75) 0 3px, transparent 4px),
+    radial-gradient(circle at 50% 50%, var(--tack) 55%, color-mix(in srgb, var(--tack), #000 30%) 100%);
+  box-shadow:
+    0 2px 1px rgba(0, 0, 0, 0.35),
+    3px 6px 6px rgba(0, 0, 0, 0.3);
+  transition: transform 0.25s var(--ease-spring);
+
+  &--yellow {
+    --tack: #f5c518;
+  }
+
+  &--blue {
+    --tack: #3d6fd8;
+  }
+
+  &--green {
+    --tack: #2fa36b;
+  }
+}
+
 // ---- Paper note ----------------------------------------------------------------
 .paper {
   position: relative;
@@ -830,6 +863,81 @@
   @include motion-ok {
     .item:hover .prop:not(.prop--flat) {
       --ly: -3px;
+    }
+  }
+}
+
+// ---- Books ------------------------------------------------------------------------
+.book-stack {
+  .book-stack__title {
+    font: 500 13px var(--font-ui);
+  }
+
+  .book-stack__author {
+    font: italic 400 12px var(--font-text);
+  }
+}
+
+// The book being read: a cover drawn here (not the real one), with a ribbon bookmark
+.book-cover {
+  position: relative;
+  display: grid;
+  align-content: space-between;
+  gap: 0.4em;
+  aspect-ratio: 2 / 3;
+  padding: 1em 0.9em 1.1em 1.2em;
+  background:
+    linear-gradient(90deg, rgba(0, 0, 0, 0.22) 0 6px, rgba(255, 255, 255, 0.12) 6px 8px, transparent 8px),
+    linear-gradient(160deg, #0f5a4a, #0a3d33);
+  color: #f4f1e4;
+  border-radius: 2px 6px 6px 2px;
+  box-shadow:
+    0 2px 2px rgba(0, 0, 0, 0.3),
+    6px 14px 18px -8px rgba(0, 0, 0, 0.55);
+
+  &__label {
+    font: 500 0.72rem/1 var(--font-ui);
+    letter-spacing: 0.02em;
+    color: #9ee6cc;
+  }
+
+  &__title {
+    font: 500 1.25rem/1.02 var(--font-display);
+    letter-spacing: -0.01em;
+  }
+
+  &__author {
+    font: italic 400 0.9rem/1.1 var(--font-text);
+    color: #d8d4c4;
+  }
+
+  &__ribbon {
+    position: absolute;
+    right: 18px;
+    bottom: -14px;
+    width: 9px;
+    height: 30px;
+    background: var(--red);
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 80%, 0 100%);
+  }
+}
+
+// ---- Phone ------------------------------------------------------------------------
+// The round dot-matrix display glows softly, and lights up fully when the mouse passes over.
+.phone .phone__glyph {
+  filter: drop-shadow(0 0 1.5px rgba(255, 255, 255, 0.8));
+  opacity: 0.6;
+  transition: opacity 0.25s ease;
+}
+
+@include mouse {
+  .item:hover .phone .phone__glyph {
+    opacity: 1;
+  }
+
+  @include motion-ok {
+    .item:hover .tack {
+      transform: translateY(-1px) scale(1.06);
     }
   }
 }

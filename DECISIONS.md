@@ -109,3 +109,13 @@ grid, so text never re-wraps mid-flight. Chalk and props fade out instead of van
 
 **Why.** Darwin asked for an ease-in-out with a final bounce, smooth and without jumps. The
 jumps came from width changes (text re-wrapping) and from objects disappearing at once.
+
+## 2026-11-10 · More things on the desk
+
+**Decision.** Pushpins join the tape: cards and the quote are pinned (red, yellow, blue,
+green heads), prints and sheets keep their tape. New objects, all drafts: a stack of three
+essays Darwin has read (Thinking, Fast and Slow; Rich Dad Poor Dad; How to Be Everything)
+and the one he is reading (The Italian Dream, Alec Ross), with covers drawn here rather than
+the real ones; his Nothing Phone (3) and Nothing Headphone (1), as simplified drawings, not
+product photos. They carry information, so they stay under Tidy up and have a text
+alternative.
