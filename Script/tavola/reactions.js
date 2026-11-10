@@ -90,10 +90,13 @@ export const reactToTap = (item, target, rings, sound) => {
             rings.toggle(item.body);
     }
 };
-/** On a film strip the ring follows the mouse, and stays where the visitor clicked. */
-export const attachFilmHover = (root, rings) => {
-    if (!PENCIL_ENABLED)
-        return;
+/**
+ * On the film strip the red ring follows the mouse from frame to frame, like a
+ * pencil choosing on a contact sheet. Hover only (Darwin, 10/11/2026): it stays on
+ * even while the rest of the pencil is on hold. With the pencil on, a clicked
+ * frame keeps its ring.
+ */
+export const attachFilmHover = (root, _rings) => {
     root.querySelectorAll(".film a").forEach((frame) => {
         frame.addEventListener("pointerenter", (e) => {
             if (e.pointerType !== "mouse")
@@ -103,7 +106,7 @@ export const attachFilmHover = (root, rings) => {
             svg.classList.add("is-on");
         });
         frame.addEventListener("pointerleave", () => {
-            if (!frame.dataset["kept"])
+            if (!(PENCIL_ENABLED && frame.dataset["kept"]))
                 frame.querySelector(".ring")?.classList.remove("is-on");
         });
     });

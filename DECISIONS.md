@@ -95,3 +95,6 @@ promises is what the click does.
 little. `PENCIL_ENABLED = false` in `actions.ts` turns off both the pencil cursor and the
 ring (notes and cards now show the yellow open hand, like stickers). The code stays, ready
 to come back.
+The one exception: on the film strip the red ring follows the mouse from frame to frame
+(hover only), like a pencil choosing on a contact sheet. Clicking a frame opens it and
+leaves no ring.
