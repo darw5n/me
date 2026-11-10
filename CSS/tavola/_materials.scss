@@ -40,12 +40,14 @@
   height: 22px;
   margin-left: -11px;
   border-radius: 50%;
-  background:
-    radial-gradient(circle at 35% 30%, rgba(255, 255, 255, 0.75) 0 3px, transparent 4px),
-    radial-gradient(circle at 50% 50%, var(--tack) 55%, color-mix(in srgb, var(--tack), #000 30%) 100%);
-  box-shadow:
-    0 2px 1px rgba(0, 0, 0, 0.35),
-    3px 6px 6px rgba(0, 0, 0, 0.3);
+  // Flat, like the stickers: one solid head, a lighter flat top, hard edges, the
+  // same short shadow. No glossy highlight.
+  background: radial-gradient(
+    circle at 50% 50%,
+    color-mix(in srgb, var(--tack), #fff 28%) 0 5px,
+    var(--tack) 5.5px
+  );
+  box-shadow: 0 3px 3px rgba(0, 0, 0, 0.45);
   transition: transform 0.25s var(--ease-spring);
 
   &--yellow {

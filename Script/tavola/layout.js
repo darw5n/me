@@ -128,19 +128,23 @@ export const layoutMessy = (items, opts) => {
     });
     return { placements, bounds: union(placed), labels: new Map(), zoom };
 };
+/** Phone spacing: between objects side by side, between rows, between groups (about 3x). */
+const COLUMN_GAP = 20;
+const ROW_GAP = 28;
+const SECTION_GAP = 84;
 /**
  * Phone arrangement: objects flow in reading order. Items narrower than the
- * column share a row; the rest stack. Rotation is softened so text stays readable.
+ * column share a row; the rest stack; a new group starts on a new row, further
+ * down. Rotation is softened so text stays readable.
  */
 export const layoutColumn = (items, opts) => {
     const padding = opts.padding ?? 16;
     const width = opts.viewportWidth - padding * 2;
-    const gap = 14;
-    const rowGap = 22;
     const boxes = [];
     let x = padding;
     let y = opts.top ?? 24;
     let rowHeight = 0;
+    let cluster = null;
     for (const item of items) {
         let softened = { ...item, rotation: item.rotation * 0.6 };
         let r = rotatedBox(softened.size, softened.rotation);
@@ -149,17 +153,19 @@ export const layoutColumn = (items, opts) => {
             softened = { ...softened, rotation: 0 };
             r = rotatedBox(softened.size, 0);
         }
-        if (x > padding && x + r.w > padding + width + 0.5) {
+        const newGroup = cluster !== null && item.cluster !== cluster;
+        cluster = item.cluster;
+        if (x > padding && (newGroup || x + r.w > padding + width + 0.5)) {
             x = padding;
-            y += rowHeight + rowGap;
+            y += rowHeight + (newGroup ? SECTION_GAP : ROW_GAP);
             rowHeight = 0;
         }
         const box = { item: softened, x, y, w: r.w, h: r.h };
         boxes.push(box);
-        x += r.w + gap;
+        x += r.w + COLUMN_GAP;
         rowHeight = Math.max(rowHeight, r.h);
     }
-    relax(boxes, 18, 8, true);
+    relax(boxes, ROW_GAP - 4, 10, true);
     const placements = new Map();
     for (const box of boxes)
         placements.set(box.item.id, placementFor(box, box.item.rotation));
@@ -169,13 +175,12 @@ export const layoutColumn = (items, opts) => {
  * A side lane is a little narrower than the screen, so a swipe to the side still
  * shows a strip of the centre: the visitor knows where the way back is.
  */
-export const phoneLanes = (viewportWidth, padding = 16) => {
-    const side = Math.round(viewportWidth * 0.8);
-    const peek = 30;
+export const phoneLanes = (viewportWidth, padding = 20) => {
+    const side = Math.round(viewportWidth * 0.85);
+    // A thin edge, kept clear of the column: enough to show there is more.
+    const peek = Math.round(padding / 2);
     return { side, peek, laneWidth: side + peek - padding, width: side * 2 + viewportWidth };
 };
-/** Vertical gap between the extras of two groups in the same side lane. */
-const SIDE_GROUP_GAP = 40;
 /**
  * Phone, messy: the centre column is `layoutColumn` shifted right by one side
  * lane. The extras of each group start level with the group's first object in the
@@ -213,23 +218,36 @@ export const layoutPhone = (items, opts) => {
                     : lanes.side + vw - lanes.peek + p.x;
                 placements.set(item.id, { ...p, x });
             }
-            free = flow.bounds.y + flow.bounds.h + SIDE_GROUP_GAP;
+            free = flow.bounds.y + flow.bounds.h + SECTION_GAP;
         }
     }
     return { placements, bounds: boundsOf(items, placements), labels: new Map(), zoom: 1 };
 };
 /** Grid used by "Tidy up"; also tells the DOM which widths to apply before measuring. */
-export const tidyGrid = (viewportWidth) => {
+export const tidyGrid = (viewportWidth, phonePadding = 20) => {
     const narrow = viewportWidth < NARROW_BREAKPOINT;
-    const width = narrow ? viewportWidth - 32 : Math.max(1000, viewportWidth - 120);
-    const gap = narrow ? 14 : 26;
-    const columns = narrow ? 1 : clamp(Math.round(width / 330), 3, 8);
-    return { columns, gap, x0: narrow ? 16 : 60, width, columnWidth: (width - gap * (columns - 1)) / columns };
+    const width = narrow ? viewportWidth - phonePadding * 2 : Math.max(1000, viewportWidth - 120);
+    const gap = narrow ? 16 : 26;
+    // Phone: two columns, so narrow things (prints, slides, links) sit side by side
+    const columns = narrow ? 2 : clamp(Math.round(width / 330), 3, 8);
+    return { columns, gap, x0: narrow ? phonePadding : 60, width, columnWidth: (width - gap * (columns - 1)) / columns };
+};
+/** Smallest scale an object may take to share a phone row under Tidy up. */
+const PHONE_HALF_MIN_SCALE = 0.66;
+/**
+ * Phone, Tidy up: an object that still reads well at half the column takes one
+ * of the two columns (scaled down if needed); anything wider takes the full row.
+ */
+export const phoneTidyFit = (naturalWidth, grid) => {
+    const half = grid.columnWidth;
+    if (naturalWidth * PHONE_HALF_MIN_SCALE <= half)
+        return { span: 1, scale: Math.min(1, half / naturalWidth) };
+    return { span: grid.columns, scale: Math.min(1, grid.width / naturalWidth) };
 };
 /** Width an item takes under "Tidy up". Stickers keep their natural width. */
 export const tidyWidth = (item, grid, naturalWidth) => {
-    // Stickers keep their size; on a phone (one column) everything keeps its width.
-    if (item.small || grid.columns === 1)
+    // Stickers keep their size.
+    if (item.small)
         return Math.min(grid.width, naturalWidth);
     const span = Math.min(grid.columns, item.span);
     return grid.columnWidth * span + grid.gap * (span - 1);
@@ -240,7 +258,7 @@ export const tidyWidth = (item, grid, naturalWidth) => {
  */
 export const layoutTidy = (items, opts) => {
     const grid = tidyGrid(opts.viewportWidth);
-    const narrow = grid.columns === 1;
+    const narrow = opts.viewportWidth < NARROW_BREAKPOINT;
     const placements = new Map();
     const labels = new Map();
     const placed = [];
@@ -292,7 +310,7 @@ export const layoutTidy = (items, opts) => {
             }
             y += rowHeight + grid.gap;
         }
-        y += narrow ? 26 : 44;
+        y += narrow ? 56 : 44;
     }
     return { placements, bounds: union(placed), labels, zoom: 1 };
 };

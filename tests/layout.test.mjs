@@ -134,8 +134,8 @@ for (const viewportWidth of [390, 1024, 1440, 2560]) {
   });
 }
 
-test("tidy grid is a single column on phones and 3 to 8 columns elsewhere", () => {
-  assert.equal(tidyGrid(390).columns, 1);
+test("tidy grid is two columns on phones and 3 to 8 columns elsewhere", () => {
+  assert.equal(tidyGrid(390).columns, 2);
   assert.equal(tidyGrid(1000).columns, 3);
   assert.ok(tidyGrid(3440).columns <= 8);
 });
@@ -152,15 +152,15 @@ for (const viewportWidth of [320, 390]) {
   test(`phone layout at ${viewportWidth} px: column in the centre screen, extras in their lanes, no overlaps within a lane`, () => {
     const vw = viewportWidth;
     const lanes = phoneLanes(vw);
-    const items = phoneSample.map((it) => ({ ...it, size: { w: Math.min(it.size.w, lanes.laneWidth, vw - 32), h: it.size.h } }));
-    const { placements } = layoutPhone(items, { viewportWidth: vw, padding: 16, top: 72 });
+    const items = phoneSample.map((it) => ({ ...it, size: { w: Math.min(it.size.w, lanes.laneWidth, vw - 40), h: it.size.h } }));
+    const { placements } = layoutPhone(items, { viewportWidth: vw, padding: 20, top: 72 });
     const byLane = { centre: [], left: [], right: [] };
     for (const it of items) {
       const r = rectOf(items, placements, it.id);
       const lane = it.lane ?? "centre";
       byLane[lane].push(r);
       if (lane === "centre") {
-        assert.ok(r.x >= lanes.side + 16 - 0.5 && r.x + r.w <= lanes.side + vw - 16 + 0.5, `${it.id} leaves the column`);
+        assert.ok(r.x >= lanes.side + 20 - 0.5 && r.x + r.w <= lanes.side + vw - 20 + 0.5, `${it.id} leaves the column`);
       } else if (lane === "left") {
         assert.ok(r.x >= -0.5, `${it.id} falls off the left edge`);
         assert.ok(r.x + r.w > lanes.side && r.x + r.w <= lanes.side + lanes.peek + 0.5, `${it.id} does not peek into the centre`);
@@ -178,9 +178,28 @@ for (const viewportWidth of [320, 390]) {
 }
 
 test("phone layout: extras start level with their group in the column", () => {
-  const { placements } = layoutPhone(phoneSample, { viewportWidth: 390, padding: 16, top: 72 });
+  const { placements } = layoutPhone(phoneSample, { viewportWidth: 390, padding: 20, top: 72 });
   const folderY = rectOf(phoneSample, placements, "folder").y;
   const work1Y = rectOf(phoneSample, placements, "work-1").y;
   assert.ok(work1Y >= folderY - 20, "work extras start above their group");
+});
+
+test("phone column: a new group starts further down than the next row of the same group", () => {
+  const items = [
+    item("a", "one", { x: 0, y: 0 }, { w: 300, h: 100 }),
+    item("b", "one", { x: 0, y: 0 }, { w: 300, h: 100 }),
+    item("c", "two", { x: 0, y: 0 }, { w: 300, h: 100 }),
+  ];
+  const { placements } = layoutColumn(items, { viewportWidth: 390, padding: 20, top: 0 });
+  const rowGap = placements.get("b").y - (placements.get("a").y + 100);
+  const sectionGap = placements.get("c").y - (placements.get("b").y + 100);
+  assert.ok(sectionGap >= rowGap * 2, `section gap ${sectionGap} is not at least twice the row gap ${rowGap}`);
+});
+
+test("phone side lanes stay clear of the column", () => {
+  for (const vw of [320, 390, 430]) {
+    const lanes = phoneLanes(vw);
+    assert.ok(lanes.peek < 20, "side objects would touch the column");
+  }
 });
 

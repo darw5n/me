@@ -16,7 +16,7 @@ import {
   measure, positionOf, readItems, rectOf, render, setWidth, toLayoutItem, type TableItem,
 } from "./items.js";
 import {
-  NARROW_BREAKPOINT, layoutMessy, layoutPhone, layoutTidy, phoneLanes, tidyGrid, tidyWidth,
+  NARROW_BREAKPOINT, layoutMessy, layoutPhone, layoutTidy, phoneLanes, phoneTidyFit, tidyGrid, tidyWidth,
 } from "./layout.js";
 import { attachFilmHover, createRings, reactToTap, type Rings } from "./reactions.js";
 import type { Sound } from "./sound.js";
@@ -42,7 +42,7 @@ export interface BoardCallbacks {
 /** Screen padding kept around the content by "See all". */
 const SEE_ALL_PADDING = { x: 40, top: 58, bottom: 76 };
 /** Column padding on a phone, and where the column starts (below the fixed corner). */
-const PHONE_PADDING = 16;
+const PHONE_PADDING = 20;
 const PHONE_TOP = 72;
 /** Scale range for objects fitted to the Tidy up grid. */
 const TIDY_SCALE_MIN = 0.72;
@@ -182,11 +182,19 @@ export class Board {
     if (this.mode === "tidy") {
       // Fit each object to its grid column with a uniform scale, kept within a range
       // where text stays comfortable to read.
-      const grid = tidyGrid(vw);
+      const grid = tidyGrid(vw, PHONE_PADDING);
       const scaled = sized.map((li, i) => {
         const item = this.items[i]!;
-        if (!this.narrow) item.scale = clamp(tidyWidth(li, grid, li.size.w) / li.size.w, TIDY_SCALE_MIN, TIDY_SCALE_MAX);
-        return { ...li, size: { w: li.size.w * item.scale, h: li.size.h * item.scale } };
+        let span = li.span;
+        if (!this.narrow) {
+          item.scale = clamp(tidyWidth(li, grid, li.size.w) / li.size.w, TIDY_SCALE_MIN, TIDY_SCALE_MAX);
+        } else if (!li.small) {
+          // Phone: half a row or the whole row (see phoneTidyFit)
+          const fit = phoneTidyFit(li.size.w, grid);
+          span = fit.span;
+          item.scale = fit.scale;
+        }
+        return { ...li, span, size: { w: li.size.w * item.scale, h: li.size.h * item.scale } };
       });
       const tidy = layoutTidy(scaled, { viewportWidth: vw, groupOrder: this.config.groups.map(([id]) => id) });
       return this.narrow ? shiftX(tidy, phoneLanes(vw, PHONE_PADDING).side) : tidy;
