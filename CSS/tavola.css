@@ -1332,7 +1332,7 @@ html.has-cursor .cursor {
   overflow: visible;
   max-width: none;
 }
-.cursor[data-state=hand] .cursor__open, .cursor[data-state=object] .cursor__open, .cursor[data-state=fist] .cursor__fist, .cursor[data-state=pen] .cursor__pen {
+.cursor[data-state=hand] .cursor__open, .cursor[data-state=grab] .cursor__open, .cursor[data-state=fist] .cursor__fist, .cursor[data-state=pen] .cursor__pen, .cursor[data-state=lens] .cursor__lens, .cursor[data-state=go] .cursor__go {
   display: block;
 }
 .cursor .cursor__open,
@@ -1344,28 +1344,36 @@ html.has-cursor .cursor {
   color: var(--chalk);
   transition: transform 0.14s var(--ease-spring);
 }
-.cursor[data-state=object] .cursor__open {
+.cursor[data-state=grab] .cursor__open {
   color: var(--yellow);
   transform: scale(1.14);
 }
 .cursor .cursor__fist {
   color: var(--yellow);
+  transform: scale(1.06);
 }
 .cursor .cursor__pen {
   width: 40px;
   height: 40px;
   left: -2px;
   top: -2px;
-  transition: transform 0.14s var(--ease-spring);
-  transform-origin: 2px 2px;
 }
-.cursor.is-down .cursor__pen {
-  transform: scale(0.86) rotate(-6deg);
+.cursor .cursor__lens {
+  width: 40px;
+  height: 40px;
+  left: -15px;
+  top: -15px;
+}
+.cursor .cursor__go {
+  width: 34px;
+  height: 34px;
+  left: -17px;
+  top: -17px;
 }
 .cursor .cursor__label {
   position: absolute;
-  left: 30px;
-  top: 30px;
+  left: 26px;
+  top: 24px;
   display: none;
   white-space: nowrap;
   padding: 0.3em 0.7em;
@@ -1375,7 +1383,7 @@ html.has-cursor .cursor {
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
   transform: rotate(-2deg);
 }
-.cursor[data-state=pen] .cursor__label.is-on {
+.cursor[data-state=lens] .cursor__label.is-on, .cursor[data-state=go] .cursor__label.is-on {
   display: block;
 }
 

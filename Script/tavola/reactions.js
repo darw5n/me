@@ -5,6 +5,7 @@
  * revealed with a dash offset, so it looks hand-drawn. It is redrawn when the
  * object changes size (Tidy up, resize).
  */
+import { clickActionOf } from "./actions.js";
 const SVG_NS = "http://www.w3.org/2000/svg";
 /** A slightly wobbly ellipse in a 100×100 box, as control points. */
 const RING_POINTS = [
@@ -59,50 +60,33 @@ export const createRings = (sound) => ({
     },
 });
 /**
- * True for links that leave the table: another site, an email, a folder that
- * changes page. They are not marked: the visitor is going somewhere else.
- */
-const leavesTheTable = (target) => {
-    const link = target.closest("a[href]");
-    if (!link)
-        return false;
-    if (link.matches("[data-open], [data-email-user], [target=_blank]"))
-        return true;
-    const href = link.getAttribute("href") ?? "";
-    // A jump to another object: the ring goes on the destination, not here.
-    if (href.startsWith("#"))
-        return href.length > 1;
-    try {
-        const url = new URL(link.href);
-        return url.protocol !== "http:" && url.protocol !== "https:" ? true : url.origin !== location.origin && !link.hasAttribute("data-view");
-    }
-    catch {
-        return false;
-    }
-};
-/**
- * A tap on an object. Stickers bounce; links that leave the table are left
- * alone; everything else gets the ring (a link to a photo keeps it, so a
- * returning visitor sees what they already opened).
+ * A tap on an object, by what the click means there (actions.ts): links that
+ * leave the table are left alone; stickers bounce; photos keep their ring, so a
+ * returning visitor sees what they already opened; notes and cards toggle it.
  */
 export const reactToTap = (item, target, rings, sound) => {
-    if (leavesTheTable(target) || item.el.matches("[data-no-ring]"))
-        return;
-    if (item.material === "sticker") {
-        item.body.classList.remove("is-popping");
-        void item.body.offsetWidth; // restart the animation
-        item.body.classList.add("is-popping");
-        sound.play("press");
-        return;
+    switch (clickActionOf(target)) {
+        case "leave":
+        case "none":
+            return;
+        case "move":
+            if (item.material === "sticker") {
+                item.body.classList.remove("is-popping");
+                void item.body.offsetWidth; // restart the animation
+                item.body.classList.add("is-popping");
+                sound.play("press");
+            }
+            return;
+        case "view": {
+            const frame = target.closest(".film a");
+            if (frame)
+                frame.dataset["kept"] = "1";
+            rings.toggle(frame ?? item.body, true);
+            return;
+        }
+        case "ring":
+            rings.toggle(item.body);
     }
-    const frame = target.closest(".film a");
-    if (frame) {
-        frame.dataset["kept"] = "1";
-        rings.toggle(frame, true);
-        return;
-    }
-    const link = target.closest("a, button");
-    rings.toggle(item.body, link ? true : undefined);
 };
 /** On a film strip the ring follows the mouse, and stays where the visitor clicked. */
 export const attachFilmHover = (root, rings) => {

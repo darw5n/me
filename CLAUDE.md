@@ -45,6 +45,7 @@ src/tavola/             ← sorgenti TypeScript, un modulo per compito
   camera.ts             ← camera: spostamento, zoom, voli animati (tavolo infinito)
   input.ts              ← puntatori (sposta tavolo/oggetti, pressione lunga col dito, pizzico), rotella, tastiera
   board.ts              ← regia: arrangiamenti, cartelle, salti tra oggetti, fuoco da tastiera
+  actions.ts            ← cosa fa il clic in un punto (view, leave, ring, move): lo usano cursore e reazioni
   reactions.ts          ← cerchio a matita (mai sui link che portano fuori), rimbalzo degli adesivi
   cursor.ts controls.ts backgrounds.ts sound.ts preloader.ts viewer.ts email.ts
   main.ts               ← avvio
@@ -76,8 +77,10 @@ restano alcune immagini che usava solo lui (loghi, copertine di libri e dischi):
 - **Barra in basso** = tutti i comandi: Tidy up, See all, zoom, sfondo (cerchio con il pattern), suono. Niente minimappa.
 - **Sfondi** (`data-surface` su `<html>`, salvato in localStorage): felt, slate, kraft, plum. Ogni preset definisce
   anche il colore del gesso, così il testo resta leggibile.
-- **Suoni** originali sintetizzati con Web Audio (nessun file, nessuna libreria), spenti di default. **Cursore** solo con mouse: mano, pugno, matita con etichetta
-  (`data-cursor="…"` sui link).
+- **Suoni** originali sintetizzati con Web Audio (nessun file, nessuna libreria), spenti di default. **Cursore** solo con mouse, annuncia cosa fa il clic
+  (`actions.ts`): mano aperta sul tavolo, penna sulle cose da cerchiare, lente su foto e schermate, freccia ↗ con
+  etichetta (`data-cursor="…"`) sui link che portano fuori, mano gialla su adesivi e oggetti; appena premi
+  diventa mano chiusa. Sulla barra in basso resta il cursore di sistema.
 
 ---
 

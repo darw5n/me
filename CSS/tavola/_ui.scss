@@ -196,13 +196,17 @@ html.has-cursor * {
     max-width: none; // the reset's max-width: 100% would squash it to zero inside a sizeless parent
   }
 
+  // One drawing per state (cursor.ts): what a click will do, or the hand that carries
   &[data-state="hand"] .cursor__open,
-  &[data-state="object"] .cursor__open,
+  &[data-state="grab"] .cursor__open,
   &[data-state="fist"] .cursor__fist,
-  &[data-state="pen"] .cursor__pen {
+  &[data-state="pen"] .cursor__pen,
+  &[data-state="lens"] .cursor__lens,
+  &[data-state="go"] .cursor__go {
     display: block;
   }
 
+  // Hands: the hot spot is the palm
   .cursor__open,
   .cursor__fist {
     width: 32px;
@@ -213,32 +217,46 @@ html.has-cursor * {
     transition: transform 0.14s var(--ease-spring);
   }
 
-  &[data-state="object"] .cursor__open {
+  // On a sticker or a prop: yellow, a little bigger, ready to grab
+  &[data-state="grab"] .cursor__open {
     color: var(--yellow);
     transform: scale(1.14);
   }
 
   .cursor__fist {
     color: var(--yellow);
+    transform: scale(1.06);
   }
 
+  // Pencil: the hot spot is the tip
   .cursor__pen {
     width: 40px;
     height: 40px;
     left: -2px;
     top: -2px;
-    transition: transform 0.14s var(--ease-spring);
-    transform-origin: 2px 2px;
   }
 
-  &.is-down .cursor__pen {
-    transform: scale(0.86) rotate(-6deg);
+  // Magnifier: the hot spot is the centre of the lens
+  .cursor__lens {
+    width: 40px;
+    height: 40px;
+    left: -15px;
+    top: -15px;
   }
 
+  // Arrow out of a disc: the hot spot is the centre
+  .cursor__go {
+    width: 34px;
+    height: 34px;
+    left: -17px;
+    top: -17px;
+  }
+
+  // A strip of tape next to the cursor, saying where the link goes
   .cursor__label {
     position: absolute;
-    left: 30px;
-    top: 30px;
+    left: 26px;
+    top: 24px;
     display: none;
     white-space: nowrap;
     padding: 0.3em 0.7em;
@@ -249,7 +267,8 @@ html.has-cursor * {
     transform: rotate(-2deg);
   }
 
-  &[data-state="pen"] .cursor__label.is-on {
+  &[data-state="lens"] .cursor__label.is-on,
+  &[data-state="go"] .cursor__label.is-on {
     display: block;
   }
 }

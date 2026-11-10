@@ -80,3 +80,13 @@ rings) and a roll of film by the photos, which tell something; a paper clip, an 
 coffee ring, which are only atmosphere (Darwin's choice: "anche qualche decorativo"). They
 move like everything else, disappear under Tidy up, are hidden from screen readers and never
 get the ring (`data-no-ring`). To be reviewed one at a time with the other objects.
+
+## 2026-11-10 · The cursor says what a click does
+
+**Decision.** (Darwin's idea.) The cursor changes with the action: pencil where a click draws
+the ring, magnifier on photos and screens, an arrow with a taped label on links that leave
+the table, a yellow open hand on things that can only be moved, an open hand on the empty
+table. Pressing the button on anything turns it into a closed hand at once, before any
+movement: that is how every object shows it can be carried. The bottom bar keeps the
+system cursor. Cursor and reactions read the same rules (`actions.ts`), so what the cursor
+promises is what the click does.
