@@ -55,9 +55,9 @@ Font/Antonia Circular HaveHeart   ← licenze da verificare (Darwin) prima di an
 Img/work/               ← copertine dei progetti usate come anteprime
 ```
 
-File del sito precedente (Locomotive, accordion, tema chiaro/scuro: `CSS/main.scss`, `Script/*.js` fuori da
-`tavola/`, `Font/Matahari`, `Font/Nognathy`, `sticky.html`, `script-funzionante.js`, `dissolvenza-base.js`)
-non sono più usati da `index.html`: si tolgono quando Darwin dà l'ok.
+Il sito precedente (Locomotive, accordion, tema chiaro/scuro, font Matahari e Nognathy) è stato tolto il
+10/11/2026 con l'ok di Darwin: è nella storia git prima del commit "chore: remove the previous site". In `Img/`
+restano alcune immagini che usava solo lui (loghi, copertine di libri e dischi): da ripulire quando la Tavola è completa.
 
 ---
 
