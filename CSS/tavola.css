@@ -1117,6 +1117,25 @@ body.is-leaving .curtain {
     transform: rotate(calc(var(--rot, 0deg) + 2deg));
   }
 }
+.prop {
+  display: block;
+}
+.prop svg {
+  width: 100%;
+  height: auto;
+  overflow: visible;
+  filter: drop-shadow(0 3px 2px rgba(0, 0, 0, 0.4));
+}
+.prop--flat svg {
+  filter: none;
+  mix-blend-mode: multiply;
+}
+
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .item:hover .prop:not(.prop--flat) {
+    --ly: -3px;
+  }
+}
 .item h1,
 .item h3,
 .item b,

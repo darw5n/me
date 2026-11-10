@@ -72,3 +72,11 @@ new tab)" for screen readers) and never get the red pencil ring: the ring means 
 this here". Each profile is a different object (business card, tape strip, luggage tag,
 label-maker tape, enamel pins, ticket, postage stamp). Vimeo and CodePen, linked on the old
 site, are left out for now (to be confirmed by Darwin).
+
+## 2026-11-10 · Props on the desk
+
+**Decision.** A few objects with no content, as drafts: the red pencil (the tool of the
+rings) and a roll of film by the photos, which tell something; a paper clip, an eraser and a
+coffee ring, which are only atmosphere (Darwin's choice: "anche qualche decorativo"). They
+move like everything else, disappear under Tidy up, are hidden from screen readers and never
+get the ring (`data-no-ring`). To be reviewed one at a time with the other objects.

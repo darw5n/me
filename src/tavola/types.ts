@@ -86,4 +86,5 @@ export type Material =
   | "tag"
   | "label"
   | "ticket"
-  | "stamp";
+  | "stamp"
+  | "prop";

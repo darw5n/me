@@ -57,7 +57,7 @@ const number = (value: string | undefined, fallback: number): number => {
 
 const MATERIALS: ReadonlySet<string> = new Set([
   "paper", "print", "postit", "folder", "strip", "film", "slide", "card", "sticker", "chalk",
-  "pin", "tag", "label", "ticket", "stamp",
+  "pin", "tag", "label", "ticket", "stamp", "prop",
 ]);
 
 const materialOf = (el: HTMLElement): Material => {

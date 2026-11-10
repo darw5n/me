@@ -825,6 +825,32 @@
   }
 }
 
+// ---- Props: things lying on the desk ------------------------------------------------
+.prop {
+  display: block;
+
+  svg {
+    width: 100%;
+    height: auto;
+    overflow: visible;
+    filter: drop-shadow(0 3px 2px rgba(0, 0, 0, 0.4));
+  }
+
+  // Stains are in the surface, not on it: no shadow, and they blend with the mat
+  &--flat svg {
+    filter: none;
+    mix-blend-mode: multiply;
+  }
+}
+
+@include mouse {
+  @include motion-ok {
+    .item:hover .prop:not(.prop--flat) {
+      --ly: -3px;
+    }
+  }
+}
+
 // ---- Text: no orphans -------------------------------------------------------------
 // Short blocks are balanced; longer ones avoid a single word on the last line.
 // Where a browser ignores these (older Firefox), the HTML ties the last two words
