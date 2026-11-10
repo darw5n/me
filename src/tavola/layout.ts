@@ -276,14 +276,14 @@ export interface TidyGrid {
 export const tidyGrid = (viewportWidth: number, phonePadding = 20): TidyGrid => {
   const narrow = viewportWidth < NARROW_BREAKPOINT;
   const width = narrow ? viewportWidth - phonePadding * 2 : Math.max(1000, viewportWidth - 120);
-  const gap = narrow ? 16 : 26;
+  const gap = narrow ? 24 : 26;
   // Phone: two columns, so narrow things (prints, slides, links) sit side by side
   const columns = narrow ? 2 : clamp(Math.round(width / 330), 3, 8);
   return { columns, gap, x0: narrow ? phonePadding : 60, width, columnWidth: (width - gap * (columns - 1)) / columns };
 };
 
 /** Smallest scale an object may take to share a phone row under Tidy up. */
-const PHONE_HALF_MIN_SCALE = 0.66;
+const PHONE_HALF_MIN_SCALE = 0.64;
 
 /**
  * Phone, Tidy up: an object that still reads well at half the column takes one
@@ -327,7 +327,7 @@ export const layoutTidy = (items: LayoutItem[], opts: TidyOptions): LayoutResult
     const members = items.filter((i) => i.group === group && !i.decoration);
     if (members.length === 0) continue;
     labels.set(group, { x: grid.x0, y });
-    y += narrow ? 54 : 68; // room for the chalk label
+    y += narrow ? 62 : 68; // room for the chalk label
 
     const heights = Array<number>(grid.columns).fill(y);
     for (const item of members.filter((i) => !i.small)) {
@@ -366,7 +366,7 @@ export const layoutTidy = (items: LayoutItem[], opts: TidyOptions): LayoutResult
       }
       y += rowHeight + grid.gap;
     }
-    y += narrow ? 56 : 44;
+    y += narrow ? 76 : 44;
   }
   return { placements, bounds: union(placed), labels, zoom: 1 };
 };
