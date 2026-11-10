@@ -634,14 +634,23 @@
 // ---- Chalk ---------------------------------------------------------------------
 .chalk {
   color: var(--chalk);
-  font: 400 2.5rem / 1 var(--font-chalk);
+  font: 400 3.25rem / 1 var(--font-chalk);
   filter: url(#chalk);
   pointer-events: none;
   text-shadow: 0 1px 0 var(--chalk-shadow);
 
   &--small {
-    font-size: 1.9rem;
+    font-size: 2.5rem;
     white-space: nowrap;
+  }
+
+  // On a phone the column is narrow: a step smaller, still well above the text
+  @include narrow {
+    font-size: 2.6rem;
+
+    &--small {
+      font-size: 2rem;
+    }
   }
 }
 

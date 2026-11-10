@@ -987,14 +987,22 @@ body.is-leaving .curtain {
 
 .chalk {
   color: var(--chalk);
-  font: 400 2.5rem/1 var(--font-chalk);
+  font: 400 3.25rem/1 var(--font-chalk);
   filter: url(#chalk);
   pointer-events: none;
   text-shadow: 0 1px 0 var(--chalk-shadow);
 }
 .chalk--small {
-  font-size: 1.9rem;
+  font-size: 2.5rem;
   white-space: nowrap;
+}
+@media (max-width: 899px) {
+  .chalk {
+    font-size: 2.6rem;
+  }
+  .chalk--small {
+    font-size: 2rem;
+  }
 }
 
 .chalk-drawing {
@@ -1480,7 +1488,7 @@ body.is-leaving .curtain {
   margin: 0;
   transform: translateX(-50%);
   white-space: nowrap;
-  font-size: clamp(1.5rem, 2.4vw, 2rem);
+  font-size: clamp(1.9rem, 3vw, 2.6rem);
   transition: opacity 0.3s;
 }
 body.has-moved .hint {
@@ -1618,7 +1626,7 @@ html.has-cursor .cursor {
   transition: opacity 0.6s var(--ease-out);
 }
 .preloader .chalk {
-  font-size: clamp(2rem, 3vw, 3rem);
+  font-size: clamp(2.6rem, 4vw, 3.9rem);
   animation: breathe 1.6s ease-in-out infinite;
 }
 html.is-ready .preloader {

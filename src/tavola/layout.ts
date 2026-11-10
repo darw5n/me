@@ -248,7 +248,7 @@ export const layoutTidy = (items: LayoutItem[], opts: TidyOptions): LayoutResult
     const members = items.filter((i) => i.group === group && !i.decoration);
     if (members.length === 0) continue;
     labels.set(group, { x: grid.x0, y });
-    y += narrow ? 46 : 54;
+    y += narrow ? 54 : 68; // room for the chalk label
 
     const heights = Array<number>(grid.columns).fill(y);
     for (const item of members.filter((i) => !i.small)) {

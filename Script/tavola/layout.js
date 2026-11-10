@@ -199,7 +199,7 @@ export const layoutTidy = (items, opts) => {
         if (members.length === 0)
             continue;
         labels.set(group, { x: grid.x0, y });
-        y += narrow ? 46 : 54;
+        y += narrow ? 54 : 68; // room for the chalk label
         const heights = Array(grid.columns).fill(y);
         for (const item of members.filter((i) => !i.small)) {
             const span = Math.min(grid.columns, item.span);
