@@ -1,21 +1,19 @@
 /**
- * The board: owns the objects, the arrangement, the table size and the camera,
- * and decides what happens when the visitor moves, tidies or opens something.
+ * The board: owns the objects, the arrangement and the camera, and decides what
+ * happens when the visitor moves, tidies or opens something.
  *
  * Two shapes, chosen by window width (NARROW_BREAKPOINT):
- * - desktop: a fixed viewport over a finite, very large table; pan and zoom;
+ * - desktop: a fixed viewport over an infinite table; pan and zoom;
  * - phone: the table is as wide as the screen, the page scrolls vertically.
  */
 import { CameraController } from "./camera.js";
-import { inflate, union } from "./geometry.js";
+import { union, viewportSize } from "./geometry.js";
 import { measure, positionOf, readItems, rectOf, render, setWidth, toLayoutItem, } from "./items.js";
 import { NARROW_BREAKPOINT, layoutColumn, layoutMessy, layoutTidy, tidyGrid, tidyWidth, } from "./layout.js";
-import { createMinimap } from "./minimap.js";
 import { attachFilmHover, createRings, reactToTap } from "./reactions.js";
-import { grownToInclude, renderTable, tableFor } from "./table.js";
 /** Screen padding kept around the content by "See all". */
 const SEE_ALL_PADDING = { x: 40, top: 58, bottom: 76 };
-/** Column padding on a phone, and where the column starts (below the fixed corners). */
+/** Column padding on a phone, and where the column starts (below the fixed corner). */
 const PHONE_PADDING = 16;
 const PHONE_TOP = 72;
 /** Zoom the camera flies to when entering a folder. */
@@ -30,11 +28,8 @@ export class Board {
     mode = "messy";
     narrow = false;
     camera;
-    minimap;
     rings;
     labels = new Map();
-    table = { x: 0, y: 0, w: 0, h: 0 };
-    content = { x: 0, y: 0, w: 0, h: 0 };
     homeZoom = 1;
     zCounter = 40;
     /** Once the visitor has panned or dragged, a relayout keeps the camera still. */
@@ -51,8 +46,11 @@ export class Board {
             world: el.world,
             reducedMotion,
             onChange: (c) => {
+                // The surface pattern on the view follows the camera, so the table feels endless.
+                el.view.style.setProperty("--cam-x", `${c.x.toFixed(2)}px`);
+                el.view.style.setProperty("--cam-y", `${c.y.toFixed(2)}px`);
+                el.view.style.setProperty("--k", c.zoom.toFixed(4));
                 callbacks.onZoom?.(c.zoom);
-                this.minimap?.update();
             },
         });
         this.rings = createRings(sound);
@@ -64,15 +62,6 @@ export class Board {
             el.world.append(p);
             this.labels.set(id, p);
         }
-        this.minimap = el.minimap
-            ? createMinimap({
-                el: el.minimap,
-                items: this.items,
-                camera: this.camera,
-                arrangement: () => this.mode,
-                frame: () => inflate(this.contentRect(), 240),
-            })
-            : null;
         this.watchFocus();
         this.watchLinks();
     }
@@ -80,16 +69,13 @@ export class Board {
     get activeCamera() {
         return this.narrow ? null : this.camera;
     }
-    get viewport() {
-        return { w: window.innerWidth, h: window.innerHeight };
-    }
     /** Everything on the table, where it currently lies (drag offsets included). */
     contentRect() {
-        return union(this.items.map((i) => rectOf(i, this.mode)));
+        return union(this.items.filter((i) => !i.el.hidden).map((i) => rectOf(i, this.mode)));
     }
     /** Lays everything out again for the current window and arrangement. */
     relayout() {
-        this.narrow = window.innerWidth < NARROW_BREAKPOINT;
+        this.narrow = viewportSize().w < NARROW_BREAKPOINT;
         document.documentElement.classList.toggle("is-narrow", this.narrow);
         const result = this.runLayout();
         for (const item of this.items) {
@@ -108,13 +94,21 @@ export class Board {
             }
         }
         this.homeZoom = result.zoom;
-        this.content = this.contentRect();
-        this.updateTable();
+        if (this.narrow) {
+            this.el.world.style.transform = "";
+            this.el.view.style.removeProperty("--cam-x");
+            this.el.view.style.removeProperty("--cam-y");
+            this.el.view.style.removeProperty("--k");
+            const content = this.contentRect();
+            this.el.world.style.height = `${Math.round(content.y + content.h + 96)}px`;
+        }
+        else {
+            this.el.world.style.height = "";
+        }
         this.rings.refresh(this.el.world);
-        this.minimap?.update();
     }
     runLayout() {
-        const vw = window.innerWidth;
+        const vw = viewportSize().w;
         if (this.mode === "tidy") {
             const grid = tidyGrid(vw);
             for (const item of this.items)
@@ -134,21 +128,6 @@ export class Board {
         const sized = this.items.map((item) => toLayoutItem(item, measure(item)));
         return layoutMessy(sized, { viewportWidth: vw, clusterOrder: this.config.clusters });
     }
-    /** Sizes the table around the content and tells the camera where it may go. */
-    updateTable() {
-        if (this.narrow) {
-            this.el.world.style.transform = "";
-            this.table = { x: 0, y: 0, w: window.innerWidth, h: this.content.y + this.content.h + 80 };
-            this.el.world.style.height = `${Math.round(this.table.h)}px`;
-        }
-        else {
-            this.el.world.style.height = "";
-            const zoom = this.mode === "tidy" ? 1 : this.homeZoom;
-            this.table = tableFor(this.content, this.viewport, zoom);
-            this.camera.setBounds(this.table);
-        }
-        renderTable(this.el.table, this.table);
-    }
     /** Opening view of the current arrangement. */
     home(ms = 0) {
         if (this.narrow)
@@ -166,7 +145,8 @@ export class Board {
         const camera = this.activeCamera;
         if (!camera)
             return;
-        camera.zoomAt({ x: window.innerWidth / 2, y: window.innerHeight / 2 }, camera.state.zoom * factor);
+        const v = viewportSize();
+        camera.zoomAt({ x: v.w / 2, y: v.h / 2 }, camera.state.zoom * factor);
     }
     setArrangement(mode) {
         if (mode === this.mode)
@@ -176,7 +156,7 @@ export class Board {
         world.classList.add("is-animating");
         world.classList.toggle("is-tidy", mode === "tidy");
         this.relayout();
-        this.sound.play(mode === "tidy" ? "open" : "lift");
+        this.sound.play(mode === "tidy" ? "tidy" : "mess");
         setTimeout(() => world.classList.remove("is-animating"), 900);
         this.home(this.reducedMotion ? 0 : 620);
         if (this.narrow)
@@ -187,31 +167,20 @@ export class Board {
     toggleTidy() {
         this.setArrangement(this.mode === "tidy" ? "messy" : "tidy");
     }
-    /** Moves an object by a world delta; the table grows if it gets close to an edge. */
+    /** Moves an object by a world delta. On a phone it stays inside the column. */
     moveItem(item, delta) {
         const offset = item.offset[this.mode];
         offset.x += delta.x;
         offset.y += delta.y;
         if (this.narrow) {
-            // On a phone the object stays inside the column.
             const p = positionOf(item, this.mode);
-            const maxX = window.innerWidth - PHONE_PADDING - item.el.offsetWidth;
+            const maxX = viewportSize().w - PHONE_PADDING - item.el.offsetWidth;
             offset.x += Math.min(0, maxX - p.x) + Math.max(0, PHONE_PADDING - p.x);
             offset.y += Math.max(0, 8 - p.y);
         }
         render(item, this.mode);
         this.touched = true;
         document.body.classList.add("has-moved");
-        if (!this.narrow) {
-            const margin = Math.max(this.viewport.w, this.viewport.h) / this.camera.state.zoom / 2;
-            const grown = grownToInclude(this.table, rectOf(item, this.mode), margin);
-            if (grown !== this.table) {
-                this.table = grown;
-                this.camera.setBounds(grown);
-                renderTable(this.el.table, grown);
-            }
-        }
-        this.minimap?.update();
     }
     beginDrag(item) {
         item.el.style.setProperty("--z", String(++this.zCounter));
@@ -239,6 +208,10 @@ export class Board {
         this.relayout();
         this.home(0);
     }
+    centreOnItem(item, zoom = this.camera.state.zoom, ms = 420) {
+        const p = positionOf(item, this.mode);
+        return this.camera.centreOn({ x: p.x + item.el.offsetWidth / 2, y: p.y + item.el.offsetHeight / 2 }, zoom, ms);
+    }
     /** Keyboard users: the camera follows the focus, so nothing stays off screen. */
     watchFocus() {
         this.el.world.addEventListener("focusin", (e) => {
@@ -248,14 +221,13 @@ export class Board {
             if (!el)
                 return;
             const r = el.getBoundingClientRect();
-            const inside = r.left >= 20 && r.top >= 60 && r.right <= innerWidth - 20 && r.bottom <= innerHeight - 80;
+            const v = viewportSize();
+            const inside = r.left >= 20 && r.top >= 60 && r.right <= v.w - 20 && r.bottom <= v.h - 80;
             if (inside)
                 return;
             const item = this.items.find((i) => i.el === el);
-            if (!item)
-                return;
-            const p = positionOf(item, this.mode);
-            void this.camera.centreOn({ x: p.x + el.offsetWidth / 2, y: p.y + el.offsetHeight / 2 }, this.camera.state.zoom, 360);
+            if (item)
+                void this.centreOnItem(item, this.camera.state.zoom, 360);
         });
     }
     /** A link to `#id` of another object: the camera goes there and rings it. */
@@ -264,12 +236,10 @@ export class Board {
         if (!item)
             return false;
         this.rings.toggle(item.body, true);
-        if (this.narrow) {
+        if (this.narrow)
             item.el.scrollIntoView({ behavior: this.reducedMotion ? "auto" : "smooth", block: "center" });
-            return true;
-        }
-        const p = positionOf(item, this.mode);
-        void this.camera.centreOn({ x: p.x + item.el.offsetWidth / 2, y: p.y + item.el.offsetHeight / 2 }, Math.max(1, this.camera.state.zoom), 520);
+        else
+            void this.centreOnItem(item, Math.max(1, this.camera.state.zoom), 520);
         return true;
     }
     /** Folders (`a[data-open]`): the camera dives in, a curtain falls, then the page changes. */
@@ -296,10 +266,8 @@ export class Board {
             }
             document.body.classList.add("is-leaving");
             const item = this.items.find((i) => i.el.contains(link));
-            if (!this.narrow && item) {
-                const p = positionOf(item, this.mode);
-                void this.camera.centreOn({ x: p.x + item.el.offsetWidth / 2, y: p.y + item.el.offsetHeight / 2 }, ENTER_ZOOM, 520);
-            }
+            if (!this.narrow && item)
+                void this.centreOnItem(item, ENTER_ZOOM, 520);
             setTimeout(go, 560);
         });
         addEventListener("pageshow", (e) => {

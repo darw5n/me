@@ -4,9 +4,9 @@
  *
  * Expected markup (see index.html):
  *   <script type="application/json" id="table-config">{ "clusters": [...], "groups": [[id, label], ...] }</script>
- *   <div id="view"><div id="world"><div id="table"></div><main class="items">…</main></div></div>
+ *   <div id="view"><div id="world"><main class="items">…</main></div></div>
  *   toolbar buttons: #tidy #see-all #zoom-in #zoom-out #zoom-level #surface #sound
- *   optional: #minimap, #preloader
+ *   optional: #preloader
  */
 
 import { applySurface, currentSurface } from "./backgrounds.js";
@@ -14,6 +14,7 @@ import { Board, type BoardConfig } from "./board.js";
 import { attachControls } from "./controls.js";
 import { installCursor } from "./cursor.js";
 import { installEmailLinks } from "./email.js";
+import { viewportSize } from "./geometry.js";
 import { attachInput } from "./input.js";
 import { runPreloader } from "./preloader.js";
 import { createSound } from "./sound.js";
@@ -37,15 +38,14 @@ const readConfig = (): BoardConfig => {
 const boot = (): void => {
   const view = document.getElementById("view");
   const world = document.getElementById("world");
-  const table = document.getElementById("table");
-  if (!view || !world || !table) return;
+  if (!view || !world) return;
 
   const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
   applySurface(currentSurface().id);
   const sound = createSound();
 
   let controlsRef: ReturnType<typeof attachControls> | null = null;
-  const board = new Board({ view, world, table, minimap: document.getElementById("minimap") }, readConfig(), sound, reducedMotion, {
+  const board = new Board({ view, world }, readConfig(), sound, reducedMotion, {
     onArrangement: (mode) => controlsRef?.setTidy(mode === "tidy"),
     onZoom: (zoom) => controlsRef?.setZoom(zoom),
   });
@@ -87,9 +87,13 @@ const boot = (): void => {
   void runPreloader({ overlay: document.getElementById("preloader"), images, reducedMotion }).then(() => board.settle());
 
   let frame = 0;
-  let lastSize = `${innerWidth}x${innerHeight}`;
+  const sizeKey = (): string => {
+    const v = viewportSize();
+    return `${v.w}x${v.h}`;
+  };
+  let lastSize = sizeKey();
   addEventListener("resize", () => {
-    const size = `${innerWidth}x${innerHeight}`;
+    const size = sizeKey();
     if (size === lastSize) return;
     lastSize = size;
     cancelAnimationFrame(frame);

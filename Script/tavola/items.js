@@ -34,6 +34,7 @@ const number = (value, fallback) => {
 };
 const MATERIALS = new Set([
     "paper", "print", "postit", "folder", "strip", "film", "slide", "card", "sticker", "chalk",
+    "pin", "tag", "label", "ticket", "stamp",
 ]);
 const materialOf = (el) => {
     const m = el.dataset["material"];

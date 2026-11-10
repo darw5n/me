@@ -1,7 +1,16 @@
 /**
- * Small geometry helpers shared by the layout, the camera and the minimap.
+ * Small geometry helpers shared by the layout, the camera and the board.
  * All functions are pure.
  */
+/**
+ * Size of the visible page, without scrollbars. Not `innerWidth`: on phones the
+ * layout viewport grows when something pokes out, and a layout based on it would
+ * then grow the page further, a loop.
+ */
+export const viewportSize = () => ({
+    w: document.documentElement.clientWidth,
+    h: document.documentElement.clientHeight,
+});
 export const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
 export const lerp = (from, to, t) => from + (to - from) * t;
 /** Ease-out cubic, used for every camera flight. */

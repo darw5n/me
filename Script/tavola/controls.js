@@ -1,6 +1,6 @@
 /**
- * The toolbar under the thumb and the two corners: Tidy up, See all, zoom,
- * surface, sound. Pure wiring; the behaviour lives in the board.
+ * The floating bar under the thumb: Tidy up, See all, zoom, surface, sound.
+ * Every command of the table lives here. Pure wiring; the behaviour is in the board.
  */
 import { currentSurface, nextSurface } from "./backgrounds.js";
 const byId = (id) => document.getElementById(id);
@@ -19,11 +19,9 @@ export const attachControls = (host) => {
     });
     zoomIn?.addEventListener("click", () => host.zoomBy(1.25));
     zoomOut?.addEventListener("click", () => host.zoomBy(1 / 1.25));
+    // The surface button is a disc showing the current pattern; a click moves to the next one.
     const paintSurface = (s) => {
-        if (!surface)
-            return;
-        surface.textContent = s.label;
-        surface.setAttribute("aria-label", `Table surface: ${s.label}. Change it`);
+        surface?.setAttribute("aria-label", `Table surface: ${s.label}. Change it`);
     };
     paintSurface(currentSurface());
     surface?.addEventListener("click", () => {
@@ -34,7 +32,8 @@ export const attachControls = (host) => {
         if (!sound)
             return;
         sound.setAttribute("aria-pressed", String(host.sound.on));
-        sound.textContent = host.sound.on ? "Sound on" : "Sound off";
+        sound.setAttribute("aria-label", host.sound.on ? "Sound on. Turn it off" : "Sound off. Turn it on");
+        sound.classList.toggle("is-on", host.sound.on);
     };
     paintSound();
     sound?.addEventListener("click", () => {

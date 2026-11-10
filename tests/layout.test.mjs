@@ -89,6 +89,23 @@ for (const viewportWidth of [320, 360, 390, 430, 768]) {
   });
 }
 
+test("column layout never pushes a small object out of the screen", () => {
+  // Two stickers that share a row, then a tall one that collides with both:
+  // a sideways push would take it past the right edge.
+  const crowd = [
+    item("a", "x", { x: 0, y: 0 }, { w: 150, h: 60 }, { small: true }),
+    item("b", "x", { x: 0, y: 0 }, { w: 150, h: 200 }, { small: true }),
+    item("c", "x", { x: 0, y: 0 }, { w: 160, h: 120 }, { small: true, rotation: 8 }),
+    item("d", "x", { x: 0, y: 0 }, { w: 208, h: 90 }, { rotation: -3 }),
+  ];
+  const { placements } = layoutColumn(crowd, { viewportWidth: 320 });
+  for (const it of crowd) {
+    const r = rectOf(crowd, placements, it.id);
+    assert.ok(r.x + r.w <= 320 - 16 + 1.5, `${it.id} ends at ${Math.round(r.x + r.w)}`);
+  }
+  assertNoOverlaps(crowd, placements);
+});
+
 test("column layout keeps reading order top to bottom", () => {
   const narrowItems = sample.map((i) => ({ ...i, size: { w: Math.min(i.size.w, 390 - 32), h: i.size.h } }));
   const { placements } = layoutColumn(narrowItems, { viewportWidth: 390 });

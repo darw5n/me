@@ -3,7 +3,7 @@
  *
  * Desktop (camera present):
  * - mouse on an object: drag it (a click without movement is still a click);
- * - mouse on the table: pan, with a rubber band past the edges;
+ * - mouse on the table: pan (the table is infinite);
  * - finger on the table: pan; finger held on an object (380 ms): lift and drag;
  * - two fingers: pinch to zoom; wheel / trackpad: pan, with Ctrl or Cmd: zoom;
  * - keys: arrows pan, + and − zoom, 0 shows everything, T tidies up.
@@ -13,6 +13,7 @@
  */
 
 import type { CameraController } from "./camera.js";
+import { viewportSize } from "./geometry.js";
 import { itemAt, type TableItem } from "./items.js";
 import type { Sound } from "./sound.js";
 import type { Point } from "./types.js";
@@ -144,7 +145,7 @@ export const attachInput = (host: InputHost): (() => void) => {
     action.last = { x: e.clientX, y: e.clientY };
 
     if (action.kind === "pan") {
-      host.camera?.panBy(stepX, stepY, true);
+      host.camera?.panBy(stepX, stepY);
       return;
     }
 
@@ -171,8 +172,6 @@ export const attachInput = (host: InputHost): (() => void) => {
       item.body.style.setProperty("--tilt", "0deg");
       host.endDrag(item, moved);
       if (moved) host.sound.play("press");
-    } else if (action?.kind === "pan") {
-      host.camera?.settle();
     }
     view.classList.remove("is-panning");
     action = null;
@@ -213,7 +212,8 @@ export const attachInput = (host: InputHost): (() => void) => {
     if (target?.closest("dialog, input, textarea, select, [contenteditable]")) return;
     const camera = host.camera;
     const step = 90;
-    const centre = { x: innerWidth / 2, y: innerHeight / 2 };
+    const v = viewportSize();
+    const centre = { x: v.w / 2, y: v.h / 2 };
     switch (e.key) {
       case "ArrowLeft": camera?.panBy(step, 0); break;
       case "ArrowRight": camera?.panBy(-step, 0); break;

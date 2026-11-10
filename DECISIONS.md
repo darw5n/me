@@ -4,7 +4,7 @@ Log of design and architecture decisions that are not obvious from the code. New
 
 ## 2026-11-10 · The site becomes a table
 
-**Decision.** /me is rebuilt as "the table": a finite surface with real objects (notes held
+**Decision.** /me is rebuilt as "the table": an endless surface with real objects (notes held
 with tape, prints, post-its, folders, tape strips, chalk, stickers) that the visitor can move
 and tidy up. The portfolio will share the same engine.
 
@@ -15,10 +15,12 @@ up, the three-state cursor and the minimap were not found elsewhere: those are t
 push.
 
 **Rules agreed with Darwin.**
-- The table is finite, but always much larger than the window and the content (at least
-  3 windows each way, never less than the content plus a window of margin per side), so the
-  edge is rarely met; past it the camera gives way and springs back. It grows when an
-  object is carried near an edge.
+- The table is **infinite** (first built finite, then changed the same day: with a finite
+  table "See all" showed its edges, which looked wrong). The surface pattern is painted on
+  the viewport and follows the camera, so it never ends. "See all" frames the objects.
+- All commands live in one floating bar at the bottom: Tidy up, See all, zoom, surface
+  (a disc filled with the current pattern, a click moves to the next), sound. No minimap.
+- Sounds are original and synthesised with Web Audio: no files, no library.
 - On phones (< 900 px) the table is as wide as the screen and the page scrolls vertically.
   No camera. A long press lifts an object; it stays inside the column.
 - Every object can be moved, also under Tidy up (offsets are kept per arrangement).
@@ -53,3 +55,20 @@ with the subject already filled in.
 **Why.** The portfolio is private by link, not protected. A form lets a recruiter ask
 without a mail client and lets Darwin decide who gets the link. Note: `darw.it` DNS is on
 Aruba, not Cloudflare, so the email sending service is still to be chosen.
+
+## 2026-11-10 · Text on the table
+
+**Decision.** No orphans (a single word on the last line), anywhere. Clauses that must start
+a line are `<span class="line">`; CSS `text-wrap: balance / pretty`; and `&nbsp;` between
+the last two words of every multi-line text, because Firefox (Zen) does not apply `pretty`
+yet. Font sizes inside objects are fixed `rem`, not `vw`: objects have fixed sizes on the
+table, so text in `vw` wrapped differently on every screen. No authored inline styles: the
+only `style` values are those JavaScript writes at runtime (position, rotation, width).
+
+## 2026-11-10 · Links that leave the table
+
+**Decision.** Links to other sites and email open in a new tab (`rel="noopener"`, "(opens in a
+new tab)" for screen readers) and never get the red pencil ring: the ring means "I looked at
+this here". Each profile is a different object (business card, tape strip, luggage tag,
+label-maker tape, enamel pins, ticket, postage stamp). Vimeo and CodePen, linked on the old
+site, are left out for now (to be confirmed by Darwin).

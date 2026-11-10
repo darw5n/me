@@ -1,10 +1,12 @@
-// The table: viewport, world, surface, objects and their motion.
+// The table: viewport, world, objects and their motion.
 // Positions come from board.ts as --x/--y on `.item`; the body rotates with --rot.
+// The surface pattern of `.view` is in _surfaces.scss.
 
 @use "tokens" as *;
 
 .view {
   position: relative;
+  min-height: 100svh;
   outline: none;
 
   @include wide {
@@ -32,27 +34,6 @@
     width: 0;
     height: 0;
     will-change: transform;
-  }
-}
-
-// The finite surface. Its rectangle is in world px (table.ts).
-.table {
-  position: absolute;
-  left: var(--table-x, 0px);
-  top: var(--table-y, 0px);
-  width: var(--table-w, 100%);
-  height: var(--table-h, 100%);
-  z-index: var(--z-table);
-  box-shadow:
-    inset 0 0 0 2px var(--edge),
-    0 0 0 1px rgba(0, 0, 0, 0.35),
-    0 40px 120px rgba(0, 0, 0, 0.45);
-
-  @include narrow {
-    left: 0;
-    top: 0;
-    width: 100%;
-    box-shadow: none;
   }
 }
 
@@ -161,6 +142,9 @@ html:not(.is-ready) .item {
   overflow: visible;
   color: var(--red);
 
+  // A round cap is drawn even on a zero-length dash, which left a red dot on every
+  // object. The path stays invisible while erased: it appears at once when drawing
+  // starts and disappears only after the erasing stroke has run back.
   path {
     fill: none;
     stroke: currentColor;
@@ -169,11 +153,18 @@ html:not(.is-ready) .item {
     stroke-linejoin: round;
     stroke-dasharray: 1;
     stroke-dashoffset: 1;
-    transition: stroke-dashoffset 0.5s cubic-bezier(0.5, 0, 0.2, 1);
+    opacity: 0;
+    transition:
+      stroke-dashoffset 0.5s cubic-bezier(0.5, 0, 0.2, 1),
+      opacity 0s linear 0.5s;
   }
 
   &.is-on path {
     stroke-dashoffset: 0;
+    opacity: 1;
+    transition:
+      stroke-dashoffset 0.5s cubic-bezier(0.5, 0, 0.2, 1),
+      opacity 0s;
   }
 }
 

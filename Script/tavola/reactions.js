@@ -47,7 +47,7 @@ export const createRings = (sound) => ({
         svg.getBoundingClientRect(); // flush, so the stroke animates from zero on first draw
         const on = force ?? !had;
         svg.classList.toggle("is-on", on);
-        sound.play(on ? "press" : "lift");
+        sound.play(on ? "mark" : "lift");
         return on;
     },
     refresh(root) {
@@ -59,20 +59,42 @@ export const createRings = (sound) => ({
     },
 });
 /**
- * A tap on an object. Stickers bounce; links to other pages are left alone;
- * everything else gets the ring (a link keeps it, so a returning visitor sees
- * what they already opened).
+ * True for links that leave the table: another site, an email, a folder that
+ * changes page. They are not marked: the visitor is going somewhere else.
+ */
+const leavesTheTable = (target) => {
+    const link = target.closest("a[href]");
+    if (!link)
+        return false;
+    if (link.matches("[data-open], [data-email-user], [target=_blank]"))
+        return true;
+    const href = link.getAttribute("href") ?? "";
+    // A jump to another object: the ring goes on the destination, not here.
+    if (href.startsWith("#"))
+        return href.length > 1;
+    try {
+        const url = new URL(link.href);
+        return url.protocol !== "http:" && url.protocol !== "https:" ? true : url.origin !== location.origin && !link.hasAttribute("data-view");
+    }
+    catch {
+        return false;
+    }
+};
+/**
+ * A tap on an object. Stickers bounce; links that leave the table are left
+ * alone; everything else gets the ring (a link to a photo keeps it, so a
+ * returning visitor sees what they already opened).
  */
 export const reactToTap = (item, target, rings, sound) => {
-    if (item.material === "sticker") {
+    if (leavesTheTable(target) || item.el.matches("[data-no-ring]"))
+        return;
+    if (item.material === "sticker" || item.material === "pin") {
         item.body.classList.remove("is-popping");
         void item.body.offsetWidth; // restart the animation
         item.body.classList.add("is-popping");
         sound.play("press");
         return;
     }
-    if (target.closest("a[data-open], .labels"))
-        return;
     const frame = target.closest(".film a");
     if (frame) {
         frame.dataset["kept"] = "1";

@@ -49,7 +49,7 @@ export const installViewer = (root: ParentNode, sound: Sound): void => {
     opener = link;
     show(group.indexOf(link));
     dialog.showModal();
-    sound.play("open");
+    sound.play("lift");
   };
 
   root.addEventListener("click", (e) => {
@@ -72,7 +72,7 @@ export const installViewer = (root: ParentNode, sound: Sound): void => {
     if (e.target === dialog) dialog.close(); // on the backdrop
   });
   dialog.addEventListener("close", () => {
-    sound.play("close");
+    sound.play("press");
     image.removeAttribute("src");
     opener?.focus();
   });

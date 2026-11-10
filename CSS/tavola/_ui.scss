@@ -2,41 +2,18 @@
 
 @use "tokens" as *;
 
-// ---- Corners -----------------------------------------------------------------------
+// ---- Corner: the name, top left -------------------------------------------------------
 .corner {
   position: fixed;
   z-index: var(--z-ui);
   top: 6px;
+  left: 0;
   display: flex;
   align-items: center;
   min-height: 44px;
   color: var(--chalk);
   font: 500 0.95rem/1 var(--font-ui);
   padding-inline: 16px;
-
-  &--left {
-    left: 0;
-    gap: 14px;
-  }
-
-  &--right {
-    right: 0;
-    gap: 4px;
-  }
-
-  button,
-  a {
-    min-height: 44px;
-    display: inline-flex;
-    align-items: center;
-    padding-inline: 8px;
-    color: inherit;
-    border-radius: 8px;
-
-    &:hover {
-      background: rgba(0, 0, 0, 0.25);
-    }
-  }
 }
 
 // ---- Toolbar under the thumb ------------------------------------------------------------
@@ -55,7 +32,8 @@
   padding: 4px;
   font: 500 0.92rem/1 var(--font-ui);
   box-shadow: 0 10px 28px rgba(0, 0, 0, 0.4);
-  max-width: calc(100vw - 16px);
+  max-width: calc(100% - 16px);
+  white-space: nowrap;
 
   button {
     min-height: 44px;
@@ -91,6 +69,72 @@
     font-variant-numeric: tabular-nums;
   }
 
+  .controls__zoom {
+    display: contents;
+  }
+
+  // Thin divider between the table commands and the settings
+  .controls__gap {
+    width: 1px;
+    margin: 8px 4px;
+    background: #3a3a35;
+  }
+
+  // The surface button: a disc filled with the current pattern
+  .controls__surface {
+    padding-inline: 8px;
+
+    .swatch {
+      display: block;
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      box-shadow:
+        inset 0 0 0 1px rgba(255, 255, 255, 0.25),
+        0 0 0 2px #f4f1e4;
+      transition: transform 0.25s var(--ease-spring);
+    }
+
+    &:hover .swatch {
+      transform: scale(1.1) rotate(15deg);
+    }
+  }
+
+  // The sound button: a speaker; the waves appear when it is on, a cross when it is off
+  .controls__sound {
+    svg {
+      width: 24px;
+      height: 24px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .speaker {
+      fill: currentColor;
+    }
+
+    .wave {
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+
+    .mute {
+      opacity: 1;
+      transition: opacity 0.2s;
+    }
+
+    &.is-on .wave {
+      opacity: 1;
+    }
+
+    &.is-on .mute {
+      opacity: 0;
+    }
+  }
+
   @include narrow {
     font-size: 0.86rem;
 
@@ -102,34 +146,6 @@
     .controls__zoom {
       display: none;
     }
-  }
-}
-
-// ---- Minimap ------------------------------------------------------------------------
-.minimap {
-  position: fixed;
-  z-index: var(--z-ui);
-  right: 14px;
-  bottom: 14px;
-  width: 168px;
-  height: 112px;
-  background: rgba(0, 0, 0, 0.42);
-  border-radius: 8px;
-  overflow: hidden;
-  cursor: pointer;
-
-  i {
-    position: absolute;
-    background: rgba(244, 241, 228, 0.62);
-  }
-
-  b {
-    position: absolute;
-    box-shadow: inset 0 0 0 1.5px var(--yellow);
-  }
-
-  @include narrow {
-    display: none;
   }
 }
 
@@ -289,7 +305,7 @@ html.has-cursor * {
   z-index: var(--z-preloader);
   display: grid;
   place-content: center;
-  background: var(--void);
+  background: var(--mat);
   transition: opacity 0.6s var(--ease-out);
 
   .chalk {

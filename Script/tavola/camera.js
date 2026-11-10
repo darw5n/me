@@ -3,18 +3,14 @@
  *
  * screen = world * zoom + (x, y)
  *
- * The table is finite. The camera is allowed to see only the table: `bounds`
- * is the table rectangle in world px. While the visitor drags past an edge the
- * camera gives way a little (rubber band) and `settle()` brings it back.
+ * The table is infinite (decided with Darwin, 10/11/2026): the camera goes where
+ * the visitor takes it, and "See all" brings everything back into view.
  */
-import { clamp, easeOut, lerp } from "./geometry.js";
+import { clamp, easeOut, lerp, viewportSize } from "./geometry.js";
+const MIN_ZOOM = 0.1;
 const MAX_ZOOM = 2.5;
-/** How much of an over-pan is shown: 0 = hard wall, 1 = no limit. */
-const RUBBER = 0.35;
 export class CameraController {
     state = { x: 0, y: 0, zoom: 1 };
-    bounds = null;
-    minZoom = 0.1;
     frame = 0;
     world;
     onChange;
@@ -25,16 +21,7 @@ export class CameraController {
         this.reducedMotion = opts.reducedMotion;
     }
     get viewport() {
-        return { w: window.innerWidth, h: window.innerHeight };
-    }
-    /** The table the camera may look at. The minimum zoom lets the whole table fit. */
-    setBounds(rect) {
-        this.bounds = rect;
-        const v = this.viewport;
-        this.minZoom = Math.min(1, Math.min(v.w / rect.w, v.h / rect.h) * 0.9);
-    }
-    getBounds() {
-        return this.bounds;
+        return viewportSize();
     }
     /** Part of the world currently visible, in world px. */
     visibleRect() {
@@ -45,72 +32,40 @@ export class CameraController {
     screenToWorld(p) {
         return { x: (p.x - this.state.x) / this.state.zoom, y: (p.y - this.state.y) / this.state.zoom };
     }
-    /** Camera position clamped so that the viewport stays on the table. */
-    clamped(x, y, zoom) {
-        const b = this.bounds;
-        if (!b)
-            return { x, y };
-        const v = this.viewport;
-        const axis = (pos, start, length, view) => {
-            const scaled = length * zoom;
-            // A table smaller than the window is centred instead.
-            if (scaled <= view)
-                return (view - scaled) / 2 - start * zoom;
-            return clamp(pos, view - (start + length) * zoom, -start * zoom);
-        };
-        return { x: axis(x, b.x, b.w, v.w), y: axis(y, b.y, b.h, v.h) };
-    }
     commit() {
         const { x, y, zoom } = this.state;
         this.world.style.transform = `translate(${x.toFixed(2)}px, ${y.toFixed(2)}px) scale(${zoom.toFixed(4)})`;
         this.onChange?.(this.state);
     }
-    /** Jumps to a position; the camera is kept on the table. */
+    /** Jumps to a position. */
     set(x, y, zoom = this.state.zoom) {
         this.stop();
-        const z = clamp(zoom, this.minZoom, MAX_ZOOM);
-        const p = this.clamped(x, y, z);
-        this.state.x = p.x;
-        this.state.y = p.y;
-        this.state.zoom = z;
+        this.state.x = x;
+        this.state.y = y;
+        this.state.zoom = clamp(zoom, MIN_ZOOM, MAX_ZOOM);
         this.commit();
     }
-    /**
-     * Pans by a screen delta. With `soft` the camera may leave the table a little,
-     * with resistance, so a drag past the edge feels like a rubber band.
-     */
-    panBy(dx, dy, soft = false) {
+    /** Pans by a screen delta. */
+    panBy(dx, dy) {
         this.stop();
-        const target = { x: this.state.x + dx, y: this.state.y + dy };
-        const inside = this.clamped(target.x, target.y, this.state.zoom);
-        if (soft) {
-            this.state.x = inside.x + (target.x - inside.x) * RUBBER;
-            this.state.y = inside.y + (target.y - inside.y) * RUBBER;
-        }
-        else {
-            this.state.x = inside.x;
-            this.state.y = inside.y;
-        }
+        this.state.x += dx;
+        this.state.y += dy;
         this.commit();
     }
     /** Zooms around a screen point, so what is under the pointer stays there. */
     zoomAt(screen, zoom) {
         this.stop();
-        const z = clamp(zoom, this.minZoom, MAX_ZOOM);
+        const z = clamp(zoom, MIN_ZOOM, MAX_ZOOM);
         const { x, y, zoom: k } = this.state;
-        const nx = screen.x - ((screen.x - x) * z) / k;
-        const ny = screen.y - ((screen.y - y) * z) / k;
-        const p = this.clamped(nx, ny, z);
-        this.state.x = p.x;
-        this.state.y = p.y;
+        this.state.x = screen.x - ((screen.x - x) * z) / k;
+        this.state.y = screen.y - ((screen.y - y) * z) / k;
         this.state.zoom = z;
         this.commit();
     }
-    /** Animated flight. Honoured instantly under reduced motion. */
+    /** Animated flight. Instant under reduced motion. */
     flyTo(x, y, zoom, ms = 620) {
         this.stop();
-        const z = clamp(zoom, this.minZoom, MAX_ZOOM);
-        const to = { ...this.clamped(x, y, z), zoom: z };
+        const to = { x, y, zoom: clamp(zoom, MIN_ZOOM, MAX_ZOOM) };
         if (this.reducedMotion || ms <= 0) {
             Object.assign(this.state, to);
             this.commit();
@@ -135,13 +90,6 @@ export class CameraController {
             this.frame = requestAnimationFrame(step);
         });
     }
-    /** After a soft pan: glides back onto the table if the camera left it. */
-    settle() {
-        const p = this.clamped(this.state.x, this.state.y, this.state.zoom);
-        if (Math.abs(p.x - this.state.x) < 0.5 && Math.abs(p.y - this.state.y) < 0.5)
-            return;
-        void this.flyTo(p.x, p.y, this.state.zoom, 380);
-    }
     /** Frames a world rectangle with a screen padding on each side. */
     fitRect(rect, padding, ms = 620, maxZoom = 1) {
         const v = this.viewport;
@@ -150,7 +98,7 @@ export class CameraController {
         const y = padding.top + (v.h - padding.top - padding.bottom - rect.h * zoom) / 2 - rect.y * zoom;
         return this.flyTo(x, y, zoom, ms);
     }
-    /** Puts a world point at the centre of the screen, keeping the zoom. */
+    /** Puts a world point at the centre of the screen. */
     centreOn(p, zoom = this.state.zoom, ms = 420) {
         const v = this.viewport;
         return this.flyTo(v.w / 2 - p.x * zoom, v.h / 2 - p.y * zoom, zoom, ms);

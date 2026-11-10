@@ -36,7 +36,7 @@
   <!-- Layout configuration read by Script/tavola/main.js -->
   <script type="application/json" id="table-config">
     {
-      "clusters": ["about", "work", "path", "photos", "lab", "words", "ask"],
+      "clusters": ["about", "work", "path", "photos", "lab", "words", "ask", "elsewhere"],
       "groups": [
         ["about", "who"],
         ["path", "where I've been"],
@@ -45,6 +45,7 @@
         ["photos", "photos"],
         ["words", "off the clock"],
         ["ask", "your turn"],
+        ["elsewhere", "elsewhere"],
         ["pack", "sticker pack"]
       ]
     }
@@ -53,7 +54,7 @@
   <div id="preloader" class="preloader" aria-hidden="true"><p class="chalk">setting the table…</p></div>
 
   <!-- Chalk texture: grain plus a slight wobble, applied to writing and drawings -->
-  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <svg class="svg-defs" width="0" height="0" aria-hidden="true">
     <filter id="chalk" x="-5%" y="-5%" width="110%" height="110%">
       <feTurbulence type="fractalNoise" baseFrequency=".8" numOctaves="2" seed="4" result="noise"/>
       <feColorMatrix in="noise" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -1.5 1.72" result="mask"/>
@@ -63,36 +64,36 @@
     </filter>
   </svg>
 
-  <header class="corner corner--left">Darwin</header>
-  <div class="corner corner--right">
-    <button type="button" id="surface">Green felt</button>
-    <button type="button" id="sound" aria-pressed="false">Sound off</button>
-  </div>
-  <p class="hint chalk" aria-hidden="true">drag the table to look around</p>
+  <header class="corner">Darwin</header>
+  <p class="hint chalk" aria-hidden="true">drag the table, it keeps going</p>
 
+  <!-- Every command of the table, under the thumb -->
   <div class="controls" role="toolbar" aria-label="Table controls">
     <button type="button" id="tidy" class="controls__primary" aria-pressed="false">Tidy up</button>
     <button type="button" id="see-all">See all</button>
-    <span class="controls__zoom" style="display:contents">
+    <span class="controls__zoom">
       <button type="button" id="zoom-out" aria-label="Zoom out">−</button>
       <output id="zoom-level" aria-live="off">100%</output>
       <button type="button" id="zoom-in" aria-label="Zoom in">+</button>
     </span>
+    <i class="controls__gap" aria-hidden="true"></i>
+    <button type="button" id="surface" class="controls__surface" aria-label="Table surface. Change it"><span class="swatch" aria-hidden="true"></span></button>
+    <button type="button" id="sound" class="controls__sound" aria-pressed="false" aria-label="Sound off. Turn it on">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path class="speaker" d="M4 9v6h4l5 4V5L8 9H4z"/><path class="wave wave--1" d="M15.5 9.5a3.5 3.5 0 0 1 0 5"/><path class="wave wave--2" d="M17.5 7a7 7 0 0 1 0 10"/><path class="mute" d="M16 9.5l5 5M21 9.5l-5 5"/></svg>
+    </button>
   </div>
-  <div id="minimap" class="minimap" aria-hidden="true"></div>
   <div class="curtain" aria-hidden="true"></div>
 
   <div id="view" class="view" tabindex="-1">
     <div id="world" class="world">
-      <div id="table" class="table" aria-hidden="true"></div>
       <main class="items">
 
         <!-- WHO -->
-        <div class="item" id="hello" data-cluster="about" data-at="0,0" data-width="620" data-rotate="-0.6" data-span="2" data-material="paper">
+        <div class="item" id="hello" data-cluster="about" data-at="0,0" data-width="680" data-rotate="-0.6" data-span="2" data-material="paper">
           <div class="item__body paper note"><i class="tape tape--top"></i>
-            <h1>Tinkerer by nature, product designer by trade.</h1>
-            <p>I make products and processes simpler, with AI on my workbench.</p>
-            <small>Product Designer &amp; Builder. Based in the Dolomites.</small>
+            <h1><span class="line">Tinkerer by nature,</span> <span class="line">product designer by&nbsp;trade.</span></h1>
+            <p><span class="line">I make products and processes simpler,</span> <span class="line">with AI on my&nbsp;workbench.</span></p>
+            <small>Product Designer &amp; Builder. Based in the&nbsp;Dolomites.</small>
           </div>
         </div>
         <div class="item" id="portrait" data-cluster="about" data-at="660,-10" data-width="250" data-rotate="2.6" data-material="print">
@@ -101,10 +102,10 @@
           </div>
         </div>
         <div class="item" id="now" data-cluster="about" data-at="950,20" data-width="270" data-rotate="-3" data-material="postit">
-          <div class="item__body postit"><b>Now</b>Learning TypeScript and React properly. Looking for my next product design role.</div>
+          <div class="item__body postit"><b>Now</b><span class="postit__line">Learning TypeScript and React properly.</span> <span class="postit__line">Looking for my next product design&nbsp;role.</span></div>
         </div>
         <div class="item" data-cluster="about" data-at="664,440" data-width="540" data-rotate="-1.5" data-small data-decoration data-material="chalk">
-          <p class="item__body chalk">As a kid I wanted to be an inventor. This is close enough.</p>
+          <p class="item__body chalk">As a kid I wanted to be an inventor. This is close&nbsp;enough.</p>
         </div>
 
         <!-- WORK -->
@@ -132,7 +133,7 @@
             <span class="folder__body">
               <span class="folder__peek"><img src="Img/work/document-registration.webp" alt="" draggable="false"></span>
               <h3>The whole portfolio</h3>
-              <p>Private. Ask me and I’ll send you the link.</p>
+              <p>Private. Ask me and I’ll send you the&nbsp;link.</p>
             </span>
           </a>
         </div>
@@ -140,10 +141,10 @@
         <!-- PATH -->
         <div class="item" data-cluster="path" data-at="0,0" data-width="470" data-rotate="0" data-span="2" data-material="strip">
           <ol class="item__body path" aria-label="Path">
-            <li class="strip" style="--t:-.5deg;--ml:0"><time>2022–26</time>Product Designer, Fiscozen</li>
-            <li class="strip" style="--t:.4deg;--ml:.4em"><time>2017–22</time>Full Stack Designer, Erickson</li>
-            <li class="strip" style="--t:-.3deg;--ml:.1em"><time>2022</time>UI Design master, Talent Garden</li>
-            <li class="strip" style="--t:.6deg;--ml:.7em"><time>2013–17</time>Graphic Design, LABA</li>
+            <li class="strip"><time>2022–26</time>Product Designer, Fiscozen</li>
+            <li class="strip"><time>2017–22</time>Full Stack Designer, Erickson</li>
+            <li class="strip"><time>2022</time>UI Design master, Talent Garden</li>
+            <li class="strip"><time>2013–17</time>Graphic Design, LABA</li>
           </ol>
         </div>
 
@@ -159,7 +160,7 @@
           </div>
         </div>
         <div class="item" data-cluster="photos" data-at="24,260" data-width="240" data-rotate="-4" data-material="postit">
-          <a class="item__body postit postit--mint" href="https://unsplash.com/@darwiiiin" data-cursor="see them on Unsplash"><b>Photos, since I was a teenager</b>57M+ views on Unsplash<small>More on Unsplash <svg class="arrow" viewBox="0 0 56 56" aria-hidden="true"><path d="M12 44 44 12M20 12h24v24"/></svg></small></a>
+          <a class="item__body postit postit--mint" href="https://unsplash.com/@darwiiiin" target="_blank" rel="noopener" data-cursor="see them on Unsplash"><b>Photos, since I was a&nbsp;teenager</b>57M+ views on&nbsp;Unsplash<small>More on Unsplash <svg class="arrow" viewBox="0 0 56 56" aria-hidden="true"><path d="M12 44 44 12M20 12h24v24"/></svg><span class="sr-only">(opens in a new tab)</span></small></a>
         </div>
         <div class="item" data-cluster="photos" data-at="300,270" data-width="210" data-rotate="-3" data-material="print">
           <a class="item__body print" href="Img/Seoul-2025_HD-007.webp" data-view data-caption="Seoul, 2025"><i class="tape tape--top"></i><img src="Img/Seoul-2025_HD-007.webp" alt="A market stall in Seoul" draggable="false"><span>Seoul, 2025</span></a>
@@ -176,18 +177,18 @@
           <a class="item__body slide" href="Img/our-balance.webp" data-view data-caption="OurBalance, 2026. My expenses sheet, turned into a web app by directing Claude Code."><img src="Img/our-balance.webp" alt="OurBalance, a spending app" draggable="false"><span>OurBalance</span></a>
         </div>
         <div class="item" data-cluster="lab" data-at="40,270" data-width="300" data-rotate="1.6" data-material="card">
-          <div class="item__body card"><h3>Forma</h3>The app I train with at home. Works offline.</div>
+          <div class="item__body card"><h3>Forma</h3>The app I train with at&nbsp;home. Works&nbsp;offline.</div>
         </div>
 
         <!-- OFF THE CLOCK -->
         <div class="item" data-cluster="words" data-at="0,0" data-width="420" data-rotate="1.4" data-material="paper">
-          <blockquote class="item__body quote"><i class="tape tape--top"></i>“He just makes things easier for everyone around him.”<small>Nikola Gluhovic, Senior Software Developer</small></blockquote>
+          <blockquote class="item__body quote"><i class="tape tape--top"></i>“He just makes things easier for everyone around&nbsp;him.”<small>Nikola Gluhovic, Senior Software&nbsp;Developer</small></blockquote>
         </div>
         <div class="item" data-cluster="words" data-at="456,10" data-width="270" data-rotate="-2" data-material="card">
-          <div class="item__body card"><h3>Caramella</h3>A cat from a shelter. She’d eat all day if I let her.</div>
+          <div class="item__body card"><h3>Caramella</h3>A cat from a shelter. She’d eat all day if I let&nbsp;her.</div>
         </div>
         <div class="item" data-cluster="words" data-at="20,270" data-width="290" data-rotate="1.2" data-material="card">
-          <div class="item__body card"><h3>Trips</h3>Planned down to the last detail. Korea: 17 days, 7 linked databases.</div>
+          <div class="item__body card"><h3>Trips</h3>Planned down to the last&nbsp;detail. Korea: 17 days, 7 linked&nbsp;databases.</div>
         </div>
         <div class="item" data-cluster="words" data-at="346,250" data-width="260" data-rotate="-1.4" data-material="card">
           <div class="item__body card"><h3>Football</h3>Playmaker, seven-a-side.</div>
@@ -198,14 +199,50 @@
           <p class="item__body chalk chalk--small">your turn!</p>
         </div>
         <div class="item" id="request" data-cluster="ask" data-at="10,62" data-width="340" data-rotate="1.6" data-material="postit">
-          <a class="item__body postit postit--orange ask" href="#" data-email-user="darwin.vegher" data-email-domain="gmail.com" data-email-subject="Portfolio access" data-cursor="write to me"><span>Ask for the portfolio</span><svg class="arrow" viewBox="0 0 56 56" aria-hidden="true"><path d="M12 44 44 12M20 12h24v24"/></svg></a>
+          <a class="item__body postit postit--orange ask" href="#" data-email-user="darwin.vegher" data-email-domain="gmail.com" data-email-subject="Portfolio access" data-cursor="write to me"><span>Ask for the&nbsp;portfolio</span><svg class="arrow" viewBox="0 0 56 56" aria-hidden="true"><path d="M12 44 44 12M20 12h24v24"/></svg></a>
         </div>
-        <div class="item" data-cluster="ask" data-at="390,110" data-width="240" data-rotate="0" data-material="strip">
-          <div class="item__body labels">
-            <a class="strip" href="#" data-email-user="darwin.vegher" data-email-domain="gmail.com" style="--t:-.8deg">Email</a>
-            <a class="strip" href="https://www.linkedin.com/in/darwinvegher" style="--t:.8deg">LinkedIn</a>
-            <a class="strip" href="https://t.me/Darwiiiin" style="--t:-.4deg">Telegram</a>
-          </div>
+        <!-- Write to me: a business card, a tape strip, a luggage tag -->
+        <div class="item" data-cluster="ask" data-at="390,40" data-width="280" data-rotate="-2" data-material="card">
+          <a class="item__body business-card" href="#" data-email-user="darwin.vegher" data-email-domain="gmail.com" data-email-subject="Hello Darwin" data-cursor="write an email">
+            <span class="business-card__name">Darwin Vegher</span>
+            <span class="business-card__role">Product Designer &amp; Builder</span>
+            <span class="business-card__action">Email me</span>
+          </a>
+        </div>
+        <div class="item" data-cluster="ask" data-at="400,250" data-width="190" data-rotate="1.5" data-material="strip">
+          <a class="item__body strip strip--button" href="https://www.linkedin.com/in/darwinvegher" target="_blank" rel="noopener" data-cursor="open LinkedIn">LinkedIn<span class="sr-only"> (opens in a new tab)</span></a>
+        </div>
+        <div class="item" data-cluster="ask" data-at="420,340" data-width="190" data-rotate="5" data-material="tag">
+          <a class="item__body luggage-tag" href="https://t.me/Darwiiiin" target="_blank" rel="noopener" data-cursor="open Telegram">
+            <span class="luggage-tag__hole" aria-hidden="true"></span>
+            <span class="luggage-tag__name">Telegram</span>
+            <span class="luggage-tag__handle">@darwiiiin</span><span class="sr-only"> (opens in a new tab)</span>
+          </a>
+        </div>
+
+        <!-- ELSEWHERE: every profile is a different object -->
+        <div class="item" data-cluster="elsewhere" data-at="0,0" data-width="260" data-rotate="-2" data-small data-decoration data-material="chalk">
+          <p class="item__body chalk chalk--small">find me elsewhere</p>
+        </div>
+        <div class="item" data-cluster="elsewhere" data-at="0,70" data-width="250" data-rotate="-1.5" data-material="label">
+          <a class="item__body dymo" href="https://github.com/darw5n/" target="_blank" rel="noopener" data-cursor="open GitHub">GITHUB · DARW5N<span class="sr-only"> (opens in a new tab)</span></a>
+        </div>
+        <div class="item" data-cluster="elsewhere" data-at="290,40" data-width="128" data-rotate="8" data-material="pin">
+          <a class="item__body pin pin--pink" href="https://dribbble.com/darwinvegher" target="_blank" rel="noopener" data-cursor="open Dribbble"><span class="pin__text">Dribbble</span><span class="sr-only"> (opens in a new tab)</span></a>
+        </div>
+        <div class="item" data-cluster="elsewhere" data-at="10,170" data-width="230" data-rotate="2" data-material="ticket">
+          <a class="item__body ticket" href="https://www.behance.net/darwinvegher" target="_blank" rel="noopener" data-cursor="open Behance">
+            <span class="ticket__stub" aria-hidden="true">Nº&nbsp;01</span>
+            <span class="ticket__main"><span class="ticket__name">Behance</span><span class="ticket__note">Admit one</span></span><span class="sr-only"> (opens in a new tab)</span>
+          </a>
+        </div>
+        <div class="item" data-cluster="elsewhere" data-at="290,200" data-width="150" data-rotate="-4" data-material="stamp">
+          <a class="item__body stamp" href="https://www.instagram.com/darwiiiin/" target="_blank" rel="noopener" data-cursor="open Instagram">
+            <span class="stamp__value">@darwiiiin</span><span class="stamp__name">Instagram</span><span class="sr-only"> (opens in a new tab)</span>
+          </a>
+        </div>
+        <div class="item" data-cluster="elsewhere" data-at="470,90" data-width="120" data-rotate="-6" data-material="pin">
+          <a class="item__body pin pin--violet" href="https://www.figma.com/@darw5n" target="_blank" rel="noopener" data-cursor="open Figma Community"><span class="pin__text">Figma</span><span class="sr-only"> Community (opens in a new tab)</span></a>
         </div>
 
         <!-- STICKERS (drafts: Darwin will redraw them) -->

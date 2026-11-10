@@ -3,30 +3,26 @@
  *
  * screen = world * zoom + (x, y)
  *
- * The table is finite. The camera is allowed to see only the table: `bounds`
- * is the table rectangle in world px. While the visitor drags past an edge the
- * camera gives way a little (rubber band) and `settle()` brings it back.
+ * The table is infinite (decided with Darwin, 10/11/2026): the camera goes where
+ * the visitor takes it, and "See all" brings everything back into view.
  */
 
-import { clamp, easeOut, lerp } from "./geometry.js";
+import { clamp, easeOut, lerp, viewportSize } from "./geometry.js";
 import type { Camera, Point, Rect, Size } from "./types.js";
 
 export interface CameraOptions {
   /** Element that receives the transform. */
   world: HTMLElement;
-  /** Called after every change, e.g. to refresh the minimap. */
+  /** Called after every change, e.g. to move the surface pattern along. */
   onChange?: (camera: Camera) => void;
   reducedMotion: boolean;
 }
 
+const MIN_ZOOM = 0.1;
 const MAX_ZOOM = 2.5;
-/** How much of an over-pan is shown: 0 = hard wall, 1 = no limit. */
-const RUBBER = 0.35;
 
 export class CameraController {
   readonly state: Camera = { x: 0, y: 0, zoom: 1 };
-  private bounds: Rect | null = null;
-  private minZoom = 0.1;
   private frame = 0;
   private readonly world: HTMLElement;
   private readonly onChange: ((camera: Camera) => void) | undefined;
@@ -39,18 +35,7 @@ export class CameraController {
   }
 
   get viewport(): Size {
-    return { w: window.innerWidth, h: window.innerHeight };
-  }
-
-  /** The table the camera may look at. The minimum zoom lets the whole table fit. */
-  setBounds(rect: Rect): void {
-    this.bounds = rect;
-    const v = this.viewport;
-    this.minZoom = Math.min(1, Math.min(v.w / rect.w, v.h / rect.h) * 0.9);
-  }
-
-  getBounds(): Rect | null {
-    return this.bounds;
+    return viewportSize();
   }
 
   /** Part of the world currently visible, in world px. */
@@ -64,74 +49,44 @@ export class CameraController {
     return { x: (p.x - this.state.x) / this.state.zoom, y: (p.y - this.state.y) / this.state.zoom };
   }
 
-  /** Camera position clamped so that the viewport stays on the table. */
-  private clamped(x: number, y: number, zoom: number): Point {
-    const b = this.bounds;
-    if (!b) return { x, y };
-    const v = this.viewport;
-    const axis = (pos: number, start: number, length: number, view: number): number => {
-      const scaled = length * zoom;
-      // A table smaller than the window is centred instead.
-      if (scaled <= view) return (view - scaled) / 2 - start * zoom;
-      return clamp(pos, view - (start + length) * zoom, -start * zoom);
-    };
-    return { x: axis(x, b.x, b.w, v.w), y: axis(y, b.y, b.h, v.h) };
-  }
-
   private commit(): void {
     const { x, y, zoom } = this.state;
     this.world.style.transform = `translate(${x.toFixed(2)}px, ${y.toFixed(2)}px) scale(${zoom.toFixed(4)})`;
     this.onChange?.(this.state);
   }
 
-  /** Jumps to a position; the camera is kept on the table. */
+  /** Jumps to a position. */
   set(x: number, y: number, zoom = this.state.zoom): void {
     this.stop();
-    const z = clamp(zoom, this.minZoom, MAX_ZOOM);
-    const p = this.clamped(x, y, z);
-    this.state.x = p.x;
-    this.state.y = p.y;
-    this.state.zoom = z;
+    this.state.x = x;
+    this.state.y = y;
+    this.state.zoom = clamp(zoom, MIN_ZOOM, MAX_ZOOM);
     this.commit();
   }
 
-  /**
-   * Pans by a screen delta. With `soft` the camera may leave the table a little,
-   * with resistance, so a drag past the edge feels like a rubber band.
-   */
-  panBy(dx: number, dy: number, soft = false): void {
+  /** Pans by a screen delta. */
+  panBy(dx: number, dy: number): void {
     this.stop();
-    const target = { x: this.state.x + dx, y: this.state.y + dy };
-    const inside = this.clamped(target.x, target.y, this.state.zoom);
-    if (soft) {
-      this.state.x = inside.x + (target.x - inside.x) * RUBBER;
-      this.state.y = inside.y + (target.y - inside.y) * RUBBER;
-    } else {
-      this.state.x = inside.x;
-      this.state.y = inside.y;
-    }
+    this.state.x += dx;
+    this.state.y += dy;
     this.commit();
   }
 
   /** Zooms around a screen point, so what is under the pointer stays there. */
   zoomAt(screen: Point, zoom: number): void {
     this.stop();
-    const z = clamp(zoom, this.minZoom, MAX_ZOOM);
+    const z = clamp(zoom, MIN_ZOOM, MAX_ZOOM);
     const { x, y, zoom: k } = this.state;
-    const nx = screen.x - ((screen.x - x) * z) / k;
-    const ny = screen.y - ((screen.y - y) * z) / k;
-    const p = this.clamped(nx, ny, z);
-    this.state.x = p.x;
-    this.state.y = p.y;
+    this.state.x = screen.x - ((screen.x - x) * z) / k;
+    this.state.y = screen.y - ((screen.y - y) * z) / k;
     this.state.zoom = z;
     this.commit();
   }
 
-  /** Animated flight. Honoured instantly under reduced motion. */
+  /** Animated flight. Instant under reduced motion. */
   flyTo(x: number, y: number, zoom: number, ms = 620): Promise<void> {
     this.stop();
-    const z = clamp(zoom, this.minZoom, MAX_ZOOM);
-    const to = { ...this.clamped(x, y, z), zoom: z };
+    const to = { x, y, zoom: clamp(zoom, MIN_ZOOM, MAX_ZOOM) };
     if (this.reducedMotion || ms <= 0) {
       Object.assign(this.state, to);
       this.commit();
@@ -156,13 +111,6 @@ export class CameraController {
     });
   }
 
-  /** After a soft pan: glides back onto the table if the camera left it. */
-  settle(): void {
-    const p = this.clamped(this.state.x, this.state.y, this.state.zoom);
-    if (Math.abs(p.x - this.state.x) < 0.5 && Math.abs(p.y - this.state.y) < 0.5) return;
-    void this.flyTo(p.x, p.y, this.state.zoom, 380);
-  }
-
   /** Frames a world rectangle with a screen padding on each side. */
   fitRect(rect: Rect, padding: { x: number; top: number; bottom: number }, ms = 620, maxZoom = 1): Promise<void> {
     const v = this.viewport;
@@ -172,7 +120,7 @@ export class CameraController {
     return this.flyTo(x, y, zoom, ms);
   }
 
-  /** Puts a world point at the centre of the screen, keeping the zoom. */
+  /** Puts a world point at the centre of the screen. */
   centreOn(p: Point, zoom = this.state.zoom, ms = 420): Promise<void> {
     const v = this.viewport;
     return this.flyTo(v.w / 2 - p.x * zoom, v.h / 2 - p.y * zoom, zoom, ms);

@@ -43,7 +43,7 @@ export const installViewer = (root, sound) => {
         opener = link;
         show(group.indexOf(link));
         dialog.showModal();
-        sound.play("open");
+        sound.play("lift");
     };
     root.addEventListener("click", (e) => {
         if (e.defaultPrevented)
@@ -69,7 +69,7 @@ export const installViewer = (root, sound) => {
             dialog.close(); // on the backdrop
     });
     dialog.addEventListener("close", () => {
-        sound.play("close");
+        sound.play("press");
         image.removeAttribute("src");
         opener?.focus();
     });

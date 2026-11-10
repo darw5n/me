@@ -73,7 +73,7 @@ export const installCursor = ({ view }: CursorOptions): void => {
       return;
     }
     say("");
-    if (!view || target.closest(".minimap")) {
+    if (!view) {
       setState("pen");
       return;
     }

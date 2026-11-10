@@ -1,6 +1,6 @@
 # Me
 
-Personal site — design + frontend. Since November 2026 it is "the table": a finite surface with
+Personal site — design + frontend. Since November 2026 it is "the table": an endless surface with
 objects you can move around and tidy up.
 
 **Live:** [darw.it](https://darw.it)

@@ -6,8 +6,8 @@
 
 ## Contesto del progetto
 
-Sito personale di Darwin (darw.it), pubblico. Dal 10/11/2026 è **"la Tavola"**: un tavolo finito ma molto più
-grande della finestra, con oggetti veri (note con il nastro, stampe, post-it, cartelle, strisce di nastro, gesso,
+Sito personale di Darwin (darw.it), pubblico. Dal 10/11/2026 è **"la Tavola"**: un tavolo infinito con oggetti
+veri (note con il nastro, stampe, post-it, cartelle, strisce di nastro, gesso,
 adesivi) che si spostano, si riordinano con "Tidy up" e reagiscono al mouse. Il portfolio (repo privato
 `portfolio`) userà lo stesso motore, copiato compilato.
 
@@ -42,10 +42,11 @@ src/tavola/             ← sorgenti TypeScript, un modulo per compito
   types.ts geometry.ts  ← tipi e geometria pura
   layout.ts             ← layout puro: messy (gruppi), column (telefono), tidy (griglia); nessun DOM
   items.ts              ← legge gli oggetti dal DOM (data-*), misura, scrive --x/--y/--rot
-  camera.ts table.ts    ← camera con limiti elastici; dimensione del tavolo
+  camera.ts             ← camera: spostamento, zoom, voli animati (tavolo infinito)
   input.ts              ← puntatori (sposta tavolo/oggetti, pressione lunga col dito, pizzico), rotella, tastiera
-  board.ts              ← regia: arrangiamenti, tavolo, cartelle, fuoco da tastiera
-  reactions.ts cursor.ts minimap.ts controls.ts backgrounds.ts sound.ts preloader.ts viewer.ts email.ts
+  board.ts              ← regia: arrangiamenti, cartelle, salti tra oggetti, fuoco da tastiera
+  reactions.ts          ← cerchio a matita (mai sui link che portano fuori), rimbalzo degli adesivi
+  cursor.ts controls.ts backgrounds.ts sound.ts preloader.ts viewer.ts email.ts
   main.ts               ← avvio
 Script/tavola/          ← JS compilato (NON editare)
 CSS/tavola.scss         ← entry SCSS; partial in CSS/tavola/ (_tokens _surfaces _fonts _base _table _materials _ui)
@@ -68,13 +69,14 @@ restano alcune immagini che usava solo lui (loghi, copertine di libri e dischi):
   L'ordine nel DOM è l'ordine di lettura (Tab).
 - **Configurazione** nel JSON `#table-config` dentro `index.html`: ordine dei gruppi (messy) e etichette a gesso
   del Tidy up.
-- **Computer (≥ 900 px):** `#view` fisso, `#world` trasformato dalla camera, `#table` = superficie finita, almeno
-  3 finestre per lato; oltre il bordo la camera resiste e torna indietro. Mouse: sposta subito gli oggetti; sul
+- **Computer (≥ 900 px):** `#view` fisso, `#world` trasformato dalla camera. Il tavolo è **infinito**: il pattern
+  dello sfondo sta su `#view` e segue la camera (`--cam-x/--cam-y/--k`). Mouse: sposta subito gli oggetti; sul
   vuoto sposta il tavolo. Tastiera: frecce, `+`/`-`, `0` = See all, `T` = Tidy up.
 - **Telefono (< 900 px):** niente camera, scorrimento verticale nativo; pressione lunga per sollevare un oggetto.
+- **Barra in basso** = tutti i comandi: Tidy up, See all, zoom, sfondo (cerchio con il pattern), suono. Niente minimappa.
 - **Sfondi** (`data-surface` su `<html>`, salvato in localStorage): felt, slate, kraft, plum. Ogni preset definisce
   anche il colore del gesso, così il testo resta leggibile.
-- **Suoni** Web Audio, spenti di default. **Cursore** solo con mouse: mano, pugno, matita con etichetta
+- **Suoni** originali sintetizzati con Web Audio (nessun file, nessuna libreria), spenti di default. **Cursore** solo con mouse: mano, pugno, matita con etichetta
   (`data-cursor="…"` sui link).
 
 ---
@@ -99,6 +101,16 @@ al portfolio privato; si chiede il link (post-it arancione, poi il modulo).
 Il footer, quando tornerà, resta "© August 2022": è l'anno di creazione del sito (scelta di Darwin).
 
 ---
+
+## Testi sul tavolo
+- **Niente orfane:** nessuna parola da sola sull'ultima riga. CSS `text-wrap: balance/pretty` (in `_materials.scss`)
+  più `&nbsp;` tra le ultime due parole, perché Firefox/Zen non applica ancora `pretty`. Frasi divise in righe
+  volute con `<span class="line">` (titolo e frase sotto) e `.postit__line` (frasi separate su un post-it).
+- **Niente stili in linea nell'HTML:** classi e regole SCSS. Fanno eccezione solo i valori che il JS scrive a runtime
+  (`--x`, `--y`, `--rot`, larghezze).
+- **Link che portano fuori** (altri siti, email): `target="_blank" rel="noopener"`, "(opens in a new tab)" per i
+  lettori di schermo, e niente cerchio a matita.
+- Misure dei testi negli oggetti in `rem` fissi, non in `vw`: gli oggetti hanno misure fisse sul tavolo.
 
 ## Accessibilità e UX (priorità trasversali)
 

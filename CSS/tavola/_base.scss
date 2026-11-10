@@ -10,7 +10,7 @@
 
 html {
   -webkit-text-size-adjust: 100%;
-  background: var(--void);
+  background: var(--mat);
   height: 100%;
 }
 
@@ -22,7 +22,15 @@ body {
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   overflow-wrap: break-word;
-  background: var(--void);
+  background: var(--mat);
+}
+
+// Phone: the page scrolls only vertically, nothing may widen it.
+@include narrow {
+  html,
+  body {
+    overflow-x: clip;
+  }
 }
 
 // Desktop: the viewport is fixed and the page never scrolls.
@@ -82,6 +90,14 @@ a:focus-visible,
 button:focus-visible {
   outline: 2px solid var(--yellow);
   outline-offset: 3px;
+}
+
+// Holder of SVG filters and symbols: present in the page, never seen
+.svg-defs {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
 }
 
 .sr-only {

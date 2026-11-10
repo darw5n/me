@@ -81,4 +81,9 @@ export type Material =
   | "slide"
   | "card"
   | "sticker"
-  | "chalk";
+  | "chalk"
+  | "pin"
+  | "tag"
+  | "label"
+  | "ticket"
+  | "stamp";

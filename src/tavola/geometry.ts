@@ -1,11 +1,21 @@
 /**
- * Small geometry helpers shared by the layout, the camera and the minimap.
+ * Small geometry helpers shared by the layout, the camera and the board.
  * All functions are pure.
  */
 
 import type { Point, Rect, Size } from "./types.js";
 
-export const clamp = (value: number, min: number, max: number): number =>
+/**
+ * Size of the visible page, without scrollbars. Not `innerWidth`: on phones the
+ * layout viewport grows when something pokes out, and a layout based on it would
+ * then grow the page further, a loop.
+ */
+export const viewportSize = (): Size => ({
+  w: document.documentElement.clientWidth,
+  h: document.documentElement.clientHeight,
+});
+
+export const clamp =(value: number, min: number, max: number): number =>
   Math.min(max, Math.max(min, value));
 
 export const lerp = (from: number, to: number, t: number): number => from + (to - from) * t;

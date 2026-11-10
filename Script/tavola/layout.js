@@ -28,9 +28,10 @@ const boxOf = (item, at, scale = 1) => {
 };
 /**
  * Pushes overlapping boxes apart. Objects already settled never move again and
- * a moving object only goes right or down, along the shorter escape.
+ * a moving object only goes right or down, along the shorter escape. With
+ * `downOnly` (the phone column) it never goes sideways, so it stays on screen.
  */
-export const relax = (boxes, large = GAP_LARGE, small = GAP_SMALL) => {
+export const relax = (boxes, large = GAP_LARGE, small = GAP_SMALL, downOnly = false) => {
     for (let j = 1; j < boxes.length; j++) {
         const b = boxes[j];
         let hit = true;
@@ -45,7 +46,7 @@ export const relax = (boxes, large = GAP_LARGE, small = GAP_SMALL) => {
                 if (apart)
                     continue;
                 hit = true;
-                if (pushRight < pushDown)
+                if (!downOnly && pushRight < pushDown)
                     b.x += pushRight;
                 else
                     b.y += pushDown;
@@ -156,7 +157,7 @@ export const layoutColumn = (items, opts) => {
         x += r.w + gap;
         rowHeight = Math.max(rowHeight, r.h);
     }
-    relax(boxes, 18, 8);
+    relax(boxes, 18, 8, true);
     const placements = new Map();
     for (const box of boxes)
         placements.set(box.item.id, placementFor(box, box.item.rotation));

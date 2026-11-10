@@ -38,12 +38,12 @@
 
 .note {
   h1 {
-    font: 500 clamp(2.3rem, 2.6vw + 1rem, 4.6rem) / 0.98 var(--font-ui);
+    font: 500 3rem / 0.98 var(--font-ui);
     letter-spacing: -0.045em;
   }
 
   p {
-    font-size: clamp(1.15rem, 0.9vw + 0.6rem, 1.65rem);
+    font-size: 1.4rem;
     line-height: 1.2;
     margin-top: 0.7em;
     max-width: 24em;
@@ -66,7 +66,7 @@
   box-shadow:
     0 2px 2px rgba(0, 0, 0, 0.25),
     0 16px 28px -10px rgba(0, 0, 0, 0.55);
-  font-size: clamp(0.9rem, 0.5vw + 0.5rem, 1.05rem);
+  font-size: 0.95rem;
 
   img {
     width: 100%;
@@ -89,7 +89,7 @@
   background: linear-gradient(170deg, var(--yellow) 0 80%, #f4d431);
   padding: 1.2em 1.2em 1.5em;
   color: var(--ink);
-  font: italic 400 clamp(1.25rem, 1vw + 0.6rem, 1.9rem) / 1.12 var(--font-display);
+  font: italic 400 1.5rem / 1.12 var(--font-display);
   box-shadow:
     0 2px 2px rgba(0, 0, 0, 0.22),
     0 18px 18px -14px rgba(0, 0, 0, 0.65);
@@ -140,7 +140,7 @@
   justify-content: space-between;
   gap: 0.6em;
   aspect-ratio: 1;
-  font: 500 clamp(2rem, 1.8vw + 0.8rem, 3.4rem) / 0.98 var(--font-ui);
+  font: 500 2.4rem / 0.98 var(--font-ui);
   letter-spacing: -0.035em;
   font-style: normal;
   padding: 0.7em;
@@ -157,7 +157,25 @@
 .path {
   display: grid;
   gap: 0.55em;
-  font-size: clamp(1rem, 0.6vw + 0.6rem, 1.3rem);
+  font-size: 1.15rem;
+
+  // Each strip of tape is stuck on by hand: a little tilt and offset, never the same
+  li:nth-child(4n + 1) {
+    --t: -0.5deg;
+    --ml: 0;
+  }
+  li:nth-child(4n + 2) {
+    --t: 0.4deg;
+    --ml: 0.4em;
+  }
+  li:nth-child(4n + 3) {
+    --t: -0.3deg;
+    --ml: 0.1em;
+  }
+  li:nth-child(4n + 4) {
+    --t: 0.6deg;
+    --ml: 0.7em;
+  }
 }
 
 .strip {
@@ -188,15 +206,18 @@
     flex: none;
   }
 
+  // A strip that is a link: plain paper tape, sans-serif, finger-sized
   &--button {
     background: #f4f1e4;
     background-image: none;
     color: #000;
+    font-size: 1.25rem;
     font-style: normal;
     font-family: var(--font-ui);
     font-weight: 500;
     align-items: center;
-    min-height: 48px;
+    min-height: 52px;
+    padding-inline: 1.1em;
 
     .arrow {
       width: 0.8em;
@@ -205,19 +226,204 @@
   }
 }
 
-.labels {
+// ---- Business card (email) ---------------------------------------------------------
+.business-card {
+  position: relative;
+  display: grid;
+  gap: 0.15em;
+  aspect-ratio: 85 / 55;
+  padding: 1.1em 1.2em;
+  background: #fffdf7;
+  color: var(--ink);
+  font: 400 0.95rem/1.25 var(--font-ui);
+  box-shadow:
+    0 1px 1px rgba(0, 0, 0, 0.3),
+    0 10px 16px -8px rgba(0, 0, 0, 0.55);
+  align-content: start;
+
+  &__name {
+    font: 500 1.3rem/1.1 var(--font-ui);
+    letter-spacing: -0.02em;
+  }
+
+  &__role {
+    font: italic 400 1rem/1.2 var(--font-text);
+    color: var(--ink-soft);
+  }
+
+  // The action sits at the bottom, underlined in red pencil
+  &__action {
+    position: absolute;
+    left: 1.2em;
+    bottom: 0.9em;
+    font-weight: 500;
+    text-decoration: underline;
+    text-decoration-color: var(--red);
+    text-decoration-thickness: 2px;
+    text-underline-offset: 4px;
+  }
+}
+
+// ---- Luggage tag (Telegram) ---------------------------------------------------------
+.luggage-tag {
+  position: relative;
+  display: grid;
+  gap: 0.1em;
+  padding: 1em 1em 1em 2.6em;
+  min-height: 84px;
+  align-content: center;
+  background: #d9b56a;
+  color: #2b2410;
+  font: 500 1.15rem/1.1 var(--font-ui);
+  // Cut corners on the hole side, like a real paper tag
+  clip-path: polygon(18% 0, 100% 0, 100% 100%, 18% 100%, 0 78%, 0 22%);
+  filter: drop-shadow(0 6px 6px rgba(0, 0, 0, 0.35));
+  transform-origin: 12% 50%;
+
+  &__hole {
+    position: absolute;
+    left: 0.9em;
+    top: 50%;
+    width: 14px;
+    height: 14px;
+    margin-top: -7px;
+    border-radius: 50%;
+    background: var(--mat);
+    box-shadow: 0 0 0 3px #f4f1e4;
+  }
+
+  &__handle {
+    font: italic 400 1rem/1.2 var(--font-text);
+  }
+}
+
+// ---- Label-maker tape (GitHub) -------------------------------------------------------
+.dymo {
+  display: inline-flex;
+  align-items: center;
+  min-height: 48px;
+  padding: 0.5em 1em;
+  background: #1c1c1c;
+  color: #f4f4f0;
+  font: 700 1.1rem/1 var(--font-ui);
+  letter-spacing: 0.12em;
+  border-radius: 3px;
+  // The raised letters of an embossed label
+  text-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.35),
+    0 -1px 0 rgba(0, 0, 0, 0.6);
+  box-shadow:
+    inset 0 2px 0 rgba(255, 255, 255, 0.08),
+    0 3px 6px rgba(0, 0, 0, 0.45);
+}
+
+// ---- Enamel pin (Dribbble, Figma) ------------------------------------------------------
+.pin {
+  position: relative;
+  display: grid;
+  place-items: center;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  color: #fff;
+  // Bold and above 18.7 px: large text, so 3:1 on the enamel is enough for AA
+  font: 700 1.2rem/1 var(--font-ui);
+  letter-spacing: -0.01em;
+  box-shadow:
+    inset 0 -4px 0 rgba(0, 0, 0, 0.18),
+    inset 0 4px 0 rgba(255, 255, 255, 0.25),
+    0 0 0 4px #d8d4c4,
+    0 6px 10px rgba(0, 0, 0, 0.45);
+
+  &--pink {
+    background: radial-gradient(circle at 35% 30%, #ff8cc0, #ea4c89 60%);
+  }
+
+  &--violet {
+    background: radial-gradient(circle at 35% 30%, #b49cff, #7b4df0 60%);
+  }
+
+  // A shine across the enamel
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 12% 40% 55% 18%;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.35);
+    transform: rotate(-30deg);
+  }
+}
+
+// ---- Ticket stub (Behance) ----------------------------------------------------------
+.ticket {
   display: flex;
-  flex-wrap: wrap;
-  gap: 0.4em 0.5em;
-  font-size: clamp(1rem, 0.5vw + 0.7rem, 1.25rem);
+  min-height: 84px;
+  background: #f1e3c4;
+  color: #3a2a12;
+  font: 400 0.95rem/1.15 var(--font-ui);
+  box-shadow: 0 8px 14px -6px rgba(0, 0, 0, 0.55);
+  // Notches where the stub tears off
+  mask:
+    radial-gradient(circle at 30% 0, transparent 9px, #000 9.5px) top / 100% 51% no-repeat,
+    radial-gradient(circle at 30% 100%, transparent 9px, #000 9.5px) bottom / 100% 51% no-repeat;
 
-  .strip {
-    min-height: 48px;
-    align-items: center;
+  &__stub {
+    flex: 0 0 30%;
+    display: grid;
+    place-items: center;
+    border-right: 2px dashed rgba(58, 42, 18, 0.4);
+    font: 500 0.85rem/1 var(--font-ui);
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+  }
 
-    &:hover {
-      background-color: #fff;
-    }
+  &__main {
+    display: grid;
+    align-content: center;
+    gap: 0.2em;
+    padding: 0.6em 0.9em;
+  }
+
+  &__name {
+    font: 500 1.3rem/1 var(--font-ui);
+    letter-spacing: -0.02em;
+  }
+
+  &__note {
+    font: italic 400 0.95rem/1.1 var(--font-text);
+  }
+}
+
+// ---- Postage stamp (Instagram) ---------------------------------------------------------
+.stamp {
+  display: grid;
+  align-content: end;
+  gap: 0.2em;
+  aspect-ratio: 4 / 5;
+  padding: 14px;
+  // Dark enough at the bottom for white text (AA)
+  background:
+    linear-gradient(160deg, #e39a3b, #c4433c 50%, #6b2a99) content-box,
+    #fffdf7;
+  color: #fff;
+  font: 500 0.95rem/1.1 var(--font-ui);
+  // Perforated edge: a row of bites on every side
+  mask:
+    radial-gradient(circle, transparent 4.5px, #000 5px) -7px -7px / 14px 14px,
+    linear-gradient(#000 0 0) center / calc(100% - 14px) calc(100% - 14px) no-repeat;
+  filter: drop-shadow(0 6px 6px rgba(0, 0, 0, 0.4));
+
+  &__value,
+  &__name {
+    padding-inline: 0.6em;
+  }
+
+  &__value {
+    font: italic 400 1rem/1.1 var(--font-text);
+  }
+
+  &__name {
+    padding-bottom: 0.6em;
+    font-weight: 700;
   }
 }
 
@@ -239,7 +445,7 @@
 
   span {
     display: block;
-    font: italic 400 clamp(0.95rem, 0.4vw + 0.7rem, 1.05rem) / 1.2 var(--font-text);
+    font: italic 400 1.05rem / 1.2 var(--font-text);
     margin-top: 0.55em;
   }
 }
@@ -254,7 +460,7 @@
   box-shadow:
     0 2px 2px rgba(0, 0, 0, 0.28),
     0 12px 18px -9px rgba(0, 0, 0, 0.6);
-  font: 500 clamp(0.74rem, 0.3vw + 0.55rem, 0.85rem) / 1.1 var(--font-ui);
+  font: 500 0.82rem / 1.1 var(--font-ui);
   color: #2b2c26;
 
   img {
@@ -413,13 +619,13 @@
 // ---- Chalk ---------------------------------------------------------------------
 .chalk {
   color: var(--chalk);
-  font: 400 clamp(2rem, 1.9vw + 0.8rem, 3.6rem) / 1 var(--font-chalk);
+  font: 400 2.5rem / 1 var(--font-chalk);
   filter: url(#chalk);
   pointer-events: none;
   text-shadow: 0 1px 0 var(--chalk-shadow);
 
   &--small {
-    font-size: clamp(1.7rem, 1.4vw + 0.6rem, 2.7rem);
+    font-size: 1.9rem;
     white-space: nowrap;
   }
 }
@@ -571,13 +777,95 @@
     .folder:hover .folder__peek {
       transform: rotate(0.6deg) translateY(-26px);
     }
+
+    // Contacts and profiles
+    .item:hover .business-card,
+    .item:hover .ticket,
+    .item:hover .stamp,
+    .item:hover .dymo {
+      --ly: -5px;
+    }
+
+    .item:hover .stamp {
+      --rot: 0deg;
+    }
+
+    .item:hover .ticket {
+      --tilt: 2deg;
+    }
+
+    // The tag swings on its hole
+    .item:not(.is-dragging):hover .luggage-tag {
+      animation: swing 0.9s ease-in-out;
+    }
+
+    .item:hover .pin {
+      animation: wobble 0.55s ease-in-out;
+    }
+
+    .item:hover .strip--button {
+      background-color: #fff;
+    }
+  }
+}
+
+@keyframes swing {
+  0%,
+  100% {
+    transform: rotate(var(--rot, 0deg));
+  }
+  25% {
+    transform: rotate(calc(var(--rot, 0deg) + 9deg));
+  }
+  55% {
+    transform: rotate(calc(var(--rot, 0deg) - 6deg));
+  }
+  80% {
+    transform: rotate(calc(var(--rot, 0deg) + 2deg));
+  }
+}
+
+// ---- Text: no orphans -------------------------------------------------------------
+// Short blocks are balanced; longer ones avoid a single word on the last line.
+// Where a browser ignores these (older Firefox), the HTML ties the last two words
+// with a non-breaking space.
+.item {
+  h1,
+  h3,
+  b,
+  .chalk {
+    text-wrap: balance;
+  }
+
+  p,
+  small,
+  li,
+  blockquote,
+  .postit,
+  .card {
+    text-wrap: pretty;
+  }
+}
+
+// A clause that starts on its own line (the hero, the line under it)
+.line {
+  display: block;
+}
+
+// Two sentences on a post-it, with air between them
+.postit__line {
+  display: block;
+
+  & + & {
+    margin-top: 0.55em;
   }
 }
 
 // ---- Phone sizes ----------------------------------------------------------------
 @include narrow {
+  // Each clause of the hero must fit one line, down to a 320 px screen
   .note h1 {
-    font-size: 2.55rem;
+    font-size: clamp(1.7rem, 8.2vw, 2.55rem);
     line-height: 1;
   }
 

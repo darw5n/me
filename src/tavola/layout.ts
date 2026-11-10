@@ -39,9 +39,10 @@ const boxOf = (item: LayoutItem, at: Point, scale = 1): Box => {
 
 /**
  * Pushes overlapping boxes apart. Objects already settled never move again and
- * a moving object only goes right or down, along the shorter escape.
+ * a moving object only goes right or down, along the shorter escape. With
+ * `downOnly` (the phone column) it never goes sideways, so it stays on screen.
  */
-export const relax = (boxes: Box[], large = GAP_LARGE, small = GAP_SMALL): void => {
+export const relax = (boxes: Box[], large = GAP_LARGE, small = GAP_SMALL, downOnly = false): void => {
   for (let j = 1; j < boxes.length; j++) {
     const b = boxes[j]!;
     let hit = true;
@@ -55,7 +56,7 @@ export const relax = (boxes: Box[], large = GAP_LARGE, small = GAP_SMALL): void 
         const apart = pushRight <= 0 || pushDown <= 0 || b.x + b.w + gap <= a.x || b.y + b.h + gap <= a.y;
         if (apart) continue;
         hit = true;
-        if (pushRight < pushDown) b.x += pushRight;
+        if (!downOnly && pushRight < pushDown) b.x += pushRight;
         else b.y += pushDown;
       }
     }
@@ -192,7 +193,7 @@ export const layoutColumn = (items: LayoutItem[], opts: ColumnOptions): LayoutRe
     x += r.w + gap;
     rowHeight = Math.max(rowHeight, r.h);
   }
-  relax(boxes, 18, 8);
+  relax(boxes, 18, 8, true);
   const placements: Placements = new Map();
   for (const box of boxes) placements.set(box.item.id, placementFor(box, box.item.rotation));
   return { placements, bounds: union(boxes), labels: new Map(), zoom: 1 };
