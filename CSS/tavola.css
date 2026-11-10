@@ -1456,7 +1456,9 @@ body.is-leaving .curtain {
   grid-area: 1/1;
 }
 .controls .controls__swap[data-state=messy] .controls__label--tidy,
-.controls .controls__swap[data-state=tidy] .controls__label--messy {
+.controls .controls__swap[data-state=tidy] .controls__label--messy,
+.controls .controls__swap[data-state=all] .controls__label--back,
+.controls .controls__swap[data-state=back] .controls__label--all {
   visibility: hidden;
 }
 .controls .controls__zoom {

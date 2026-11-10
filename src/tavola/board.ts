@@ -38,6 +38,8 @@ export interface BoardElements {
 export interface BoardCallbacks {
   onArrangement?: (mode: Arrangement) => void;
   onZoom?: (zoom: number) => void;
+  /** "See all" is showing everything (true) or the visitor moved away from it. */
+  onOverview?: (on: boolean) => void;
 }
 
 /** Screen padding kept around the content by "See all". */
@@ -66,6 +68,8 @@ export class Board {
   private animationEnd = 0;
   /** Once the visitor has panned or dragged, a relayout keeps the camera still. */
   private touched = false;
+  /** Desktop: the camera frames everything after "See all", until the visitor moves. */
+  private overview = false;
   /** Phone: x where the centre column starts, to scroll back to it after a resize. */
   private phoneSide = -1;
 
@@ -87,6 +91,8 @@ export class Board {
         el.view.style.setProperty("--cam-y", `${c.y.toFixed(2)}px`);
         el.view.style.setProperty("--k", c.zoom.toFixed(4));
         callbacks.onZoom?.(c.zoom);
+        // A pan or zoom by the visitor (not our own flight) leaves the overview.
+        if (this.overview && !this.camera.flying) this.setOverview(false);
       },
     });
     this.rings = createRings(sound);
@@ -235,7 +241,21 @@ export class Board {
       this.scrollPhoneHome();
       return;
     }
+    // Second press: back to the opening view
+    if (this.overview) {
+      this.setOverview(false);
+      this.home(620);
+      return;
+    }
+    // Flight first: an instant one (reduced motion) must not count as the visitor moving.
     void this.camera.fitRect(this.contentRect(), SEE_ALL_PADDING);
+    this.setOverview(true);
+  }
+
+  private setOverview(on: boolean): void {
+    if (on === this.overview) return;
+    this.overview = on;
+    this.callbacks.onOverview?.(on);
   }
 
   zoomBy(factor: number): void {
@@ -248,6 +268,7 @@ export class Board {
   setArrangement(mode: Arrangement): void {
     if (mode === this.mode) return;
     this.mode = mode;
+    this.setOverview(false);
     const { world } = this.el;
     clearTimeout(this.animationEnd);
     world.classList.add("is-animating");
@@ -319,6 +340,7 @@ export class Board {
 
   /** Window resized: same arrangement, fresh layout, opening view. */
   resized(): void {
+    this.setOverview(false);
     this.relayout();
     this.home(0);
   }

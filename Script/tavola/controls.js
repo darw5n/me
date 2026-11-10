@@ -48,6 +48,10 @@ export const attachControls = (host) => {
             // the button says what the next click does; no aria-pressed on top of that.
             tidy.dataset["state"] = on ? "tidy" : "messy";
         },
+        setOverview(on) {
+            if (seeAll)
+                seeAll.dataset["state"] = on ? "back" : "all";
+        },
         setZoom(zoom) {
             if (zoomLevel)
                 zoomLevel.textContent = `${Math.round(zoom * 100)}%`;

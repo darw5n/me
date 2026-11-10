@@ -126,6 +126,11 @@ export class CameraController {
     return this.flyTo(v.w / 2 - p.x * zoom, v.h / 2 - p.y * zoom, zoom, ms);
   }
 
+  /** True while an animated flight is running. */
+  get flying(): boolean {
+    return this.frame !== 0;
+  }
+
   stop(): void {
     if (this.frame) cancelAnimationFrame(this.frame);
     this.frame = 0;

@@ -15,6 +15,8 @@ export interface ControlsHost {
 
 export interface Controls {
   setTidy(on: boolean): void;
+  /** After "See all" the button offers the way back to the opening zoom. */
+  setOverview(on: boolean): void;
   setZoom(zoom: number): void;
 }
 
@@ -65,6 +67,9 @@ export const attachControls = (host: ControlsHost): Controls => {
       // The visible label swaps (the hidden one is out of the accessibility tree), so
       // the button says what the next click does; no aria-pressed on top of that.
       tidy.dataset["state"] = on ? "tidy" : "messy";
+    },
+    setOverview(on) {
+      if (seeAll) seeAll.dataset["state"] = on ? "back" : "all";
     },
     setZoom(zoom) {
       if (zoomLevel) zoomLevel.textContent = `${Math.round(zoom * 100)}%`;

@@ -83,7 +83,9 @@
   }
 
   .controls__swap[data-state="messy"] .controls__label--tidy,
-  .controls__swap[data-state="tidy"] .controls__label--messy {
+  .controls__swap[data-state="tidy"] .controls__label--messy,
+  .controls__swap[data-state="all"] .controls__label--back,
+  .controls__swap[data-state="back"] .controls__label--all {
     visibility: hidden;
   }
 

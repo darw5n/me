@@ -48,6 +48,7 @@ const boot = (): void => {
   const board = new Board({ view, world }, readConfig(), sound, reducedMotion, {
     onArrangement: (mode) => controlsRef?.setTidy(mode === "tidy"),
     onZoom: (zoom) => controlsRef?.setZoom(zoom),
+    onOverview: (on) => controlsRef?.setOverview(on),
   });
   controlsRef = attachControls({
     sound,
