@@ -393,8 +393,9 @@ html.has-dialog body > .controls {
 }
 
 // ---- Ask for the portfolio (request.ts) ------------------------------------------------
-// A paper card on the same dark backdrop as the viewer; its buttons are the table's
-// bar, sitting at the bottom of the card (not fixed: it stays above the keyboard).
+// A paper card on the same dark backdrop as the viewer. Its buttons have the shape of
+// "Tidy up": yellow for the main action, warm grey for the others, side by side at
+// the bottom of the card (in the flow, so they stay above the phone keyboard).
 .request {
   border: 0;
   padding: 0;
@@ -494,31 +495,43 @@ html.has-dialog body > .controls {
     flex-wrap: wrap;
     gap: 8px;
     margin-top: 1em;
+  }
 
-    button {
-      min-height: 44px;
-      padding: 0 14px;
-      border: 1px solid var(--ink);
-      border-radius: 8px;
-      font: 500 0.95rem / 1 var(--font-ui);
+  .request__actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 1.4em;
+  }
 
-      &:hover {
-        background: #ece9de;
-      }
+  // Same shape as "Tidy up" in the bar
+  .request__button,
+  .request__copy button {
+    min-height: 44px;
+    padding-inline: 16px;
+    border-radius: 8px;
+    background: #e9e6da;
+    color: var(--ink);
+    font: 500 0.92rem / 1 var(--font-ui);
+    white-space: nowrap;
+
+    &:hover {
+      background: #dedacc;
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--ink);
+      outline-offset: 2px;
     }
   }
 
-  // The table's bar, in the flow of the card
-  .request__bar {
-    position: static;
-    transform: none;
-    justify-content: flex-end;
-    width: max-content;
-    max-width: 100%;
-    margin: 1.4em 0 0 auto;
+  .request__button--primary {
+    background: var(--yellow);
+    color: #000;
 
-    :focus-visible {
-      outline-color: var(--yellow);
+    &:hover {
+      background: #ffd400;
     }
   }
 }

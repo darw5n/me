@@ -7,8 +7,10 @@
  * message and Darwin's address with buttons to copy them.
  *
  * Markup: `#request-dialog` in index.html; any `a[data-request]` opens it. The
- * address is split in data-to-user / data-to-domain, so crawlers do not find it.
+ * address is encoded in the dialog's data-mail (mail.ts) and decoded only on
+ * submit, so crawlers do not find it.
  */
+import { decodeMail } from "./mail.js";
 export const subjectOf = (r) => `Portfolio access: ${r.name}${r.company ? `, ${r.company}` : ""}`;
 export const bodyOf = (r) => [
     "Hi Darwin,",
@@ -48,9 +50,10 @@ export const installRequest = (root, sound) => {
     const submit = form.querySelector(".request__submit");
     const cancel = form.querySelector(".request__cancel");
     const name = form.elements.namedItem("name");
-    const address = `${dialog.dataset["toUser"]}@${dialog.dataset["toDomain"]}`;
     let opener = null;
     let last = null;
+    // Decoded on demand, never kept in the page
+    const address = () => decodeMail(dialog.dataset["mail"]) ?? "";
     /** Two states: the form, or "almost done" with the copy buttons. */
     const showSent = (on) => {
         ask.hidden = on;
@@ -86,7 +89,7 @@ export const installRequest = (root, sound) => {
     form.addEventListener("submit", (e) => {
         e.preventDefault();
         if (!sent.hidden && last) {
-            location.href = `mailto:${address}?subject=${encodeURIComponent(subjectOf(last))}&body=${encodeURIComponent(bodyOf(last))}`;
+            location.href = `mailto:${address()}?subject=${encodeURIComponent(subjectOf(last))}&body=${encodeURIComponent(bodyOf(last))}`;
             return;
         }
         const data = new FormData(form);
@@ -101,8 +104,8 @@ export const installRequest = (root, sound) => {
             return;
         }
         last = request;
-        form.querySelector(".request__address").textContent = address;
-        location.href = `mailto:${address}?subject=${encodeURIComponent(subjectOf(request))}&body=${encodeURIComponent(bodyOf(request))}`;
+        form.querySelector(".request__address").textContent = address();
+        location.href = `mailto:${address()}?subject=${encodeURIComponent(subjectOf(request))}&body=${encodeURIComponent(bodyOf(request))}`;
         showSent(true);
         sound.play("press");
     });
@@ -113,7 +116,7 @@ export const installRequest = (root, sound) => {
         status.textContent = ok ? "Message copied." : "Couldn't copy: select the text by hand.";
     });
     form.querySelector(".request__copy-address")?.addEventListener("click", async () => {
-        const ok = await copy(address);
+        const ok = await copy(address());
         status.textContent = ok ? "Address copied." : "Couldn't copy: select the address by hand.";
     });
     cancel.addEventListener("click", () => dialog.close());
@@ -122,6 +125,8 @@ export const installRequest = (root, sound) => {
             dialog.close(); // on the backdrop
     });
     dialog.addEventListener("close", () => {
+        // The address leaves the page again with the dialog
+        form.querySelector(".request__address").textContent = "";
         document.documentElement.classList.remove("has-dialog");
         opener?.focus();
     });

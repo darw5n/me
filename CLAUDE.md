@@ -4,6 +4,12 @@
 > prese da Goldfish o dettagli di lavoro qui o in `.claude/`. È escluso dal sito con `_config.yml`, ma resta
 > leggibile su GitHub.
 
+## Email: mai in chiaro (Darwin, 10/11/2026)
+L'indirizzo email di Darwin non deve mai comparire come testo nel repo pubblico: né nell'HTML, né nel JS, né in
+documenti, test o messaggi di commit (lo spam lo raccoglie). Nella pagina sta solo codificato in `data-mail`
+(rovesciato e in base64, vedi `src/tavola/mail.ts`) e si decodifica solo quando qualcuno clicca o invia il modulo.
+Prima di un commit, questo controllo deve restare vuoto: `git grep -nE "vegher(@| ?[[(]at[])])"`.
+
 ## Contesto del progetto
 
 Sito personale di Darwin (darw.it), pubblico. Dal 10/11/2026 è **"la Tavola"**: un tavolo infinito con oggetti

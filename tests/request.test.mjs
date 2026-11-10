@@ -14,3 +14,12 @@ test("body asks for the link and carries the message only when there is one", ()
   const bare = bodyOf({ name: "Anna", company: "", message: "" });
   assert.equal(bare, "Hi Darwin,\n\nI'm Anna. Could you send me the link to your portfolio?\n\nThanks!");
 });
+
+test("the encoded address decodes, and bad codes give nothing", async () => {
+  globalThis.atob ??= (s) => Buffer.from(s, "base64").toString("binary");
+  const { decodeMail } = await import("../Script/tavola/mail.js");
+  // Only the shape is checked here: the address itself must never be written in the repo.
+  assert.match(decodeMail("bW9jLmxpYW1nQHJlaGdldi5uaXdyYWQ=") ?? "", /^[^@\s]+@[^@\s]+\.[a-z]+$/);
+  assert.equal(decodeMail("not base64!"), null);
+  assert.equal(decodeMail(undefined), null);
+});

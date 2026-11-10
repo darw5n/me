@@ -21,7 +21,7 @@ export const leavesTheTable = (target) => {
     const link = target.closest("a[href]");
     if (!link || link.hasAttribute("data-view"))
         return false;
-    if (link.matches("[data-open], [data-email-user], [data-request], [target=_blank]"))
+    if (link.matches("[data-open], [data-mail], [data-request], [target=_blank]"))
         return true;
     const href = link.getAttribute("href") ?? "";
     // A jump to another object: the ring goes on the destination, not here.
