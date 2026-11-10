@@ -40,7 +40,7 @@ nuovo, ricarica ignorando la cache (Cmd+Shift+R) o, dagli strumenti automatici, 
 index.html              ← la Home (unica pagina, per ora); contenuto già nell'HTML, leggibile senza JS
 src/tavola/             ← sorgenti TypeScript, un modulo per compito
   types.ts geometry.ts  ← tipi e geometria pura
-  layout.ts             ← layout puro: messy (gruppi), column (telefono), tidy (griglia); nessun DOM
+  layout.ts             ← layout puro: messy (gruppi), phone (colonna + corsie), tidy (griglia); nessun DOM
   items.ts              ← legge gli oggetti dal DOM (data-*), misura, scrive --x/--y/--rot
   camera.ts             ← camera: spostamento, zoom, voli animati (tavolo infinito)
   input.ts              ← puntatori (sposta tavolo/oggetti, pressione lunga col dito, pizzico), rotella, tastiera
@@ -73,7 +73,10 @@ restano alcune immagini che usava solo lui (loghi, copertine di libri e dischi):
 - **Computer (≥ 900 px):** `#view` fisso, `#world` trasformato dalla camera. Il tavolo è **infinito**: il pattern
   dello sfondo sta su `#view` e segue la camera (`--cam-x/--cam-y/--k`). Mouse: sposta subito gli oggetti; sul
   vuoto sposta il tavolo. Tastiera: frecce, `+`/`-`, `0` = See all, `T` = Tidy up.
-- **Telefono (< 900 px):** niente camera, scorrimento verticale nativo; pressione lunga per sollevare un oggetto.
+- **Telefono (< 900 px):** niente camera; il tavolo scorre dentro `.view` (mai la pagina, che resta larga quanto lo
+  schermo). In disordine: colonna centrale con le cose importanti, extra nelle corsie laterali (`data-lane="left|right"`
+  nell'HTML), che spuntano dai bordi; lo scorrimento laterale si ferma su sinistra, centro, destra. In Tidy up: una
+  colonna sola, niente scorrimento laterale. Pressione lunga per sollevare un oggetto.
 - **Barra in basso** = tutti i comandi: Tidy up, See all, zoom, sfondo (cerchio con il pattern), suono. Niente minimappa.
 - **Sfondi** (`data-surface` su `<html>`, salvato in localStorage): felt, slate, kraft, plum. Ogni preset definisce
   anche il colore del gesso, così il testo resta leggibile.

@@ -4,7 +4,9 @@
  *
  * Two shapes, chosen by window width (NARROW_BREAKPOINT):
  * - desktop: a fixed viewport over an infinite table; pan and zoom;
- * - phone: the table is as wide as the screen, the page scrolls vertically.
+ * - phone: the table scrolls inside `.view`, mostly downwards. When messy, the
+ *   extras lie in side lanes and a sideways swipe snaps to them; tidy, it is one
+ *   column as wide as the screen.
  */
 
 import { PENCIL_ENABLED } from "./actions.js";
@@ -14,7 +16,7 @@ import {
   measure, positionOf, readItems, rectOf, render, setWidth, toLayoutItem, type TableItem,
 } from "./items.js";
 import {
-  NARROW_BREAKPOINT, layoutColumn, layoutMessy, layoutTidy, tidyGrid, tidyWidth,
+  NARROW_BREAKPOINT, layoutMessy, layoutPhone, layoutTidy, phoneLanes, tidyGrid, tidyWidth,
 } from "./layout.js";
 import { attachFilmHover, createRings, reactToTap, type Rings } from "./reactions.js";
 import type { Sound } from "./sound.js";
@@ -62,6 +64,8 @@ export class Board {
   private animationEnd = 0;
   /** Once the visitor has panned or dragged, a relayout keeps the camera still. */
   private touched = false;
+  /** Phone: x where the centre column starts, to scroll back to it after a resize. */
+  private phoneSide = -1;
 
   constructor(
     private readonly el: BoardElements,
@@ -92,6 +96,13 @@ export class Board {
       el.world.append(p);
       this.labels.set(id, p);
     }
+    // Phone: where a sideways swipe comes to rest (left lane, centre, right lane)
+    for (const lane of ["left", "centre", "right"]) {
+      const stop = document.createElement("i");
+      stop.className = `lane-stop lane-stop--${lane}`;
+      stop.setAttribute("aria-hidden", "true");
+      el.world.append(stop);
+    }
     this.watchFocus();
     this.watchLinks();
   }
@@ -119,6 +130,8 @@ export class Board {
       const away = this.mode === "tidy" && item.decoration;
       item.el.classList.toggle("is-away", away);
       item.el.inert = away;
+      // Side extras lie over the column's edge where they peek into it
+      item.el.classList.toggle("is-side", this.narrow && this.mode === "messy" && item.lane !== "centre");
       render(item, this.mode);
     }
     for (const [id, label] of this.labels) {
@@ -135,9 +148,21 @@ export class Board {
       this.el.view.style.removeProperty("--cam-x");
       this.el.view.style.removeProperty("--cam-y");
       this.el.view.style.removeProperty("--k");
+      const vw = viewportSize().w;
+      const lanes = phoneLanes(vw, PHONE_PADDING);
       const content = this.contentRect();
+      this.el.world.style.width = `${lanes.width}px`;
       this.el.world.style.height = `${Math.round(content.y + content.h + 96)}px`;
+      this.el.world.style.setProperty("--lane-side", `${lanes.side}px`);
+      this.el.world.style.setProperty("--lane-screen", `${vw}px`);
+      // First layout or a new screen width: the visitor starts on the centre column.
+      if (lanes.side !== this.phoneSide) {
+        this.phoneSide = lanes.side;
+        this.el.view.scrollLeft = lanes.side;
+      }
     } else {
+      this.phoneSide = -1;
+      this.el.world.style.width = "";
       this.el.world.style.height = "";
     }
     this.rings.refresh(this.el.world);
@@ -152,7 +177,7 @@ export class Board {
       item.scale = 1;
       setWidth(item, this.narrow ? Math.min(item.small ? item.baseWidth * 0.8 : item.baseWidth, column) : item.baseWidth);
     }
-    const sized = this.items.map((item) => toLayoutItem(item, measure(item)));
+    let sized = this.items.map((item) => toLayoutItem(item, measure(item)));
 
     if (this.mode === "tidy") {
       // Fit each object to its grid column with a uniform scale, kept within a range
@@ -163,9 +188,21 @@ export class Board {
         if (!this.narrow) item.scale = clamp(tidyWidth(li, grid, li.size.w) / li.size.w, TIDY_SCALE_MIN, TIDY_SCALE_MAX);
         return { ...li, size: { w: li.size.w * item.scale, h: li.size.h * item.scale } };
       });
-      return layoutTidy(scaled, { viewportWidth: vw, groupOrder: this.config.groups.map(([id]) => id) });
+      const tidy = layoutTidy(scaled, { viewportWidth: vw, groupOrder: this.config.groups.map(([id]) => id) });
+      return this.narrow ? shiftX(tidy, phoneLanes(vw, PHONE_PADDING).side) : tidy;
     }
-    if (this.narrow) return layoutColumn(sized, { viewportWidth: vw, padding: PHONE_PADDING, top: PHONE_TOP });
+    if (this.narrow) {
+      // Extras wider than a side lane shrink to fit it (a scale, so text never re-wraps
+      // when they glide back into the column under Tidy up).
+      const { laneWidth } = phoneLanes(vw, PHONE_PADDING);
+      sized = sized.map((li, i) => {
+        const item = this.items[i]!;
+        if (item.lane === "centre" || li.size.w <= laneWidth) return li;
+        item.scale = laneWidth / li.size.w;
+        return { ...li, size: { w: laneWidth, h: li.size.h * item.scale } };
+      });
+      return layoutPhone(sized, { viewportWidth: vw, padding: PHONE_PADDING, top: PHONE_TOP });
+    }
     return layoutMessy(sized, { viewportWidth: vw, clusterOrder: this.config.clusters });
   }
 
@@ -177,7 +214,7 @@ export class Board {
 
   seeAll(): void {
     if (this.narrow) {
-      window.scrollTo({ top: 0, behavior: this.reducedMotion ? "auto" : "smooth" });
+      this.scrollPhoneHome();
       return;
     }
     void this.camera.fitRect(this.contentRect(), SEE_ALL_PADDING);
@@ -197,6 +234,7 @@ export class Board {
     clearTimeout(this.animationEnd);
     world.classList.add("is-animating");
     world.classList.toggle("is-tidy", mode === "tidy");
+    this.el.view.classList.toggle("is-tidy", mode === "tidy");
     this.relayout();
     this.sound.play(mode === "tidy" ? "tidy" : "mess");
     // The class keeps the long, eased transitions until the last object has landed
@@ -204,7 +242,7 @@ export class Board {
     this.animationEnd = window.setTimeout(() => world.classList.remove("is-animating"), TIDY_MS + this.items.length * 8 + 100);
     // The camera travels with the objects: same duration, same in-out shape.
     this.home(this.reducedMotion ? 0 : TIDY_MS, easeInOut);
-    if (this.narrow) window.scrollTo({ top: 0, behavior: this.reducedMotion ? "auto" : "smooth" });
+    if (this.narrow) this.scrollPhoneHome();
     this.callbacks.onArrangement?.(mode);
     document.body.classList.add("has-moved");
   }
@@ -213,15 +251,23 @@ export class Board {
     this.setArrangement(this.mode === "tidy" ? "messy" : "tidy");
   }
 
-  /** Moves an object by a world delta. On a phone it stays inside the column. */
+  /**
+   * Moves an object by a world delta. On a phone it stays on the table: anywhere
+   * across the lanes when messy, inside the column when tidy.
+   */
   moveItem(item: TableItem, delta: Point): void {
     const offset = item.offset[this.mode];
     offset.x += delta.x;
     offset.y += delta.y;
     if (this.narrow) {
+      const vw = viewportSize().w;
+      const lanes = phoneLanes(vw, PHONE_PADDING);
+      const [minX, maxRight] = this.mode === "tidy"
+        ? [lanes.side + PHONE_PADDING, lanes.side + vw - PHONE_PADDING]
+        : [8, lanes.width - 8];
       const p = positionOf(item, this.mode);
-      const maxX = viewportSize().w - PHONE_PADDING - rectOf(item, this.mode).w;
-      offset.x += Math.min(0, maxX - p.x) + Math.max(0, PHONE_PADDING - p.x);
+      const maxX = maxRight - rectOf(item, this.mode).w;
+      offset.x += Math.min(0, maxX - p.x) + Math.max(0, minX - p.x);
       offset.y += Math.max(0, 8 - p.y);
     }
     render(item, this.mode);
@@ -259,6 +305,15 @@ export class Board {
     this.home(0);
   }
 
+  /** Phone: back to the top of the centre column. */
+  private scrollPhoneHome(): void {
+    this.el.view.scrollTo({
+      left: phoneLanes(viewportSize().w, PHONE_PADDING).side,
+      top: 0,
+      behavior: this.reducedMotion ? "auto" : "smooth",
+    });
+  }
+
   private centreOnItem(item: TableItem, zoom = this.camera.state.zoom, ms = 420): Promise<void> {
     const p = positionOf(item, this.mode);
     const r = rectOf(item, this.mode);
@@ -285,7 +340,7 @@ export class Board {
     const item = this.items.find((i) => i.id === id);
     if (!item) return false;
     if (PENCIL_ENABLED) this.rings.toggle(item.body, true);
-    if (this.narrow) item.el.scrollIntoView({ behavior: this.reducedMotion ? "auto" : "smooth", block: "center" });
+    if (this.narrow) item.el.scrollIntoView({ behavior: this.reducedMotion ? "auto" : "smooth", block: "center", inline: "center" });
     else void this.centreOnItem(item, Math.max(1, this.camera.state.zoom), 520);
     return true;
   }
@@ -324,3 +379,12 @@ export class Board {
     });
   }
 }
+
+/** The same layout moved right by `dx` (phone: the column sits after the left lane). */
+const shiftX = (result: LayoutResult, dx: number): LayoutResult => {
+  const placements: LayoutResult["placements"] = new Map();
+  for (const [id, p] of result.placements) placements.set(id, { ...p, x: p.x + dx });
+  const labels = new Map<string, Point>();
+  for (const [id, p] of result.labels) labels.set(id, { x: p.x + dx, y: p.y });
+  return { ...result, placements, labels, bounds: { ...result.bounds, x: result.bounds.x + dx } };
+};

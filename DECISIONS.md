@@ -121,3 +121,20 @@ colours and type of its real English cover; The Italian Dream, drawn like its It
 (the only edition); his Nothing Phone (3) and Nothing Headphone (1), as simplified drawings, not
 product photos. They carry information, so they stay under Tidy up and have a text
 alternative.
+
+## 2026-11-10 · Phone: the column plus side lanes
+
+**Decision.** On phones, when the table is messy, only what matters stays in the centre
+column (who Darwin is, the portfolio folder, path, photos, lab, the quote, contacts, other
+channels). Extras (project sheets, prints, cards, props, stickers, chalk) lie in a lane to
+the left or right of their group, chosen per object with `data-lane` in the HTML, and peek
+30 px into the screen from its edges. A sideways swipe rests on the left lane, the centre or
+the right lane. Tidy up is still one column with everything, without sideways scrolling.
+The table scrolls inside `.view`, not the page.
+
+**Why.** Darwin found the phone page too long (9.5 screens at 390 px, the last two only
+decorations) and asked for extras on the sides. The column is now 5 screens. Anything a
+recruiter needs (portfolio, contacts) stays in the column. Scrolling inside `.view` keeps
+the page as wide as the screen, so the bug where the layout grew with its own overflow
+cannot come back; the cost is that the iOS address bar no longer shrinks while scrolling.
+

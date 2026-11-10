@@ -45,7 +45,15 @@ export interface LayoutItem {
   small: boolean;
   /** Decorations fade out under "Tidy up" and are skipped by its grid. */
   decoration: boolean;
+  /** Where it lies on a phone when the table is messy (default: the centre column). */
+  lane?: Lane;
 }
+
+/**
+ * Phone lanes: the centre column holds what matters; extras lie beside it, off
+ * screen, and are reached with a sideways swipe.
+ */
+export type Lane = "centre" | "left" | "right";
 
 /** Position assigned to an item by a layout pass (top-left of the un-rotated element). */
 export interface Placement extends Point {

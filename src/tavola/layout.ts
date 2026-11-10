@@ -8,6 +8,8 @@
  *   wraps.
  * - column (phone): objects flow in reading order inside the screen width, like a
  *   page that only scrolls vertically.
+ * - phone (messy): the column holds what matters; extras lie in two side lanes,
+ *   next to their group, and peek in from the screen edges.
  * - tidy (both): a real grid, one row of columns per group, with a chalk label.
  *
  * Every arrangement ends with `relax`, which pushes objects apart when they touch.
@@ -197,6 +199,75 @@ export const layoutColumn = (items: LayoutItem[], opts: ColumnOptions): LayoutRe
   const placements: Placements = new Map();
   for (const box of boxes) placements.set(box.item.id, placementFor(box, box.item.rotation));
   return { placements, bounds: union(boxes), labels: new Map(), zoom: 1 };
+};
+
+/** Geometry of the phone table: a side lane, the screen-wide centre, a side lane. */
+export interface PhoneLanes {
+  /** Width of each side lane; the centre screen starts at x = side. */
+  side: number;
+  /** How far side objects reach into the centre screen, so they show at its edges. */
+  peek: number;
+  /** Room for one object in a side lane. */
+  laneWidth: number;
+  /** Width of the whole phone table. */
+  width: number;
+}
+
+/**
+ * A side lane is a little narrower than the screen, so a swipe to the side still
+ * shows a strip of the centre: the visitor knows where the way back is.
+ */
+export const phoneLanes = (viewportWidth: number, padding = 16): PhoneLanes => {
+  const side = Math.round(viewportWidth * 0.8);
+  const peek = 30;
+  return { side, peek, laneWidth: side + peek - padding, width: side * 2 + viewportWidth };
+};
+
+/** Vertical gap between the extras of two groups in the same side lane. */
+const SIDE_GROUP_GAP = 40;
+
+/**
+ * Phone, messy: the centre column is `layoutColumn` shifted right by one side
+ * lane. The extras of each group start level with the group's first object in the
+ * column and flow down their lane; the left lane is mirrored, so every row starts
+ * against the centre and peeks into it.
+ */
+export const layoutPhone = (items: LayoutItem[], opts: ColumnOptions): LayoutResult => {
+  const padding = opts.padding ?? 16;
+  const top = opts.top ?? 24;
+  const vw = opts.viewportWidth;
+  const lanes = phoneLanes(vw, padding);
+  const laneOf = (i: LayoutItem) => i.lane ?? "centre";
+
+  const centreItems = items.filter((i) => laneOf(i) === "centre");
+  const centre = layoutColumn(centreItems, { viewportWidth: vw, padding, top });
+  const placements: Placements = new Map();
+  const clusterTop = new Map<string, number>();
+  for (const item of centreItems) {
+    const p = centre.placements.get(item.id)!;
+    placements.set(item.id, { ...p, x: p.x + lanes.side });
+    clusterTop.set(item.cluster, Math.min(clusterTop.get(item.cluster) ?? Infinity, p.y));
+  }
+
+  const clusters = [...new Set(items.map((i) => i.cluster))];
+  for (const lane of ["left", "right"] as const) {
+    let free = top;
+    for (const cluster of clusters) {
+      const members = items.filter((i) => i.cluster === cluster && laneOf(i) === lane);
+      if (members.length === 0) continue;
+      const start = Math.max(free, clusterTop.get(cluster) ?? free);
+      const flow = layoutColumn(members, { viewportWidth: lanes.laneWidth, padding: 0, top: start });
+      for (const item of members) {
+        const p = flow.placements.get(item.id)!;
+        const x = lane === "left"
+          ? lanes.side + lanes.peek - p.x - item.size.w
+          : lanes.side + vw - lanes.peek + p.x;
+        placements.set(item.id, { ...p, x });
+      }
+      free = flow.bounds.y + flow.bounds.h + SIDE_GROUP_GAP;
+    }
+  }
+  return { placements, bounds: boundsOf(items, placements), labels: new Map(), zoom: 1 };
 };
 
 export interface TidyGrid {

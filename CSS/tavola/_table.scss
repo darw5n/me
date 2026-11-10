@@ -9,6 +9,21 @@
   min-height: 100svh;
   outline: none;
 
+  // Phone: the table scrolls inside the view, never the page, so the page width can
+  // never grow. Messy, a sideways swipe rests on a side lane or on the centre column;
+  // tidy, there is only the column.
+  @include narrow {
+    position: fixed;
+    inset: 0;
+    overflow: auto;
+    overscroll-behavior: none;
+    scroll-snap-type: x mandatory;
+
+    &.is-tidy {
+      overflow-x: hidden;
+    }
+  }
+
   @include wide {
     position: fixed;
     inset: 0;
@@ -59,7 +74,7 @@
   }
 
   @include narrow {
-    touch-action: pan-y;
+    touch-action: pan-x pan-y;
   }
 
   a,
@@ -85,6 +100,40 @@
 
   @include wide {
     user-select: none;
+  }
+}
+
+// Phone, messy: extras in the side lanes lie over the column's edge where they peek
+// into it, like papers left on top of one another: the visitor sees there is more
+.item.is-side {
+  z-index: var(--z, 2);
+}
+
+// Phone: the three places a sideways swipe comes to rest. Each is a screen wide and
+// as tall as the table, so it is found wherever the visitor is on the page.
+.lane-stop {
+  display: none;
+
+  @include narrow {
+    display: block;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: var(--lane-screen, 100vw);
+    pointer-events: none;
+    scroll-snap-align: start;
+  }
+
+  &--left {
+    left: 0;
+  }
+
+  &--centre {
+    left: var(--lane-side, 0px);
+  }
+
+  &--right {
+    left: calc(var(--lane-side, 0px) * 2);
   }
 }
 

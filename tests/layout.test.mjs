@@ -2,7 +2,7 @@
 // They import the compiled modules, so compile first: npx -y -p typescript tsc
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { layoutMessy, layoutColumn, layoutTidy, tidyGrid, tidyWidth } from "../Script/tavola/layout.js";
+import { layoutMessy, layoutColumn, layoutPhone, layoutTidy, phoneLanes, tidyGrid, tidyWidth } from "../Script/tavola/layout.js";
 import { rotatedBox, overlapsWithGap } from "../Script/tavola/geometry.js";
 
 const item = (id, cluster, rel, size, extra = {}) => ({
@@ -139,3 +139,48 @@ test("tidy grid is a single column on phones and 3 to 8 columns elsewhere", () =
   assert.equal(tidyGrid(1000).columns, 3);
   assert.ok(tidyGrid(3440).columns <= 8);
 });
+
+// Phone, messy: the column in the middle, extras in the side lanes.
+const phoneSample = sample.map((it) => {
+  const lane = { "chalk-kid": "left", "work-1": "left", "work-2": "right", "sticker-1": "left", "sticker-2": "right" }[it.id];
+  // Side items are already scaled to fit their lane by the board.
+  const size = it.size.w > 280 && lane ? { w: 280, h: it.size.h * (280 / it.size.w) } : it.size;
+  return lane ? { ...it, lane, size } : { ...it, size: { w: Math.min(it.size.w, 358), h: it.size.h } };
+});
+
+for (const viewportWidth of [320, 390]) {
+  test(`phone layout at ${viewportWidth} px: column in the centre screen, extras in their lanes, no overlaps within a lane`, () => {
+    const vw = viewportWidth;
+    const lanes = phoneLanes(vw);
+    const items = phoneSample.map((it) => ({ ...it, size: { w: Math.min(it.size.w, lanes.laneWidth, vw - 32), h: it.size.h } }));
+    const { placements } = layoutPhone(items, { viewportWidth: vw, padding: 16, top: 72 });
+    const byLane = { centre: [], left: [], right: [] };
+    for (const it of items) {
+      const r = rectOf(items, placements, it.id);
+      const lane = it.lane ?? "centre";
+      byLane[lane].push(r);
+      if (lane === "centre") {
+        assert.ok(r.x >= lanes.side + 16 - 0.5 && r.x + r.w <= lanes.side + vw - 16 + 0.5, `${it.id} leaves the column`);
+      } else if (lane === "left") {
+        assert.ok(r.x >= -0.5, `${it.id} falls off the left edge`);
+        assert.ok(r.x + r.w > lanes.side && r.x + r.w <= lanes.side + lanes.peek + 0.5, `${it.id} does not peek into the centre`);
+      } else {
+        assert.ok(r.x + r.w <= lanes.width + 0.5, `${it.id} falls off the right edge`);
+        assert.ok(r.x < lanes.side + vw && r.x >= lanes.side + vw - lanes.peek - 0.5, `${it.id} does not peek into the centre`);
+      }
+    }
+    for (const rects of Object.values(byLane)) {
+      for (let a = 0; a < rects.length; a++) for (let b = a + 1; b < rects.length; b++) {
+        assert.ok(!overlapsWithGap(rects[a], rects[b], 0), "two objects of the same lane overlap");
+      }
+    }
+  });
+}
+
+test("phone layout: extras start level with their group in the column", () => {
+  const { placements } = layoutPhone(phoneSample, { viewportWidth: 390, padding: 16, top: 72 });
+  const folderY = rectOf(phoneSample, placements, "folder").y;
+  const work1Y = rectOf(phoneSample, placements, "work-1").y;
+  assert.ok(work1Y >= folderY - 20, "work extras start above their group");
+});
+

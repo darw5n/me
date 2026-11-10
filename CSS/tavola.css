@@ -302,6 +302,18 @@ button:hover > .arrow {
   min-height: 100svh;
   outline: none;
 }
+@media (max-width: 899px) {
+  .view {
+    position: fixed;
+    inset: 0;
+    overflow: auto;
+    overscroll-behavior: none;
+    scroll-snap-type: x mandatory;
+  }
+  .view.is-tidy {
+    overflow-x: hidden;
+  }
+}
 @media (min-width: 900px) {
   .view {
     position: fixed;
@@ -351,7 +363,7 @@ button:hover > .arrow {
 }
 @media (max-width: 899px) {
   .item {
-    touch-action: pan-y;
+    touch-action: pan-x pan-y;
   }
 }
 .item a,
@@ -374,6 +386,34 @@ button:hover > .arrow {
   .item {
     user-select: none;
   }
+}
+
+.item.is-side {
+  z-index: var(--z, 2);
+}
+
+.lane-stop {
+  display: none;
+}
+@media (max-width: 899px) {
+  .lane-stop {
+    display: block;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: var(--lane-screen, 100vw);
+    pointer-events: none;
+    scroll-snap-align: start;
+  }
+}
+.lane-stop--left {
+  left: 0;
+}
+.lane-stop--centre {
+  left: var(--lane-side, 0px);
+}
+.lane-stop--right {
+  left: calc(var(--lane-side, 0px) * 2);
 }
 
 html:not(.is-ready) .item {

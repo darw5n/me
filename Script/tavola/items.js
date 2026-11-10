@@ -17,6 +17,8 @@
  * - data-small     sticker-sized: may sit closer to neighbours, lines up in a row when tidy
  * - data-decoration chalk marks etc.: fade out when tidy, skipped by its grid
  * - data-material  how the object reacts (see types.ts)
+ * - data-lane      on a phone, when messy: "left" or "right" of the centre column
+ *                  (default: in the column)
  *
  * The outer element is never rotated: the layout positions it with --x/--y and the
  * inner body rotates with --rot. So `offsetWidth/Height` of the outer element is
@@ -36,6 +38,7 @@ const MATERIALS = new Set([
     "paper", "print", "postit", "folder", "strip", "film", "slide", "card", "sticker", "chalk",
     "patch", "tag", "label", "ticket", "stamp", "prop",
 ]);
+const laneOf = (value) => value === "left" || value === "right" ? value : "centre";
 const materialOf = (el) => {
     const m = el.dataset["material"];
     return m && MATERIALS.has(m) ? m : "paper";
@@ -60,6 +63,7 @@ export const readItems = (root) => [...root.querySelectorAll(".item")].map((el, 
         span: Math.max(1, Math.round(number(d["span"], 1))),
         small: "small" in d,
         decoration: "decoration" in d,
+        lane: laneOf(d["lane"]),
         material: materialOf(el),
         home: { x: 0, y: 0, rotation: 0 },
         offset: { messy: { x: 0, y: 0 }, tidy: { x: 0, y: 0 } },
@@ -82,6 +86,7 @@ export const toLayoutItem = (item, size) => ({
     span: item.span,
     small: item.small,
     decoration: item.decoration,
+    lane: item.lane,
 });
 /** Position actually shown: home plus the visitor's drag offset. */
 export const positionOf = (item, mode) => ({
