@@ -3,6 +3,9 @@
  * `a[data-view]` (href = the full image, data-caption = the words under it),
  * moves between the links of the same object with the arrows, closes with
  * Escape or the button. The look is a placeholder: it will be redesigned.
+ *
+ * Its commands sit in the same floating bar as the table's, in the same spot:
+ * Close is the main (yellow) action, ‹ 2 / 6 › one segment like the zoom.
  */
 
 import type { Sound } from "./sound.js";
@@ -13,10 +16,13 @@ export const installViewer = (root: ParentNode, sound: Sound): void => {
   dialog.setAttribute("aria-label", "Photo viewer");
   dialog.innerHTML = `
     <figure class="viewer__figure"><img class="viewer__image" alt=""><figcaption class="viewer__caption"></figcaption></figure>
-    <div class="viewer__bar">
-      <button type="button" class="viewer__prev" aria-label="Previous">‹</button>
-      <button type="button" class="viewer__next" aria-label="Next">›</button>
-      <button type="button" class="viewer__close">Close</button>
+    <div class="controls viewer__bar" role="toolbar" aria-label="Photo controls">
+      <button type="button" class="controls__primary viewer__close">Close</button>
+      <span class="controls__steps viewer__steps" role="group" aria-label="Photos">
+        <button type="button" class="viewer__prev" aria-label="Previous photo">‹</button>
+        <output class="viewer__count" aria-live="polite"></output>
+        <button type="button" class="viewer__next" aria-label="Next photo">›</button>
+      </span>
     </div>`;
   document.body.append(dialog);
 
@@ -25,6 +31,8 @@ export const installViewer = (root: ParentNode, sound: Sound): void => {
   const prev = dialog.querySelector<HTMLButtonElement>(".viewer__prev")!;
   const next = dialog.querySelector<HTMLButtonElement>(".viewer__next")!;
   const close = dialog.querySelector<HTMLButtonElement>(".viewer__close")!;
+  const steps = dialog.querySelector<HTMLElement>(".viewer__steps")!;
+  const count = dialog.querySelector<HTMLOutputElement>(".viewer__count")!;
 
   let group: HTMLAnchorElement[] = [];
   let index = 0;
@@ -37,9 +45,9 @@ export const installViewer = (root: ParentNode, sound: Sound): void => {
     image.src = link.href;
     image.alt = link.dataset["alt"] ?? inner?.alt ?? "";
     caption.textContent = link.dataset["caption"] ?? "";
-    const many = group.length > 1;
-    prev.hidden = !many;
-    next.hidden = !many;
+    // One photo: no arrows, the bar holds only Close
+    steps.hidden = group.length < 2;
+    count.textContent = `${index + 1} / ${group.length}`;
   };
 
   const open = (link: HTMLAnchorElement): void => {
@@ -49,6 +57,8 @@ export const installViewer = (root: ParentNode, sound: Sound): void => {
     opener = link;
     show(group.indexOf(link));
     dialog.showModal();
+    // The viewer's bar takes the place of the table's: hide that one meanwhile
+    document.documentElement.classList.add("has-viewer");
     sound.play("lift");
   };
 
@@ -72,6 +82,7 @@ export const installViewer = (root: ParentNode, sound: Sound): void => {
     if (e.target === dialog) dialog.close(); // on the backdrop
   });
   dialog.addEventListener("close", () => {
+    document.documentElement.classList.remove("has-viewer");
     sound.play("press");
     image.removeAttribute("src");
     opener?.focus();
