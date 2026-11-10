@@ -176,7 +176,8 @@ lanes. Scaling the whole composition keeps it intact from 320 px up.
 
 **Decision.** On phones "See all" zooms the table out until the whole composition fits
 across the screen, keeping the spot in the middle at the same height, and becomes "Zoom
-back in", which returns to 100% on the spot in the middle. Any zoom other than 100%
+back in", which returns to 100% at the height of the spot in the middle, lined up
+with the opening screen. Any zoom other than 100%
 (pinch included) shows "Zoom back in". Tidy up fits the screen already: there See all
 goes to the top.
 

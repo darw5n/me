@@ -363,8 +363,8 @@ export class Board {
   }
 
   /**
-   * Phone. Zoomed (pinch or overview): back to 100% on the spot in the middle of
-   * the screen. At 100%: the whole table across the screen, keeping the spot in
+   * Phone. Zoomed (pinch or overview): back to 100% at the height of the spot in
+   * the middle of the screen, lined up with the opening screen. At 100%: the whole table across the screen, keeping the spot in
    * the middle at the same height. Tidy, the column already fits across: to the top.
    */
   private phoneSeeAll(): void {
@@ -374,7 +374,9 @@ export class Board {
     const centre = { x: view.clientWidth / 2, y: view.clientHeight / 2 };
     const anchor = { x: (view.scrollLeft + centre.x) / zoom, y: (view.scrollTop + centre.y) / zoom };
     if (zoom !== 1) {
-      this.phoneZoom.animateTo(1, anchor, centre, ms);
+      // Back to 100% at the height of the spot in the middle, lined up with the
+      // opening screen again (horizontally where the visitor started)
+      this.phoneZoom.animateTo(1, anchor, { x: anchor.x - this.table().side, y: centre.y }, ms);
       return;
     }
     const margin = 12;
