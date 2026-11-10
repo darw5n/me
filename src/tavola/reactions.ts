@@ -6,7 +6,7 @@
  * object changes size (Tidy up, resize).
  */
 
-import { clickActionOf } from "./actions.js";
+import { PENCIL_ENABLED, clickActionOf } from "./actions.js";
 import type { TableItem } from "./items.js";
 import type { Sound } from "./sound.js";
 
@@ -92,6 +92,7 @@ export const reactToTap = (item: TableItem, target: Element, rings: Rings, sound
       }
       return;
     case "view": {
+      if (!PENCIL_ENABLED) return;
       const frame = target.closest<HTMLElement>(".film a");
       if (frame) frame.dataset["kept"] = "1";
       rings.toggle(frame ?? item.body, true);
@@ -104,6 +105,7 @@ export const reactToTap = (item: TableItem, target: Element, rings: Rings, sound
 
 /** On a film strip the ring follows the mouse, and stays where the visitor clicked. */
 export const attachFilmHover = (root: ParentNode, rings: Rings): void => {
+  if (!PENCIL_ENABLED) return;
   root.querySelectorAll<HTMLElement>(".film a").forEach((frame) => {
     frame.addEventListener("pointerenter", (e) => {
       if (e.pointerType !== "mouse") return;

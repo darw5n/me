@@ -8,6 +8,13 @@
  * - "move"  stickers, props, chalk: nothing but moving   → open hand
  * - "none"  not on an object
  */
+/**
+ * The red pencil (pencil cursor + ring on click) is on hold (Darwin, 10/11/2026):
+ * the pencil showed almost everywhere and added little. While this is false, notes
+ * and cards behave like stickers ("move"), and no ring is ever drawn. The code
+ * stays: set it to true to bring the pencil back.
+ */
+export const PENCIL_ENABLED = false;
 const MOVE_ONLY = new Set(["sticker", "prop", "chalk"]);
 /** True for links that take the visitor somewhere else. */
 export const leavesTheTable = (target) => {
@@ -38,7 +45,7 @@ export const clickActionOf = (target) => {
         return "view";
     if (leavesTheTable(target))
         return "leave";
-    if (item.hasAttribute("data-no-ring") || MOVE_ONLY.has(item.dataset["material"] ?? ""))
+    if (!PENCIL_ENABLED || item.hasAttribute("data-no-ring") || MOVE_ONLY.has(item.dataset["material"] ?? ""))
         return "move";
     return "ring";
 };

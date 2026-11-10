@@ -6,6 +6,7 @@
  * - desktop: a fixed viewport over an infinite table; pan and zoom;
  * - phone: the table is as wide as the screen, the page scrolls vertically.
  */
+import { PENCIL_ENABLED } from "./actions.js";
 import { CameraController } from "./camera.js";
 import { union, viewportSize } from "./geometry.js";
 import { measure, positionOf, readItems, rectOf, render, setWidth, toLayoutItem, } from "./items.js";
@@ -235,7 +236,8 @@ export class Board {
         const item = this.items.find((i) => i.id === id);
         if (!item)
             return false;
-        this.rings.toggle(item.body, true);
+        if (PENCIL_ENABLED)
+            this.rings.toggle(item.body, true);
         if (this.narrow)
             item.el.scrollIntoView({ behavior: this.reducedMotion ? "auto" : "smooth", block: "center" });
         else

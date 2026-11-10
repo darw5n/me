@@ -11,6 +11,14 @@
 
 export type ClickAction = "view" | "leave" | "ring" | "move" | "none";
 
+/**
+ * The red pencil (pencil cursor + ring on click) is on hold (Darwin, 10/11/2026):
+ * the pencil showed almost everywhere and added little. While this is false, notes
+ * and cards behave like stickers ("move"), and no ring is ever drawn. The code
+ * stays: set it to true to bring the pencil back.
+ */
+export const PENCIL_ENABLED = false;
+
 const MOVE_ONLY = new Set(["sticker", "prop", "chalk"]);
 
 /** True for links that take the visitor somewhere else. */
@@ -35,6 +43,6 @@ export const clickActionOf = (target: Element): ClickAction => {
   if (!item) return "none";
   if (target.closest("a[data-view]")) return "view";
   if (leavesTheTable(target)) return "leave";
-  if (item.hasAttribute("data-no-ring") || MOVE_ONLY.has(item.dataset["material"] ?? "")) return "move";
+  if (!PENCIL_ENABLED || item.hasAttribute("data-no-ring") || MOVE_ONLY.has(item.dataset["material"] ?? "")) return "move";
   return "ring";
 };

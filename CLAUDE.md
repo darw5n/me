@@ -78,9 +78,10 @@ restano alcune immagini che usava solo lui (loghi, copertine di libri e dischi):
 - **Sfondi** (`data-surface` su `<html>`, salvato in localStorage): felt, slate, kraft, plum. Ogni preset definisce
   anche il colore del gesso, così il testo resta leggibile.
 - **Suoni** originali sintetizzati con Web Audio (nessun file, nessuna libreria), spenti di default. **Cursore** solo con mouse, annuncia cosa fa il clic
-  (`actions.ts`): mano aperta sul tavolo, penna sulle cose da cerchiare, lente su foto e schermate, freccia ↗ con
-  etichetta (`data-cursor="…"`) sui link che portano fuori, mano gialla su adesivi e oggetti; appena premi
-  diventa mano chiusa. Sulla barra in basso resta il cursore di sistema.
+  (`actions.ts`): mano aperta sul tavolo, lente su foto e schermate, freccia ↗ con
+  etichetta (`data-cursor="…"`) sui link che portano fuori, mano gialla su tutti gli altri oggetti (si spostano); appena premi
+  diventa mano chiusa. **Penna e cerchio rosso sono in pausa** (`PENCIL_ENABLED = false` in `actions.ts`): il
+  codice c'è, si riaccende cambiando quel valore. Sulla barra in basso resta il cursore di sistema.
 
 ---
 

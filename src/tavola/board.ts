@@ -7,6 +7,7 @@
  * - phone: the table is as wide as the screen, the page scrolls vertically.
  */
 
+import { PENCIL_ENABLED } from "./actions.js";
 import { CameraController } from "./camera.js";
 import { union, viewportSize } from "./geometry.js";
 import {
@@ -261,7 +262,7 @@ export class Board {
   private jumpTo(id: string): boolean {
     const item = this.items.find((i) => i.id === id);
     if (!item) return false;
-    this.rings.toggle(item.body, true);
+    if (PENCIL_ENABLED) this.rings.toggle(item.body, true);
     if (this.narrow) item.el.scrollIntoView({ behavior: this.reducedMotion ? "auto" : "smooth", block: "center" });
     else void this.centreOnItem(item, Math.max(1, this.camera.state.zoom), 520);
     return true;

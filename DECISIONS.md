@@ -90,3 +90,8 @@ table. Pressing the button on anything turns it into a closed hand at once, befo
 movement: that is how every object shows it can be carried. The bottom bar keeps the
 system cursor. Cursor and reactions read the same rules (`actions.ts`), so what the cursor
 promises is what the click does.
+
+**Update, same day.** The pencil is on hold: it showed on almost every object and added
+little. `PENCIL_ENABLED = false` in `actions.ts` turns off both the pencil cursor and the
+ring (notes and cards now show the yellow open hand, like stickers). The code stays, ready
+to come back.

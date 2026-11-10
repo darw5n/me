@@ -5,7 +5,7 @@
  * revealed with a dash offset, so it looks hand-drawn. It is redrawn when the
  * object changes size (Tidy up, resize).
  */
-import { clickActionOf } from "./actions.js";
+import { PENCIL_ENABLED, clickActionOf } from "./actions.js";
 const SVG_NS = "http://www.w3.org/2000/svg";
 /** A slightly wobbly ellipse in a 100×100 box, as control points. */
 const RING_POINTS = [
@@ -78,6 +78,8 @@ export const reactToTap = (item, target, rings, sound) => {
             }
             return;
         case "view": {
+            if (!PENCIL_ENABLED)
+                return;
             const frame = target.closest(".film a");
             if (frame)
                 frame.dataset["kept"] = "1";
@@ -90,6 +92,8 @@ export const reactToTap = (item, target, rings, sound) => {
 };
 /** On a film strip the ring follows the mouse, and stays where the visitor clicked. */
 export const attachFilmHover = (root, rings) => {
+    if (!PENCIL_ENABLED)
+        return;
     root.querySelectorAll(".film a").forEach((frame) => {
         frame.addEventListener("pointerenter", (e) => {
             if (e.pointerType !== "mouse")
