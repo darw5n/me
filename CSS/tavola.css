@@ -359,6 +359,14 @@ button:hover > .arrow {
   user-select: none;
   pointer-events: none;
 }
+.item a {
+  -webkit-user-drag: none;
+}
+@media (min-width: 900px) {
+  .item {
+    user-select: none;
+  }
+}
 
 html:not(.is-ready) .item {
   opacity: 0;

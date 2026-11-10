@@ -129,6 +129,13 @@ export const attachInput = (host: InputHost): (() => void) => {
       moved = true;
       clearTimeout(longPress);
       pressed?.el.classList.remove("is-pressed");
+      // From now on the pointer belongs to the table, even outside the window.
+      // Not earlier: a captured click would no longer reach the link under it.
+      try {
+        view.setPointerCapture(e.pointerId);
+      } catch {
+        /* the pointer is already gone */
+      }
       if (action.kind === "drag") {
         if (!action.live) {
           action.live = true;
@@ -228,6 +235,14 @@ export const attachInput = (host: InputHost): (() => void) => {
     if (camera || e.key === "t" || e.key === "T") e.preventDefault();
   };
 
+  // Links and images on the table must not start the browser's own drag (the one
+  // that carries a URL to the address bar): it would cancel ours with pointercancel.
+  view.querySelectorAll<HTMLElement>("a, img").forEach((el) => {
+    el.draggable = false;
+  });
+  const onNativeDrag = (e: DragEvent): void => e.preventDefault();
+  view.addEventListener("dragstart", onNativeDrag);
+
   view.addEventListener("pointerdown", onDown);
   addEventListener("pointermove", onMove);
   addEventListener("pointerup", onUp);
@@ -239,6 +254,7 @@ export const attachInput = (host: InputHost): (() => void) => {
   addEventListener("keydown", onKey);
 
   return () => {
+    view.removeEventListener("dragstart", onNativeDrag);
     view.removeEventListener("pointerdown", onDown);
     removeEventListener("pointermove", onMove);
     removeEventListener("pointerup", onUp);

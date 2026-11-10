@@ -72,6 +72,15 @@
     user-select: none;
     pointer-events: none;
   }
+
+  // Links are carried like the rest: no native link drag, no text selection on the way
+  a {
+    -webkit-user-drag: none;
+  }
+
+  @include wide {
+    user-select: none;
+  }
 }
 
 // Before the preloader lets go: objects hover a little above the table, unseen.
