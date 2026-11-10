@@ -53,7 +53,7 @@ export const installViewer = (root, sound) => {
         show(group.indexOf(link));
         dialog.showModal();
         // The viewer's bar takes the place of the table's: hide that one meanwhile
-        document.documentElement.classList.add("has-viewer");
+        document.documentElement.classList.add("has-dialog");
         sound.play("lift");
     };
     root.addEventListener("click", (e) => {
@@ -80,7 +80,7 @@ export const installViewer = (root, sound) => {
             dialog.close(); // on the backdrop
     });
     dialog.addEventListener("close", () => {
-        document.documentElement.classList.remove("has-viewer");
+        document.documentElement.classList.remove("has-dialog");
         sound.play("press");
         image.removeAttribute("src");
         opener?.focus();

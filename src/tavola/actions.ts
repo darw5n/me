@@ -25,7 +25,7 @@ const MOVE_ONLY = new Set(["sticker", "prop", "chalk"]);
 export const leavesTheTable = (target: Element): boolean => {
   const link = target.closest<HTMLAnchorElement>("a[href]");
   if (!link || link.hasAttribute("data-view")) return false;
-  if (link.matches("[data-open], [data-email-user], [target=_blank]")) return true;
+  if (link.matches("[data-open], [data-email-user], [data-request], [target=_blank]")) return true;
   const href = link.getAttribute("href") ?? "";
   // A jump to another object: the ring goes on the destination, not here.
   if (href.startsWith("#")) return href.length > 1;

@@ -198,3 +198,16 @@ taking longer. Reduced motion shows them at once.
 Close on the right and no outline, and asked to try a white bar first, falling back to the
 black one if it did not work. He asked for the chalk to appear as if someone were writing it.
 
+## 2026-11-10 · Ask for the portfolio: a form that writes the email
+
+**Decision.** The orange post-it opens a short form (name, optional company and message).
+Submitting opens the visitor's own email app with the subject and text ready (mailto:),
+from their address; nothing is sent or stored by the site. The second state shows the
+message and Darwin's address with buttons to copy them, for visitors without an email app.
+The address stays split in data attributes, out of the HTML.
+
+**Why.** The site is static on GitHub Pages and the domain's DNS is on Aruba. Of the three
+ways offered (a form service, a Cloudflare Worker that needs the DNS moved, a pre-filled
+email), Darwin chose the pre-filled email: no third party, no cost. The copy buttons cover
+its weak spot.
+

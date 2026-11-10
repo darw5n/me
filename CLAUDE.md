@@ -48,6 +48,9 @@ src/tavola/             ← sorgenti TypeScript, un modulo per compito
   actions.ts            ← cosa fa il clic in un punto (view, leave, ring, move): lo usano cursore e reazioni
   reactions.ts          ← cerchio a matita (mai sui link che portano fuori), rimbalzo degli adesivi
   cursor.ts controls.ts backgrounds.ts sound.ts preloader.ts viewer.ts email.ts
+  request.ts            ← "Ask for the portfolio": modulo che scrive l'email nell'app di chi visita (mailto),
+                          con ripiego copia testo/indirizzo; niente servizi esterni
+  phone-zoom.ts         ← pinch e vista d'insieme sul telefono
   main.ts               ← avvio
 Script/tavola/          ← JS compilato (NON editare)
 CSS/tavola.scss         ← entry SCSS; partial in CSS/tavola/ (_tokens _surfaces _fonts _base _table _materials _ui)

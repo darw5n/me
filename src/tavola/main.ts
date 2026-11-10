@@ -18,6 +18,7 @@ import { viewportSize } from "./geometry.js";
 import { attachInput } from "./input.js";
 import { runPreloader } from "./preloader.js";
 import { createSound } from "./sound.js";
+import { installRequest } from "./request.js";
 import { installViewer } from "./viewer.js";
 
 const readConfig = (): BoardConfig => {
@@ -78,6 +79,7 @@ const boot = (): void => {
   installCursor({ view });
   installViewer(world, sound);
   installEmailLinks(document);
+  installRequest(document, sound);
 
   board.relayout();
   board.home(0);

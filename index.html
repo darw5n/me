@@ -91,6 +91,44 @@
   </div>
   <div class="curtain" aria-hidden="true"></div>
 
+  <!-- Ask for the portfolio (request.ts): the visitor's own email app sends it -->
+  <dialog id="request-dialog" class="request" aria-labelledby="request-title" data-to-user="darwin.vegher" data-to-domain="gmail.com">
+    <form id="request-form" class="request__card" novalidate>
+      <div class="request__ask">
+        <h2 id="request-title">Ask for the portfolio</h2>
+        <p class="request__intro">It's private. Tell me who you are and I'll send you the&nbsp;link.</p>
+        <label class="request__field">
+          <span>Your name</span>
+          <input name="name" autocomplete="name" required aria-describedby="request-error">
+        </label>
+        <label class="request__field">
+          <span>Company <i>(optional)</i></span>
+          <input name="company" autocomplete="organization">
+        </label>
+        <label class="request__field">
+          <span>Message <i>(optional)</i></span>
+          <textarea name="message" rows="3"></textarea>
+        </label>
+        <p id="request-error" class="request__error" role="alert" hidden>Add your name, so I know who's&nbsp;asking.</p>
+        <p class="request__note">This opens your email app with the message ready. Nothing is saved on this&nbsp;site.</p>
+      </div>
+      <div class="request__sent" hidden>
+        <h2>Almost done</h2>
+        <p>Your email app should be open, with the message ready to&nbsp;send.</p>
+        <p>Didn't it open? Copy the message and send it to <b class="request__address"></b>.</p>
+        <div class="request__copy">
+          <button type="button" class="request__copy-message">Copy the message</button>
+          <button type="button" class="request__copy-address">Copy my address</button>
+        </div>
+        <p class="request__status" role="status"></p>
+      </div>
+      <div class="controls request__bar">
+        <button type="button" class="request__cancel">Cancel</button>
+        <button type="submit" class="controls__primary request__submit">Write the email</button>
+      </div>
+    </form>
+  </dialog>
+
   <div id="view" class="view" tabindex="-1">
     <div id="world" class="world">
       <main class="items">
@@ -207,7 +245,7 @@
           <p class="item__body chalk chalk--small">your turn!</p>
         </div>
         <div class="item" data-phone="23,2994" id="request" data-cluster="ask" data-at="10,62" data-width="340" data-rotate="1.6" data-material="postit">
-          <a class="item__body postit postit--orange ask" href="#" data-email-user="darwin.vegher" data-email-domain="gmail.com" data-email-subject="Portfolio access" data-cursor="write to me"><span>Ask for the&nbsp;portfolio</span><svg class="arrow" viewBox="0 0 56 56" aria-hidden="true"><path d="M12 44 44 12M20 12h24v24"/></svg></a>
+          <a class="item__body postit postit--orange ask" href="#request-dialog" data-request data-cursor="ask me"><span>Ask for the&nbsp;portfolio</span><svg class="arrow" viewBox="0 0 56 56" aria-hidden="true"><path d="M12 44 44 12M20 12h24v24"/></svg></a>
         </div>
         <!-- Write to me: a business card, a tape strip, a luggage tag -->
         <div class="item" data-phone="152,3406" data-cluster="ask" data-at="390,40" data-width="280" data-rotate="-2" data-material="card">

@@ -387,9 +387,140 @@ html.has-cursor * {
   }
 }
 
-// One bar at a time: while a photo is open the table's bar would show through the blur
-html.has-viewer body > .controls {
+// One bar at a time: while a dialog is open the table's bar would show through the blur
+html.has-dialog body > .controls {
   visibility: hidden;
+}
+
+// ---- Ask for the portfolio (request.ts) ------------------------------------------------
+// A paper card on the same dark backdrop as the viewer; its buttons are the table's
+// bar, sitting at the bottom of the card (not fixed: it stays above the keyboard).
+.request {
+  border: 0;
+  padding: 0;
+  width: min(440px, calc(100vw - 32px));
+  max-height: calc(100svh - 32px);
+  background: transparent;
+  overflow: visible;
+
+  &::backdrop {
+    background: rgba(12, 12, 10, 0.86);
+    backdrop-filter: blur(8px);
+  }
+
+  .request__card {
+    position: relative;
+    background: var(--paper);
+    color: var(--ink);
+    padding: 1.6em 1.4em 1.2em;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5);
+    max-height: calc(100svh - 32px);
+    overflow-y: auto;
+  }
+
+  h2 {
+    font: 500 1.9rem / 1 var(--font-ui);
+    letter-spacing: -0.035em;
+    margin: 0;
+    text-wrap: balance;
+  }
+
+  p {
+    margin: 0.7em 0 0;
+    text-wrap: pretty;
+  }
+
+  .request__intro {
+    font-size: 1.15rem;
+    line-height: 1.3;
+  }
+
+  .request__field {
+    display: grid;
+    gap: 6px;
+    margin-top: 1.1em;
+    font: 500 0.95rem / 1.2 var(--font-ui);
+
+    i {
+      font-style: normal;
+      font-weight: 400;
+      color: var(--ink-soft);
+    }
+  }
+
+  input,
+  textarea {
+    width: 100%;
+    min-height: 44px;
+    padding: 10px 12px;
+    border: 1px solid #a9a597;
+    border-radius: 6px;
+    background: #fff;
+    color: var(--ink);
+    font: 400 1.05rem / 1.35 var(--font-text);
+
+    &:focus-visible {
+      outline: 2px solid var(--ink);
+      outline-offset: 1px;
+    }
+
+    &[aria-invalid="true"] {
+      border-color: var(--red);
+    }
+  }
+
+  textarea {
+    resize: vertical;
+  }
+
+  .request__error {
+    color: #b3200b;
+    font: 500 0.95rem / 1.3 var(--font-ui);
+  }
+
+  .request__note,
+  .request__status {
+    font: 400 var(--text-small) / 1.4 var(--font-ui);
+    color: var(--ink-soft);
+  }
+
+  .request__address {
+    font-weight: 600;
+    overflow-wrap: anywhere;
+  }
+
+  .request__copy {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 1em;
+
+    button {
+      min-height: 44px;
+      padding: 0 14px;
+      border: 1px solid var(--ink);
+      border-radius: 8px;
+      font: 500 0.95rem / 1 var(--font-ui);
+
+      &:hover {
+        background: #ece9de;
+      }
+    }
+  }
+
+  // The table's bar, in the flow of the card
+  .request__bar {
+    position: static;
+    transform: none;
+    justify-content: flex-end;
+    width: max-content;
+    max-width: 100%;
+    margin: 1.4em 0 0 auto;
+
+    :focus-visible {
+      outline-color: var(--yellow);
+    }
+  }
 }
 
 // ---- Preloader (preloader.ts) ------------------------------------------------------------

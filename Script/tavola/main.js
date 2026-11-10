@@ -17,6 +17,7 @@ import { viewportSize } from "./geometry.js";
 import { attachInput } from "./input.js";
 import { runPreloader } from "./preloader.js";
 import { createSound } from "./sound.js";
+import { installRequest } from "./request.js";
 import { installViewer } from "./viewer.js";
 const readConfig = () => {
     const fallback = { clusters: [], groups: [] };
@@ -74,6 +75,7 @@ const boot = () => {
     installCursor({ view });
     installViewer(world, sound);
     installEmailLinks(document);
+    installRequest(document, sound);
     board.relayout();
     board.home(0);
     // Sizes depend on fonts and images: settle once they are in.
