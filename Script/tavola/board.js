@@ -80,6 +80,10 @@ export class Board {
             const p = document.createElement("p");
             p.className = "group-label chalk";
             p.textContent = label;
+            // Written by hand under Tidy up: after the objects land, one label after the
+            // other, longer words take longer (see .group-label)
+            p.style.setProperty("--delay", `${TIDY_MS / 1000 * 0.7 + this.labels.size * 0.16}s`);
+            p.style.setProperty("--write-ms", `${clamp(label.length * 75, 450, 1300)}ms`);
             el.world.append(p);
             this.labels.set(id, p);
         }

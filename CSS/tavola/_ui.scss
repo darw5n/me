@@ -345,16 +345,45 @@ html.has-cursor * {
     text-align: center;
   }
 
-  // On the dark backdrop the black bar would disappear: a thin light edge and a
-  // lighter segment keep its shape readable without changing its style
+  // Same bar as the table's, inverted: the black one would sink into the dark
+  // backdrop, a light one stands out like a paper on it
   .viewer__bar {
-    box-shadow:
-      0 0 0 1px rgba(255, 255, 255, 0.18),
-      0 10px 28px rgba(0, 0, 0, 0.5);
+    background: var(--paper);
+    color: var(--ink);
+
+    button:hover {
+      background: #e9e6da;
+    }
+
+    .controls__primary:hover {
+      background: #ffd400;
+    }
+
+    // The yellow focus ring vanishes on the light bar
+    :focus-visible {
+      outline-color: var(--ink);
+    }
   }
 
-  .viewer__steps[hidden] {
-    display: none;
+  // Arrows are full thumb targets; the count between them is only a label
+  .viewer__steps {
+    margin-inline: 0 4px;
+    background: #ecE9de;
+
+    button {
+      min-width: 48px;
+      font-size: 1.25rem;
+    }
+
+    output {
+      min-width: 3.6em;
+      color: var(--ink-soft);
+      pointer-events: none;
+    }
+
+    &[hidden] {
+      display: none;
+    }
   }
 }
 

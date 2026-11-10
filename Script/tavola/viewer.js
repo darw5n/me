@@ -4,8 +4,9 @@
  * moves between the links of the same object with the arrows, closes with
  * Escape or the button. The look is a placeholder: it will be redesigned.
  *
- * Its commands sit in the same floating bar as the table's, in the same spot:
- * Close is the main (yellow) action, ‹ 2 / 6 › one segment like the zoom.
+ * Its commands sit in a floating bar shaped like the table's, in the same spot,
+ * light on the dark backdrop: ‹ 2 / 6 › one segment like the zoom, then Close,
+ * the main (yellow) action, on the right.
  */
 export const installViewer = (root, sound) => {
     const dialog = document.createElement("dialog");
@@ -14,12 +15,12 @@ export const installViewer = (root, sound) => {
     dialog.innerHTML = `
     <figure class="viewer__figure"><img class="viewer__image" alt=""><figcaption class="viewer__caption"></figcaption></figure>
     <div class="controls viewer__bar" role="toolbar" aria-label="Photo controls">
-      <button type="button" class="controls__primary viewer__close">Close</button>
       <span class="controls__steps viewer__steps" role="group" aria-label="Photos">
         <button type="button" class="viewer__prev" aria-label="Previous photo">‹</button>
         <output class="viewer__count" aria-live="polite"></output>
         <button type="button" class="viewer__next" aria-label="Next photo">›</button>
       </span>
+      <button type="button" class="controls__primary viewer__close" autofocus>Close</button>
     </div>`;
     document.body.append(dialog);
     const image = dialog.querySelector(".viewer__image");

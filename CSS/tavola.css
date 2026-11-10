@@ -435,6 +435,11 @@ html:not(.is-ready) .item {
   transition: opacity 0.35s ease, visibility 0s linear 0.35s;
 }
 
+@property --write {
+  syntax: "<percentage>";
+  inherits: false;
+  initial-value: 0%;
+}
 .group-label {
   position: absolute;
   left: 0;
@@ -445,12 +450,30 @@ html:not(.is-ready) .item {
   pointer-events: none;
   white-space: nowrap;
   transition: opacity 0.3s;
+  mask-image: linear-gradient(to right, #000 calc(var(--write) - 8%), transparent var(--write));
 }
 .world.is-tidy .group-label {
   opacity: 1;
-  transition-delay: 0.3s;
+  transition: none;
+  animation: chalk-write var(--write-ms, 900ms) cubic-bezier(0.45, 0.1, 0.55, 0.95) var(--delay, 0.6s) both;
 }
 
+@keyframes chalk-write {
+  from {
+    --write: 0%;
+  }
+  to {
+    --write: 108%;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .group-label {
+    mask-image: none;
+  }
+  .world.is-tidy .group-label {
+    animation: none;
+  }
+}
 .ring {
   position: absolute;
   z-index: 6;
@@ -1635,7 +1658,30 @@ html.has-cursor .cursor {
   text-align: center;
 }
 .viewer .viewer__bar {
-  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.18), 0 10px 28px rgba(0, 0, 0, 0.5);
+  background: var(--paper);
+  color: var(--ink);
+}
+.viewer .viewer__bar button:hover {
+  background: #e9e6da;
+}
+.viewer .viewer__bar .controls__primary:hover {
+  background: #ffd400;
+}
+.viewer .viewer__bar :focus-visible {
+  outline-color: var(--ink);
+}
+.viewer .viewer__steps {
+  margin-inline: 0 4px;
+  background: #ecE9de;
+}
+.viewer .viewer__steps button {
+  min-width: 48px;
+  font-size: 1.25rem;
+}
+.viewer .viewer__steps output {
+  min-width: 3.6em;
+  color: var(--ink-soft);
+  pointer-events: none;
 }
 .viewer .viewer__steps[hidden] {
   display: none;

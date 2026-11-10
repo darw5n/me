@@ -185,3 +185,16 @@ goes to the top.
 as on the desktop, and gives the view of the whole table that Darwin missed while
 arranging it.
 
+## 2026-11-10 · Viewer bar and hand-written chalk labels
+
+**Decision.** The photo viewer's commands sit in a bar shaped like the table's, in the same
+spot, but light (paper) on the dark backdrop: ‹ 2 / 6 › first, with 48 px arrows and the
+count as a plain label between them, then Close, yellow, on the right. No outline. Under
+Tidy up the chalk labels of the groups are written by hand after the objects land: a mask
+uncovers each word left to right with a soft edge, one after the other, longer words
+taking longer. Reduced motion shows them at once.
+
+**Why.** Darwin found the arrows hard to tap (the count was squeezed between them), wanted
+Close on the right and no outline, and asked to try a white bar first, falling back to the
+black one if it did not work. He asked for the chalk to appear as if someone were writing it.
+
