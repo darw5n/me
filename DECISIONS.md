@@ -138,3 +138,12 @@ recruiter needs (portfolio, contacts) stays in the column. Scrolling inside `.vi
 the page as wide as the screen, so the bug where the layout grew with its own overflow
 cannot come back; the cost is that the iOS address bar no longer shrinks while scrolling.
 
+## 2026-11-10 · Phone: pinch zooms the table
+
+**Decision.** On phones two fingers zoom the table (50% to 250%), not the page: the corner
+and the bar keep their size. Zoomed, the table pans freely; at 100% the lanes snap again.
+"See all" and Tidy up come back to 100%. Safari's page zoom is blocked on the table only.
+
+**Why.** Darwin asked for pinch zoom like on the desktop. Browser zoom scaled the fixed bar
+too. Text can still be enlarged to 250%, above the 200% that WCAG asks for.
+

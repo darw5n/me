@@ -8,8 +8,9 @@
  * - two fingers: pinch to zoom; wheel / trackpad: pan, with Ctrl or Cmd: zoom;
  * - keys: arrows pan, + and − zoom, 0 shows everything, T tidies up.
  *
- * Phone (no camera): the page scrolls natively; a finger held on an object lifts
- * it, and while it is lifted the page does not scroll.
+ * Phone (no camera): the table scrolls natively; a finger held on an object lifts
+ * it, and while it is lifted the table does not scroll. Two fingers zoom the
+ * table (phone-zoom.ts).
  */
 import { viewportSize } from "./geometry.js";
 import { itemAt } from "./items.js";
@@ -25,7 +26,7 @@ export const attachInput = (host) => {
     let longPress = 0;
     let pinch = null;
     let tiltReset = 0;
-    const zoomOf = () => host.camera?.state.zoom ?? 1;
+    const zoomOf = () => host.tableZoom();
     const liftItem = (item, start) => {
         action = { kind: "drag", item, start, last: { ...start }, live: true };
         item.el.classList.add("is-dragging");
@@ -45,9 +46,13 @@ export const attachInput = (host) => {
         host.camera?.stop();
         pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
         moved = false;
-        if (pointers.size === 2 && host.camera) {
-            const [a, b] = [...pointers.values()];
-            pinch = { distance: Math.hypot(a.x - b.x, a.y - b.y), zoom: host.camera.state.zoom };
+        // A second finger means a pinch, unless an object is already lifted. On a phone
+        // the pinch itself is handled by phone-zoom.ts; here it only cancels the press.
+        if (pointers.size >= 2 && !(action?.kind === "drag" && action.live)) {
+            if (host.camera) {
+                const [a, b] = [...pointers.values()];
+                pinch = { distance: Math.hypot(a.x - b.x, a.y - b.y), zoom: host.camera.state.zoom };
+            }
             clearPress();
             action = null;
             return;

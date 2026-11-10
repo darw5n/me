@@ -18,6 +18,7 @@ import {
 import {
   NARROW_BREAKPOINT, layoutMessy, layoutPhone, layoutTidy, phoneLanes, phoneTidyFit, tidyGrid, tidyWidth,
 } from "./layout.js";
+import { attachPhoneZoom, type PhoneZoom } from "./phone-zoom.js";
 import { attachFilmHover, createRings, reactToTap, type Rings } from "./reactions.js";
 import type { Sound } from "./sound.js";
 import type { Arrangement, LayoutResult, Point, Rect } from "./types.js";
@@ -58,6 +59,7 @@ export class Board {
   narrow = false;
   private readonly camera: CameraController;
   private readonly rings: Rings;
+  private readonly phoneZoom: PhoneZoom;
   private readonly labels = new Map<string, HTMLElement>();
   private homeZoom = 1;
   private zCounter = 40;
@@ -88,6 +90,7 @@ export class Board {
       },
     });
     this.rings = createRings(sound);
+    this.phoneZoom = attachPhoneZoom(el.view, el.world, () => this.narrow && !el.world.querySelector(".item.is-dragging"));
     attachFilmHover(el.world);
     for (const [id, label] of config.groups) {
       const p = document.createElement("p");
@@ -105,6 +108,11 @@ export class Board {
     }
     this.watchFocus();
     this.watchLinks();
+  }
+
+  /** Scale of the table on screen: the camera's zoom, or the pinch zoom on a phone. */
+  get tableZoom(): number {
+    return this.narrow ? this.phoneZoom.zoom : this.camera.state.zoom;
   }
 
   /** The camera, when it is in charge (not on a phone). */
@@ -158,10 +166,12 @@ export class Board {
       // First layout or a new screen width: the visitor starts on the centre column.
       if (lanes.side !== this.phoneSide) {
         this.phoneSide = lanes.side;
+        this.phoneZoom.reset();
         this.el.view.scrollLeft = lanes.side;
       }
     } else {
       this.phoneSide = -1;
+      this.phoneZoom.reset();
       this.el.world.style.width = "";
       this.el.world.style.height = "";
     }
@@ -313,8 +323,9 @@ export class Board {
     this.home(0);
   }
 
-  /** Phone: back to the top of the centre column. */
+  /** Phone: back to the top of the centre column, at 100%. */
   private scrollPhoneHome(): void {
+    this.phoneZoom.reset();
     this.el.view.scrollTo({
       left: phoneLanes(viewportSize().w, PHONE_PADDING).side,
       top: 0,

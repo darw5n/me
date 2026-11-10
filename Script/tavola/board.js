@@ -13,6 +13,7 @@ import { CameraController } from "./camera.js";
 import { clamp, easeInOut, union, viewportSize } from "./geometry.js";
 import { measure, positionOf, readItems, rectOf, render, setWidth, toLayoutItem, } from "./items.js";
 import { NARROW_BREAKPOINT, layoutMessy, layoutPhone, layoutTidy, phoneLanes, phoneTidyFit, tidyGrid, tidyWidth, } from "./layout.js";
+import { attachPhoneZoom } from "./phone-zoom.js";
 import { attachFilmHover, createRings, reactToTap } from "./reactions.js";
 /** Screen padding kept around the content by "See all". */
 const SEE_ALL_PADDING = { x: 40, top: 58, bottom: 76 };
@@ -37,6 +38,7 @@ export class Board {
     narrow = false;
     camera;
     rings;
+    phoneZoom;
     labels = new Map();
     homeZoom = 1;
     zCounter = 40;
@@ -65,6 +67,7 @@ export class Board {
             },
         });
         this.rings = createRings(sound);
+        this.phoneZoom = attachPhoneZoom(el.view, el.world, () => this.narrow && !el.world.querySelector(".item.is-dragging"));
         attachFilmHover(el.world);
         for (const [id, label] of config.groups) {
             const p = document.createElement("p");
@@ -82,6 +85,10 @@ export class Board {
         }
         this.watchFocus();
         this.watchLinks();
+    }
+    /** Scale of the table on screen: the camera's zoom, or the pinch zoom on a phone. */
+    get tableZoom() {
+        return this.narrow ? this.phoneZoom.zoom : this.camera.state.zoom;
     }
     /** The camera, when it is in charge (not on a phone). */
     get activeCamera() {
@@ -133,11 +140,13 @@ export class Board {
             // First layout or a new screen width: the visitor starts on the centre column.
             if (lanes.side !== this.phoneSide) {
                 this.phoneSide = lanes.side;
+                this.phoneZoom.reset();
                 this.el.view.scrollLeft = lanes.side;
             }
         }
         else {
             this.phoneSide = -1;
+            this.phoneZoom.reset();
             this.el.world.style.width = "";
             this.el.world.style.height = "";
         }
@@ -282,8 +291,9 @@ export class Board {
         this.relayout();
         this.home(0);
     }
-    /** Phone: back to the top of the centre column. */
+    /** Phone: back to the top of the centre column, at 100%. */
     scrollPhoneHome() {
+        this.phoneZoom.reset();
         this.el.view.scrollTo({
             left: phoneLanes(viewportSize().w, PHONE_PADDING).side,
             top: 0,

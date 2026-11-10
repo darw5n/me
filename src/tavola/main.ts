@@ -62,6 +62,7 @@ const boot = (): void => {
     get camera() {
       return board.activeCamera;
     },
+    tableZoom: () => board.tableZoom,
     sound,
     reducedMotion,
     moveItem: (item, delta) => board.moveItem(item, delta),

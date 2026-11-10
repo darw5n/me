@@ -309,9 +309,14 @@ button:hover > .arrow {
     overflow: auto;
     overscroll-behavior: none;
     scroll-snap-type: x mandatory;
+    touch-action: pan-x pan-y;
   }
   .view.is-tidy {
     overflow-x: hidden;
+  }
+  .view.is-zoomed, .view.is-zooming {
+    overflow-x: auto;
+    scroll-snap-type: none;
   }
 }
 @media (min-width: 900px) {
@@ -331,6 +336,11 @@ button:hover > .arrow {
   position: relative;
   width: 100%;
   transform-origin: 0 0;
+}
+@media (max-width: 899px) {
+  .world {
+    transform: scale(var(--phone-zoom, 1));
+  }
 }
 @media (min-width: 900px) {
   .world {

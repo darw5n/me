@@ -76,7 +76,8 @@ restano alcune immagini che usava solo lui (loghi, copertine di libri e dischi):
 - **Telefono (< 900 px):** niente camera; il tavolo scorre dentro `.view` (mai la pagina, che resta larga quanto lo
   schermo). In disordine: colonna centrale con le cose importanti, extra nelle corsie laterali (`data-lane="left|right"`
   nell'HTML), che spuntano dai bordi; lo scorrimento laterale si ferma su sinistra, centro, destra. In Tidy up: una
-  colonna sola, niente scorrimento laterale. Pressione lunga per sollevare un oggetto.
+  colonna sola (a due colonne per gli oggetti stretti), niente scorrimento laterale. Pressione lunga per sollevare
+  un oggetto. Due dita zoomano il tavolo, non la pagina (`phone-zoom.ts`, dal 50% al 250%).
 - **Barra in basso** = tutti i comandi: Tidy up, See all, zoom, sfondo (cerchio con il pattern), suono. Niente minimappa.
 - **Sfondi** (`data-surface` su `<html>`, salvato in localStorage): felt, slate, kraft, plum. Ogni preset definisce
   anche il colore del gesso, così il testo resta leggibile.
