@@ -55,6 +55,9 @@ CSS/tavola.css          ← compilato (NON editare)
 tests/layout.test.mjs   ← niente sovrapposizioni, colonna dentro lo schermo, griglia del Tidy up
 Font/Antonia Circular HaveHeart   ← licenze da verificare (Darwin) prima di andare online
 Img/work/               ← copertine dei progetti usate come anteprime
+Img/thumbs/             ← foto piccole per il tavolo (rullino 360 px, stampe 640 px); il link (href) punta al file
+                          grande, che si carica solo nel visore. Foto nuova: crea la miniatura con
+                          `cwebp -resize 360 0 -q 78 Img/<foto>.webp -o Img/thumbs/<foto>.webp`
 ```
 
 Il sito precedente (Locomotive, accordion, tema chiaro/scuro, font Matahari e Nognathy) è stato tolto il

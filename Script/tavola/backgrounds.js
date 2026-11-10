@@ -21,6 +21,10 @@ const read = () => {
 export const applySurface = (id) => {
     const surface = SURFACES.find((s) => s.id === id) ?? SURFACES[0];
     document.documentElement.dataset["surface"] = surface.id;
+    // The browser's own bar (Safari, Chrome on Android) takes the colour of the table
+    const mat = getComputedStyle(document.documentElement).getPropertyValue("--mat").trim();
+    if (mat)
+        document.querySelector('meta[name="theme-color"]')?.setAttribute("content", mat);
     try {
         localStorage.setItem(STORAGE_KEY, surface.id);
     }
