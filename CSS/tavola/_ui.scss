@@ -1,0 +1,319 @@
+// Interface over the table: corners, toolbar, minimap, hint, cursor, viewer, preloader.
+
+@use "tokens" as *;
+
+// ---- Corners -----------------------------------------------------------------------
+.corner {
+  position: fixed;
+  z-index: var(--z-ui);
+  top: 6px;
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+  color: var(--chalk);
+  font: 500 0.95rem/1 var(--font-ui);
+  padding-inline: 16px;
+
+  &--left {
+    left: 0;
+    gap: 14px;
+  }
+
+  &--right {
+    right: 0;
+    gap: 4px;
+  }
+
+  button,
+  a {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    padding-inline: 8px;
+    color: inherit;
+    border-radius: 8px;
+
+    &:hover {
+      background: rgba(0, 0, 0, 0.25);
+    }
+  }
+}
+
+// ---- Toolbar under the thumb ------------------------------------------------------------
+.controls {
+  position: fixed;
+  z-index: var(--z-ui);
+  left: 50%;
+  bottom: 14px;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 2px;
+  align-items: stretch;
+  background: #0f0f0d;
+  color: #f4f1e4;
+  border-radius: 12px;
+  padding: 4px;
+  font: 500 0.92rem/1 var(--font-ui);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.4);
+  max-width: calc(100vw - 16px);
+
+  button {
+    min-height: 44px;
+    min-width: 44px;
+    padding-inline: 12px;
+    border-radius: 8px;
+    color: inherit;
+    white-space: nowrap;
+
+    &:hover {
+      background: #2c2c28;
+    }
+
+    &:focus-visible {
+      outline-offset: -2px;
+    }
+  }
+
+  .controls__primary {
+    background: var(--yellow);
+    color: #000;
+
+    &:hover {
+      background: #fff;
+    }
+  }
+
+  output {
+    min-width: 3.4em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-variant-numeric: tabular-nums;
+  }
+
+  @include narrow {
+    font-size: 0.86rem;
+
+    button {
+      padding-inline: 9px;
+    }
+
+    // No camera on a phone: zoom makes no sense there
+    .controls__zoom {
+      display: none;
+    }
+  }
+}
+
+// ---- Minimap ------------------------------------------------------------------------
+.minimap {
+  position: fixed;
+  z-index: var(--z-ui);
+  right: 14px;
+  bottom: 14px;
+  width: 168px;
+  height: 112px;
+  background: rgba(0, 0, 0, 0.42);
+  border-radius: 8px;
+  overflow: hidden;
+  cursor: pointer;
+
+  i {
+    position: absolute;
+    background: rgba(244, 241, 228, 0.62);
+  }
+
+  b {
+    position: absolute;
+    box-shadow: inset 0 0 0 1.5px var(--yellow);
+  }
+
+  @include narrow {
+    display: none;
+  }
+}
+
+// ---- Hint at the top, chalk, gone after the first move -------------------------------------
+.hint {
+  position: fixed;
+  z-index: calc(var(--z-ui) - 1);
+  left: 50%;
+  top: 8px;
+  margin: 0;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  font-size: clamp(1.5rem, 2.4vw, 2rem);
+  transition: opacity 0.3s;
+
+  body.has-moved & {
+    opacity: 0;
+  }
+
+  @include narrow {
+    display: none;
+  }
+}
+
+// ---- Cursor (cursor.ts) -------------------------------------------------------------------
+html.has-cursor,
+html.has-cursor * {
+  cursor: none !important;
+}
+
+.cursor {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: var(--z-cursor);
+  pointer-events: none;
+  display: none;
+  will-change: transform;
+
+  html.has-cursor & {
+    display: block;
+  }
+
+  svg {
+    position: absolute;
+    display: none;
+    overflow: visible;
+    max-width: none; // the reset's max-width: 100% would squash it to zero inside a sizeless parent
+  }
+
+  &[data-state="hand"] .cursor__open,
+  &[data-state="object"] .cursor__open,
+  &[data-state="fist"] .cursor__fist,
+  &[data-state="pen"] .cursor__pen {
+    display: block;
+  }
+
+  .cursor__open,
+  .cursor__fist {
+    width: 32px;
+    height: 32px;
+    left: -16px;
+    top: -14px;
+    color: var(--chalk);
+    transition: transform 0.14s var(--ease-spring);
+  }
+
+  &[data-state="object"] .cursor__open {
+    color: var(--yellow);
+    transform: scale(1.14);
+  }
+
+  .cursor__fist {
+    color: var(--yellow);
+  }
+
+  .cursor__pen {
+    width: 40px;
+    height: 40px;
+    left: -2px;
+    top: -2px;
+    transition: transform 0.14s var(--ease-spring);
+    transform-origin: 2px 2px;
+  }
+
+  &.is-down .cursor__pen {
+    transform: scale(0.86) rotate(-6deg);
+  }
+
+  .cursor__label {
+    position: absolute;
+    left: 30px;
+    top: 30px;
+    display: none;
+    white-space: nowrap;
+    padding: 0.3em 0.7em;
+    background: var(--tape);
+    color: #29271c;
+    font: italic 400 0.95rem/1.1 var(--font-text);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
+    transform: rotate(-2deg);
+  }
+
+  &[data-state="pen"] .cursor__label.is-on {
+    display: block;
+  }
+}
+
+// ---- Viewer (viewer.ts): a plain base, to be redesigned ----------------------------------------
+.viewer {
+  border: 0;
+  padding: 0;
+  max-width: min(94vw, 1200px);
+  max-height: 94svh;
+  background: transparent;
+  color: #f4f4ee;
+
+  &::backdrop {
+    background: rgba(0, 0, 0, 0.92);
+  }
+
+  .viewer__image {
+    max-height: 80svh;
+    width: auto;
+    max-width: 100%;
+    margin: 0 auto;
+  }
+
+  .viewer__caption {
+    font: italic 400 1.05rem/1.4 var(--font-text);
+    margin-top: 12px;
+    text-align: center;
+  }
+
+  .viewer__bar {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 14px;
+    font: 500 0.95rem/1 var(--font-ui);
+  }
+
+  button {
+    background: #f4f4ee;
+    color: #000;
+    padding: 10px 18px;
+    min-height: 44px;
+    min-width: 44px;
+    border-radius: 8px;
+  }
+}
+
+// ---- Preloader (preloader.ts) ------------------------------------------------------------
+.preloader {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-preloader);
+  display: grid;
+  place-content: center;
+  background: var(--void);
+  transition: opacity 0.6s var(--ease-out);
+
+  .chalk {
+    font-size: clamp(2rem, 3vw, 3rem);
+    animation: breathe 1.6s ease-in-out infinite;
+  }
+
+  html.is-ready & {
+    opacity: 0;
+    pointer-events: none;
+  }
+}
+
+@keyframes breathe {
+  0%,
+  100% {
+    opacity: 0.55;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+// Without JavaScript there is no preloader and everything is visible at once
+html.no-js .preloader {
+  display: none;
+}

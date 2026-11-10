@@ -1,0 +1,201 @@
+// The table: viewport, world, surface, objects and their motion.
+// Positions come from board.ts as --x/--y on `.item`; the body rotates with --rot.
+
+@use "tokens" as *;
+
+.view {
+  position: relative;
+  outline: none;
+
+  @include wide {
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
+    touch-action: none;
+    cursor: grab;
+
+    &.is-panning {
+      cursor: grabbing;
+    }
+  }
+}
+
+.world {
+  position: relative;
+  width: 100%;
+  transform-origin: 0 0;
+
+  @include wide {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 0;
+    height: 0;
+    will-change: transform;
+  }
+}
+
+// The finite surface. Its rectangle is in world px (table.ts).
+.table {
+  position: absolute;
+  left: var(--table-x, 0px);
+  top: var(--table-y, 0px);
+  width: var(--table-w, 100%);
+  height: var(--table-h, 100%);
+  z-index: var(--z-table);
+  box-shadow:
+    inset 0 0 0 2px var(--edge),
+    0 0 0 1px rgba(0, 0, 0, 0.35),
+    0 40px 120px rgba(0, 0, 0, 0.45);
+
+  @include narrow {
+    left: 0;
+    top: 0;
+    width: 100%;
+    box-shadow: none;
+  }
+}
+
+.items {
+  display: contents;
+}
+
+.item {
+  position: absolute;
+  left: 0;
+  top: 0;
+  transform: translate(var(--x, 0px), var(--y, 0px));
+  z-index: var(--z, 1);
+  transition: opacity 0.5s var(--ease-out) calc(var(--i, 0) * 30ms);
+
+  @include wide {
+    cursor: grab;
+  }
+
+  @include narrow {
+    touch-action: pan-y;
+  }
+
+  a,
+  button {
+    cursor: pointer;
+  }
+
+  &.is-dragging {
+    cursor: grabbing;
+    z-index: var(--z, 1);
+  }
+
+  img {
+    -webkit-user-drag: none;
+    user-select: none;
+    pointer-events: none;
+  }
+}
+
+// Before the preloader lets go: objects hover a little above the table, unseen.
+html:not(.is-ready) .item {
+  opacity: 0;
+  --ly: -18px;
+}
+
+.item__body {
+  display: block;
+  transform: translateY(var(--ly, 0px)) rotate(calc(var(--rot, 0deg) + var(--tilt, 0deg))) scale(var(--sc, 1));
+  transition:
+    transform 0.5s var(--ease-spring),
+    box-shadow 0.3s,
+    filter 0.3s;
+}
+
+.item.is-pressed .item__body {
+  --sc: 0.972;
+  transition-duration: 0.1s;
+}
+
+.item.is-dragging .item__body {
+  --sc: 1.035;
+  transition: transform 0.16s ease-out;
+  filter: drop-shadow(0 26px 18px rgba(0, 0, 0, 0.42));
+}
+
+// Tidy up / mess up: objects glide to their new place, one after the other
+.world.is-animating .item {
+  transition:
+    transform 0.7s var(--ease-spring),
+    opacity 0.3s;
+  transition-delay: calc(var(--i, 0) * 12ms);
+}
+
+.item[data-decoration] {
+  transition: opacity 0.3s;
+}
+
+// Chalk labels of the groups, shown only when tidy
+.group-label {
+  position: absolute;
+  left: 0;
+  top: 0;
+  transform: translate(var(--x), var(--y));
+  margin: 0;
+  opacity: 0;
+  pointer-events: none;
+  white-space: nowrap;
+  transition: opacity 0.3s;
+
+  .world.is-tidy & {
+    opacity: 1;
+    transition-delay: 0.3s;
+  }
+}
+
+// The red pencil ring: how things get marked on this table (reactions.ts)
+.ring {
+  position: absolute;
+  z-index: 6;
+  left: -5%;
+  top: -6%;
+  width: 110%;
+  height: 112%;
+  pointer-events: none;
+  overflow: visible;
+  color: var(--red);
+
+  path {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 4.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    transition: stroke-dashoffset 0.5s cubic-bezier(0.5, 0, 0.2, 1);
+  }
+
+  &.is-on path {
+    stroke-dashoffset: 0;
+  }
+}
+
+// Curtain that falls when leaving through a folder
+.curtain {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-curtain);
+  background: #f7e3b0;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.28s 0.22s;
+
+  body.is-leaving & {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ring path,
+  .item__body,
+  .item {
+    transition: none;
+  }
+}

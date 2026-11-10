@@ -1,900 +1,247 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="en" class="no-js">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Darwin Vegher - Product Designer &amp; Builder - Trento</title>
-    <meta name="description"
-        content="Hi! I'm Darwin, a product designer &amp; builder based in the Dolomites. I make complicated products feel simple, from the first idea to something people can actually use.">
-    <meta property="og:type" content="website">
-    <meta property="og:title" content="Darwin Vegher - Product Designer &amp; Builder - Trento">
-    <meta property="og:description"
-        content="Hi! I'm Darwin, a product designer &amp; builder based in the Dolomites. I make complicated products feel simple, from the first idea to something people can actually use.">
-    <meta property="og:image" content="Img/1200x630_Og-Darw5n_v01.jpg">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Darwin Vegher - Product Designer &amp; Builder - Trento</title>
+  <meta name="description" content="Hi! I'm Darwin, a product designer &amp; builder based in the Dolomites. I make complicated products feel simple, from the first idea to something people can actually use.">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Darwin Vegher - Product Designer &amp; Builder - Trento">
+  <meta property="og:description" content="Hi! I'm Darwin, a product designer &amp; builder based in the Dolomites. I make complicated products feel simple, from the first idea to something people can actually use.">
+  <meta property="og:image" content="Img/1200x630_Og-Darw5n_v01.jpg">
+  <meta name="theme-color" content="#17443a">
 
-    <!-- font preload: peso 400 e 700 usati nel preloader e nel corpo pagina -->
-    <link rel="preload" href="Font/Matahari/matahari_400_regular-webfont.woff2" as="font" type="font/woff2" crossorigin>
-    <link rel="preload" href="Font/Matahari/matahari_700_bold-webfont.woff2" as="font" type="font/woff2" crossorigin>
+  <!-- Before the first paint: JavaScript is on, and the surface the visitor chose last time -->
+  <script>
+    document.documentElement.classList.remove("no-js");
+    try {
+      var surface = localStorage.getItem("tavola-surface");
+      if (surface) document.documentElement.dataset.surface = surface;
+    } catch (e) {}
+  </script>
 
-    <!-- style -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/locomotive-scroll@3.5.4/dist/locomotive-scroll.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://unpkg.com/emoji.css/dist/emoji.min.css">
-    <link rel="stylesheet" href="CSS/main.css">
-    <link rel="stylesheet" href="https://unpkg.com/splitting/dist/splitting.css">
-    <link rel="stylesheet" href="https://unpkg.com/splitting/dist/splitting-cells.css">
+  <link rel="preload" href="Font/Circular/circular-medium.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="Font/Antonia/antonia-text-regular.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="CSS/tavola.css">
+  <script type="module" src="Script/tavola/main.js"></script>
 
-    <!-- script -->
-    <script src="Script/theme.js"></script>
-    <script src="Script/preloader.js"></script>
-    <script src="Script/gsap.min.js"></script>
-
-    <!-- favicon -->
-    <link rel="apple-touch-icon" sizes="57x57" href="favicon/apple-icon-57x57.png">
-    <link rel="apple-touch-icon" sizes="60x60" href="favicon/apple-icon-60x60.png">
-    <link rel="apple-touch-icon" sizes="72x72" href="favicon/apple-icon-72x72.png">
-    <link rel="apple-touch-icon" sizes="76x76" href="favicon/apple-icon-76x76.png">
-    <link rel="apple-touch-icon" sizes="114x114" href="favicon/apple-icon-114x114.png">
-    <link rel="apple-touch-icon" sizes="120x120" href="favicon/apple-icon-120x120.png">
-    <link rel="apple-touch-icon" sizes="144x144" href="favicon/apple-icon-144x144.png">
-    <link rel="apple-touch-icon" sizes="152x152" href="favicon/apple-icon-152x152.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-icon-180x180.png">
-    <link rel="icon" type="image/png" sizes="192x192" href="favicon/android-icon-192x192.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="96x96" href="favicon/favicon-96x96.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
-    <meta name="msapplication-TileColor" content="#ffffff">
-    <meta name="msapplication-TileImage" content="favicon/ms-icon-144x144.png">
-    <meta name="theme-color" content="#ffffff">
+  <link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-icon-180x180.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="favicon/android-icon-192x192.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="96x96" href="favicon/favicon-96x96.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
 </head>
 
 <body>
-    <!-- Applica il tema prima del primo paint per evitare flash e dare sfondo al preloader -->
-    <script>
-        (function () {
-            var saved = localStorage.getItem('themePreference');
-            var theme = saved || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark-theme' : 'light-theme');
-            document.body.className = theme + ' is-loading';
-        })();
-    </script>
-    <button id="theme-toggle" aria-label="Toggle light/dark theme">
-        <span class="theme-icon" id="theme-icon" aria-hidden="true"></span>
-    </button>
+  <!-- Layout configuration read by Script/tavola/main.js -->
+  <script type="application/json" id="table-config">
+    {
+      "clusters": ["about", "work", "path", "photos", "lab", "words", "ask"],
+      "groups": [
+        ["about", "who"],
+        ["path", "where I've been"],
+        ["work", "work"],
+        ["lab", "built for myself"],
+        ["photos", "photos"],
+        ["words", "off the clock"],
+        ["ask", "your turn"],
+        ["pack", "sticker pack"]
+      ]
+    }
+  </script>
 
-    <!-- noise -->
-    <div class="bg stop-flickering"></div>
+  <div id="preloader" class="preloader" aria-hidden="true"><p class="chalk">setting the table…</p></div>
 
-    <!-- Preloader -->
-    <div id="preloader">
-        <div id="loader">
-            <div id="progress"></div>
+  <!-- Chalk texture: grain plus a slight wobble, applied to writing and drawings -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <filter id="chalk" x="-5%" y="-5%" width="110%" height="110%">
+      <feTurbulence type="fractalNoise" baseFrequency=".8" numOctaves="2" seed="4" result="noise"/>
+      <feColorMatrix in="noise" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -1.5 1.72" result="mask"/>
+      <feComposite in="SourceGraphic" in2="mask" operator="in" result="grain"/>
+      <feTurbulence type="fractalNoise" baseFrequency=".05" numOctaves="1" seed="9" result="wobble"/>
+      <feDisplacementMap in="grain" in2="wobble" scale="1.6"/>
+    </filter>
+  </svg>
+
+  <header class="corner corner--left">Darwin</header>
+  <div class="corner corner--right">
+    <button type="button" id="surface">Green felt</button>
+    <button type="button" id="sound" aria-pressed="false">Sound off</button>
+  </div>
+  <p class="hint chalk" aria-hidden="true">drag the table to look around</p>
+
+  <div class="controls" role="toolbar" aria-label="Table controls">
+    <button type="button" id="tidy" class="controls__primary" aria-pressed="false">Tidy up</button>
+    <button type="button" id="see-all">See all</button>
+    <span class="controls__zoom" style="display:contents">
+      <button type="button" id="zoom-out" aria-label="Zoom out">−</button>
+      <output id="zoom-level" aria-live="off">100%</output>
+      <button type="button" id="zoom-in" aria-label="Zoom in">+</button>
+    </span>
+  </div>
+  <div id="minimap" class="minimap" aria-hidden="true"></div>
+  <div class="curtain" aria-hidden="true"></div>
+
+  <div id="view" class="view" tabindex="-1">
+    <div id="world" class="world">
+      <div id="table" class="table" aria-hidden="true"></div>
+      <main class="items">
+
+        <!-- WHO -->
+        <div class="item" id="hello" data-cluster="about" data-at="0,0" data-width="620" data-rotate="-0.6" data-span="2" data-material="paper">
+          <div class="item__body paper note"><i class="tape tape--top"></i>
+            <h1>Tinkerer by nature, product designer by trade.</h1>
+            <p>I make products and processes simpler, with AI on my workbench.</p>
+            <small>Product Designer &amp; Builder. Based in the Dolomites.</small>
+          </div>
         </div>
-        <div id="percentage" class="big strong">0%</div>
+        <div class="item" id="portrait" data-cluster="about" data-at="660,-10" data-width="250" data-rotate="2.6" data-material="print">
+          <div class="item__body print"><i class="tape tape--top"></i>
+            <img src="Img/1200x1200_darwin_low.webp" alt="Portrait of Darwin" width="1200" height="1200" draggable="false"><span>That’s me.</span>
+          </div>
+        </div>
+        <div class="item" id="now" data-cluster="about" data-at="950,20" data-width="270" data-rotate="-3" data-material="postit">
+          <div class="item__body postit"><b>Now</b>Learning TypeScript and React properly. Looking for my next product design role.</div>
+        </div>
+        <div class="item" data-cluster="about" data-at="664,440" data-width="540" data-rotate="-1.5" data-small data-decoration data-material="chalk">
+          <p class="item__body chalk">As a kid I wanted to be an inventor. This is close enough.</p>
+        </div>
+
+        <!-- WORK -->
+        <div class="item" data-cluster="work" data-at="6,-56" data-width="260" data-rotate="-2" data-small data-decoration data-material="chalk">
+          <p class="item__body chalk chalk--small">work, on paper</p>
+        </div>
+        <div class="item" data-cluster="work" data-at="0,0" data-width="360" data-rotate="-1.6" data-material="paper">
+          <a class="item__body sheet" href="Img/work/document-registration.webp" data-view data-caption="Document registration, Fiscozen, 2026. The full story is in the portfolio."><i class="tape tape--top"></i>
+            <img src="Img/work/document-registration.webp" alt="Screens of the document registration project" draggable="false"><span>Document registration</span>
+          </a>
+        </div>
+        <div class="item" data-cluster="work" data-at="400,34" data-width="360" data-rotate="1.4" data-material="paper">
+          <a class="item__body sheet" href="Img/work/two-factor-login.webp" data-view data-caption="Two-factor login, Fiscozen, 2026. The full story is in the portfolio."><i class="tape tape--top"></i>
+            <img src="Img/work/two-factor-login.webp" alt="Screens of the two-factor login project" draggable="false"><span>Two-factor login</span>
+          </a>
+        </div>
+        <div class="item" data-cluster="work" data-at="10,330" data-width="360" data-rotate="0.9" data-material="paper">
+          <a class="item__body sheet" href="Img/work/design-system.webp" data-view data-caption="Rethinking the design system, Fiscozen, 2026. The full story is in the portfolio."><i class="tape tape--top"></i>
+            <img src="Img/work/design-system.webp" alt="Screens of the design system project" draggable="false"><span>Design system</span>
+          </a>
+        </div>
+        <div class="item" data-cluster="work" data-at="412,360" data-width="340" data-rotate="-1.2" data-material="folder">
+          <a class="item__body folder" href="#request" data-cursor="ask for the link">
+            <span class="folder__tab">Portfolio</span>
+            <span class="folder__body">
+              <span class="folder__peek"><img src="Img/work/document-registration.webp" alt="" draggable="false"></span>
+              <h3>The whole portfolio</h3>
+              <p>Private. Ask me and I’ll send you the link.</p>
+            </span>
+          </a>
+        </div>
+
+        <!-- PATH -->
+        <div class="item" data-cluster="path" data-at="0,0" data-width="470" data-rotate="0" data-span="2" data-material="strip">
+          <ol class="item__body path" aria-label="Path">
+            <li class="strip" style="--t:-.5deg;--ml:0"><time>2022–26</time>Product Designer, Fiscozen</li>
+            <li class="strip" style="--t:.4deg;--ml:.4em"><time>2017–22</time>Full Stack Designer, Erickson</li>
+            <li class="strip" style="--t:-.3deg;--ml:.1em"><time>2022</time>UI Design master, Talent Garden</li>
+            <li class="strip" style="--t:.6deg;--ml:.7em"><time>2013–17</time>Graphic Design, LABA</li>
+          </ol>
+        </div>
+
+        <!-- PHOTOS -->
+        <div class="item" data-cluster="photos" data-at="0,0" data-width="780" data-rotate="-1.6" data-span="3" data-material="film">
+          <div class="item__body film">
+            <a href="Img/Kyoto-23-XS-119.webp" data-view data-caption="Kyoto, 2023"><img src="Img/Kyoto-23-XS-119.webp" alt="Red torii gates in Kyoto" draggable="false"></a>
+            <a href="Img/Hakone-23-XS-29.webp" data-view data-caption="Hakone, 2023"><img src="Img/Hakone-23-XS-29.webp" alt="Mount Fuji from Hakone" draggable="false"></a>
+            <a href="Img/Seoul-2025_HD-109.webp" data-view data-caption="Seoul, 2025"><img src="Img/Seoul-2025_HD-109.webp" alt="The stream in central Seoul, strung with lanterns" draggable="false"></a>
+            <a href="Img/Busan-2025_HD-044.webp" data-view data-caption="Busan, 2025"><img src="Img/Busan-2025_HD-044.webp" alt="Colourful houses in Busan" draggable="false"></a>
+            <a href="Img/Tokyo-23-XS-133.webp" data-view data-caption="Tokyo, 2023"><img src="Img/Tokyo-23-XS-133.webp" alt="A street in Tokyo at night" draggable="false"></a>
+            <a href="Img/Jeju-2025_HD-09.webp" data-view data-caption="Jeju, 2025"><img src="Img/Jeju-2025_HD-09.webp" alt="The coast of Jeju" draggable="false"></a>
+          </div>
+        </div>
+        <div class="item" data-cluster="photos" data-at="24,260" data-width="240" data-rotate="-4" data-material="postit">
+          <a class="item__body postit postit--mint" href="https://unsplash.com/@darwiiiin" data-cursor="see them on Unsplash"><b>Photos, since I was a teenager</b>57M+ views on Unsplash<small>More on Unsplash <svg class="arrow" viewBox="0 0 56 56" aria-hidden="true"><path d="M12 44 44 12M20 12h24v24"/></svg></small></a>
+        </div>
+        <div class="item" data-cluster="photos" data-at="300,270" data-width="210" data-rotate="-3" data-material="print">
+          <a class="item__body print" href="Img/Seoul-2025_HD-007.webp" data-view data-caption="Seoul, 2025"><i class="tape tape--top"></i><img src="Img/Seoul-2025_HD-007.webp" alt="A market stall in Seoul" draggable="false"><span>Seoul, 2025</span></a>
+        </div>
+        <div class="item" data-cluster="photos" data-at="546,256" data-width="210" data-rotate="3" data-material="print">
+          <a class="item__body print" href="Img/Hiroshima-23-XS-39.webp" data-view data-caption="Hiroshima, 2023"><i class="tape tape--top"></i><img src="Img/Hiroshima-23-XS-39.webp" alt="Hiroshima castle" draggable="false"><span>Hiroshima, 2023</span></a>
+        </div>
+
+        <!-- LAB -->
+        <div class="item" data-cluster="lab" data-at="0,30" data-width="180" data-rotate="-5" data-material="slide">
+          <a class="item__body slide" href="Img/work/pages-organizer.webp" data-view data-caption="Pages Organizer, a Figma plugin I built in 2023. 7,600+ users."><img src="Img/figma-page-organizer.webp" alt="Pages Organizer, a Figma plugin" draggable="false"><span>Pages Organizer</span></a>
+        </div>
+        <div class="item" data-cluster="lab" data-at="216,0" data-width="180" data-rotate="3" data-material="slide">
+          <a class="item__body slide" href="Img/our-balance.webp" data-view data-caption="OurBalance, 2026. My expenses sheet, turned into a web app by directing Claude Code."><img src="Img/our-balance.webp" alt="OurBalance, a spending app" draggable="false"><span>OurBalance</span></a>
+        </div>
+        <div class="item" data-cluster="lab" data-at="40,270" data-width="300" data-rotate="1.6" data-material="card">
+          <div class="item__body card"><h3>Forma</h3>The app I train with at home. Works offline.</div>
+        </div>
+
+        <!-- OFF THE CLOCK -->
+        <div class="item" data-cluster="words" data-at="0,0" data-width="420" data-rotate="1.4" data-material="paper">
+          <blockquote class="item__body quote"><i class="tape tape--top"></i>“He just makes things easier for everyone around him.”<small>Nikola Gluhovic, Senior Software Developer</small></blockquote>
+        </div>
+        <div class="item" data-cluster="words" data-at="456,10" data-width="270" data-rotate="-2" data-material="card">
+          <div class="item__body card"><h3>Caramella</h3>A cat from a shelter. She’d eat all day if I let her.</div>
+        </div>
+        <div class="item" data-cluster="words" data-at="20,270" data-width="290" data-rotate="1.2" data-material="card">
+          <div class="item__body card"><h3>Trips</h3>Planned down to the last detail. Korea: 17 days, 7 linked databases.</div>
+        </div>
+        <div class="item" data-cluster="words" data-at="346,250" data-width="260" data-rotate="-1.4" data-material="card">
+          <div class="item__body card"><h3>Football</h3>Playmaker, seven-a-side.</div>
+        </div>
+
+        <!-- YOUR TURN -->
+        <div class="item" data-cluster="ask" data-at="0,0" data-width="200" data-rotate="-4" data-small data-decoration data-material="chalk">
+          <p class="item__body chalk chalk--small">your turn!</p>
+        </div>
+        <div class="item" id="request" data-cluster="ask" data-at="10,62" data-width="340" data-rotate="1.6" data-material="postit">
+          <a class="item__body postit postit--orange ask" href="#" data-email-user="darwin.vegher" data-email-domain="gmail.com" data-email-subject="Portfolio access" data-cursor="write to me"><span>Ask for the portfolio</span><svg class="arrow" viewBox="0 0 56 56" aria-hidden="true"><path d="M12 44 44 12M20 12h24v24"/></svg></a>
+        </div>
+        <div class="item" data-cluster="ask" data-at="390,110" data-width="240" data-rotate="0" data-material="strip">
+          <div class="item__body labels">
+            <a class="strip" href="#" data-email-user="darwin.vegher" data-email-domain="gmail.com" style="--t:-.8deg">Email</a>
+            <a class="strip" href="https://www.linkedin.com/in/darwinvegher" style="--t:.8deg">LinkedIn</a>
+            <a class="strip" href="https://t.me/Darwiiiin" style="--t:-.4deg">Telegram</a>
+          </div>
+        </div>
+
+        <!-- STICKERS (drafts: Darwin will redraw them) -->
+        <div class="item" data-cluster="words" data-group="pack" data-at="740,190" data-width="110" data-rotate="-8" data-small data-material="sticker">
+          <div class="item__body sticker"><svg viewBox="0 0 120 120" role="img" aria-label="Sticker: Caramella the cat"><path d="M18 22 42 38C52 34 68 34 78 38L102 22 104 76C104 98 84 110 60 110S16 98 16 76Z" fill="#e8843a" stroke="#fff" stroke-width="9" stroke-linejoin="round"/><circle cx="44" cy="66" r="6" fill="#141414"/><circle cx="76" cy="66" r="6" fill="#141414"/><path d="M60 76l-6-5h12zM60 78c0 8-10 10-14 6M60 78c0 8 10 10 14 6" fill="#141414" stroke="#141414" stroke-width="3" stroke-linecap="round"/><path d="M24 74 8 70M24 84 8 88M96 74l16-4M96 84l16 4" stroke="#141414" stroke-width="3" stroke-linecap="round"/><text x="60" y="52" text-anchor="middle" font-size="12" fill="#141414">Caramella</text></svg></div>
+        </div>
+        <div class="item" data-cluster="path" data-group="pack" data-at="360,-34" data-width="110" data-rotate="7" data-small data-material="sticker">
+          <div class="item__body sticker"><svg viewBox="0 0 130 130" role="img" aria-label="Sticker: Made in the Dolomites"><circle cx="65" cy="65" r="58" fill="#f4e9cf" stroke="#fff" stroke-width="9"/><path d="M14 92 42 46l12 20 16-30 18 32 10-14 20 38Q65 112 14 92Z" fill="#c8452a"/><path d="M42 46l-8 14 7-3 5 5 3-3zM70 36l-9 18 8-4 6 6 4-4z" fill="#f4e9cf"/><path id="dolo-arc" d="M18 66a47 47 0 0 1 94 0" fill="none"/><text font-size="10" fill="#141414"><textPath href="#dolo-arc" startOffset="50%" text-anchor="middle">MADE IN THE DOLOMITES</textPath></text></svg></div>
+        </div>
+        <div class="item" data-cluster="about" data-group="pack" data-at="770,345" data-width="70" data-rotate="10" data-small data-material="sticker">
+          <div class="item__body sticker"><svg viewBox="0 0 90 120" role="img" aria-label="Sticker: inventor light bulb"><path d="M45 6C22 6 8 24 8 44c0 16 10 24 15 36v16a6 6 0 0 0 6 6h4a12 12 0 0 0 24 0h4a6 6 0 0 0 6-6V80c5-12 15-20 15-36C82 24 68 6 45 6Z" fill="#ffd400" stroke="#fff" stroke-width="9" stroke-linejoin="round"/><path d="M33 80h24M35 90h20M36 62l9-16 9 16" fill="none" stroke="#141414" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        </div>
+        <div class="item" data-cluster="photos" data-group="pack" data-at="790,226" data-width="110" data-rotate="-6" data-small data-material="sticker">
+          <div class="item__body sticker"><svg viewBox="0 0 130 90" role="img" aria-label="Sticker: Ricoh GR camera"><rect x="6" y="16" width="118" height="68" rx="10" fill="#1b1b1a" stroke="#fff" stroke-width="9"/><circle cx="62" cy="50" r="23" fill="#35352f"/><circle cx="62" cy="50" r="15" fill="#10100e"/><circle cx="56" cy="44" r="4" fill="#8f8f85"/><rect x="92" y="24" width="20" height="8" rx="2" fill="#e8e6da"/><text x="18" y="34" font-size="11" fill="#f4f1e4">GR</text><rect x="14" y="8" width="26" height="9" rx="3" fill="#1b1b1a"/></svg></div>
+        </div>
+        <div class="item" data-cluster="lab" data-group="pack" data-at="350,250" data-width="104" data-rotate="8" data-small data-material="sticker">
+          <div class="item__body sticker"><svg viewBox="0 0 130 130" role="img" aria-label="Sticker: Pages Organizer, 7,600+ users"><path d="M65 6l14 13 18-6 6 18 18 6-6 18 13 14-13 14 6 18-18 6-6 18-18-6-14 13-14-13-18 6-6-18-18-6 6-18L3 68l13-14-6-18 18-6 6-18 18 6Z" fill="#7b4df0" stroke="#fff" stroke-width="8" stroke-linejoin="round"/><text x="65" y="66" text-anchor="middle" font-size="24" fill="#fff">7,600+</text><text x="65" y="84" text-anchor="middle" font-size="11" fill="#fff">plugin users</text></svg></div>
+        </div>
+        <div class="item" data-cluster="about" data-group="pack" data-at="960,356" data-width="190" data-rotate="-3" data-small data-material="sticker">
+          <div class="item__body sticker"><svg viewBox="0 0 220 76" role="img" aria-label="Sticker: Open to new roles"><rect x="6" y="6" width="208" height="64" rx="32" fill="#35d07f" stroke="#fff" stroke-width="9"/><circle cx="38" cy="38" r="11" fill="#141414"/><text x="56" y="44" font-size="18" fill="#141414">Open to new roles</text></svg></div>
+        </div>
+        <div class="item" data-cluster="photos" data-group="pack" data-at="790,100" data-width="110" data-rotate="12" data-small data-material="sticker">
+          <div class="item__body sticker"><svg viewBox="0 0 130 130" role="img" aria-label="Sticker: 57M+ views"><path d="M65 4 80 34l32-10-8 32 22 13-24 16 10 32-33-6-14 21-14-21-33 6 10-32L4 69l22-13-8-32 32 10Z" fill="#e2361b" stroke="#fff" stroke-width="8" stroke-linejoin="round"/><text x="65" y="70" text-anchor="middle" font-size="25" fill="#fff">57M+</text><text x="65" y="88" text-anchor="middle" font-size="11" fill="#fff">views</text></svg></div>
+        </div>
+        <div class="item" data-cluster="words" data-group="pack" data-at="620,290" data-width="90" data-rotate="-10" data-small data-material="sticker">
+          <div class="item__body sticker"><svg viewBox="0 0 110 110" role="img" aria-label="Sticker: playmaker, football"><circle cx="55" cy="55" r="48" fill="#fff" stroke="#fff" stroke-width="9"/><circle cx="55" cy="55" r="47" fill="none" stroke="#141414" stroke-width="2.5"/><path d="M55 34l19 14-7 22H43l-7-22ZM55 34V10M74 48l22-8M67 70l14 20M43 70 29 90M36 48l-22-8" fill="none" stroke="#141414" stroke-width="3.5" stroke-linejoin="round"/><path d="M55 34l19 14-7 22H43l-7-22Z" fill="#141414"/></svg></div>
+        </div>
+        <div class="item" data-cluster="path" data-group="pack" data-at="370,190" data-width="100" data-rotate="6" data-small data-material="sticker">
+          <div class="item__body sticker"><svg viewBox="0 0 120 120" role="img" aria-label="Sticker: vinyl, drum and bass"><circle cx="60" cy="60" r="53" fill="#191919" stroke="#fff" stroke-width="9"/><circle cx="60" cy="60" r="41" fill="none" stroke="#3b3b3b" stroke-width="2"/><circle cx="60" cy="60" r="33" fill="none" stroke="#3b3b3b" stroke-width="2"/><circle cx="60" cy="60" r="21" fill="#a64bd6"/><circle cx="60" cy="60" r="3.5" fill="#fff"/><text x="60" y="53" text-anchor="middle" font-size="7.5" fill="#fff">drum &amp; bass</text></svg></div>
+        </div>
+        <div class="item" data-cluster="lab" data-group="pack" data-at="430,60" data-width="140" data-rotate="-5" data-small data-material="sticker">
+          <div class="item__body sticker"><svg viewBox="0 0 170 80" role="img" aria-label="Sticker: AI on my workbench"><path d="M10 12h150a6 6 0 0 1 6 6v44a6 6 0 0 1-6 6H10a6 6 0 0 1-6-6V18a6 6 0 0 1 6-6Z" fill="#f4f1e4" stroke="#fff" stroke-width="8"/><text x="85" y="36" text-anchor="middle" class="sticker__display" font-size="17" fill="#141414">AI on my</text><text x="85" y="57" text-anchor="middle" class="sticker__display" font-size="17" fill="#141414">workbench</text></svg></div>
+        </div>
+
+      </main>
     </div>
-
-    <!-- Overlay blocca-scroll durante il preloader.
-         Usa position:fixed invece di body{overflow:hidden}: su Firefox,
-         overflow:hidden sul body altera le dimensioni che Locomotive usa
-         nelle formule parallax, causando translateY errati su tutti gli elementi. -->
-    <div id="scroll-blocker" style="position:fixed;inset:0;z-index:99;touch-action:none;"></div>
-
-    <!-- content -->
-    <div data-scroll-container class="smooth-scroll" id="page-content">
-
-        <!-- hero section -->
-        <section class="section hero" data-scroll-section>
-            <div class="hero-container titleAnimation" data-splitting>
-                <h1 class="title serif big" data-scroll>
-                    <span data-scroll="" data-scroll-delay="0.18" data-scroll-speed="7"
-                        data-scroll-position="center">D</span>
-                    <span data-scroll="" data-scroll-delay="0.14" data-scroll-speed="10">A</span>
-                    <span data-scroll="" data-scroll-delay="0.12" data-scroll-speed="4">R</span>
-                    <span data-scroll="" data-scroll-delay="0.1" data-scroll-speed="7">W</span>
-                    <span data-scroll="" data-scroll-delay="0.08" data-scroll-speed="12">I</span>
-                    <span data-scroll="" data-scroll-delay="0.12" data-scroll-speed="5">N</span>
-                </h1>
-                <p class="big" data-scroll data-scroll-speed="4" data-scroll-direction="horizontal">
-                    <span>chi</span>
-                    <span>sono</span>
-                    <span>e cosa</span>
-                    <span>faccio.</span>
-                </p>
-                <p class="designer forced" data-scroll data-scroll-speed="10">
-                    <span>product designer</span>
-                    <span>&amp; builder</span>
-                </p>
-            </div>
-        </section>
-
-        <!-- Me -->
-        <section class="section me" data-scroll-section>
-            <div class="row d-flex fluid-container">
-                <div class="col-12 col-md-3 col-lg-5 col-xl-7 mb-5 mb-md-0">
-                    <div class="image-container" data-no-retina="" data-scroll data-scroll-speed="-5"
-                        data-scroll-direction="horizontal">
-                        <img class="portrait img-fluid lazyloaded" src="Img/1200x1200_darwin_low.jpg" alt="darwin"
-                            data-no-retina="" data-scroll data-scroll-speed="-20" data-scroll-direction="horizontal"
-                            loading="lazy">
-                    </div>
-                </div>
-                <div class="col-12 col-md-9 col-lg-7 col-xl-5">
-                    <p>
-                        <span class="about-start">I</span>'m Darwin, a product designer who makes complicated products
-                        feel simple, from the first idea to something people can actually use.
-                    </p>
-                    <p>
-                        Based in the Dolomites, working remotely, and always on new creative adventures.
-                    </p>
-                </div>
-            </div>
-        </section>
-
-
-        <!-- Experiences and education -->
-        <section class="section" data-scroll-section style="padding-bottom: 0;">
-            <div class="row d-flex fluid-container exp-edu">
-                <div class="col-12 mb-5">
-                    <!-- titolo -->
-                    <h3 class="serif">
-                        Experiences
-                    </h3>
-                    <!-- elenco -->
-                    <div>
-                        <div class="nav-wrap">
-                            <nav class="acnav" role="navigation">
-                                <ul class="acnav__list acnav__list--level1">
-
-                                    <!-- - - - - - - - 1 - - - - - - - - - -->
-
-                                    <li class="has-children">
-                                        <div class="acnav__label">
-                                            <div class="arrow-box">
-                                                <div class="arrow-content">
-                                                    ↘
-                                                </div>
-                                            </div>
-                                            <h5 class="acnav_title">Product Designer at Fiscozen</h5>
-                                        </div>
-
-                                        <div class="separator">
-                                        </div>
-
-                                        <!-- start level 2 -->
-
-                                        <div class="acnav__list acnav__list--level2">
-                                            <div class="content">
-                                                <h5 class="period">Sep 2022 → <span class="now">Now</span></h6>
-                                                    <h6 class="strong">Role</h6>
-                                                    <p>
-                                                        I follow the whole process, from the first idea to release,
-                                                        across invoicing, billing and tax, working closely with PMs,
-                                                        engineers and tax consultants.
-                                                    </p>
-                                                    <h6 class="strong">Key responsibilities</h6>
-                                                    <ul>
-                                                        <li>Turning tax rules into guided, human-friendly flows, both
-                                                            for freelancers and for the internal tools our consultants
-                                                            use every day, starting from interviews, surveys and
-                                                            data.</li>
-                                                        <li>Working on the design system with the dedicated team,
-                                                            linked to the codebase with Figma Code Connect, and
-                                                            reviewing its foundations against WCAG AA accessibility
-                                                            standards on my own initiative.</li>
-                                                        <li>Defining Fiscozen's Design Principles and turning them into
-                                                            a Claude skill the team uses every day.</li>
-                                                        <li>Bringing AI into how we design: we moved from Figma to
-                                                            Claude Code, building and testing ideas as working
-                                                            interfaces, from discovery to a version the engineers can
-                                                            build on.</li>
-                                                    </ul>
-                                            </div>
-                                            <div class="animlist separator"></div>
-                                        </div>
-                                    </li>
-
-                                    <!-- - - - - - - - 2 - - - - - - - - - -->
-
-                                    <li class="has-children">
-                                        <div class="acnav__label">
-                                            <div class="arrow-box">
-                                                <div class="arrow-content">
-                                                    ↘
-                                                </div>
-                                            </div>
-                                            <h5 class="acnav_title">Full Stack Designer at Erickson</h5>
-                                        </div>
-
-                                        <div class="separator">
-                                        </div>
-
-                                        <!-- start level 2 -->
-
-                                        <div class="acnav__list acnav__list--level2">
-                                            <div class="content">
-                                                <h5 class="period">Mar 2017 → Sep 2022</h6>
-                                                    <h6 class="strong">Role</h6>
-                                                    <p>
-                                                        At Erickson I wore a lot of hats (design, frontend, video and
-                                                        motion), and that's where my horizontal side really took shape.
-                                                    </p>
-
-                                                    <h6 class="strong">Key responsibilities</h6>
-                                                    <ul>
-                                                        <li>Designing and building event websites (HTML, SCSS, JS),
-                                                            landing pages and email templates.</li>
-                                                        <li>Co-creating the company Instagram with the marketing lead,
-                                                            from 0 to 30k followers.</li>
-                                                        <li>Shooting and editing a YouTube series for our educational
-                                                            board games, used both before and after purchase.</li>
-                                                        <li>Building a Photoshop smart-object template system that
-                                                            generated every variant from a single file.</li>
-                                                        <li>Using Hotjar and Google Analytics to read and improve the
-                                                            e-commerce.</li>
-                                                        <li>In the later years, coordinating a small team of 3
-                                                            people.</li>
-                                                    </ul>
-                                            </div>
-                                            <div class="animlist separator"></div>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </nav>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-12">
-                    <!-- title -->
-                    <h3 class="serif">
-                        Education
-                    </h3>
-
-                    <!-- elenco -->
-                    <div>
-                        <div class="nav-wrap">
-                            <nav class="acnav" role="navigation">
-                                <ul class="acnav__list acnav__list--level1">
-
-                                    <!-- - - - - - - - 1 - - - - - - - - - -->
-
-                                    <li class="has-children">
-                                        <div class="acnav__label">
-                                            <div class="arrow-box">
-                                                <div class="arrow-content">
-                                                    ↘
-                                                </div>
-                                            </div>
-                                            <h5 class="acnav_title">Master in UI Design at Talent Garden</h5>
-                                        </div>
-
-                                        <div class="separator">
-                                        </div>
-
-                                        <!-- start level 2 -->
-
-                                        <div class="acnav__list acnav__list--level2">
-                                            <div class="content">
-                                                <h5 class="period">Feb 2022 → May 2022</h5>
-                                                <p>A hands-on master program focused on UI design, design systems, prototyping, and UX research.</p>
-                                                <p>I deepened my expertise in Figma and component-based design, working on real product briefs with structured design sprints.</p>
-                                                <p>Throughout the program, I collaborated with diverse teams to deliver user-centric design solutions.</p>
-                                            </div>
-                                            <div class="animlist separator"></div>
-                                        </div>
-                                    </li>
-
-                                    <!-- - - - - - - - 2 - - - - - - - - - -->
-
-                                    <li class="has-children">
-                                        <div class="acnav__label">
-                                            <div class="arrow-box">
-                                                <div class="arrow-content">
-                                                    ↘
-                                                </div>
-                                            </div>
-                                            <h5 class="acnav_title">Bachelor degree in Graphic Design Multimedia at
-                                                LABA</h5>
-                                        </div>
-
-                                        <div class="separator"></div>
-
-
-                                        <!-- start level 2 -->
-
-                                        <div class="acnav__list acnav__list--level2">
-                                            <div class="content">
-                                                <h5 class="period">Sept 2013 → Feb 2017</h5>
-                                                <p>Here I found my passion for digital interfaces and animation, building a solid foundation in branding, web design, motion graphics, and visual storytelling. 
-                                                </p>
-                                                <p>Proficient in the Adobe Creative Suite, I developed skills across various mediums, from logo design to video editing.
-                                                </p>
-                                            </div>
-                                            <div class="animlist separator"></div>
-
-                                        </div>
-                                    </li>
-
-                                    <!-- - - - - - - - 3 - - - - - - - - - -->
-
-                                    <li class="has-children">
-                                        <div class="acnav__label">
-                                            <div class="arrow-box">
-                                                <div class="arrow-content">
-                                                    ↘
-                                                </div>
-                                            </div>
-                                            <h5 class="acnav_title">HS diploma in Computer Science at ITT G.Marconi
-                                            </h5>
-                                        </div>
-
-                                        <div class="animlist separator"></div>
-
-
-                                        <!-- start level 2 -->
-
-                                        <div class="acnav__list acnav__list--level2">
-                                            <div class="content">
-                                                <h5 class="period">Sept 2008 → Jun 2013</h5>
-                                                <p>Where it all began: while others focused on algorithms, I kept
-                                                    tweaking project UIs.</p>
-                                                <p>I learned OOP with C#, SQL and JavaScript, the technical mindset
-                                                    I still work with today.</p>
-                                            </div>
-                                            <div class="animlist separator"></div>
-
-                                        </div>
-                                    </li>
-
-                                </ul>
-                            </nav>
-                        </div>
-                    </div>
-                </div>
-        </section>
-
-        <section class="section now" data-scroll-section>
-            <div class="row d-flex fluid-container pb-4">
-                <h1 id="lastdance" class="serif big" style="text-align: center;" data-scroll data-scroll-speed="-10">
-                    The last dances
-                </h1>
-            </div>
-        </section>
-        <!-- Horizonal Skill -->
-        <section class="horizontalScrolling skill" data-scroll-section>
-            <div class="section-inner" data-scroll data-scroll-speed="0" data-scroll-direction="horizontal">
-                <div data-scroll-in-section>
-                    <!-- 1  -->
-                    <div class="item txt" data-scroll data-scroll-speed="0">
-                        <div class="content">
-                            <p class="small text-uppercase">Last</p>
-                            <h2 class="serif text-uppercase">
-                                Personal projects
-                            </h2>
-                            <p>Small things I build for myself, and sometimes for others too: a Figma plugin now
-                                used by 7,000+ designers, a finance app built with Claude Code, and a few
-                                freebies.</p>
-                        </div>
-                    </div>
-                    <div class="item" data-scroll data-scroll-speed="0">
-                        <div class="image-link">
-                            <img class="img-fluid lazyloaded" src="Img/figma-page-organizer.webp"
-                                alt="Figma Pages Organizer">
-                            <a class="small"
-                                href="https://www.figma.com/community/plugin/1211948941103422489/pages-organizer"
-                                target="_blank">Check it out</a>
-                        </div>
-                    </div>
-                    <div class="item" data-scroll data-scroll-speed="0">
-                        <div class="image-link">
-                            <img class="img-fluid lazyloaded" src="Img/Massimo Vignelli - Wallpaper - 12.png"
-                                alt="Massimo Vignelli - Wallpaper">
-                            <a class="small"
-                                href="https://www.figma.com/community/file/1222593249394750953/massimo-vignelli-wallpaper"
-                                target="_blank">Download</a>
-                        </div>
-                        <div class="image-link">
-                            <img class="img-fluid lazyloaded" src="Img/Repository - Notion.webp"
-                                alt="My Repository - Notion">
-                            <a class="small"
-                                href="https://darwinvegher.notion.site/c246f4d89ac44d08be6d7f4bad3bdba1?v=0cf61a2d48484c5f9e9c1742b0a33d86&pvs=25"
-                                target="_blank">View the resources</a>
-                        </div>
-                    </div>
-                    <div class="item" data-scroll data-scroll-speed="0">
-                        <div class="image-link">
-                            <img class="img-fluid lazyloaded" src="Img/our-balance.webp"
-                                alt="OurBalance">
-                            <a class="small"
-                                href="https://our-balance.vercel.app/"
-                                target="_blank">Check it out</a>
-                        </div>
-                    </div>
-
-                    <!-- 2 -->
-                    <div class="item txt" data-scroll data-scroll-speed="0">
-                        <div class="content">
-                            <p class="small text-uppercase">Last</p>
-                            <h2 class="serif text-uppercase">
-                                Trip
-                            </h2>
-                            <p>In April '25, I explored South Korea's cities over 17 days.</p>
-                            <p>And back in November '23, 20 days across Japan's major cities, savoring its rich culture.</p>
-                            <p>I planned both trips down to the last detail (yes, with a Notion system), <a
-                                    href="https://darwinvegher.notion.site/South-Korea-141248079c06804399fee312025505e0?pvs=74"
-                                    target="_blank">take a look here</a>.</p>
-                        </div>
-                    </div>
-                    <div class="item" data-scroll data-scroll-speed="0">
-                        <div class="image-link">
-                            <img class="img-fluid lazyloaded" src="Img/Seoul-2025_HD-007.webp" alt="Tokyo - Japan">
-                            <p class="small" href="">Seoul - Gwangjang Market</p>
-                        </div>
-                    </div>
-                    <div class="item" data-scroll data-scroll-speed="0">
-                        <div class="image-link">
-                            <img class="img-fluid lazyloaded" src="Img/Seoul-2025_HD-049.webp" alt="Tokyo - Japan">
-                            <p class="small" href="">Seoul - Seoul Tower</p>
-                        </div>
-                    </div>
-                    <div class="item" data-scroll data-scroll-speed="0">
-                        <div class="image-link">
-                            <img class="img-fluid lazyloaded" src="Img//Seoul-2025_HD-109.webp" alt="Tokyo - Japan">
-                            <p class="small" href="">Seoul - Cheonggye Plaza</p>
-                        </div>
-                    </div>
-                    <div class="item" data-scroll data-scroll-speed="0">
-                        <div class="image-link">
-                            <img class="img-fluid lazyloaded" src="Img/Busan-2025_HD-044.webp" alt="Tokyo - Japan">
-                            <p class="small" href="">Busan - Gamcheon village</p>
-                        </div>
-                    </div>
-                    <div class="item" data-scroll data-scroll-speed="0">
-                        <div class="image-link">
-                            <img class="img-fluid lazyloaded" src="Img/Busan-2025_HD-093.webp" alt="Tokyo - Japan">
-                            <p class="small" href="">Busan - Haedong Yonggungsa</p>
-                        </div>
-                    </div>
-                    <div class="item" data-scroll data-scroll-speed="0">
-                        <div class="image-link">
-                            <img class="img-fluid lazyloaded" src="Img/Jeju-2025_HD-09.webp" alt="Tokyo - Japan">
-                            <p class="small" href="">Jeju island - Seongsan Ilchulbong</p>
-                        </div>
-                    </div>
-                    <div class="item" data-scroll data-scroll-speed="0">
-                        <div class="image-link">
-                            <img class="img-fluid lazyloaded" src="Img/Tokyo-23-XS-043.webp" alt="Tokyo - Japan">
-                            <p class="small" href="">Tokyo - Skytree tower</p>
-                        </div>
-                    </div>
-                    <div class="item" data-scroll data-scroll-speed="0">
-                        <div class="image-link">
-                            <img class="img-fluid lazyloaded" src="Img/Hiroshima-23-XS-39.webp" alt="Hiroshima - Japan">
-                            <p class="small" href="">Hiroshima - Hiroshima Castle</p>
-                        </div>
-                    </div>
-                    <div class="item" data-scroll data-scroll-speed="0">
-                        <div class="image-link">
-                            <img class="img-fluid lazyloaded" src="Img/Kyoto-23-XS-119.webp" alt="Kyoto - Japan">
-                            <p class="small" href="">Kyoto - Fushimi Inari Shrine</p>
-                        </div>
-                    </div>
-                    <div class="item" data-scroll data-scroll-speed="0">
-                        <div class="image-link">
-                            <img class="img-fluid lazyloaded" src="Img/Hakone-23-XS-29.webp" alt="Hakone - Japan">
-                            <p class="small" href="">Hakone - Mount Fuji</p>
-                        </div>
-                    </div>
-                    <div class="item" data-scroll data-scroll-speed="0">
-                        <div class="image-link">
-                            <img class="img-fluid lazyloaded" src="Img/Tokyo-23-XS-133.webp" alt="Tokyo - Japan">
-                            <p class="small" href="">Tokyo - Nightlife</p>
-                        </div>
-                    </div>
-
-                    <!-- 3  -->
-                    <div class="item txt" data-scroll data-scroll-speed="0">
-                        <div class="content">
-                            <p class="small text-uppercase">Last</p>
-                            <h2 class="serif text-uppercase">
-                                Movies <br>& books
-                            </h2>
-                            <p>I love cinema in all its forms and always have a subscription to catch the latest
-                                releases. </p>
-                            <p>There's nothing like the experience of watching a movie on the big screen.</p>
-                        </div>
-                    </div>
-                    <div class="item" data-scroll data-scroll-speed="0">
-                        <img class="img-fluid lazyloaded"
-                            src="https://m.media-amazon.com/images/M/MV5BZWU5Y2MyZjQtNGVjYi00ZDRkLTk1MGYtYmNlMzI0MTFmNDU2XkEyXkFqcGc@._V1_FMjpg_UY2047_.jpg"
-                            alt="Aftersun - Movie">
-                    </div>
-                    <div class="item" data-scroll data-scroll-speed="0">
-                        <img class="img-fluid lazyloaded"
-                            src="https://m.media-amazon.com/images/M/MV5BNGVmODFkM2MtOTEzMy00MjFjLThjZmYtODMxZmI1MzcyNDkyXkEyXkFqcGc@._V1_FMjpg_UY6150_.jpg"
-                            alt="Perfect days - Movie">
-                    </div>
-                    <div class="item" data-scroll data-scroll-speed="0">
-                        <img class="img-fluid lazyloaded" src="Img/wonder-book.webp" alt="Wonder - Book">
-                    </div>
-                    <div class="item txt" data-scroll data-scroll-speed="0">
-                        <div class="content">
-                            <p class="small text-uppercase">Last</p>
-                            <h2 class="serif text-uppercase">
-                                Fav Vinyl
-                            </h2>
-                            <p>I've been into vinyl for years. My small but mighty selection features artists
-                                like Bonobo, Caribou, The xx, and more.</p>
-                            <p>Listen <a
-                                    href="https://open.spotify.com/playlist/7idVp3xjrCIwuYfRIvuSHO?si=421389d91f544f79"
-                                    target="_blank">my playlist</a>.</p>
-                        </div>
-                    </div>
-                    <div class="item" data-scroll data-scroll-speed="0">
-                        <img class="img-fluid lazyloaded vinyl" src="Img/Cosmo-music.webp"
-                            alt="Cosmo - Sulle ali del cavallo bianco">
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Plus -->
-        <section class="section fav-tools" data-scroll-section>
-            <div class="row d-flex fluid-container">
-                <h3 class="serif" data-scroll data-scroll-speed="-2" data-scroll-direction="horizontal">
-                    Fav tools
-                </h3>
-                <div class="col-12">
-                    <ul>
-                        <li>
-                            <div class="logo">
-                                <img src="Img/Logo/apps/claude.png" alt="" width="96" height="96">
-                            </div>
-                            <div>
-                                Claude
-                                <p class="small">For thinking out loud, and then building what we came up with.</p>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="logo">
-                                <img src="Img/Logo/apps/wispr-flow.png" alt="" width="96" height="96">
-                            </div>
-                            <div>
-                                Wispr Flow
-                                <p class="small">For writing at the speed of talking.</p>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="logo">
-                                <img src="Img/Logo/apps/granola.png" alt="" width="96" height="96">
-                            </div>
-                            <div>
-                                Granola
-                                <p class="small">For meeting notes I don't have to take.</p>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="logo">
-                                <img src="Img/Logo/apps/goldfish.png" alt="" width="96" height="96">
-                            </div>
-                            <div>
-                                Goldfish
-                                <p class="small">For remembering what I did, so I don't have to.</p>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="logo">
-                                <img src="Img/Logo/apps/raycast.png" alt="" width="96" height="96">
-                            </div>
-                            <div>
-                                Raycast
-                                <p class="small">For zipping through tasks like a pro.</p>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="logo">
-                                <img src="Img/Logo/apps/notion.png" alt="" width="96" height="96">
-                            </div>
-                            <div>
-                                Notion
-                                <p class="small">For turning chaos into order in my life and job.</p>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="logo">
-                                <img src="Img/Logo/apps/notion-calendar.png" alt="" width="96" height="96">
-                            </div>
-                            <div>
-                                Notion Calendar
-                                <p class="small">For keeping my days in order, right next to my notes.</p>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="logo">
-                                <img src="Img/Logo/apps/zen.png" alt="" width="96" height="96">
-                            </div>
-                            <div>
-                                Zen browser
-                                <p class="small">For surfing the web in a cool way.</p>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </section>
-
-
-
-        <!-- Thx and contacts-->
-        <section class="section hero thanks d-flex" data-scroll-section>
-            <div class="hero-container titleAnimation">
-                <!-- thank you -->
-                <h1 class="title serif big" data-scroll>
-                    <span data-scroll="" data-scroll-delay="0.18" data-scroll-speed="7"
-                        data-scroll-position="center">T</span>
-                    <span data-scroll="" data-scroll-delay="0.14" data-scroll-speed="10">H</span>
-                    <span data-scroll="" data-scroll-delay="0.12" data-scroll-speed="4">A</span>
-                    <span data-scroll="" data-scroll-delay="0.1" data-scroll-speed="7">N</span>
-                    <span data-scroll="" data-scroll-delay="0.08" data-scroll-speed="12">K</span>
-                    <span class="d-none d-md-block" data-scroll="" data-scroll-delay="0.12"
-                        data-scroll-speed="5"></span>
-                    <span class="d-none d-md-block" data-scroll="" data-scroll-delay="0.18" data-scroll-speed="7"
-                        data-scroll-position="center">Y</span>
-                    <span class="d-none d-md-block" data-scroll="" data-scroll-delay="0.14"
-                        data-scroll-speed="10">O</span>
-                    <span class="d-none d-md-block" data-scroll="" data-scroll-delay="0.12"
-                        data-scroll-speed="4">U</span>
-                    <span class="d-block d-md-none" data-scroll="" data-scroll-delay="0.12"
-                        data-scroll-speed="4">S</span>
-                </h1>
-            </div>
-            <div class="fluid-container min">
-                <!-- contact me -->
-                <p class="contact-info text-center mt-2 mt-xl-3" data-scroll data-scroll-speed="4">
-                    If you want to contact me, you can write a mail to <span class="obf-email" data-a="darwin.vegher" data-b="gmail.com"></span>
-                    or send a telegram to <a href="https://t.me/Darwiiiin"
-                        target="_blank"><strong>@darwiiiin</strong></a>
-                </p>
-                <!-- social -->
-                <div class="d-flex" data-scroll data-scroll-speed="4">
-                    <div class="social-icons">
-                        <a href="https://it.linkedin.com/in/darwinvegher" class="social-icon" target="_blank" aria-label="LinkedIn (opens in a new tab)">
-                            <i class="fa-brands fa-linkedin-in" aria-hidden="true"></i>
-                        </a>
-                        <a href="http://be.net/darwinvegher" class="social-icon" target="_blank" aria-label="Behance (opens in a new tab)">
-                            <i class="fa-brands fa-behance" aria-hidden="true"></i>
-                        </a>
-                        <a href="https://dribbble.com/darwinvegher" class="social-icon" target="_blank" aria-label="Dribbble (opens in a new tab)">
-                            <i class="fa-brands fa-dribbble" aria-hidden="true"></i>
-                        </a>
-                        <a href="https://www.instagram.com/darwiiiin/" class="social-icon" target="_blank" aria-label="Instagram (opens in a new tab)">
-                            <i class="fa-brands fa-instagram" aria-hidden="true"></i>
-                        </a>
-                        <a href="https://vimeo.com/darwinvegher" class="social-icon" target="_blank" aria-label="Vimeo (opens in a new tab)">
-                            <i class="fa-brands fa-vimeo-v" aria-hidden="true"></i>
-                        </a>
-                        <a href="https://unsplash.com/@darwiiiin" class="social-icon" target="_blank" aria-label="Unsplash (opens in a new tab)">
-                            <i class="fa-brands fa-unsplash" aria-hidden="true"></i>
-                        </a>
-                        <a href="https://www.figma.com/@darw5n" class="social-icon" target="_blank" aria-label="Figma (opens in a new tab)">
-                            <i class="fa-brands fa-figma" aria-hidden="true"></i>
-                        </a>
-                        <a href="https://codepen.io/darwiiiin" class="social-icon" target="_blank" aria-label="CodePen (opens in a new tab)">
-                            <i class="fa-brands fa-codepen" aria-hidden="true"></i>
-                        </a>
-                        <a href="https://github.com/darw5n/" class="social-icon" target="_blank" aria-label="GitHub (opens in a new tab)">
-                            <i class="fa-brands fa-github" aria-hidden="true"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- footer with links -->
-        <footer id="colophon" class="site-footer" data-scroll-section>
-            <div class="footerContent fluid-container" data-scroll data-scroll-direction="vertical"
-                data-scroll-speed="-4" data-scroll-target="#colophon" data-scroll-position="bottom">
-                <p id="year">
-                    © <span class="d-none d-md-inline">August</span> 2022
-                    <span id="lastModified" class="d-none d-md-inline xsmall"> </span>
-                    — Italy
-                </p>
-                <div class="d-flex">
-                    <p>
-                        <a href="https://www.iubenda.com/privacy-policy/96504814/legal">Privacy</a>
-                        <!-- / <a href="/cookies/">Cookies</a> -->
-                    </p>
-                </div>
-            </div>
-        </footer>
-
-    </div>
-    <!-- end content -->
-
-
-    <!-- script -->
-    <script src="Script/locomotive-scroll.min.js"></script>
-    <script src="Script/Age.js"></script>
-    <script src="Script/ScrollTrigger.min.js"></script>
-    <script src="Script/splitting.min.js"></script>
-    <script src="Script/email.js"></script>
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            var lastModified = new Date(document.lastModified);
-            var day = lastModified.getDate();
-            var month = lastModified.toLocaleString('default', { month: 'short' });
-            var year = lastModified.getFullYear().toString().slice(-2);
-            document.getElementById("lastModified").innerText = `(Last edit: ${day} ${month} ${year}) `;
-        });
-    </script>
-    <script src="Script/Accordion.js"></script>
-
-    <script>
-
-        /* --- Splitting.js: crea gli span .char prima di tutto il resto --- */
-        Splitting();
-
-        /* --- Scroll animations with Locomotive Scroll & GSAP --- */
-
-        gsap.registerPlugin(ScrollTrigger);
-
-        // Firefox mobile: Locomotive smooth scroll non funziona su Gecko mobile —
-        // usa native scroll come fallback per garantire layout corretto su Firefox.
-        const isFirefox = /firefox/i.test(navigator.userAgent);
-        const isMobileViewport = window.matchMedia("(max-width: 767px)").matches;
-        const useSmoothMobile = !(isFirefox && isMobileViewport);
-
-        // Fix mobile: nella sezione thanks, a fine pagina il parallax ha accumulato
-        // spostamenti grandi (K speed=12 → -164px, S speed=4 → -61px → spread 103px).
-        // Su mobile zerare i speed e affidarsi solo al CSS staircase (×0.73 ereditato
-        // da .hero h1 span) produce un'onda statica corretta, simile al desktop.
-        if (isMobileViewport) {
-            document.querySelectorAll(".thanks h1.title > span[data-scroll-speed]").forEach(function (el) {
-                el.setAttribute("data-scroll-speed", "0");
-            });
-        }
-
-        const locoScroll = new LocomotiveScroll({
-            el: document.querySelector(".smooth-scroll"),
-            smooth: useSmoothMobile,
-            lerp: 0.05,
-            multiplier: 1,
-            reloadOnContextChange: true,
-            touchMultiplier: 2,
-            smartphone: {
-                smooth: useSmoothMobile,
-                breakpoint: 767
-            },
-            tablet: {
-                smooth: useSmoothMobile,
-                breakpoint: 1024
-            },
-        });
-
-        // Rende accessibile lo stato smooth al preloader (definito in <head>)
-        window._locomotiveSmoothActive = useSmoothMobile;
-
-        // Fix mobile: window.innerHeight al momento dell'init di Locomotive è sbagliato —
-        // Firefox responsive mode non ha ancora applicato le dimensioni simulate (stesso bug
-        // di window.innerWidth). Locomotive calcola windowMiddle.y = innerHeight/2 sbagliato
-        // (es. 1594 invece di 398), causando transform enormi su tutti gli elementi con speed.
-        // Su window.load le dimensioni sono corrette: locoScroll.resize() le rilegge e
-        // ricalcola windowMiddle e le posizioni di tutti gli elementi.
-        // Il contenuto è ancora nascosto dal preloader, quindi l'utente non vede lo stato errato.
-        if (isMobileViewport) {
-            window.addEventListener('load', function () {
-                locoScroll.scroll.resize();
-            }, { once: true });
-        }
-
-        // Blocca lo scroll virtuale solo in smooth mode — in native scroll (Firefox mobile)
-        // è sufficiente body.is-loading { overflow: hidden } già applicato via CSS.
-        // locoScroll.stop() in native mode lascia il container in stato anomalo
-        // causando opacity: 0 permanente su #page-content dopo il preloader.
-        if (document.body.classList.contains('is-loading') && useSmoothMobile) {
-            locoScroll.stop();
-        }
-
-        locoScroll.on("scroll", ScrollTrigger.update);
-
-        // pinType: 'transform' se Locomotive usa virtual scroll, 'fixed' se native scroll
-        const scrollerPinType = useSmoothMobile ? "transform" : "fixed";
-
-        ScrollTrigger.scrollerProxy(".smooth-scroll", {
-            scrollTop(value) {
-                if (arguments.length) {
-                    return locoScroll.scrollTo(value, 0, 0);
-                }
-                // Fallback sicuro: se scroll.instance non è disponibile (native scroll),
-                // legge direttamente window.scrollY
-                return locoScroll.scroll && locoScroll.scroll.instance
-                    ? locoScroll.scroll.instance.scroll.y
-                    : window.scrollY;
-            },
-            getBoundingClientRect() {
-                return { top: 0, left: 0, width: window.innerWidth, height: window.innerHeight };
-            },
-            pinType: scrollerPinType
-        });
-
-        const section = document.querySelector('.horizontalScrolling');
-
-        if (section) {
-            const inner = section.querySelector('.section-inner');
-            const scroll = section.querySelector('[data-scroll-in-section]');
-
-            if (inner && scroll) {
-                // I margini sono simmetrici (margin-left: 101vw, margin-right: 101vw).
-                // La formula deve includere ENTRAMBI: il sinistro porta gli items nel
-                // viewport, il destro li porta fuori. Senza margin-right il totalScrollable
-                // è ~1630px troppo corto e l'ultimo item appare solo all'ultimo frame.
-                const getTotalScrollable = () => scroll.offsetLeft * 2 + scroll.scrollWidth - document.documentElement.clientWidth;
-                const getTotalHeight = () => getTotalScrollable() + window.innerHeight;
-
-                // L'altezza della sezione va impostata manualmente: Locomotive la usa
-                // per calcolare lo spazio di scroll virtuale.
-                const updateHeight = () => {
-                    section.style.height = `${getTotalHeight()}px`;
-                };
-                updateHeight();
-
-                // Pin e animazione x gestiti tramite eventi Locomotive — nessun
-                // ScrollTrigger per questa sezione. Vantaggio: section.offsetTop è
-                // un valore live, si aggiorna automaticamente dopo ogni accordion
-                // senza bisogno di ScrollTrigger.refresh().
-                locoScroll.on('scroll', ({ scroll: s }) => {
-                    const sectionTop = section.offsetTop;
-                    const totalScrollable = getTotalScrollable();
-                    const progress = Math.min(Math.max((s.y - sectionTop) / totalScrollable, 0), 1);
-
-                    // Pin: compensa il movimento del container per tenere inner fermo
-                    gsap.set(inner, { y: progress * totalScrollable });
-                    // Scroll orizzontale
-                    gsap.set(scroll, { x: -progress * totalScrollable });
-                });
-
-                window._updateHorizontalHeight = updateHeight;
-            }
-        }
-
-        // updateHeight va chiamata PRIMA di locoScroll.update() ad ogni refresh:
-        // font custom e immagini caricano in modo asincrono dopo l'init, cambiando
-        // scroll.scrollWidth e quindi totalScrollable. Se l'altezza della sezione
-        // non viene ricalcolata, Locomotive esce dalla sezione troppo presto.
-        // Fix mobile: dopo ScrollTrigger.refresh() la sezione orizzontale ha
-        // l'altezza definitiva, ma Locomotive non aggiorna limit.y. La sezione
-        // .thanks (top ~10473px) risulta irraggiungibile. Forziamo il valore corretto.
-        const fixLocoLimit = () => {
-            if (!locoScroll.scroll || !locoScroll.scroll.instance) return;
-            const correct = document.documentElement.scrollHeight - window.innerHeight;
-            if (locoScroll.scroll.instance.limit.y < correct) {
-                locoScroll.scroll.instance.limit.y = correct;
-            }
-        };
-
-        ScrollTrigger.addEventListener("refresh", () => {
-            if (window._updateHorizontalHeight) window._updateHorizontalHeight();
-            locoScroll.update();
-            fixLocoLimit();
-        });
-        ScrollTrigger.refresh();
-
-        let resizeTimer;
-        window.addEventListener('resize', () => {
-            clearTimeout(resizeTimer);
-            resizeTimer = setTimeout(() => {
-                // ScrollTrigger.refresh() triggera il listener sopra che fa
-                // updateHeight() + locoScroll.update() nell'ordine corretto
-                ScrollTrigger.refresh();
-            }, 250);
-        });
-
-        // Segnala al preloader che Locomotive e ScrollTrigger sono pronti.
-        // Su Android Firefox con CDN lenti, window.load può precedere questo punto —
-        // il preloader aspetta entrambi prima di completare.
-        window.dispatchEvent(new Event('pageReady'));
-
-    </script>
+  </div>
 </body>
-
 </html>

@@ -1,0 +1,10 @@
+// Stylesheet of the table (/me). Compile with: npx -y sass CSS/tavola.scss CSS/tavola.css
+// Edit the partials in CSS/tavola/, never tavola.css.
+
+@use "tavola/fonts";
+@use "tavola/tokens";
+@use "tavola/surfaces";
+@use "tavola/base";
+@use "tavola/table";
+@use "tavola/materials";
+@use "tavola/ui";

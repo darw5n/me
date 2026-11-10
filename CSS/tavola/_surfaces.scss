@@ -1,0 +1,91 @@
+// The table surface presets. `data-surface` on <html> picks one (backgrounds.ts).
+// Each preset sets: the mat colour, the darker void around the table, two line
+// colours for the pattern, and the chalk colour, which must stay readable on the mat.
+// Patterns are drawn on `.table` itself, so they zoom with the world.
+
+@use "tokens" as *;
+
+:root,
+[data-surface="felt"] {
+  --mat: #17443a;
+  --void: #0f2e27;
+  --line: rgba(255, 255, 255, 0.15);
+  --line-fine: rgba(255, 255, 255, 0.06);
+  --chalk: #f4f1e4;
+  --chalk-shadow: rgba(0, 0, 0, 0.3);
+  --edge: rgba(255, 255, 255, 0.22);
+}
+
+[data-surface="slate"] {
+  --mat: #2c2e30;
+  --void: #1b1c1e;
+  --line: rgba(255, 255, 255, 0.16);
+  --line-fine: rgba(255, 255, 255, 0.05);
+  --chalk: #f0eee6;
+  --chalk-shadow: rgba(0, 0, 0, 0.35);
+  --edge: rgba(255, 255, 255, 0.2);
+}
+
+[data-surface="kraft"] {
+  --mat: #c8a66b;
+  --void: #9c7f4c;
+  --line: rgba(60, 40, 10, 0.16);
+  --line-fine: rgba(60, 40, 10, 0.07);
+  --chalk: #2a2419;
+  --chalk-shadow: rgba(255, 255, 255, 0.25);
+  --edge: rgba(60, 40, 10, 0.3);
+}
+
+[data-surface="plum"] {
+  --mat: #3b1f3e;
+  --void: #27142a;
+  --line: rgba(255, 255, 255, 0.14);
+  --line-fine: rgba(255, 255, 255, 0.05);
+  --chalk: #f3e9f0;
+  --chalk-shadow: rgba(0, 0, 0, 0.35);
+  --edge: rgba(255, 255, 255, 0.22);
+}
+
+// Pattern per surface
+.table {
+  background-color: var(--mat);
+}
+
+[data-surface="felt"] .table,
+:root:not([data-surface]) .table {
+  // Cutting-mat grid: a coarse square every 160 px, a fine one every 32 px
+  background-image:
+    linear-gradient(var(--line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--line) 1px, transparent 1px),
+    linear-gradient(var(--line-fine) 1px, transparent 1px),
+    linear-gradient(90deg, var(--line-fine) 1px, transparent 1px);
+  background-size:
+    160px 160px,
+    160px 160px,
+    32px 32px,
+    32px 32px;
+}
+
+[data-surface="slate"] .table {
+  // Dotted: a point every 28 px
+  background-image: radial-gradient(var(--line) 1.2px, transparent 1.6px);
+  background-size: 28px 28px;
+}
+
+[data-surface="kraft"] .table {
+  // Ruled paper: horizontal lines every 36 px, a faint margin grid
+  background-image:
+    linear-gradient(var(--line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--line-fine) 1px, transparent 1px);
+  background-size:
+    100% 36px,
+    144px 144px;
+}
+
+[data-surface="plum"] .table {
+  // Isometric: two families of diagonals
+  background-image:
+    repeating-linear-gradient(60deg, var(--line) 0 1px, transparent 1px 42px),
+    repeating-linear-gradient(-60deg, var(--line) 0 1px, transparent 1px 42px),
+    repeating-linear-gradient(0deg, var(--line-fine) 0 1px, transparent 1px 36px);
+}

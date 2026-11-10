@@ -3,3 +3,8 @@
 exclude:
   - CLAUDE.md
   - README.md
+  - DECISIONS.md
+  - src
+  - tests
+  - scripts
+  - tsconfig.json
