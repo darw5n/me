@@ -158,3 +158,17 @@ the right and the bottom grow by themselves. Tidy up is unchanged.
 the two ways offered, he chose a very wide native table over a desktop-like infinite
 canvas, which would have replaced native vertical scrolling with dragging the table.
 
+## 2026-11-10 · Phone: a composition laid out by hand
+
+**Decision.** The messy phone table is no longer computed: Darwin arranged the objects
+himself on a 390 px screen, and each object carries its spot as `data-phone="x,y"`. Other
+phones get the same composition scaled as a whole (0.8 to 1.15), with objects at their
+390 px widths, so text wraps the same everywhere and overlaps stay as he chose them (the
+Now post-it over the portrait's corner, a sticker on the photos note). The side lanes
+(`data-lane`) are gone. Chalk is a little larger on phones (3rem and 2.35rem) so it stands
+out on the dark table.
+
+**Why.** Darwin showed the arrangement he wanted by moving the objects himself: a desk
+where things also sit half off screen, inviting a look around, rather than a column with
+lanes. Scaling the whole composition keeps it intact from 320 px up.
+

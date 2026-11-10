@@ -113,12 +113,6 @@
   }
 }
 
-// Phone, messy: extras in the side lanes lie over the column's edge where they peek
-// into it, like papers left on top of one another: the visitor sees there is more
-.item.is-side {
-  z-index: var(--z, 2);
-}
-
 // Before the preloader lets go: objects hover a little above the table, unseen.
 html:not(.is-ready) .item {
   opacity: 0;

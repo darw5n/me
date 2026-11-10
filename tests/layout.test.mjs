@@ -2,7 +2,7 @@
 // They import the compiled modules, so compile first: npx -y -p typescript tsc
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { layoutMessy, layoutColumn, layoutPhone, layoutTidy, phoneLanes, tidyGrid, tidyWidth } from "../Script/tavola/layout.js";
+import { layoutMessy, layoutColumn, layoutComposed, layoutTidy, phoneTable, tidyGrid, tidyWidth } from "../Script/tavola/layout.js";
 import { rotatedBox, overlapsWithGap } from "../Script/tavola/geometry.js";
 
 const item = (id, cluster, rel, size, extra = {}) => ({
@@ -140,48 +140,38 @@ test("tidy grid is two columns on phones and 3 to 8 columns elsewhere", () => {
   assert.ok(tidyGrid(3440).columns <= 8);
 });
 
-// Phone, messy: the column in the middle, extras in the side lanes.
-const phoneSample = sample.map((it) => {
-  const lane = { "chalk-kid": "left", "work-1": "left", "work-2": "right", "sticker-1": "left", "sticker-2": "right" }[it.id];
-  // Side items are already scaled to fit their lane by the board.
-  const size = it.size.w > 280 && lane ? { w: 280, h: it.size.h * (280 / it.size.w) } : it.size;
-  return lane ? { ...it, lane, size } : { ...it, size: { w: Math.min(it.size.w, 358), h: it.size.h } };
+// Phone, messy: the composition laid out by hand on a 390 px screen.
+const composed = sample.map((it, i) => ({ ...it, phoneAt: { x: (i % 3) * 120 - 100, y: 72 + i * 140 } }));
+
+test("composed layout reproduces the hand-made positions on a 390 px screen", () => {
+  const { side } = phoneTable(390);
+  const { placements } = layoutComposed(composed, { viewportWidth: 390, side });
+  for (const it of composed) {
+    const p = placements.get(it.id);
+    assert.equal(p.x, side + it.phoneAt.x);
+    assert.equal(p.y, it.phoneAt.y);
+  }
 });
 
-for (const viewportWidth of [320, 390]) {
-  test(`phone layout at ${viewportWidth} px: column in the centre screen, extras in their lanes, no overlaps within a lane`, () => {
-    const vw = viewportWidth;
-    const lanes = phoneLanes(vw);
-    const items = phoneSample.map((it) => ({ ...it, size: { w: Math.min(it.size.w, lanes.laneWidth, vw - 40), h: it.size.h } }));
-    const { placements } = layoutPhone(items, { viewportWidth: vw, padding: 20, top: 72 });
-    const byLane = { centre: [], left: [], right: [] };
-    for (const it of items) {
-      const r = rectOf(items, placements, it.id);
-      const lane = it.lane ?? "centre";
-      byLane[lane].push(r);
-      if (lane === "centre") {
-        assert.ok(r.x >= lanes.side + 20 - 0.5 && r.x + r.w <= lanes.side + vw - 20 + 0.5, `${it.id} leaves the column`);
-      } else if (lane === "left") {
-        assert.ok(r.x >= -0.5, `${it.id} falls off the left edge`);
-        assert.ok(r.x + r.w > lanes.side && r.x + r.w <= lanes.side + lanes.peek + 0.5, `${it.id} does not peek into the centre`);
-      } else {
-        assert.ok(r.x + r.w <= lanes.width + 0.5, `${it.id} falls off the right edge`);
-        assert.ok(r.x < lanes.side + vw && r.x >= lanes.side + vw - lanes.peek - 0.5, `${it.id} does not peek into the centre`);
-      }
+test("composed layout scales the whole composition on other screens and stays on the table", () => {
+  for (const vw of [320, 430]) {
+    const table = phoneTable(vw);
+    const k = vw / 390;
+    const { placements } = layoutComposed(composed, { viewportWidth: vw, side: table.side });
+    for (const it of composed) {
+      const p = placements.get(it.id);
+      assert.ok(Math.abs(p.y - it.phoneAt.y * k) < 0.01, `${it.id} is not scaled`);
+      assert.ok(p.x >= 0 && p.x + it.size.w <= table.width, `${it.id} leaves the table`);
     }
-    for (const rects of Object.values(byLane)) {
-      for (let a = 0; a < rects.length; a++) for (let b = a + 1; b < rects.length; b++) {
-        assert.ok(!overlapsWithGap(rects[a], rects[b], 0), "two objects of the same lane overlap");
-      }
-    }
-  });
-}
+  }
+});
 
-test("phone layout: extras start level with their group in the column", () => {
-  const { placements } = layoutPhone(phoneSample, { viewportWidth: 390, padding: 20, top: 72 });
-  const folderY = rectOf(phoneSample, placements, "folder").y;
-  const work1Y = rectOf(phoneSample, placements, "work-1").y;
-  assert.ok(work1Y >= folderY - 20, "work extras start above their group");
+test("composed layout puts objects without a position in a column below the rest", () => {
+  const items = [...composed, item("new", "about", { x: 0, y: 0 }, { w: 200, h: 100 })];
+  const { side } = phoneTable(390);
+  const { placements } = layoutComposed(items, { viewportWidth: 390, side });
+  const lowest = Math.max(...composed.map((it) => placements.get(it.id).y + it.size.h));
+  assert.ok(placements.get("new").y > lowest, "the loose object is not below the composition");
 });
 
 test("phone column: a new group starts further down than the next row of the same group", () => {
@@ -195,11 +185,3 @@ test("phone column: a new group starts further down than the next row of the sam
   const sectionGap = placements.get("c").y - (placements.get("b").y + 100);
   assert.ok(sectionGap >= rowGap * 2, `section gap ${sectionGap} is not at least twice the row gap ${rowGap}`);
 });
-
-test("phone side lanes stay clear of the column", () => {
-  for (const vw of [320, 390, 430]) {
-    const lanes = phoneLanes(vw);
-    assert.ok(lanes.peek < 20, "side objects would touch the column");
-  }
-});
-

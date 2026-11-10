@@ -396,10 +396,6 @@ button:hover > .arrow {
   }
 }
 
-.item.is-side {
-  z-index: var(--z, 2);
-}
-
 html:not(.is-ready) .item {
   opacity: 0;
   --ly: -18px;
@@ -1022,10 +1018,10 @@ body.is-leaving .curtain {
 }
 @media (max-width: 899px) {
   .chalk {
-    font-size: 2.6rem;
+    font-size: 3rem;
   }
   .chalk--small {
-    font-size: 2rem;
+    font-size: 2.35rem;
   }
 }
 
@@ -1343,14 +1339,17 @@ body.is-leaving .curtain {
 
 @media (max-width: 899px) {
   .note h1 {
-    font-size: clamp(1.7rem, 8.2vw, 2.55rem);
+    font-size: 2rem;
     line-height: 1;
   }
   .note p {
     font-size: 1.1rem;
   }
   .paper {
-    padding: 1.5em 1.3em 1.3em;
+    padding: 1.5em 1.15em 1.3em;
+  }
+  .quote {
+    font-size: 1.75rem;
   }
   .postit {
     font-size: 1.12rem;

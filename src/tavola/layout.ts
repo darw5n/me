@@ -8,8 +8,8 @@
  *   wraps.
  * - column (phone): objects flow in reading order inside the screen width, like a
  *   page that only scrolls vertically.
- * - phone (messy): the column holds what matters; extras lie in two side lanes,
- *   next to their group, and peek in from the screen edges.
+ * - composed (phone, messy): positions laid out by hand on a 390 px screen,
+ *   scaled to the screen.
  * - tidy (both): a real grid, one row of columns per group, with a chalk label.
  *
  * Every arrangement ends with `relax`, which pushes objects apart when they touch.
@@ -208,84 +208,58 @@ export const layoutColumn = (items: LayoutItem[], opts: ColumnOptions): LayoutRe
   return { placements, bounds: union(boxes), labels: new Map(), zoom: 1 };
 };
 
-/**
- * Geometry of the phone table: free table on the left, the screen-wide centre,
- * free table on the right. The extras lie in a lane just beside the centre; the
- * rest is room to spread things out.
- */
-export interface PhoneLanes {
-  /** Width of the table on each side of the centre screen; the centre starts at x = side. */
+/** Screen width the phone composition is drawn for (data-phone). */
+export const PHONE_BASE_WIDTH = 390;
+/** Screens of free table on each side of the opening screen, before it grows. */
+export const PHONE_SIDE_SCREENS = 3;
+
+/** Geometry of the phone table: free table, the opening screen, free table. */
+export interface PhoneTable {
+  /** Width of the table left of the opening screen; the screen starts at x = side. */
   side: number;
-  /** How far side objects reach into the centre screen, so they show at its edges. */
-  peek: number;
-  /** Room for one object in a side lane. */
-  laneWidth: number;
-  /** Width of the whole phone table. */
+  /** Width of the whole table. */
   width: number;
 }
 
-/** Screens of free table on each side of the centre, before the visitor widens it. */
-export const PHONE_SIDE_SCREENS = 3;
-
-/**
- * `extraScreens` widens the left side (the table grows when an object is carried
- * to its left edge). A lane is a little narrower than the screen, so beside it a
- * strip of the centre stays in view: the visitor knows where the way back is.
- */
-export const phoneLanes = (viewportWidth: number, padding = 20, extraScreens = 0): PhoneLanes => {
+/** `extraScreens` widens the left side: the table grows when an object is carried there. */
+export const phoneTable = (viewportWidth: number, extraScreens = 0): PhoneTable => {
   const side = Math.round(viewportWidth * (PHONE_SIDE_SCREENS + extraScreens));
-  const lane = Math.round(viewportWidth * 0.85);
-  // A thin edge, kept clear of the column: enough to show there is more.
-  const peek = Math.round(padding / 2);
-  return {
-    side,
-    peek,
-    laneWidth: lane + peek - padding,
-    width: side + viewportWidth + Math.round(viewportWidth * PHONE_SIDE_SCREENS),
-  };
+  return { side, width: side + viewportWidth + Math.round(viewportWidth * PHONE_SIDE_SCREENS) };
 };
 
+/** How much the phone composition is scaled on a screen of this width. */
+export const phoneScale = (viewportWidth: number): number => clamp(viewportWidth / PHONE_BASE_WIDTH, 0.8, 1.15);
+
+export interface ComposedOptions {
+  viewportWidth: number;
+  /** x of the opening screen on the table (PhoneTable.side). */
+  side: number;
+  padding?: number;
+}
 
 /**
- * Phone, messy: the centre column is `layoutColumn` shifted right by one side
- * lane. The extras of each group start level with the group's first object in the
- * column and flow down their lane; the left lane is mirrored, so every row starts
- * against the centre and peeks into it.
+ * Phone, messy: the composition Darwin laid out by hand on a 390 px screen
+ * (`phoneAt`), scaled as a whole to the screen, so distances and overlaps stay as
+ * he chose them. Rotation is softened as in the column. Items without a position
+ * flow in a column below the rest.
  */
-export const layoutPhone = (items: LayoutItem[], opts: ColumnOptions & { extraScreens?: number }): LayoutResult => {
-  const padding = opts.padding ?? 16;
-  const top = opts.top ?? 24;
-  const vw = opts.viewportWidth;
-  const lanes = phoneLanes(vw, padding, opts.extraScreens);
-  const laneOf = (i: LayoutItem) => i.lane ?? "centre";
-
-  const centreItems = items.filter((i) => laneOf(i) === "centre");
-  const centre = layoutColumn(centreItems, { viewportWidth: vw, padding, top });
+export const layoutComposed = (items: LayoutItem[], opts: ComposedOptions): LayoutResult => {
+  const k = phoneScale(opts.viewportWidth);
   const placements: Placements = new Map();
-  const clusterTop = new Map<string, number>();
-  for (const item of centreItems) {
-    const p = centre.placements.get(item.id)!;
-    placements.set(item.id, { ...p, x: p.x + lanes.side });
-    clusterTop.set(item.cluster, Math.min(clusterTop.get(item.cluster) ?? Infinity, p.y));
-  }
-
-  const clusters = [...new Set(items.map((i) => i.cluster))];
-  for (const lane of ["left", "right"] as const) {
-    let free = top;
-    for (const cluster of clusters) {
-      const members = items.filter((i) => i.cluster === cluster && laneOf(i) === lane);
-      if (members.length === 0) continue;
-      const start = Math.max(free, clusterTop.get(cluster) ?? free);
-      const flow = layoutColumn(members, { viewportWidth: lanes.laneWidth, padding: 0, top: start });
-      for (const item of members) {
-        const p = flow.placements.get(item.id)!;
-        const x = lane === "left"
-          ? lanes.side + lanes.peek - p.x - item.size.w
-          : lanes.side + vw - lanes.peek + p.x;
-        placements.set(item.id, { ...p, x });
-      }
-      free = flow.bounds.y + flow.bounds.h + SECTION_GAP;
+  const loose: LayoutItem[] = [];
+  let bottom = 0;
+  for (const item of items) {
+    if (!item.phoneAt) {
+      loose.push(item);
+      continue;
     }
+    const y = item.phoneAt.y * k;
+    placements.set(item.id, { x: opts.side + item.phoneAt.x * k, y, rotation: item.rotation * 0.6 });
+    bottom = Math.max(bottom, y + item.size.h);
+  }
+  if (loose.length) {
+    const flow = layoutColumn(loose, { viewportWidth: opts.viewportWidth, padding: opts.padding ?? 20, top: bottom + SECTION_GAP });
+    for (const [id, p] of flow.placements) placements.set(id, { ...p, x: p.x + opts.side });
   }
   return { placements, bounds: boundsOf(items, placements), labels: new Map(), zoom: 1 };
 };

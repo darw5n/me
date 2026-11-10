@@ -5,21 +5,20 @@
  * Two shapes, chosen by window width (NARROW_BREAKPOINT):
  * - desktop: a fixed viewport over an infinite table; pan and zoom;
  * - phone: the table scrolls inside `.view`. When messy it is several screens
- *   wide: the column in the middle, extras beside it, free room around, growing
+ *   wide, with the composition Darwin laid out by hand (data-phone), and grows
  *   when an object is carried to an edge; tidy, it is one column as wide as the screen.
  */
 import { PENCIL_ENABLED } from "./actions.js";
 import { CameraController } from "./camera.js";
 import { clamp, easeInOut, union, viewportSize } from "./geometry.js";
 import { measure, positionOf, readItems, rectOf, render, setWidth, toLayoutItem, } from "./items.js";
-import { NARROW_BREAKPOINT, layoutMessy, layoutPhone, layoutTidy, phoneLanes, phoneTidyFit, tidyGrid, tidyWidth, } from "./layout.js";
+import { NARROW_BREAKPOINT, PHONE_BASE_WIDTH, layoutComposed, layoutMessy, layoutTidy, phoneScale, phoneTable, phoneTidyFit, tidyGrid, tidyWidth, } from "./layout.js";
 import { attachPhoneZoom } from "./phone-zoom.js";
 import { attachFilmHover, createRings, reactToTap } from "./reactions.js";
 /** Screen padding kept around the content by "See all". */
 const SEE_ALL_PADDING = { x: 40, top: 58, bottom: 76 };
-/** Column padding on a phone, and where the column starts (below the fixed corner). */
+/** Column padding on a phone. */
 const PHONE_PADDING = 20;
-const PHONE_TOP = 72;
 /** Scale range for objects fitted to the Tidy up grid. */
 const TIDY_SCALE_MIN = 0.72;
 const TIDY_SCALE_MAX = 1.3;
@@ -112,8 +111,6 @@ export class Board {
             const away = this.mode === "tidy" && item.decoration;
             item.el.classList.toggle("is-away", away);
             item.el.inert = away;
-            // Side extras lie over the column's edge where they peek into it
-            item.el.classList.toggle("is-side", this.narrow && this.mode === "messy" && item.lane !== "centre");
             render(item, this.mode);
         }
         for (const [id, label] of this.labels) {
@@ -131,16 +128,16 @@ export class Board {
             this.el.view.style.removeProperty("--cam-y");
             this.el.view.style.removeProperty("--k");
             const vw = viewportSize().w;
-            const lanes = this.lanes();
+            const table = this.table();
             const content = this.contentRect();
             // Room to the right of the rightmost object, so the table keeps going
-            this.el.world.style.width = `${Math.round(Math.max(lanes.width, content.x + content.w + vw))}px`;
+            this.el.world.style.width = `${Math.round(Math.max(table.width, content.x + content.w + vw))}px`;
             this.el.world.style.height = `${Math.round(content.y + content.h + 96)}px`;
             // First layout or a new screen width: the visitor starts on the centre column.
-            if (lanes.side !== this.phoneSide) {
-                this.phoneSide = lanes.side;
+            if (table.side !== this.phoneSide) {
+                this.phoneSide = table.side;
                 this.phoneZoom.reset();
-                this.el.view.scrollLeft = lanes.side;
+                this.el.view.scrollLeft = table.side;
             }
         }
         else {
@@ -155,7 +152,9 @@ export class Board {
         const vw = viewportSize().w;
         // Same widths in every arrangement of a given screen: text never re-wraps when
         // the visitor tidies up, so the objects can glide without jumps.
-        const column = vw - PHONE_PADDING * 2;
+        // Phone: widths of the 390 px screen the composition was drawn on; other screens
+        // scale the objects instead, so text wraps the same everywhere.
+        const column = PHONE_BASE_WIDTH - PHONE_PADDING * 2;
         for (const item of this.items) {
             item.scale = 1;
             setWidth(item, this.narrow ? Math.min(item.small ? item.baseWidth * 0.8 : item.baseWidth, column) : item.baseWidth);
@@ -180,22 +179,15 @@ export class Board {
                 return { ...li, span, size: { w: li.size.w * item.scale, h: li.size.h * item.scale } };
             });
             const tidy = layoutTidy(scaled, { viewportWidth: vw, groupOrder: this.config.groups.map(([id]) => id) });
-            return this.narrow ? shiftX(tidy, this.lanes().side) : tidy;
+            return this.narrow ? shiftX(tidy, this.table().side) : tidy;
         }
         if (this.narrow) {
-            // Extras wider than a side lane shrink to fit it (a scale, so text never re-wraps
-            // when they glide back into the column under Tidy up).
-            const { laneWidth } = this.lanes();
+            const k = phoneScale(vw);
             sized = sized.map((li, i) => {
-                const item = this.items[i];
-                if (item.lane === "centre" || li.size.w <= laneWidth)
-                    return li;
-                item.scale = laneWidth / li.size.w;
-                return { ...li, size: { w: laneWidth, h: li.size.h * item.scale } };
+                this.items[i].scale = k;
+                return { ...li, size: { w: li.size.w * k, h: li.size.h * k } };
             });
-            return layoutPhone(sized, {
-                viewportWidth: vw, padding: PHONE_PADDING, top: PHONE_TOP, extraScreens: this.phoneExtraScreens,
-            });
+            return layoutComposed(sized, { viewportWidth: vw, side: this.table().side, padding: PHONE_PADDING });
         }
         return layoutMessy(sized, { viewportWidth: vw, clusterOrder: this.config.clusters });
     }
@@ -269,11 +261,11 @@ export class Board {
         offset.y += delta.y;
         if (this.narrow) {
             const vw = viewportSize().w;
-            const lanes = this.lanes();
+            const { side } = this.table();
             if (this.mode === "tidy") {
                 const p = positionOf(item, this.mode);
-                const maxX = lanes.side + vw - PHONE_PADDING - rectOf(item, this.mode).w;
-                offset.x += Math.min(0, maxX - p.x) + Math.max(0, lanes.side + PHONE_PADDING - p.x);
+                const maxX = side + vw - PHONE_PADDING - rectOf(item, this.mode).w;
+                offset.x += Math.min(0, maxX - p.x) + Math.max(0, side + PHONE_PADDING - p.x);
             }
             else if (positionOf(item, this.mode).x < vw / 2) {
                 this.growPhoneLeft();
@@ -312,18 +304,18 @@ export class Board {
         this.relayout();
         this.home(0);
     }
-    /** Phone geometry for the current screen and growth. */
-    lanes() {
-        return phoneLanes(viewportSize().w, PHONE_PADDING, this.phoneExtraScreens);
+    /** Phone table for the current screen and growth. */
+    table() {
+        return phoneTable(viewportSize().w, this.phoneExtraScreens);
     }
     /**
      * Phone: two more screens of table on the left. Everything moves right by the
      * same amount and the scroll follows, so nothing seems to move.
      */
     growPhoneLeft() {
-        const before = this.lanes().side;
+        const before = this.table().side;
         this.phoneExtraScreens += 2;
-        const grown = this.lanes().side - before;
+        const grown = this.table().side - before;
         this.phoneSide += grown; // a new side, not a new screen: keep the scroll
         this.relayout();
         this.el.view.scrollLeft += grown * this.phoneZoom.zoom;
@@ -332,7 +324,7 @@ export class Board {
     scrollPhoneHome() {
         this.phoneZoom.reset();
         this.el.view.scrollTo({
-            left: this.lanes().side * this.phoneZoom.zoom,
+            left: this.table().side * this.phoneZoom.zoom,
             top: 0,
             behavior: this.reducedMotion ? "auto" : "smooth",
         });
@@ -409,7 +401,7 @@ export class Board {
         });
     }
 }
-/** The same layout moved right by `dx` (phone: the column sits after the left lane). */
+/** The same layout moved right by `dx` (phone: the opening screen sits after the free table on its left). */
 const shiftX = (result, dx) => {
     const placements = new Map();
     for (const [id, p] of result.placements)

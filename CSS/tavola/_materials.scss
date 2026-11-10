@@ -646,12 +646,12 @@
     white-space: nowrap;
   }
 
-  // On a phone the column is narrow: a step smaller, still well above the text
+  // On a phone: a step smaller than on the desktop, still large enough to stand out
   @include narrow {
-    font-size: 2.6rem;
+    font-size: 3rem;
 
     &--small {
-      font-size: 2rem;
+      font-size: 2.35rem;
     }
   }
 }
@@ -1063,9 +1063,10 @@
 
 // ---- Phone sizes ----------------------------------------------------------------
 @include narrow {
-  // Each clause of the hero must fit one line, down to a 320 px screen
+  // Each clause of the hero must fit one line. Sizes are fixed: phone objects keep
+  // the widths of a 390 px screen and the whole table scales on other screens.
   .note h1 {
-    font-size: clamp(1.7rem, 8.2vw, 2.55rem);
+    font-size: 2rem;
     line-height: 1;
   }
 
@@ -1074,7 +1075,12 @@
   }
 
   .paper {
-    padding: 1.5em 1.3em 1.3em;
+    padding: 1.5em 1.15em 1.3em;
+  }
+
+  // "everyone around him." on one line, no word left alone in the middle
+  .quote {
+    font-size: 1.75rem;
   }
 
   .postit {
