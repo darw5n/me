@@ -55,6 +55,8 @@
   .controls__primary {
     background: var(--yellow);
     color: #000;
+    // Air after the main action, so it does not read as one block with See all
+    margin-right: 6px;
 
     &:hover {
       background: #fff;
