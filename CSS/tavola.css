@@ -1171,48 +1171,53 @@ body.is-leaving .curtain {
     --ly: -3px;
   }
 }
-.book-stack .book-stack__title {
-  font: 500 13px var(--font-ui);
-}
-.book-stack .book-stack__author {
-  font: italic 400 12px var(--font-text);
-}
-
-.book-cover {
+.book {
   position: relative;
-  display: grid;
-  align-content: space-between;
-  gap: 0.4em;
-  aspect-ratio: 2/3;
-  padding: 1em 0.9em 1.1em 1.2em;
-  background: linear-gradient(90deg, rgba(0, 0, 0, 0.22) 0 6px, rgba(255, 255, 255, 0.12) 6px 8px, transparent 8px), linear-gradient(160deg, #0f5a4a, #0a3d33);
-  color: #f4f1e4;
-  border-radius: 2px 6px 6px 2px;
-  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.3), 6px 14px 18px -8px rgba(0, 0, 0, 0.55);
+  display: block;
+  border-radius: 2px 5px 5px 2px;
+  box-shadow: 0 1px 0 #e8e4d8, 0 3px 0 #d8d3c4, 0 4px 2px rgba(0, 0, 0, 0.35), 6px 14px 18px -8px rgba(0, 0, 0, 0.55);
 }
-.book-cover__label {
-  font: 500 0.72rem/1 var(--font-ui);
-  letter-spacing: 0.02em;
-  color: #9ee6cc;
+.book img {
+  width: 100%;
+  border-radius: inherit;
 }
-.book-cover__title {
-  font: 500 1.25rem/1.02 var(--font-display);
-  letter-spacing: -0.01em;
-}
-.book-cover__author {
-  font: italic 400 0.9rem/1.1 var(--font-text);
-  color: #d8d4c4;
-}
-.book-cover__ribbon {
+.book::before {
+  content: "";
   position: absolute;
-  right: 18px;
-  bottom: -14px;
+  inset: 0 auto 0 0;
+  width: 9px;
+  border-radius: 2px 0 0 2px;
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0.28), rgba(255, 255, 255, 0.18) 60%, transparent);
+  pointer-events: none;
+}
+.book .book__note {
+  position: absolute;
+  z-index: 2;
+  bottom: 14px;
+  left: -18px;
+  padding: 0.25em 0.8em;
+  background: var(--tape);
+  color: #29271c;
+  font: italic 400 0.9rem/1.2 var(--font-text);
+  white-space: nowrap;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
+  transform: rotate(-6deg);
+}
+.book .book__ribbon {
+  position: absolute;
+  right: 22px;
+  bottom: -16px;
   width: 9px;
   height: 30px;
   background: var(--red);
   clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 80%, 0 100%);
 }
 
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .item:hover .book {
+    --ly: -5px;
+  }
+}
 .phone .phone__glyph {
   filter: drop-shadow(0 0 1.5px rgba(255, 255, 255, 0.8));
   opacity: 0.6;
