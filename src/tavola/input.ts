@@ -50,6 +50,7 @@ export const attachInput = (host: InputHost): (() => void) => {
   let action: Action | null = null;
   let moved = false;
   let pressed: TableItem | null = null;
+  let pressStart: Point = { x: 0, y: 0 };
   let longPress = 0;
   let pinch: { distance: number; zoom: number } | null = null;
   let tiltReset = 0;
@@ -88,6 +89,7 @@ export const attachInput = (host: InputHost): (() => void) => {
     const start = { x: e.clientX, y: e.clientY };
     if (item) {
       pressed = item;
+      pressStart = start;
       item.el.classList.add("is-pressed");
     }
 
@@ -119,7 +121,13 @@ export const attachInput = (host: InputHost): (() => void) => {
       return;
     }
     // Phone, before the long press: a finger that travels is a scroll, not a lift.
-    if (!action) return;
+    // Browsers usually send pointercancel when they start scrolling; this covers the
+    // ones that do not, so a scroll can never turn into a lift.
+    if (!action) {
+      const origin = pressed && pointers.size === 1 ? pressStart : null;
+      if (origin && Math.hypot(e.clientX - origin.x, e.clientY - origin.y) >= DRAG_THRESHOLD) clearPress();
+      return;
+    }
 
     const dx = e.clientX - action.start.x;
     const dy = e.clientY - action.start.y;

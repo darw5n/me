@@ -1029,10 +1029,6 @@ body.is-leaving .curtain {
   font-family: var(--font-ui);
   font-weight: 700;
 }
-.sticker .sticker__hand {
-  font-family: var(--font-chalk);
-  font-weight: 400;
-}
 .sticker .sticker__display {
   font-family: var(--font-display);
   font-weight: 500;
@@ -1098,8 +1094,7 @@ body.is-leaving .curtain {
     --sc: 1.06;
     --rot: 0deg;
   }
-  .path li:hover .strip,
-  .labels .strip:hover {
+  .path li:hover .strip {
     transform: translateX(8px) rotate(0deg);
   }
   .item:hover .sticker {

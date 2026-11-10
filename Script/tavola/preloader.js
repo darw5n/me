@@ -43,11 +43,21 @@ export const runPreloader = async ({ overlay, images, reducedMotion }) => {
     root.classList.add("is-ready");
     if (overlay) {
         overlay.setAttribute("aria-hidden", "true");
-        // Let the fade finish before removing it from the tab order and the tree.
-        const remove = () => overlay.remove();
-        if (reducedMotion)
+        // Let the fade finish before removing it from the tree; the timeout covers a
+        // transition that never ends (tab in the background, styles not loaded).
+        let removed = false;
+        const remove = () => {
+            if (removed)
+                return;
+            removed = true;
+            overlay.remove();
+        };
+        if (reducedMotion) {
             remove();
-        else
-            overlay.addEventListener("transitionend", remove, { once: true }), setTimeout(remove, 1200);
+        }
+        else {
+            overlay.addEventListener("transitionend", remove, { once: true });
+            setTimeout(remove, 1200);
+        }
     }
 };

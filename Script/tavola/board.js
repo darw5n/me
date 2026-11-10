@@ -61,7 +61,7 @@ export class Board {
             },
         });
         this.rings = createRings(sound);
-        attachFilmHover(el.world, this.rings);
+        attachFilmHover(el.world);
         for (const [id, label] of config.groups) {
             const p = document.createElement("p");
             p.className = "group-label chalk";

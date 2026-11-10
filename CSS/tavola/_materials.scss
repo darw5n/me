@@ -620,6 +620,7 @@
     margin-top: 0.4em;
   }
 
+  // Status of a project ("In beta", "Released"…): used by the portfolio folders
   .folder__status {
     display: inline-block;
     margin-top: 0.6em;
@@ -682,10 +683,6 @@
     font-weight: 700;
   }
 
-  .sticker__hand {
-    font-family: var(--font-chalk);
-    font-weight: 400;
-  }
 
   .sticker__display {
     font-family: var(--font-display);
@@ -770,8 +767,7 @@
       --rot: 0deg;
     }
 
-    .path li:hover .strip,
-    .labels .strip:hover {
+    .path li:hover .strip {
       transform: translateX(8px) rotate(0deg);
     }
 

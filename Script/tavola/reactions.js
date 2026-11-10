@@ -96,7 +96,7 @@ export const reactToTap = (item, target, rings, sound) => {
  * even while the rest of the pencil is on hold. With the pencil on, a clicked
  * frame keeps its ring.
  */
-export const attachFilmHover = (root, _rings) => {
+export const attachFilmHover = (root) => {
     root.querySelectorAll(".film a").forEach((frame) => {
         frame.addEventListener("pointerenter", (e) => {
             if (e.pointerType !== "mouse")
