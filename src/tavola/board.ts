@@ -9,7 +9,7 @@
 
 import { PENCIL_ENABLED } from "./actions.js";
 import { CameraController } from "./camera.js";
-import { union, viewportSize } from "./geometry.js";
+import { clamp, easeInOut, union, viewportSize } from "./geometry.js";
 import {
   measure, positionOf, readItems, rectOf, render, setWidth, toLayoutItem, type TableItem,
 } from "./items.js";
@@ -42,6 +42,11 @@ const SEE_ALL_PADDING = { x: 40, top: 58, bottom: 76 };
 /** Column padding on a phone, and where the column starts (below the fixed corner). */
 const PHONE_PADDING = 16;
 const PHONE_TOP = 72;
+/** Scale range for objects fitted to the Tidy up grid. */
+const TIDY_SCALE_MIN = 0.72;
+const TIDY_SCALE_MAX = 1.3;
+/** Duration of the Tidy up / Mess it up glide, shared with the SCSS (--tidy-duration). */
+const TIDY_MS = 950;
 /** Zoom the camera flies to when entering a folder. */
 const ENTER_ZOOM = 3.4;
 
@@ -54,6 +59,7 @@ export class Board {
   private readonly labels = new Map<string, HTMLElement>();
   private homeZoom = 1;
   private zCounter = 40;
+  private animationEnd = 0;
   /** Once the visitor has panned or dragged, a relayout keeps the camera still. */
   private touched = false;
 
@@ -97,7 +103,7 @@ export class Board {
 
   /** Everything on the table, where it currently lies (drag offsets included). */
   contentRect(): Rect {
-    return union(this.items.filter((i) => !i.el.hidden).map((i) => rectOf(i, this.mode)));
+    return union(this.items.filter((i) => !i.el.classList.contains("is-away")).map((i) => rectOf(i, this.mode)));
   }
 
   /** Lays everything out again for the current window and arrangement. */
@@ -108,7 +114,11 @@ export class Board {
     for (const item of this.items) {
       const p = result.placements.get(item.id);
       if (p) item.home = p;
-      item.el.hidden = this.mode === "tidy" && item.decoration;
+      // Decorations fade out under Tidy up instead of vanishing; `inert` takes them
+      // out of the tab order and of the accessibility tree meanwhile.
+      const away = this.mode === "tidy" && item.decoration;
+      item.el.classList.toggle("is-away", away);
+      item.el.inert = away;
       render(item, this.mode);
     }
     for (const [id, label] of this.labels) {
@@ -135,27 +145,34 @@ export class Board {
 
   private runLayout(): LayoutResult {
     const vw = viewportSize().w;
-    if (this.mode === "tidy") {
-      const grid = tidyGrid(vw);
-      for (const item of this.items) setWidth(item, tidyWidth(toLayoutItem(item, { w: 0, h: 0 }), grid, item.baseWidth));
-      const sized = this.items.map((item) => toLayoutItem(item, measure(item)));
-      return layoutTidy(sized, { viewportWidth: vw, groupOrder: this.config.groups.map(([id]) => id) });
+    // Same widths in every arrangement of a given screen: text never re-wraps when
+    // the visitor tidies up, so the objects can glide without jumps.
+    const column = vw - PHONE_PADDING * 2;
+    for (const item of this.items) {
+      item.scale = 1;
+      setWidth(item, this.narrow ? Math.min(item.small ? item.baseWidth * 0.8 : item.baseWidth, column) : item.baseWidth);
     }
-    if (this.narrow) {
-      const column = vw - PHONE_PADDING * 2;
-      for (const item of this.items) setWidth(item, Math.min(item.small ? item.baseWidth * 0.8 : item.baseWidth, column));
-      const sized = this.items.map((item) => toLayoutItem(item, measure(item)));
-      return layoutColumn(sized, { viewportWidth: vw, padding: PHONE_PADDING, top: PHONE_TOP });
-    }
-    for (const item of this.items) setWidth(item, item.baseWidth);
     const sized = this.items.map((item) => toLayoutItem(item, measure(item)));
+
+    if (this.mode === "tidy") {
+      // Fit each object to its grid column with a uniform scale, kept within a range
+      // where text stays comfortable to read.
+      const grid = tidyGrid(vw);
+      const scaled = sized.map((li, i) => {
+        const item = this.items[i]!;
+        if (!this.narrow) item.scale = clamp(tidyWidth(li, grid, li.size.w) / li.size.w, TIDY_SCALE_MIN, TIDY_SCALE_MAX);
+        return { ...li, size: { w: li.size.w * item.scale, h: li.size.h * item.scale } };
+      });
+      return layoutTidy(scaled, { viewportWidth: vw, groupOrder: this.config.groups.map(([id]) => id) });
+    }
+    if (this.narrow) return layoutColumn(sized, { viewportWidth: vw, padding: PHONE_PADDING, top: PHONE_TOP });
     return layoutMessy(sized, { viewportWidth: vw, clusterOrder: this.config.clusters });
   }
 
   /** Opening view of the current arrangement. */
-  home(ms = 0): void {
+  home(ms = 0, ease?: (t: number) => number): void {
     if (this.narrow) return;
-    void this.camera.flyTo(0, 0, this.mode === "tidy" ? 1 : this.homeZoom, ms);
+    void this.camera.flyTo(0, 0, this.mode === "tidy" ? 1 : this.homeZoom, ms, ease);
   }
 
   seeAll(): void {
@@ -177,13 +194,17 @@ export class Board {
     if (mode === this.mode) return;
     this.mode = mode;
     const { world } = this.el;
+    clearTimeout(this.animationEnd);
     world.classList.add("is-animating");
     world.classList.toggle("is-tidy", mode === "tidy");
     this.relayout();
     this.sound.play(mode === "tidy" ? "tidy" : "mess");
-    setTimeout(() => world.classList.remove("is-animating"), 900);
-    this.home(this.reducedMotion ? 0 : 620);
-    if (this.narrow) window.scrollTo({ top: 0 });
+    // The class keeps the long, eased transitions until the last object has landed
+    // (duration + stagger), then the quick reactions to hover and drag come back.
+    this.animationEnd = window.setTimeout(() => world.classList.remove("is-animating"), TIDY_MS + this.items.length * 8 + 100);
+    // The camera travels with the objects: same duration, same in-out shape.
+    this.home(this.reducedMotion ? 0 : TIDY_MS, easeInOut);
+    if (this.narrow) window.scrollTo({ top: 0, behavior: this.reducedMotion ? "auto" : "smooth" });
     this.callbacks.onArrangement?.(mode);
     document.body.classList.add("has-moved");
   }
@@ -199,7 +220,7 @@ export class Board {
     offset.y += delta.y;
     if (this.narrow) {
       const p = positionOf(item, this.mode);
-      const maxX = viewportSize().w - PHONE_PADDING - item.el.offsetWidth;
+      const maxX = viewportSize().w - PHONE_PADDING - rectOf(item, this.mode).w;
       offset.x += Math.min(0, maxX - p.x) + Math.max(0, PHONE_PADDING - p.x);
       offset.y += Math.max(0, 8 - p.y);
     }
@@ -240,7 +261,8 @@ export class Board {
 
   private centreOnItem(item: TableItem, zoom = this.camera.state.zoom, ms = 420): Promise<void> {
     const p = positionOf(item, this.mode);
-    return this.camera.centreOn({ x: p.x + item.el.offsetWidth / 2, y: p.y + item.el.offsetHeight / 2 }, zoom, ms);
+    const r = rectOf(item, this.mode);
+    return this.camera.centreOn({ x: p.x + r.w / 2, y: p.y + r.h / 2 }, zoom, ms);
   }
 
   /** Keyboard users: the camera follows the focus, so nothing stays off screen. */

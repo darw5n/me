@@ -98,3 +98,14 @@ to come back.
 The one exception: on the film strip the red ring follows the mouse from frame to frame
 (hover only), like a pencil choosing on a contact sheet. Clicking a frame opens it and
 leaves no ring.
+
+## 2026-11-10 · Tidy up glides
+
+**Decision.** Tidy up / Mess it up use one curve for everything (`--ease-tidy`, a CSS
+`linear()` built from an ease-in-out that lands 3.5% past the spot and settles back), 950 ms,
+objects starting 8 ms apart; tilt and camera travel on the same rhythm. Under Tidy up objects
+are no longer resized: they keep their width and get a uniform scale (0.72–1.3) to fit the
+grid, so text never re-wraps mid-flight. Chalk and props fade out instead of vanishing.
+
+**Why.** Darwin asked for an ease-in-out with a final bounce, smooth and without jumps. The
+jumps came from width changes (text re-wrapping) and from objects disappearing at once.

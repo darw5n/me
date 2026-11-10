@@ -13,8 +13,10 @@ export const viewportSize = () => ({
 });
 export const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
 export const lerp = (from, to, t) => from + (to - from) * t;
-/** Ease-out cubic, used for every camera flight. */
+/** Ease-out cubic, the default camera flight. */
 export const easeOut = (t) => 1 - (1 - t) ** 3;
+/** Ease-in-out cubic: slow start, slow landing. Used when the camera travels with Tidy up. */
+export const easeInOut = (t) => (t < 0.5 ? 4 * t ** 3 : 1 - (-2 * t + 2) ** 3 / 2);
 export const degToRad = (deg) => (deg * Math.PI) / 180;
 /**
  * Size of the axis-aligned box that contains an element of `size`

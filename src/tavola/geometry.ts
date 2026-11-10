@@ -20,8 +20,11 @@ export const clamp =(value: number, min: number, max: number): number =>
 
 export const lerp = (from: number, to: number, t: number): number => from + (to - from) * t;
 
-/** Ease-out cubic, used for every camera flight. */
+/** Ease-out cubic, the default camera flight. */
 export const easeOut = (t: number): number => 1 - (1 - t) ** 3;
+
+/** Ease-in-out cubic: slow start, slow landing. Used when the camera travels with Tidy up. */
+export const easeInOut = (t: number): number => (t < 0.5 ? 4 * t ** 3 : 1 - (-2 * t + 2) ** 3 / 2);
 
 export const degToRad = (deg: number): number => (deg * Math.PI) / 180;
 

@@ -45,9 +45,14 @@
   position: absolute;
   left: 0;
   top: 0;
-  transform: translate(var(--x, 0px), var(--y, 0px));
+  // Position plus the uniform scale used under Tidy up (from the top-left corner,
+  // so --x/--y stay the corner of the object)
+  transform: translate(var(--x, 0px), var(--y, 0px)) scale(var(--s, 1));
+  transform-origin: 0 0;
   z-index: var(--z, 1);
-  transition: opacity 0.5s var(--ease-out) calc(var(--i, 0) * 30ms);
+  transition:
+    opacity 0.5s var(--ease-out) calc(var(--i, 0) * 30ms),
+    visibility 0s;
 
   @include wide {
     cursor: grab;
@@ -109,16 +114,31 @@ html:not(.is-ready) .item {
   filter: drop-shadow(0 26px 18px rgba(0, 0, 0, 0.42));
 }
 
-// Tidy up / mess up: objects glide to their new place, one after the other
+// Tidy up / mess up: every object glides along the same curve, a few ms after the
+// previous one, and its tilt straightens (or comes back) on the same rhythm.
 .world.is-animating .item {
+  will-change: transform;
   transition:
-    transform 0.7s var(--ease-spring),
-    opacity 0.3s;
-  transition-delay: calc(var(--i, 0) * 12ms);
+    transform var(--tidy-duration) var(--ease-tidy) calc(var(--i, 0) * 8ms),
+    opacity 0.4s ease calc(var(--i, 0) * 8ms),
+    visibility 0s;
 }
 
-.item[data-decoration] {
-  transition: opacity 0.3s;
+.world.is-animating .item__body {
+  transition: transform var(--tidy-duration) var(--ease-tidy) calc(var(--i, 0) * 8ms);
+}
+
+// Chalk and props fade away under Tidy up, and come back when messed up again.
+// Visibility switches off only once the fade has ended (also while animating,
+// hence the second, more specific selector).
+.item.is-away,
+.world.is-animating .item.is-away {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition:
+    opacity 0.35s ease,
+    visibility 0s linear 0.35s;
 }
 
 // Chalk labels of the groups, shown only when tidy

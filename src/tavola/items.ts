@@ -42,6 +42,12 @@ export interface TableItem {
   home: Placement;
   /** How far the visitor dragged it away from home, per arrangement. */
   offset: Record<Arrangement, Point>;
+  /**
+   * Uniform scale applied under "Tidy up" to fit a grid column. The element keeps
+   * its width, so its text never re-wraps while it moves: scaling is smooth, a
+   * width change is not.
+   */
+  scale: number;
 }
 
 const numberList = (value: string | undefined, fallback: number[]): number[] => {
@@ -89,6 +95,7 @@ export const readItems = (root: ParentNode): TableItem[] =>
       material: materialOf(el),
       home: { x: 0, y: 0, rotation: 0 },
       offset: { messy: { x: 0, y: 0 }, tidy: { x: 0, y: 0 } },
+      scale: 1,
     };
   });
 
@@ -120,7 +127,7 @@ export const positionOf = (item: TableItem, mode: Arrangement): Point => ({
 
 export const rectOf = (item: TableItem, mode: Arrangement): Rect => {
   const p = positionOf(item, mode);
-  return { x: p.x, y: p.y, w: item.el.offsetWidth, h: item.el.offsetHeight };
+  return { x: p.x, y: p.y, w: item.el.offsetWidth * item.scale, h: item.el.offsetHeight * item.scale };
 };
 
 /** Writes position and rotation to the element through CSS custom properties. */
@@ -129,6 +136,7 @@ export const render = (item: TableItem, mode: Arrangement): void => {
   item.el.style.setProperty("--x", `${p.x.toFixed(2)}px`);
   item.el.style.setProperty("--y", `${p.y.toFixed(2)}px`);
   item.el.style.setProperty("--rot", `${item.home.rotation}deg`);
+  item.el.style.setProperty("--s", item.scale.toFixed(4));
 };
 
 /** Finds the item that owns a DOM node, if any. */

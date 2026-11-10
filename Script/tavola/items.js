@@ -63,6 +63,7 @@ export const readItems = (root) => [...root.querySelectorAll(".item")].map((el, 
         material: materialOf(el),
         home: { x: 0, y: 0, rotation: 0 },
         offset: { messy: { x: 0, y: 0 }, tidy: { x: 0, y: 0 } },
+        scale: 1,
     };
 });
 /** Size of the un-rotated element as currently rendered. Forces layout: call it in batches. */
@@ -89,7 +90,7 @@ export const positionOf = (item, mode) => ({
 });
 export const rectOf = (item, mode) => {
     const p = positionOf(item, mode);
-    return { x: p.x, y: p.y, w: item.el.offsetWidth, h: item.el.offsetHeight };
+    return { x: p.x, y: p.y, w: item.el.offsetWidth * item.scale, h: item.el.offsetHeight * item.scale };
 };
 /** Writes position and rotation to the element through CSS custom properties. */
 export const render = (item, mode) => {
@@ -97,6 +98,7 @@ export const render = (item, mode) => {
     item.el.style.setProperty("--x", `${p.x.toFixed(2)}px`);
     item.el.style.setProperty("--y", `${p.y.toFixed(2)}px`);
     item.el.style.setProperty("--rot", `${item.home.rotation}deg`);
+    item.el.style.setProperty("--s", item.scale.toFixed(4));
 };
 /** Finds the item that owns a DOM node, if any. */
 export const itemAt = (items, node) => {

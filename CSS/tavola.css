@@ -79,12 +79,19 @@
   --text-small: clamp(0.875rem, 0.85rem + 0.1vw, 0.95rem);
   --ease-out: cubic-bezier(0.3, 0.9, 0.3, 1);
   --ease-spring: cubic-bezier(0.25, 1.5, 0.45, 1);
+  --ease-tidy: cubic-bezier(0.65, 0, 0.35, 1);
+  --tidy-duration: 950ms;
   --z-ui: 30;
   --z-curtain: 50;
   --z-preloader: 60;
   --z-cursor: 2000;
 }
 
+@supports (transition-timing-function: linear(0, 1)) {
+  :root {
+    --ease-tidy: linear(0, 0.0002 2.4%, 0.0012 4.8%, 0.0041 7.2%, 0.0098 9.6%, 0.0192 12%, 0.0331 14.4%, 0.0526 16.8%, 0.0785 19.2%, 0.1118 21.6%, 0.1533 24%, 0.2041 26.4%, 0.265 28.8%, 0.3369 31.2%, 0.4207 33.6%, 0.5175 36%, 0.6143 38.4%, 0.6981 40.8%, 0.77 43.2%, 0.8309 45.6%, 0.8817 48%, 0.9232 50.4%, 0.9565 52.8%, 0.9824 55.2%, 1.0019 57.6%, 1.0158 60%, 1.0252 62.4%, 1.0309 64.8%, 1.0338 67.2%, 1.0348 69.6%, 1.035 72%, 1.0285 74%, 1.0201 76%, 1.0115 78%, 1.004 80%, 0.9984 82%, 0.995 84%, 0.9938 86%, 0.9942 88%, 0.9956 90%, 0.9972 92%, 0.9986 94%, 0.9996 96%, 0.9999 98%, 1);
+  }
+}
 :root,
 [data-surface=felt] {
   --mat: #17443a;
@@ -332,9 +339,10 @@ button:hover > .arrow {
   position: absolute;
   left: 0;
   top: 0;
-  transform: translate(var(--x, 0px), var(--y, 0px));
+  transform: translate(var(--x, 0px), var(--y, 0px)) scale(var(--s, 1));
+  transform-origin: 0 0;
   z-index: var(--z, 1);
-  transition: opacity 0.5s var(--ease-out) calc(var(--i, 0) * 30ms);
+  transition: opacity 0.5s var(--ease-out) calc(var(--i, 0) * 30ms), visibility 0s;
 }
 @media (min-width: 900px) {
   .item {
@@ -391,12 +399,20 @@ html:not(.is-ready) .item {
 }
 
 .world.is-animating .item {
-  transition: transform 0.7s var(--ease-spring), opacity 0.3s;
-  transition-delay: calc(var(--i, 0) * 12ms);
+  will-change: transform;
+  transition: transform var(--tidy-duration) var(--ease-tidy) calc(var(--i, 0) * 8ms), opacity 0.4s ease calc(var(--i, 0) * 8ms), visibility 0s;
 }
 
-.item[data-decoration] {
-  transition: opacity 0.3s;
+.world.is-animating .item__body {
+  transition: transform var(--tidy-duration) var(--ease-tidy) calc(var(--i, 0) * 8ms);
+}
+
+.item.is-away,
+.world.is-animating .item.is-away {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.35s ease, visibility 0s linear 0.35s;
 }
 
 .group-label {

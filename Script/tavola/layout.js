@@ -173,8 +173,9 @@ export const tidyGrid = (viewportWidth) => {
 };
 /** Width an item takes under "Tidy up". Stickers keep their natural width. */
 export const tidyWidth = (item, grid, naturalWidth) => {
-    if (item.small)
-        return Math.min(grid.width, naturalWidth * (grid.columns === 1 ? 0.72 : 1));
+    // Stickers keep their size; on a phone (one column) everything keeps its width.
+    if (item.small || grid.columns === 1)
+        return Math.min(grid.width, naturalWidth);
     const span = Math.min(grid.columns, item.span);
     return grid.columnWidth * span + grid.gap * (span - 1);
 };

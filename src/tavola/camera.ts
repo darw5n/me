@@ -84,7 +84,7 @@ export class CameraController {
   }
 
   /** Animated flight. Instant under reduced motion. */
-  flyTo(x: number, y: number, zoom: number, ms = 620): Promise<void> {
+  flyTo(x: number, y: number, zoom: number, ms = 620, ease: (t: number) => number = easeOut): Promise<void> {
     this.stop();
     const to = { x, y, zoom: clamp(zoom, MIN_ZOOM, MAX_ZOOM) };
     if (this.reducedMotion || ms <= 0) {
@@ -96,7 +96,7 @@ export class CameraController {
     const t0 = performance.now();
     return new Promise((resolve) => {
       const step = (t: number): void => {
-        const p = easeOut(Math.min(1, (t - t0) / ms));
+        const p = ease(Math.min(1, (t - t0) / ms));
         this.state.x = lerp(from.x, to.x, p);
         this.state.y = lerp(from.y, to.y, p);
         this.state.zoom = lerp(from.zoom, to.zoom, p);
