@@ -4,21 +4,28 @@
  * with it, so the spot between the fingers stays under them (and moving both
  * fingers pans).
  *
- * A zoom that ends close to 100% settles on it.
+ * A zoom that ends close to 100% settles on it. `animateTo` drives the same zoom
+ * from the bar ("See all" / "Zoom back in").
  */
 
-import { clamp } from "./geometry.js";
+import { clamp, easeInOut, lerp } from "./geometry.js";
 import type { Point } from "./types.js";
 
-export const PHONE_ZOOM_MIN = 0.5;
+/** Low enough for "See all" to show the whole composition across. */
+export const PHONE_ZOOM_MIN = 0.2;
 export const PHONE_ZOOM_MAX = 2.5;
 /** A pinch that ends within this distance of 100% comes back to exactly 100%. */
 const SETTLE_RANGE = 0.1;
 
 export interface PhoneZoom {
   readonly zoom: number;
-  /** Back to 100%, keeping the top-left of the view where it is. */
+  /** Back to 100% at once, keeping the top-left of the view where it is. */
   reset(): void;
+  /**
+   * Animated zoom: the table point `anchor` (unscaled px) travels on screen from
+   * where it is now to `to` (view px) while the zoom goes to `next`.
+   */
+  animateTo(next: number, anchor: Point, to: Point, ms: number): void;
 }
 
 interface Gesture {
@@ -37,11 +44,18 @@ const fingers = (e: TouchEvent): [Point, Point] => {
  * `isActive` says when two fingers may zoom: on a phone, and not while an object
  * is lifted.
  */
-export const attachPhoneZoom = (view: HTMLElement, world: HTMLElement, isActive: () => boolean): PhoneZoom => {
+export const attachPhoneZoom = (
+  view: HTMLElement,
+  world: HTMLElement,
+  isActive: () => boolean,
+  onChange?: (zoom: number) => void,
+): PhoneZoom => {
   let zoom = 1;
   let gesture: Gesture | null = null;
+  let frame = 0;
 
   const apply = (next: number, centre: Point, anchor: Point): void => {
+    const changed = next !== zoom;
     zoom = next;
     world.style.setProperty("--phone-zoom", String(zoom));
     view.classList.toggle("is-zoomed", zoom !== 1);
@@ -49,10 +63,12 @@ export const attachPhoneZoom = (view: HTMLElement, world: HTMLElement, isActive:
     // view coordinates.
     view.scrollLeft = anchor.x * zoom - centre.x;
     view.scrollTop = anchor.y * zoom - centre.y;
+    if (changed) onChange?.(zoom);
   };
 
   view.addEventListener("touchstart", (e) => {
     if (e.touches.length !== 2 || !isActive()) return;
+    cancelAnimationFrame(frame);
     const [a, b] = fingers(e);
     const mid = { x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 };
     gesture = {
@@ -96,8 +112,25 @@ export const attachPhoneZoom = (view: HTMLElement, world: HTMLElement, isActive:
       return zoom;
     },
     reset() {
+      cancelAnimationFrame(frame);
       if (zoom === 1) return;
       apply(1, { x: 0, y: 0 }, { x: view.scrollLeft / zoom, y: view.scrollTop / zoom });
+    },
+    animateTo(next, anchor, to, ms) {
+      cancelAnimationFrame(frame);
+      const from = { zoom, at: { x: anchor.x * zoom - view.scrollLeft, y: anchor.y * zoom - view.scrollTop } };
+      if (ms <= 0) {
+        apply(next, to, anchor);
+        return;
+      }
+      const t0 = performance.now();
+      const step = (t: number): void => {
+        const p = easeInOut(Math.min(1, (t - t0) / ms));
+        const at = { x: lerp(from.at.x, to.x, p), y: lerp(from.at.y, to.y, p) };
+        apply(p < 1 ? lerp(from.zoom, next, p) : next, at, anchor);
+        if (p < 1) frame = requestAnimationFrame(step);
+      };
+      frame = requestAnimationFrame(step);
     },
   };
 };

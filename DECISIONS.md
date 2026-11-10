@@ -172,3 +172,15 @@ out on the dark table.
 where things also sit half off screen, inviting a look around, rather than a column with
 lanes. Scaling the whole composition keeps it intact from 320 px up.
 
+## 2026-11-10 · Phone: See all shows the whole table
+
+**Decision.** On phones "See all" zooms the table out until the whole composition fits
+across the screen, keeping the spot in the middle at the same height, and becomes "Zoom
+back in", which returns to 100% on the spot in the middle. Any zoom other than 100%
+(pinch included) shows "Zoom back in". Tidy up fits the screen already: there See all
+goes to the top.
+
+**Why.** Scrolling back to the top was not useful (Darwin). The overview is the same idea
+as on the desktop, and gives the view of the whole table that Darwin missed while
+arranging it.
+

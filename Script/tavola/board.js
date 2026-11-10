@@ -73,7 +73,8 @@ export class Board {
             },
         });
         this.rings = createRings(sound);
-        this.phoneZoom = attachPhoneZoom(el.view, el.world, () => this.narrow && !el.world.querySelector(".item.is-dragging"));
+        // Phone: any zoom other than 100% (pinch or "See all") offers "Zoom back in"
+        this.phoneZoom = attachPhoneZoom(el.view, el.world, () => this.narrow && !el.world.querySelector(".item.is-dragging"), (zoom) => this.setOverview(zoom !== 1));
         attachFilmHover(el.world);
         for (const [id, label] of config.groups) {
             const p = document.createElement("p");
@@ -199,7 +200,7 @@ export class Board {
     }
     seeAll() {
         if (this.narrow) {
-            this.scrollPhoneHome();
+            this.phoneSeeAll();
             return;
         }
         // Second press: back to the opening view
@@ -319,6 +320,30 @@ export class Board {
         this.phoneSide += grown; // a new side, not a new screen: keep the scroll
         this.relayout();
         this.el.view.scrollLeft += grown * this.phoneZoom.zoom;
+    }
+    /**
+     * Phone. Zoomed (pinch or overview): back to 100% on the spot in the middle of
+     * the screen. At 100%: the whole table across the screen, keeping the spot in
+     * the middle at the same height. Tidy, the column already fits across: to the top.
+     */
+    phoneSeeAll() {
+        const { view } = this.el;
+        const zoom = this.phoneZoom.zoom;
+        const ms = this.reducedMotion ? 0 : 620;
+        const centre = { x: view.clientWidth / 2, y: view.clientHeight / 2 };
+        const anchor = { x: (view.scrollLeft + centre.x) / zoom, y: (view.scrollTop + centre.y) / zoom };
+        if (zoom !== 1) {
+            this.phoneZoom.animateTo(1, anchor, centre, ms);
+            return;
+        }
+        const margin = 12;
+        const content = this.contentRect();
+        const fit = Math.max(0.2, (view.clientWidth - margin * 2) / content.w);
+        if (fit > 0.9) {
+            this.scrollPhoneHome();
+            return;
+        }
+        this.phoneZoom.animateTo(fit, anchor, { x: (anchor.x - content.x) * fit + margin, y: centre.y }, ms);
     }
     /** Phone: back to the top of the centre column, at 100%. */
     scrollPhoneHome() {

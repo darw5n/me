@@ -80,7 +80,8 @@ restano alcune immagini che usava solo lui (loghi, copertine di libri e dischi):
   (3 per lato), scorre libero e si allarga quando porti un oggetto verso un bordo. Per cambiare la composizione:
   sposta gli oggetti nel browser a 390 px e rileggi le posizioni. In Tidy up: una
   colonna sola (a due colonne per gli oggetti stretti), niente scorrimento laterale. Pressione lunga per sollevare
-  un oggetto. Due dita zoomano il tavolo, non la pagina (`phone-zoom.ts`, dal 50% al 250%).
+  un oggetto. Due dita zoomano il tavolo, non la pagina (`phone-zoom.ts`, fino al 250%).
+  "See all" mostra tutta la composizione in larghezza e diventa "Zoom back in" (anche dopo un pinch).
 - **Barra in basso** = tutti i comandi: Tidy up, See all, zoom, sfondo (cerchio con il pattern), suono. Niente minimappa.
 - **Sfondi** (`data-surface` su `<html>`, salvato in localStorage): felt, slate, kraft, plum. Ogni preset definisce
   anche il colore del gesso, così il testo resta leggibile.

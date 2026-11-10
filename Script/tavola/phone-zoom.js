@@ -4,10 +4,12 @@
  * with it, so the spot between the fingers stays under them (and moving both
  * fingers pans).
  *
- * A zoom that ends close to 100% settles on it.
+ * A zoom that ends close to 100% settles on it. `animateTo` drives the same zoom
+ * from the bar ("See all" / "Zoom back in").
  */
-import { clamp } from "./geometry.js";
-export const PHONE_ZOOM_MIN = 0.5;
+import { clamp, easeInOut, lerp } from "./geometry.js";
+/** Low enough for "See all" to show the whole composition across. */
+export const PHONE_ZOOM_MIN = 0.2;
 export const PHONE_ZOOM_MAX = 2.5;
 /** A pinch that ends within this distance of 100% comes back to exactly 100%. */
 const SETTLE_RANGE = 0.1;
@@ -19,10 +21,12 @@ const fingers = (e) => {
  * `isActive` says when two fingers may zoom: on a phone, and not while an object
  * is lifted.
  */
-export const attachPhoneZoom = (view, world, isActive) => {
+export const attachPhoneZoom = (view, world, isActive, onChange) => {
     let zoom = 1;
     let gesture = null;
+    let frame = 0;
     const apply = (next, centre, anchor) => {
+        const changed = next !== zoom;
         zoom = next;
         world.style.setProperty("--phone-zoom", String(zoom));
         view.classList.toggle("is-zoomed", zoom !== 1);
@@ -30,10 +34,13 @@ export const attachPhoneZoom = (view, world, isActive) => {
         // view coordinates.
         view.scrollLeft = anchor.x * zoom - centre.x;
         view.scrollTop = anchor.y * zoom - centre.y;
+        if (changed)
+            onChange?.(zoom);
     };
     view.addEventListener("touchstart", (e) => {
         if (e.touches.length !== 2 || !isActive())
             return;
+        cancelAnimationFrame(frame);
         const [a, b] = fingers(e);
         const mid = { x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 };
         gesture = {
@@ -76,9 +83,27 @@ export const attachPhoneZoom = (view, world, isActive) => {
             return zoom;
         },
         reset() {
+            cancelAnimationFrame(frame);
             if (zoom === 1)
                 return;
             apply(1, { x: 0, y: 0 }, { x: view.scrollLeft / zoom, y: view.scrollTop / zoom });
+        },
+        animateTo(next, anchor, to, ms) {
+            cancelAnimationFrame(frame);
+            const from = { zoom, at: { x: anchor.x * zoom - view.scrollLeft, y: anchor.y * zoom - view.scrollTop } };
+            if (ms <= 0) {
+                apply(next, to, anchor);
+                return;
+            }
+            const t0 = performance.now();
+            const step = (t) => {
+                const p = easeInOut(Math.min(1, (t - t0) / ms));
+                const at = { x: lerp(from.at.x, to.x, p), y: lerp(from.at.y, to.y, p) };
+                apply(p < 1 ? lerp(from.zoom, next, p) : next, at, anchor);
+                if (p < 1)
+                    frame = requestAnimationFrame(step);
+            };
+            frame = requestAnimationFrame(step);
         },
     };
 };
