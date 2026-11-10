@@ -74,9 +74,10 @@
 
   <!-- Every command of the table, under the thumb -->
   <div class="controls" role="toolbar" aria-label="Table controls">
-    <button type="button" id="tidy" class="controls__primary" aria-pressed="false">Tidy up</button>
+    <!-- Both labels are always there, stacked: the button is as wide as the longer one and never resizes -->
+    <button type="button" id="tidy" class="controls__primary controls__swap" data-state="messy"><span class="controls__label controls__label--messy">Tidy up</span><span class="controls__label controls__label--tidy">Mess it up</span></button>
     <button type="button" id="see-all">See all</button>
-    <span class="controls__zoom">
+    <span class="controls__zoom" role="group" aria-label="Zoom">
       <button type="button" id="zoom-out" aria-label="Zoom out">−</button>
       <output id="zoom-level" aria-live="off">100%</output>
       <button type="button" id="zoom-in" aria-label="Zoom in">+</button>

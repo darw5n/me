@@ -1253,8 +1253,31 @@ body.is-leaving .curtain {
   justify-content: center;
   font-variant-numeric: tabular-nums;
 }
+.controls .controls__swap {
+  display: inline-grid;
+  place-items: center;
+}
+.controls .controls__label {
+  grid-area: 1/1;
+}
+.controls .controls__swap[data-state=messy] .controls__label--tidy,
+.controls .controls__swap[data-state=tidy] .controls__label--messy {
+  visibility: hidden;
+}
 .controls .controls__zoom {
-  display: contents;
+  display: inline-flex;
+  align-items: stretch;
+  margin-inline: 4px;
+  border-radius: 8px;
+  background: #22221f;
+}
+.controls .controls__zoom button {
+  min-width: 40px;
+  padding-inline: 8px;
+}
+.controls .controls__zoom output {
+  min-width: 3.2em;
+  color: #c9c6b9;
 }
 .controls .controls__gap {
   width: 1px;

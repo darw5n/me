@@ -69,8 +69,39 @@
     font-variant-numeric: tabular-nums;
   }
 
+  // Two labels in the same grid cell: the cell is as wide as the longer one, so the
+  // button keeps its size when "Tidy up" becomes "Mess it up"
+  .controls__swap {
+    display: inline-grid;
+    place-items: center;
+  }
+
+  .controls__label {
+    grid-area: 1 / 1;
+  }
+
+  .controls__swap[data-state="messy"] .controls__label--tidy,
+  .controls__swap[data-state="tidy"] .controls__label--messy {
+    visibility: hidden;
+  }
+
+  // − 100% + in one segment, so they read as a single control
   .controls__zoom {
-    display: contents;
+    display: inline-flex;
+    align-items: stretch;
+    margin-inline: 4px;
+    border-radius: 8px;
+    background: #22221f;
+
+    button {
+      min-width: 40px;
+      padding-inline: 8px;
+    }
+
+    output {
+      min-width: 3.2em;
+      color: #c9c6b9;
+    }
   }
 
   // Thin divider between the table commands and the settings

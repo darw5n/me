@@ -44,8 +44,9 @@ export const attachControls = (host) => {
         setTidy(on) {
             if (!tidy)
                 return;
-            tidy.textContent = on ? "Mess it up" : "Tidy up";
-            tidy.setAttribute("aria-pressed", String(on));
+            // The visible label swaps (the hidden one is out of the accessibility tree), so
+            // the button says what the next click does; no aria-pressed on top of that.
+            tidy.dataset["state"] = on ? "tidy" : "messy";
         },
         setZoom(zoom) {
             if (zoomLevel)
