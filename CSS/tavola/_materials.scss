@@ -72,6 +72,14 @@
 }
 
 .note {
+  // The name, like a letterhead above the headline: who is speaking, before what
+  .note__name {
+    font: 500 1.05rem / 1.2 var(--font-ui);
+    letter-spacing: -0.005em;
+    margin: 0 0 0.7em;
+    max-width: none;
+  }
+
   h1 {
     font: 500 3rem / 0.98 var(--font-ui);
     letter-spacing: -0.045em;
