@@ -70,7 +70,7 @@ only `style` values are those JavaScript writes at runtime (position, rotation, 
 **Decision.** Links to other sites and email open in a new tab (`rel="noopener"`, "(opens in a
 new tab)" for screen readers) and never get the red pencil ring: the ring means "I looked at
 this here". Each profile is a different object (business card, tape strip, luggage tag,
-label-maker tape, enamel pins, ticket, postage stamp). Vimeo and CodePen, linked on the old
+label-maker tape, embroidered logo patches, ticket, postage stamp). Vimeo and CodePen, linked on the old
 site, are left out for now (to be confirmed by Darwin).
 
 ## 2026-11-10 · Props on the desk

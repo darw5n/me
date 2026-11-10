@@ -62,6 +62,11 @@
       <feTurbulence type="fractalNoise" baseFrequency=".05" numOctaves="1" seed="9" result="wobble"/>
       <feDisplacementMap in="grain" in2="wobble" scale="1.6"/>
     </filter>
+    <!-- Satin stitch: fine diagonal threads over the colour of a patch -->
+    <pattern id="satin" width="3" height="3" patternUnits="userSpaceOnUse" patternTransform="rotate(35)">
+      <rect width="3" height="1.2" fill="#fff" fill-opacity=".12"/>
+      <rect y="1.6" width="3" height=".6" fill="#000" fill-opacity=".1"/>
+    </pattern>
   </svg>
 
   <header class="corner">Darwin</header>
@@ -227,8 +232,20 @@
         <div class="item" data-cluster="elsewhere" data-at="0,70" data-width="250" data-rotate="-1.5" data-material="label">
           <a class="item__body dymo" href="https://github.com/darw5n/" target="_blank" rel="noopener" data-cursor="open GitHub">GITHUB · DARW5N<span class="sr-only"> (opens in a new tab)</span></a>
         </div>
-        <div class="item" data-cluster="elsewhere" data-at="290,40" data-width="128" data-rotate="8" data-material="pin">
-          <a class="item__body pin pin--pink" href="https://dribbble.com/darwinvegher" target="_blank" rel="noopener" data-cursor="open Dribbble"><span class="pin__text">Dribbble</span><span class="sr-only"> (opens in a new tab)</span></a>
+        <div class="item" data-cluster="elsewhere" data-at="290,40" data-width="112" data-rotate="8" data-material="patch">
+          <a class="item__body patch" href="https://dribbble.com/darwinvegher" target="_blank" rel="noopener" data-cursor="open Dribbble">
+            <svg viewBox="0 0 100 100" aria-hidden="true">
+              <defs><clipPath id="patch-dribbble-ball"><circle cx="50" cy="50" r="38"/></clipPath></defs>
+              <circle cx="50" cy="50" r="46" fill="#ea4c89"/>
+              <circle cx="50" cy="50" r="46" fill="url(#satin)"/>
+              <g clip-path="url(#patch-dribbble-ball)" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round">
+                <path d="M14 40C38 48 62 42 82 24"/><path d="M36 14C52 34 62 58 64 90"/><path d="M18 72C38 56 64 54 90 62"/>
+              </g>
+              <circle cx="50" cy="50" r="40.5" fill="none" stroke="#fff" stroke-opacity=".55" stroke-width="1.6" stroke-dasharray="3 2.5"/>
+              <circle cx="50" cy="50" r="46" fill="none" stroke="#b8336a" stroke-width="6"/>
+              <circle cx="50" cy="50" r="46" fill="none" stroke="#000" stroke-opacity=".18" stroke-width="6" stroke-dasharray="1.2 1.6"/>
+            </svg><span class="sr-only">Dribbble (opens in a new tab)</span>
+          </a>
         </div>
         <div class="item" data-cluster="elsewhere" data-at="10,170" data-width="230" data-rotate="2" data-material="ticket">
           <a class="item__body ticket" href="https://www.behance.net/darwinvegher" target="_blank" rel="noopener" data-cursor="open Behance">
@@ -241,8 +258,21 @@
             <span class="stamp__value">@darwiiiin</span><span class="stamp__name">Instagram</span><span class="sr-only"> (opens in a new tab)</span>
           </a>
         </div>
-        <div class="item" data-cluster="elsewhere" data-at="470,90" data-width="120" data-rotate="-6" data-material="pin">
-          <a class="item__body pin pin--violet" href="https://www.figma.com/@darw5n" target="_blank" rel="noopener" data-cursor="open Figma Community"><span class="pin__text">Figma</span><span class="sr-only"> Community (opens in a new tab)</span></a>
+        <div class="item" data-cluster="elsewhere" data-at="470,90" data-width="100" data-rotate="-6" data-material="patch">
+          <a class="item__body patch" href="https://www.figma.com/@darw5n" target="_blank" rel="noopener" data-cursor="open Figma Community">
+            <svg viewBox="0 0 100 100" aria-hidden="true">
+              <rect x="4" y="4" width="92" height="92" rx="20" fill="#2b2b2b"/>
+              <rect x="4" y="4" width="92" height="92" rx="20" fill="url(#satin)"/>
+              <path d="M50 18H40a10 10 0 0 0 0 20h10Z" fill="#f24e1e"/>
+              <path d="M50 18h10a10 10 0 0 1 0 20H50Z" fill="#ff7262"/>
+              <path d="M50 38H40a10 10 0 0 0 0 20h10Z" fill="#a259ff"/>
+              <circle cx="60" cy="48" r="10" fill="#1abcfe"/>
+              <path d="M50 58H40a10 10 0 1 0 10 10Z" fill="#0acf83"/>
+              <rect x="10" y="10" width="80" height="80" rx="15" fill="none" stroke="#fff" stroke-opacity=".4" stroke-width="1.6" stroke-dasharray="3 2.5"/>
+              <rect x="4" y="4" width="92" height="92" rx="20" fill="none" stroke="#111" stroke-width="6"/>
+              <rect x="4" y="4" width="92" height="92" rx="20" fill="none" stroke="#fff" stroke-opacity=".12" stroke-width="6" stroke-dasharray="1.2 1.6"/>
+            </svg><span class="sr-only">Figma Community (opens in a new tab)</span>
+          </a>
         </div>
 
         <!-- PROPS (drafts): things lying on the desk. Movable, hidden when tidy, never ringed -->

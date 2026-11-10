@@ -88,7 +88,7 @@ const leavesTheTable = (target) => {
 export const reactToTap = (item, target, rings, sound) => {
     if (leavesTheTable(target) || item.el.matches("[data-no-ring]"))
         return;
-    if (item.material === "sticker" || item.material === "pin") {
+    if (item.material === "sticker") {
         item.body.classList.remove("is-popping");
         void item.body.offsetWidth; // restart the animation
         item.body.classList.add("is-popping");

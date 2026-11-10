@@ -82,7 +82,7 @@ export type Material =
   | "card"
   | "sticker"
   | "chalk"
-  | "pin"
+  | "patch"
   | "tag"
   | "label"
   | "ticket"
