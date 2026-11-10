@@ -308,15 +308,13 @@ button:hover > .arrow {
     inset: 0;
     overflow: auto;
     overscroll-behavior: none;
-    scroll-snap-type: x mandatory;
     touch-action: pan-x pan-y;
   }
   .view.is-tidy {
     overflow-x: hidden;
   }
-  .view.is-zoomed, .view.is-zooming {
+  .view.is-zoomed {
     overflow-x: auto;
-    scroll-snap-type: none;
   }
 }
 @media (min-width: 900px) {
@@ -400,30 +398,6 @@ button:hover > .arrow {
 
 .item.is-side {
   z-index: var(--z, 2);
-}
-
-.lane-stop {
-  display: none;
-}
-@media (max-width: 899px) {
-  .lane-stop {
-    display: block;
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    width: var(--lane-screen, 100vw);
-    pointer-events: none;
-    scroll-snap-align: start;
-  }
-}
-.lane-stop--left {
-  left: 0;
-}
-.lane-stop--centre {
-  left: var(--lane-side, 0px);
-}
-.lane-stop--right {
-  left: calc(var(--lane-side, 0px) * 2);
 }
 
 html:not(.is-ready) .item {

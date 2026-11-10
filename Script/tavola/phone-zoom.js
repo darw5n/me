@@ -4,8 +4,7 @@
  * with it, so the spot between the fingers stays under them (and moving both
  * fingers pans).
  *
- * At 100% a sideways swipe snaps to the lanes again; zoomed in or out, the table
- * pans freely. A zoom that ends close to 100% settles on it.
+ * A zoom that ends close to 100% settles on it.
  */
 import { clamp } from "./geometry.js";
 export const PHONE_ZOOM_MIN = 0.5;

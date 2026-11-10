@@ -4,9 +4,9 @@
  *
  * Two shapes, chosen by window width (NARROW_BREAKPOINT):
  * - desktop: a fixed viewport over an infinite table; pan and zoom;
- * - phone: the table scrolls inside `.view`, mostly downwards. When messy, the
- *   extras lie in side lanes and a sideways swipe snaps to them; tidy, it is one
- *   column as wide as the screen.
+ * - phone: the table scrolls inside `.view`. When messy it is several screens
+ *   wide: the column in the middle, extras beside it, free room around, growing
+ *   when an object is carried to an edge; tidy, it is one column as wide as the screen.
  */
 
 import { PENCIL_ENABLED } from "./actions.js";
@@ -72,6 +72,8 @@ export class Board {
   private overview = false;
   /** Phone: x where the centre column starts, to scroll back to it after a resize. */
   private phoneSide = -1;
+  /** Phone: screens added on the left because an object was carried there. */
+  private phoneExtraScreens = 0;
 
   constructor(
     private readonly el: BoardElements,
@@ -104,13 +106,6 @@ export class Board {
       p.textContent = label;
       el.world.append(p);
       this.labels.set(id, p);
-    }
-    // Phone: where a sideways swipe comes to rest (left lane, centre, right lane)
-    for (const lane of ["left", "centre", "right"]) {
-      const stop = document.createElement("i");
-      stop.className = `lane-stop lane-stop--${lane}`;
-      stop.setAttribute("aria-hidden", "true");
-      el.world.append(stop);
     }
     this.watchFocus();
     this.watchLinks();
@@ -163,12 +158,11 @@ export class Board {
       this.el.view.style.removeProperty("--cam-y");
       this.el.view.style.removeProperty("--k");
       const vw = viewportSize().w;
-      const lanes = phoneLanes(vw, PHONE_PADDING);
+      const lanes = this.lanes();
       const content = this.contentRect();
-      this.el.world.style.width = `${lanes.width}px`;
+      // Room to the right of the rightmost object, so the table keeps going
+      this.el.world.style.width = `${Math.round(Math.max(lanes.width, content.x + content.w + vw))}px`;
       this.el.world.style.height = `${Math.round(content.y + content.h + 96)}px`;
-      this.el.world.style.setProperty("--lane-side", `${lanes.side}px`);
-      this.el.world.style.setProperty("--lane-screen", `${vw}px`);
       // First layout or a new screen width: the visitor starts on the centre column.
       if (lanes.side !== this.phoneSide) {
         this.phoneSide = lanes.side;
@@ -213,19 +207,21 @@ export class Board {
         return { ...li, span, size: { w: li.size.w * item.scale, h: li.size.h * item.scale } };
       });
       const tidy = layoutTidy(scaled, { viewportWidth: vw, groupOrder: this.config.groups.map(([id]) => id) });
-      return this.narrow ? shiftX(tidy, phoneLanes(vw, PHONE_PADDING).side) : tidy;
+      return this.narrow ? shiftX(tidy, this.lanes().side) : tidy;
     }
     if (this.narrow) {
       // Extras wider than a side lane shrink to fit it (a scale, so text never re-wraps
       // when they glide back into the column under Tidy up).
-      const { laneWidth } = phoneLanes(vw, PHONE_PADDING);
+      const { laneWidth } = this.lanes();
       sized = sized.map((li, i) => {
         const item = this.items[i]!;
         if (item.lane === "centre" || li.size.w <= laneWidth) return li;
         item.scale = laneWidth / li.size.w;
         return { ...li, size: { w: laneWidth, h: li.size.h * item.scale } };
       });
-      return layoutPhone(sized, { viewportWidth: vw, padding: PHONE_PADDING, top: PHONE_TOP });
+      return layoutPhone(sized, {
+        viewportWidth: vw, padding: PHONE_PADDING, top: PHONE_TOP, extraScreens: this.phoneExtraScreens,
+      });
     }
     return layoutMessy(sized, { viewportWidth: vw, clusterOrder: this.config.clusters });
   }
@@ -291,8 +287,9 @@ export class Board {
   }
 
   /**
-   * Moves an object by a world delta. On a phone it stays on the table: anywhere
-   * across the lanes when messy, inside the column when tidy.
+   * Moves an object by a world delta. On a phone, tidy, it stays inside the column;
+   * messy, it goes anywhere, and the table grows when it nears the left edge (the
+   * right and the bottom grow by themselves, see relayout).
    */
   moveItem(item: TableItem, delta: Point): void {
     const offset = item.offset[this.mode];
@@ -300,14 +297,15 @@ export class Board {
     offset.y += delta.y;
     if (this.narrow) {
       const vw = viewportSize().w;
-      const lanes = phoneLanes(vw, PHONE_PADDING);
-      const [minX, maxRight] = this.mode === "tidy"
-        ? [lanes.side + PHONE_PADDING, lanes.side + vw - PHONE_PADDING]
-        : [8, lanes.width - 8];
-      const p = positionOf(item, this.mode);
-      const maxX = maxRight - rectOf(item, this.mode).w;
-      offset.x += Math.min(0, maxX - p.x) + Math.max(0, minX - p.x);
-      offset.y += Math.max(0, 8 - p.y);
+      const lanes = this.lanes();
+      if (this.mode === "tidy") {
+        const p = positionOf(item, this.mode);
+        const maxX = lanes.side + vw - PHONE_PADDING - rectOf(item, this.mode).w;
+        offset.x += Math.min(0, maxX - p.x) + Math.max(0, lanes.side + PHONE_PADDING - p.x);
+      } else if (positionOf(item, this.mode).x < vw / 2) {
+        this.growPhoneLeft();
+      }
+      offset.y += Math.max(0, 8 - positionOf(item, this.mode).y);
     }
     render(item, this.mode);
     this.touched = true;
@@ -341,15 +339,34 @@ export class Board {
   /** Window resized: same arrangement, fresh layout, opening view. */
   resized(): void {
     this.setOverview(false);
+    this.phoneExtraScreens = 0;
     this.relayout();
     this.home(0);
+  }
+
+  /** Phone geometry for the current screen and growth. */
+  private lanes(): ReturnType<typeof phoneLanes> {
+    return phoneLanes(viewportSize().w, PHONE_PADDING, this.phoneExtraScreens);
+  }
+
+  /**
+   * Phone: two more screens of table on the left. Everything moves right by the
+   * same amount and the scroll follows, so nothing seems to move.
+   */
+  private growPhoneLeft(): void {
+    const before = this.lanes().side;
+    this.phoneExtraScreens += 2;
+    const grown = this.lanes().side - before;
+    this.phoneSide += grown; // a new side, not a new screen: keep the scroll
+    this.relayout();
+    this.el.view.scrollLeft += grown * this.phoneZoom.zoom;
   }
 
   /** Phone: back to the top of the centre column, at 100%. */
   private scrollPhoneHome(): void {
     this.phoneZoom.reset();
     this.el.view.scrollTo({
-      left: phoneLanes(viewportSize().w, PHONE_PADDING).side,
+      left: this.lanes().side * this.phoneZoom.zoom,
       top: 0,
       behavior: this.reducedMotion ? "auto" : "smooth",
     });

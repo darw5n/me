@@ -208,9 +208,13 @@ export const layoutColumn = (items: LayoutItem[], opts: ColumnOptions): LayoutRe
   return { placements, bounds: union(boxes), labels: new Map(), zoom: 1 };
 };
 
-/** Geometry of the phone table: a side lane, the screen-wide centre, a side lane. */
+/**
+ * Geometry of the phone table: free table on the left, the screen-wide centre,
+ * free table on the right. The extras lie in a lane just beside the centre; the
+ * rest is room to spread things out.
+ */
 export interface PhoneLanes {
-  /** Width of each side lane; the centre screen starts at x = side. */
+  /** Width of the table on each side of the centre screen; the centre starts at x = side. */
   side: number;
   /** How far side objects reach into the centre screen, so they show at its edges. */
   peek: number;
@@ -220,15 +224,25 @@ export interface PhoneLanes {
   width: number;
 }
 
+/** Screens of free table on each side of the centre, before the visitor widens it. */
+export const PHONE_SIDE_SCREENS = 3;
+
 /**
- * A side lane is a little narrower than the screen, so a swipe to the side still
- * shows a strip of the centre: the visitor knows where the way back is.
+ * `extraScreens` widens the left side (the table grows when an object is carried
+ * to its left edge). A lane is a little narrower than the screen, so beside it a
+ * strip of the centre stays in view: the visitor knows where the way back is.
  */
-export const phoneLanes = (viewportWidth: number, padding = 20): PhoneLanes => {
-  const side = Math.round(viewportWidth * 0.85);
+export const phoneLanes = (viewportWidth: number, padding = 20, extraScreens = 0): PhoneLanes => {
+  const side = Math.round(viewportWidth * (PHONE_SIDE_SCREENS + extraScreens));
+  const lane = Math.round(viewportWidth * 0.85);
   // A thin edge, kept clear of the column: enough to show there is more.
   const peek = Math.round(padding / 2);
-  return { side, peek, laneWidth: side + peek - padding, width: side * 2 + viewportWidth };
+  return {
+    side,
+    peek,
+    laneWidth: lane + peek - padding,
+    width: side + viewportWidth + Math.round(viewportWidth * PHONE_SIDE_SCREENS),
+  };
 };
 
 
@@ -238,11 +252,11 @@ export const phoneLanes = (viewportWidth: number, padding = 20): PhoneLanes => {
  * column and flow down their lane; the left lane is mirrored, so every row starts
  * against the centre and peeks into it.
  */
-export const layoutPhone = (items: LayoutItem[], opts: ColumnOptions): LayoutResult => {
+export const layoutPhone = (items: LayoutItem[], opts: ColumnOptions & { extraScreens?: number }): LayoutResult => {
   const padding = opts.padding ?? 16;
   const top = opts.top ?? 24;
   const vw = opts.viewportWidth;
-  const lanes = phoneLanes(vw, padding);
+  const lanes = phoneLanes(vw, padding, opts.extraScreens);
   const laneOf = (i: LayoutItem) => i.lane ?? "centre";
 
   const centreItems = items.filter((i) => laneOf(i) === "centre");

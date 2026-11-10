@@ -171,15 +171,24 @@ export const layoutColumn = (items, opts) => {
         placements.set(box.item.id, placementFor(box, box.item.rotation));
     return { placements, bounds: union(boxes), labels: new Map(), zoom: 1 };
 };
+/** Screens of free table on each side of the centre, before the visitor widens it. */
+export const PHONE_SIDE_SCREENS = 3;
 /**
- * A side lane is a little narrower than the screen, so a swipe to the side still
- * shows a strip of the centre: the visitor knows where the way back is.
+ * `extraScreens` widens the left side (the table grows when an object is carried
+ * to its left edge). A lane is a little narrower than the screen, so beside it a
+ * strip of the centre stays in view: the visitor knows where the way back is.
  */
-export const phoneLanes = (viewportWidth, padding = 20) => {
-    const side = Math.round(viewportWidth * 0.85);
+export const phoneLanes = (viewportWidth, padding = 20, extraScreens = 0) => {
+    const side = Math.round(viewportWidth * (PHONE_SIDE_SCREENS + extraScreens));
+    const lane = Math.round(viewportWidth * 0.85);
     // A thin edge, kept clear of the column: enough to show there is more.
     const peek = Math.round(padding / 2);
-    return { side, peek, laneWidth: side + peek - padding, width: side * 2 + viewportWidth };
+    return {
+        side,
+        peek,
+        laneWidth: lane + peek - padding,
+        width: side + viewportWidth + Math.round(viewportWidth * PHONE_SIDE_SCREENS),
+    };
 };
 /**
  * Phone, messy: the centre column is `layoutColumn` shifted right by one side
@@ -191,7 +200,7 @@ export const layoutPhone = (items, opts) => {
     const padding = opts.padding ?? 16;
     const top = opts.top ?? 24;
     const vw = opts.viewportWidth;
-    const lanes = phoneLanes(vw, padding);
+    const lanes = phoneLanes(vw, padding, opts.extraScreens);
     const laneOf = (i) => i.lane ?? "centre";
     const centreItems = items.filter((i) => laneOf(i) === "centre");
     const centre = layoutColumn(centreItems, { viewportWidth: vw, padding, top });

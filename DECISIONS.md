@@ -147,3 +147,14 @@ and the bar keep their size. Zoomed, the table pans freely; at 100% the lanes sn
 **Why.** Darwin asked for pinch zoom like on the desktop. Browser zoom scaled the fixed bar
 too. Text can still be enlarged to 250%, above the 200% that WCAG asks for.
 
+## 2026-11-10 · Phone: a much wider table, scrolling freely
+
+**Decision.** The phone table, when messy, is 7 screens wide (3 on each side of the
+column) and scrolls freely in both directions with native scrolling: no more snapping to
+three positions. It grows when an object is carried to its left edge (two more screens);
+the right and the bottom grow by themselves. Tidy up is unchanged.
+
+**Why.** Darwin wanted much more room sideways, close to the desktop's infinite table. Of
+the two ways offered, he chose a very wide native table over a desktop-like infinite
+canvas, which would have replaced native vertical scrolling with dragging the table.
+
