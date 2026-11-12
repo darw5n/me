@@ -36,11 +36,15 @@ const boxOf = (item, at, scale = 1) => {
 export const relax = (boxes, large = GAP_LARGE, small = GAP_SMALL, downOnly = false) => {
     for (let j = 1; j < boxes.length; j++) {
         const b = boxes[j];
+        if (b.item.onTop)
+            continue; // lies on other objects on purpose
         let hit = true;
         for (let guard = 0; hit && guard < 60; guard++) {
             hit = false;
             for (let i = 0; i < j; i++) {
                 const a = boxes[i];
+                if (a.item.onTop)
+                    continue;
                 const gap = a.item.small || b.item.small ? small : large;
                 const pushRight = a.x + a.w + gap - b.x;
                 const pushDown = a.y + a.h + gap - b.y;

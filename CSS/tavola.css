@@ -362,6 +362,11 @@ button:hover > .arrow {
   transform: translate(var(--x, 0px), var(--y, 0px)) scale(var(--s, 1));
   transform-origin: 0 0;
   z-index: var(--z, 1);
+}
+.item[data-on-top] {
+  z-index: calc(var(--z, 1) + 1000);
+}
+.item {
   transition: opacity 0.5s var(--ease-out) calc(var(--i, 0) * 30ms), visibility 0s;
 }
 @media (min-width: 900px) {

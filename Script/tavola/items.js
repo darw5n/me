@@ -16,6 +16,8 @@
  * - data-group     group under "Tidy up" (default: the cluster)
  * - data-small     sticker-sized: may sit closer to neighbours, lines up in a row when tidy
  * - data-decoration chalk marks etc.: fade out when tidy, skipped by its grid
+ * - data-on-top    lies on top of other objects, e.g. a sticker stuck on a folder: the
+ *                  layout lets it overlap them and it stays above when they are lifted
  * - data-material  how the object reacts (see types.ts)
  * - data-phone     on a phone, when messy: "x,y" in px on a 390 px screen, x from
  *                  the left edge of the opening screen (see layoutComposed)
@@ -66,6 +68,7 @@ export const readItems = (root) => [...root.querySelectorAll(".item")].map((el, 
         span: Math.max(1, Math.round(number(d["span"], 1))),
         small: "small" in d,
         decoration: "decoration" in d,
+        onTop: "onTop" in d,
         phoneAt: d["phone"] ? pointOf(d["phone"]) : undefined,
         material: materialOf(el),
         home: { x: 0, y: 0, rotation: 0 },
@@ -89,6 +92,7 @@ export const toLayoutItem = (item, size) => ({
     span: item.span,
     small: item.small,
     decoration: item.decoration,
+    onTop: item.onTop,
     ...(item.phoneAt ? { phoneAt: item.phoneAt } : {}),
 });
 /** Position actually shown: home plus the visitor's drag offset. */
