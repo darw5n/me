@@ -1,0 +1,23 @@
+{
+  // The table engine is written in TypeScript and compiled to plain ES modules
+  // the browser loads directly: no bundler, no runtime dependency.
+  // Compile with: npx -y -p typescript tsc
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ES2022",
+    "moduleResolution": "bundler",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "rootDir": "src/tavola",
+    "outDir": "Script/tavola",
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "noImplicitOverride": true,
+    "noFallthroughCasesInSwitch": true,
+    "exactOptionalPropertyTypes": true,
+    "forceConsistentCasingInFileNames": true,
+    "removeComments": false,
+    "sourceMap": false,
+    "skipLibCheck": true
+  },
+  "include": ["src/tavola/**/*.ts"]
+}

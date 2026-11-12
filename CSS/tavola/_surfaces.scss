@@ -1,0 +1,132 @@
+// The table surface presets. `data-surface` on <html> picks one (backgrounds.ts).
+// Each preset sets: the mat colour, two line colours for the pattern, and the chalk
+// colour, which must stay readable on the mat.
+//
+// The pattern is painted on `.view`, not on the world: the table is infinite. The
+// board moves it along with the camera through --cam-x/--cam-y and scales it with
+// --k (the zoom). The same pattern, small, fills the disc of the surface button.
+
+@use "tokens" as *;
+
+:root,
+[data-surface="felt"] {
+  --mat: #17443a;
+  --line: rgba(255, 255, 255, 0.15);
+  --line-fine: rgba(255, 255, 255, 0.06);
+  --chalk: #f4f1e4;
+  --chalk-shadow: rgba(0, 0, 0, 0.3);
+}
+
+[data-surface="slate"] {
+  --mat: #2c2e30;
+  --line: rgba(255, 255, 255, 0.16);
+  --line-fine: rgba(255, 255, 255, 0.05);
+  --chalk: #f0eee6;
+  --chalk-shadow: rgba(0, 0, 0, 0.35);
+}
+
+[data-surface="kraft"] {
+  --mat: #c8a66b;
+  --line: rgba(60, 40, 10, 0.16);
+  --line-fine: rgba(60, 40, 10, 0.07);
+  --chalk: #2a2419;
+  --chalk-shadow: rgba(255, 255, 255, 0.25);
+}
+
+[data-surface="plum"] {
+  --mat: #3b1f3e;
+  --line: rgba(255, 255, 255, 0.14);
+  --line-fine: rgba(255, 255, 255, 0.05);
+  --chalk: #f3e9f0;
+  --chalk-shadow: rgba(0, 0, 0, 0.35);
+}
+
+// One pattern per surface, scaled by --k (1 on the disc and on phones).
+@mixin pattern-felt {
+  // Cutting-mat grid: a coarse square every 160 px, a fine one every 32 px
+  background-image:
+    linear-gradient(var(--line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--line) 1px, transparent 1px),
+    linear-gradient(var(--line-fine) 1px, transparent 1px),
+    linear-gradient(90deg, var(--line-fine) 1px, transparent 1px);
+  background-size:
+    calc(160px * var(--k, 1)) calc(160px * var(--k, 1)),
+    calc(160px * var(--k, 1)) calc(160px * var(--k, 1)),
+    calc(32px * var(--k, 1)) calc(32px * var(--k, 1)),
+    calc(32px * var(--k, 1)) calc(32px * var(--k, 1));
+}
+
+@mixin pattern-slate {
+  // Dotted: a point every 28 px; the dot never shrinks under 1 px, or it vanishes when zoomed out
+  background-image: radial-gradient(
+    var(--line) max(1px, calc(1.4px * var(--k, 1))),
+    transparent max(1.6px, calc(1.9px * var(--k, 1)))
+  );
+  background-size: calc(28px * var(--k, 1)) calc(28px * var(--k, 1));
+}
+
+@mixin pattern-kraft {
+  // Ruled paper: a line every 36 px, a faint square grid behind
+  background-image:
+    linear-gradient(var(--line) 1px, transparent 1px),
+    linear-gradient(var(--line-fine) 1px, transparent 1px),
+    linear-gradient(90deg, var(--line-fine) 1px, transparent 1px);
+  background-size:
+    calc(144px * var(--k, 1)) calc(36px * var(--k, 1)),
+    calc(144px * var(--k, 1)) calc(144px * var(--k, 1)),
+    calc(144px * var(--k, 1)) calc(144px * var(--k, 1));
+}
+
+// Triangle grid tile (side 48 px, height 48·√3): it repeats without seams when the camera moves it.
+$tri-w: 48px;
+$tri-h: 83.14px;
+$tri-tile: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='83.14' viewBox='0 0 48 83.14'%3E%3Cpath d='M0 0H48M0 41.57H48M0 0 48 83.14M48 0 0 83.14' stroke='white' stroke-opacity='.14' stroke-width='1' fill='none' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E";
+$tri-tile-strong: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='83.14' viewBox='0 0 48 83.14'%3E%3Cpath d='M0 0H48M0 41.57H48M0 0 48 83.14M48 0 0 83.14' stroke='white' stroke-opacity='.6' stroke-width='1' fill='none' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E";
+
+@mixin pattern-plum {
+  // Isometric: a triangle grid, like the paper used to draw in perspective
+  background-image: url($tri-tile);
+  background-size: calc(#{$tri-w} * var(--k, 1)) calc(#{$tri-h} * var(--k, 1));
+}
+
+.view,
+.swatch {
+  background-color: var(--mat);
+  background-position: var(--cam-x, 0px) var(--cam-y, 0px);
+}
+
+[data-surface="felt"] :is(.view, .swatch),
+:root:not([data-surface]) :is(.view, .swatch) {
+  @include pattern-felt;
+}
+
+[data-surface="slate"] :is(.view, .swatch) {
+  @include pattern-slate;
+}
+
+[data-surface="kraft"] :is(.view, .swatch) {
+  @include pattern-kraft;
+}
+
+[data-surface="plum"] :is(.view, .swatch) {
+  @include pattern-plum;
+}
+
+// The disc shows the pattern at a readable scale, whatever the zoom of the table:
+// smaller tiles and stronger lines than on the table, or a 26 px disc looks plain.
+.swatch {
+  --k: 0.22;
+  --cam-x: 0px;
+  --cam-y: 0px;
+  --line: rgba(255, 255, 255, 0.6);
+  --line-fine: rgba(255, 255, 255, 0.22);
+}
+
+[data-surface="kraft"] .swatch {
+  --line: rgba(60, 40, 10, 0.6);
+  --line-fine: rgba(60, 40, 10, 0.25);
+}
+
+[data-surface="plum"] .swatch {
+  background-image: url($tri-tile-strong);
+}

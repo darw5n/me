@@ -1,0 +1,280 @@
+// The table: viewport, world, objects and their motion.
+// Positions come from board.ts as --x/--y on `.item`; the body rotates with --rot.
+// The surface pattern of `.view` is in _surfaces.scss.
+
+@use "tokens" as *;
+
+.view {
+  position: relative;
+  min-height: 100svh;
+  outline: none;
+
+  // Phone: the table scrolls inside the view, never the page, so the page width can
+  // never grow. Messy, it scrolls freely in every direction; tidy, only downwards.
+  @include narrow {
+    position: fixed;
+    inset: 0;
+    overflow: auto;
+    overscroll-behavior: none;
+    // Two fingers zoom the table, not the page (phone-zoom.ts)
+    touch-action: pan-x pan-y;
+
+    &.is-tidy {
+      overflow-x: hidden;
+    }
+
+    // Zoomed in tidy, the column is wider than the screen: let it pan sideways
+    &.is-zoomed {
+      overflow-x: auto;
+    }
+  }
+
+  @include wide {
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
+    touch-action: none;
+    cursor: grab;
+
+    &.is-panning {
+      cursor: grabbing;
+    }
+  }
+}
+
+.world {
+  position: relative;
+  width: 100%;
+  transform-origin: 0 0;
+
+  // Phone: the pinch zoom (desktop: the camera sets the transform inline)
+  @include narrow {
+    transform: scale(var(--phone-zoom, 1));
+  }
+
+  @include wide {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 0;
+    height: 0;
+    will-change: transform;
+  }
+}
+
+.items {
+  display: contents;
+}
+
+.item {
+  position: absolute;
+  left: 0;
+  top: 0;
+  // Position plus the uniform scale used under Tidy up (from the top-left corner,
+  // so --x/--y stay the corner of the object)
+  transform: translate(var(--x, 0px), var(--y, 0px)) scale(var(--s, 1));
+  transform-origin: 0 0;
+  z-index: var(--z, 1);
+  // A sticker on a folder stays above it, also after the folder has been lifted
+  &[data-on-top] {
+    z-index: calc(var(--z, 1) + 1000);
+  }
+  transition:
+    opacity 0.5s var(--ease-out) calc(var(--i, 0) * 30ms),
+    visibility 0s;
+
+  @include wide {
+    cursor: grab;
+  }
+
+  @include narrow {
+    touch-action: pan-x pan-y;
+  }
+
+  a,
+  button {
+    cursor: pointer;
+  }
+
+  &.is-dragging {
+    cursor: grabbing;
+    z-index: var(--z, 1);
+  }
+
+  img {
+    -webkit-user-drag: none;
+    user-select: none;
+    pointer-events: none;
+  }
+
+  // Links are carried like the rest: no native link drag, no text selection on the way
+  a {
+    -webkit-user-drag: none;
+  }
+
+  @include wide {
+    user-select: none;
+  }
+}
+
+// Before the preloader lets go: objects hover a little above the table, unseen.
+html:not(.is-ready) .item {
+  opacity: 0;
+  --ly: -18px;
+}
+
+.item__body {
+  display: block;
+  transform: translateY(var(--ly, 0px)) rotate(calc(var(--rot, 0deg) + var(--tilt, 0deg))) scale(var(--sc, 1));
+  transition:
+    transform 0.5s var(--ease-spring),
+    box-shadow 0.3s,
+    filter 0.3s;
+}
+
+.item.is-pressed .item__body {
+  --sc: 0.972;
+  transition-duration: 0.1s;
+}
+
+.item.is-dragging .item__body {
+  --sc: 1.035;
+  transition: transform 0.16s ease-out;
+  filter: drop-shadow(0 26px 18px rgba(0, 0, 0, 0.42));
+}
+
+// Tidy up / mess up: every object glides along the same curve, a few ms after the
+// previous one, and its tilt straightens (or comes back) on the same rhythm.
+.world.is-animating .item {
+  will-change: transform;
+  transition:
+    transform var(--tidy-duration) var(--ease-tidy) calc(var(--i, 0) * 8ms),
+    opacity 0.4s ease calc(var(--i, 0) * 8ms),
+    visibility 0s;
+}
+
+.world.is-animating .item__body {
+  transition: transform var(--tidy-duration) var(--ease-tidy) calc(var(--i, 0) * 8ms);
+}
+
+// Chalk and props fade away under Tidy up, and come back when messed up again.
+// Visibility switches off only once the fade has ended (also while animating,
+// hence the second, more specific selector).
+.item.is-away,
+.world.is-animating .item.is-away {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition:
+    opacity 0.35s ease,
+    visibility 0s linear 0.35s;
+}
+
+// Chalk labels of the groups, shown only when tidy. They are written by hand once
+// the objects have landed: a mask uncovers the word from left to right, with a soft
+// edge where the chalk is. --delay and --write-ms come from board.ts (order, length).
+@property --write {
+  syntax: "<percentage>";
+  inherits: false;
+  initial-value: 0%;
+}
+
+.group-label {
+  position: absolute;
+  left: 0;
+  top: 0;
+  transform: translate(var(--x), var(--y));
+  margin: 0;
+  opacity: 0;
+  pointer-events: none;
+  white-space: nowrap;
+  transition: opacity 0.3s;
+  mask-image: linear-gradient(to right, #000 calc(var(--write) - 8%), transparent var(--write));
+
+  .world.is-tidy & {
+    opacity: 1;
+    transition: none;
+    animation: chalk-write var(--write-ms, 900ms) cubic-bezier(0.45, 0.1, 0.55, 0.95) var(--delay, 0.6s) both;
+  }
+}
+
+@keyframes chalk-write {
+  from {
+    --write: 0%;
+  }
+
+  to {
+    --write: 108%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .group-label {
+    mask-image: none;
+
+    .world.is-tidy & {
+      animation: none;
+    }
+  }
+}
+
+// The red pencil ring: how things get marked on this table (reactions.ts)
+.ring {
+  position: absolute;
+  z-index: 6;
+  left: -5%;
+  top: -6%;
+  width: 110%;
+  height: 112%;
+  pointer-events: none;
+  overflow: visible;
+  color: var(--red);
+
+  // A round cap is drawn even on a zero-length dash, which left a red dot on every
+  // object. The path stays invisible while erased: it appears at once when drawing
+  // starts and disappears only after the erasing stroke has run back.
+  path {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 4.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    opacity: 0;
+    transition:
+      stroke-dashoffset 0.5s cubic-bezier(0.5, 0, 0.2, 1),
+      opacity 0s linear 0.5s;
+  }
+
+  &.is-on path {
+    stroke-dashoffset: 0;
+    opacity: 1;
+    transition:
+      stroke-dashoffset 0.5s cubic-bezier(0.5, 0, 0.2, 1),
+      opacity 0s;
+  }
+}
+
+// Curtain that falls when leaving through a folder
+.curtain {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-curtain);
+  background: #f7e3b0;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.28s 0.22s;
+
+  body.is-leaving & {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ring path,
+  .item__body,
+  .item {
+    transition: none;
+  }
+}

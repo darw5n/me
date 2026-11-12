@@ -1,0 +1,78 @@
+// Design tokens of the table, as CSS custom properties so the surface can change at runtime.
+// The surface presets live in _surfaces.scss; everything else reads these variables.
+
+:root {
+  // Materials (fixed: paper, tape and ink look the same on every surface)
+  --ink: #151613;
+  --ink-soft: #54574f;
+  --paper: #fbfbf7;
+  --tape: #e9dcae;
+  --red: #e2361b;
+  --yellow: #ffe24d;
+  --orange: #ff7f2a;
+  --mint: #9ee6cc;
+  --folder: #e6c989;
+  --folder-deep: #e0c17e;
+
+  // Type
+  --font-text: "Antonia", Georgia, serif;
+  --font-display: "Antonia Display", Georgia, serif;
+  --font-ui: "Circular", system-ui, sans-serif;
+  --font-chalk: "Have Heart", "Antonia Display", serif;
+  --text-small: clamp(0.875rem, 0.85rem + 0.1vw, 0.95rem);
+
+  // Motion
+  --ease-out: cubic-bezier(0.3, 0.9, 0.3, 1);
+  --ease-spring: cubic-bezier(0.25, 1.5, 0.45, 1);
+  // Tidy up / Mess it up: a slow start, a smooth middle, a landing 3.5% past the
+  // spot and a soft settle back. Browsers without linear() get a plain in-out.
+  --ease-tidy: cubic-bezier(0.65, 0, 0.35, 1);
+  --tidy-duration: 950ms; // shared with board.ts (TIDY_MS)
+
+  // Layering
+  --z-ui: 30;
+  --z-curtain: 50;
+  --z-preloader: 60;
+  --z-cursor: 2000;
+}
+
+@supports (transition-timing-function: linear(0, 1)) {
+  :root {
+    --ease-tidy: linear(0, 0.0002 2.4%, 0.0012 4.8%, 0.0041 7.2%, 0.0098 9.6%, 0.0192 12%, 0.0331 14.4%, 0.0526 16.8%, 0.0785 19.2%, 0.1118 21.6%, 0.1533 24%, 0.2041 26.4%, 0.265 28.8%, 0.3369 31.2%, 0.4207 33.6%, 0.5175 36%, 0.6143 38.4%, 0.6981 40.8%, 0.77 43.2%, 0.8309 45.6%, 0.8817 48%, 0.9232 50.4%, 0.9565 52.8%, 0.9824 55.2%, 1.0019 57.6%, 1.0158 60%, 1.0252 62.4%, 1.0309 64.8%, 1.0338 67.2%, 1.0348 69.6%, 1.035 72%, 1.0285 74%, 1.0201 76%, 1.0115 78%, 1.004 80%, 0.9984 82%, 0.995 84%, 0.9938 86%, 0.9942 88%, 0.9956 90%, 0.9972 92%, 0.9986 94%, 0.9996 96%, 0.9999 98%, 1);
+  }
+}
+
+// Shared breakpoint with layout.ts (NARROW_BREAKPOINT)
+$narrow: 900px;
+$wide: 900px;
+
+@mixin narrow {
+  @media (max-width: #{$narrow - 1px}) {
+    @content;
+  }
+}
+
+@mixin wide {
+  @media (min-width: $wide) {
+    @content;
+  }
+}
+
+@mixin mouse {
+  @media (hover: hover) and (pointer: fine) {
+    @content;
+  }
+}
+
+@mixin motion-ok {
+  @media (prefers-reduced-motion: no-preference) {
+    @content;
+  }
+}
+
+// Paper shadow used by most objects
+@mixin paper-shadow($lift: 0) {
+  box-shadow:
+    0 2px 2px rgba(0, 0, 0, 0.25),
+    0 #{14px + $lift} #{22px + $lift} #{-10px} rgba(0, 0, 0, 0.55);
+}

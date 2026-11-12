@@ -1,0 +1,1104 @@
+// The materials on the table and how each one reacts.
+// Paper lifts, prints straighten, post-its curl at a corner, screens scroll,
+// stickers wobble, tape slides. On press everything squashes and springs back.
+
+@use "tokens" as *;
+
+// ---- Tape --------------------------------------------------------------------
+.tape {
+  position: absolute;
+  z-index: 2;
+  height: 1.75em;
+  width: 6em;
+  background: var(--tape);
+  opacity: 0.94;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.25);
+  clip-path: polygon(
+    0 6%, 2% 0, 4% 8%, 6% 0, 94% 0, 96% 7%, 98% 0, 100% 6%,
+    100% 94%, 98% 100%, 96% 93%, 94% 100%, 6% 100%, 4% 92%, 2% 100%, 0 94%
+  );
+  background-image: linear-gradient(90deg, rgba(255, 255, 255, 0.28), rgba(255, 255, 255, 0) 30%, rgba(120, 100, 40, 0.08));
+  transition: transform 0.35s var(--ease-spring);
+
+  &--top {
+    top: -0.7em;
+    left: 50%;
+    margin-left: -3em;
+    transform: rotate(-2deg);
+  }
+}
+
+// ---- Pushpin -------------------------------------------------------------------
+// A round plastic head with a highlight, pressed through the top of a card.
+.tack {
+  --tack: #e2361b;
+  position: absolute;
+  z-index: 2;
+  top: -9px;
+  left: 50%;
+  width: 22px;
+  height: 22px;
+  margin-left: -11px;
+  border-radius: 50%;
+  // Flat, like the stickers: one solid head, a lighter flat top, hard edges, the
+  // same short shadow. No glossy highlight.
+  background: radial-gradient(
+    circle at 50% 50%,
+    color-mix(in srgb, var(--tack), #fff 28%) 0 5px,
+    var(--tack) 5.5px
+  );
+  box-shadow: 0 3px 3px rgba(0, 0, 0, 0.45);
+  transition: transform 0.25s var(--ease-spring);
+
+  &--yellow {
+    --tack: #f5c518;
+  }
+
+  &--blue {
+    --tack: #3d6fd8;
+  }
+
+  &--green {
+    --tack: #2fa36b;
+  }
+}
+
+// ---- Paper note ----------------------------------------------------------------
+.paper {
+  position: relative;
+  background: var(--paper);
+  padding: 1.5em 1.5em 1.4em;
+  @include paper-shadow;
+}
+
+.note {
+  // The name, like a letterhead above the headline: who is speaking, before what
+  .note__name {
+    font: 500 1.05rem / 1.2 var(--font-ui);
+    letter-spacing: -0.005em;
+    margin: 0 0 0.7em;
+    max-width: none;
+  }
+
+  h1 {
+    font: 500 3rem / 0.98 var(--font-ui);
+    letter-spacing: -0.045em;
+  }
+
+  p {
+    font-size: 1.4rem;
+    line-height: 1.2;
+    margin-top: 0.7em;
+    max-width: 24em;
+  }
+
+  small {
+    display: block;
+    font: 400 var(--text-small) / 1.4 var(--font-ui);
+    color: var(--ink-soft);
+    margin-top: 0.9em;
+  }
+}
+
+// ---- Photo print ----------------------------------------------------------------
+.print {
+  position: relative;
+  display: block;
+  background: #fff;
+  padding: 4% 4% 19%;
+  box-shadow:
+    0 2px 2px rgba(0, 0, 0, 0.25),
+    0 16px 28px -10px rgba(0, 0, 0, 0.55);
+  font-size: 0.95rem;
+
+  img {
+    width: 100%;
+  }
+
+  span {
+    position: absolute;
+    left: 4%;
+    right: 4%;
+    bottom: 3.5%;
+    font: italic 400 1em/1.1 var(--font-text);
+    color: #33342e;
+  }
+}
+
+// ---- Post-it -------------------------------------------------------------------
+.postit {
+  position: relative;
+  display: block;
+  background: linear-gradient(170deg, var(--yellow) 0 80%, #f4d431);
+  padding: 1.2em 1.2em 1.5em;
+  color: var(--ink);
+  font: italic 400 1.5rem / 1.12 var(--font-display);
+  box-shadow:
+    0 2px 2px rgba(0, 0, 0, 0.22),
+    0 18px 18px -14px rgba(0, 0, 0, 0.65);
+  transform-origin: 50% 0;
+
+  b {
+    display: block;
+    font: 500 var(--text-small) / 1 var(--font-ui);
+    margin-bottom: 0.8em;
+    font-style: normal;
+  }
+
+  small {
+    display: flex;
+    align-items: center;
+    gap: 0.4em;
+    font: 400 var(--text-small) / 1.3 var(--font-ui);
+    margin-top: 0.7em;
+  }
+
+  &--mint {
+    background: linear-gradient(170deg, var(--mint) 0 80%, #88d9bb);
+  }
+
+  &--orange {
+    background: linear-gradient(170deg, var(--orange) 0 80%, #f26f18);
+  }
+
+  // The curling corner, drawn on hover
+  &::after {
+    content: "";
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 0;
+    height: 0;
+    background: linear-gradient(315deg, var(--mat) 49%, rgba(0, 0, 0, 0.28) 50%, rgba(255, 255, 255, 0.5) 100%);
+    transition:
+      width 0.28s var(--ease-spring),
+      height 0.28s var(--ease-spring);
+  }
+}
+
+// The big orange one: "Ask for the portfolio"
+.ask {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 0.6em;
+  aspect-ratio: 1;
+  font: 500 2.4rem / 0.98 var(--font-ui);
+  letter-spacing: -0.035em;
+  font-style: normal;
+  padding: 0.7em;
+
+  .arrow {
+    width: 1.05em;
+    height: 1.05em;
+    align-self: flex-end;
+    stroke-width: 3.4;
+  }
+}
+
+// ---- Tape strips (path, contact labels) -------------------------------------------
+.path {
+  display: grid;
+  gap: 0.55em;
+  font-size: 1.15rem;
+
+  // Each strip of tape is stuck on by hand: a little tilt and offset, never the same
+  li:nth-child(4n + 1) {
+    --t: -0.5deg;
+    --ml: 0;
+  }
+  li:nth-child(4n + 2) {
+    --t: 0.4deg;
+    --ml: 0.4em;
+  }
+  li:nth-child(4n + 3) {
+    --t: -0.3deg;
+    --ml: 0.1em;
+  }
+  li:nth-child(4n + 4) {
+    --t: 0.6deg;
+    --ml: 0.7em;
+  }
+}
+
+.strip {
+  display: flex;
+  gap: 0.75em;
+  align-items: baseline;
+  width: max-content;
+  max-width: 100%;
+  padding: 0.42em 1.1em 0.42em 0.9em;
+  background: var(--tape);
+  color: #29271c;
+  font: italic 400 1em/1.15 var(--font-text);
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
+  transform: rotate(var(--t, 0deg));
+  margin-left: var(--ml, 0);
+  clip-path: polygon(
+    0 4%, 1.2% 0, 2.4% 6%, 3.6% 0, 96.4% 0, 97.6% 6%, 98.8% 0, 100% 4%,
+    100% 96%, 98.8% 100%, 97.6% 94%, 96.4% 100%, 3.6% 100%, 2.4% 94%, 1.2% 100%, 0 96%
+  );
+  background-image: linear-gradient(90deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0) 24%, rgba(120, 100, 40, 0.08));
+  transition:
+    transform 0.35s var(--ease-spring),
+    background-color 0.2s;
+
+  time {
+    font: 500 0.78em/1 var(--font-ui);
+    font-variant-numeric: tabular-nums;
+    flex: none;
+  }
+
+  // A strip that is a link: plain paper tape, sans-serif, finger-sized
+  &--button {
+    background: #f4f1e4;
+    background-image: none;
+    color: #000;
+    font-size: 1.25rem;
+    font-style: normal;
+    font-family: var(--font-ui);
+    font-weight: 500;
+    align-items: center;
+    min-height: 52px;
+    padding-inline: 1.1em;
+
+    .arrow {
+      width: 0.8em;
+      height: 0.8em;
+    }
+  }
+}
+
+// ---- Business card (email) ---------------------------------------------------------
+.business-card {
+  position: relative;
+  display: grid;
+  gap: 0.15em;
+  aspect-ratio: 85 / 55;
+  padding: 1.1em 1.2em;
+  background: #fffdf7;
+  color: var(--ink);
+  font: 400 0.95rem/1.25 var(--font-ui);
+  box-shadow:
+    0 1px 1px rgba(0, 0, 0, 0.3),
+    0 10px 16px -8px rgba(0, 0, 0, 0.55);
+  align-content: start;
+
+  &__name {
+    font: 500 1.3rem/1.1 var(--font-ui);
+    letter-spacing: -0.02em;
+  }
+
+  &__role {
+    font: italic 400 1rem/1.2 var(--font-text);
+    color: var(--ink-soft);
+  }
+
+  // The action sits at the bottom, underlined in red pencil
+  &__action {
+    position: absolute;
+    left: 1.2em;
+    bottom: 0.9em;
+    font-weight: 500;
+    text-decoration: underline;
+    text-decoration-color: var(--red);
+    text-decoration-thickness: 2px;
+    text-underline-offset: 4px;
+  }
+}
+
+// ---- Luggage tag (Telegram) ---------------------------------------------------------
+.luggage-tag {
+  position: relative;
+  display: grid;
+  gap: 0.1em;
+  padding: 1em 1em 1em 2.6em;
+  min-height: 84px;
+  align-content: center;
+  background: #d9b56a;
+  color: #2b2410;
+  font: 500 1.15rem/1.1 var(--font-ui);
+  // Cut corners on the hole side, like a real paper tag
+  clip-path: polygon(18% 0, 100% 0, 100% 100%, 18% 100%, 0 78%, 0 22%);
+  filter: drop-shadow(0 6px 6px rgba(0, 0, 0, 0.35));
+  transform-origin: 12% 50%;
+
+  &__hole {
+    position: absolute;
+    left: 0.9em;
+    top: 50%;
+    width: 14px;
+    height: 14px;
+    margin-top: -7px;
+    border-radius: 50%;
+    background: var(--mat);
+    box-shadow: 0 0 0 3px #f4f1e4;
+  }
+
+  &__handle {
+    font: italic 400 1rem/1.2 var(--font-text);
+  }
+}
+
+// ---- Label-maker tape (GitHub) -------------------------------------------------------
+.dymo {
+  display: inline-flex;
+  align-items: center;
+  min-height: 48px;
+  padding: 0.5em 1em;
+  background: #1c1c1c;
+  color: #f4f4f0;
+  font: 700 1.1rem/1 var(--font-ui);
+  letter-spacing: 0.12em;
+  border-radius: 3px;
+  // The raised letters of an embossed label
+  text-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.35),
+    0 -1px 0 rgba(0, 0, 0, 0.6);
+  box-shadow:
+    inset 0 2px 0 rgba(255, 255, 255, 0.08),
+    0 3px 6px rgba(0, 0, 0, 0.45);
+}
+
+// ---- Embroidered patch (Dribbble, Figma) -------------------------------------------
+// The logo stitched on fabric: satin texture (#satin in index.html), a dashed running
+// stitch inside, a thick merrowed edge. Drawn in SVG, the CSS only gives it weight.
+.patch {
+  display: block;
+
+  svg {
+    width: 100%;
+    height: auto;
+    overflow: visible;
+    filter: drop-shadow(0 2px 1px rgba(0, 0, 0, 0.35)) drop-shadow(0 6px 8px rgba(0, 0, 0, 0.3));
+  }
+}
+
+// ---- Ticket stub (Behance) ----------------------------------------------------------
+.ticket {
+  display: flex;
+  min-height: 84px;
+  background: #f1e3c4;
+  color: #3a2a12;
+  font: 400 0.95rem/1.15 var(--font-ui);
+  box-shadow: 0 8px 14px -6px rgba(0, 0, 0, 0.55);
+  // Notches where the stub tears off
+  mask:
+    radial-gradient(circle at 30% 0, transparent 9px, #000 9.5px) top / 100% 51% no-repeat,
+    radial-gradient(circle at 30% 100%, transparent 9px, #000 9.5px) bottom / 100% 51% no-repeat;
+
+  &__stub {
+    flex: 0 0 30%;
+    display: grid;
+    place-items: center;
+    border-right: 2px dashed rgba(58, 42, 18, 0.4);
+    font: 500 0.85rem/1 var(--font-ui);
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+  }
+
+  &__main {
+    display: grid;
+    align-content: center;
+    gap: 0.2em;
+    padding: 0.6em 0.9em;
+  }
+
+  &__name {
+    font: 500 1.3rem/1 var(--font-ui);
+    letter-spacing: -0.02em;
+  }
+
+  &__note {
+    font: italic 400 0.95rem/1.1 var(--font-text);
+  }
+}
+
+// ---- Postage stamp (Instagram) ---------------------------------------------------------
+.stamp {
+  display: grid;
+  align-content: end;
+  gap: 0.2em;
+  aspect-ratio: 4 / 5;
+  padding: 14px;
+  // Dark enough at the bottom for white text (AA)
+  background:
+    linear-gradient(160deg, #e39a3b, #c4433c 50%, #6b2a99) content-box,
+    #fffdf7;
+  color: #fff;
+  font: 500 0.95rem/1.1 var(--font-ui);
+  // Perforated edge: a row of bites on every side
+  mask:
+    radial-gradient(circle, transparent 4.5px, #000 5px) -7px -7px / 14px 14px,
+    linear-gradient(#000 0 0) center / calc(100% - 14px) calc(100% - 14px) no-repeat;
+  filter: drop-shadow(0 6px 6px rgba(0, 0, 0, 0.4));
+
+  &__value,
+  &__name {
+    padding-inline: 0.6em;
+  }
+
+  &__value {
+    font: italic 400 1rem/1.1 var(--font-text);
+  }
+
+  &__name {
+    padding-bottom: 0.6em;
+    font-weight: 700;
+  }
+}
+
+// ---- Sheet with a screen on it (work previews) --------------------------------------
+.sheet {
+  position: relative;
+  display: block;
+  padding: 3.2%;
+  background: var(--paper);
+  @include paper-shadow;
+
+  img {
+    width: 100%;
+    aspect-ratio: 16 / 11;
+    object-fit: cover;
+    object-position: top;
+    transition: object-position 2.6s ease-in-out;
+  }
+
+  span {
+    display: block;
+    font: italic 400 1.05rem / 1.2 var(--font-text);
+    margin-top: 0.55em;
+  }
+}
+
+// ---- Slide (small square frame, Lab) ---------------------------------------------
+.slide {
+  position: relative;
+  display: block;
+  background: linear-gradient(145deg, #fff, #ecebe2);
+  border-radius: 5px;
+  padding: 12% 13% 22%;
+  box-shadow:
+    0 2px 2px rgba(0, 0, 0, 0.28),
+    0 12px 18px -9px rgba(0, 0, 0, 0.6);
+  font: 500 0.82rem / 1.1 var(--font-ui);
+  color: #2b2c26;
+
+  img {
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+    object-position: top;
+    border-radius: 2px;
+  }
+
+  span {
+    position: absolute;
+    left: 13%;
+    right: 13%;
+    bottom: 5%;
+  }
+}
+
+// ---- Film strip (photos) ------------------------------------------------------------
+.film {
+  position: relative;
+  display: flex;
+  gap: 3px;
+  background: #0b0b0a;
+  padding: 14px 6px;
+  background-image:
+    repeating-linear-gradient(90deg, var(--mat) 0 7px, transparent 7px 18px),
+    repeating-linear-gradient(90deg, var(--mat) 0 7px, transparent 7px 18px);
+  background-size:
+    100% 6px,
+    100% 6px;
+  background-position:
+    0 4px,
+    0 calc(100% - 4px);
+  background-repeat: no-repeat;
+  box-shadow: 0 14px 22px -10px rgba(0, 0, 0, 0.7);
+
+  a {
+    position: relative;
+    flex: 1;
+    min-width: 0;
+    display: block;
+    transition: transform 0.3s var(--ease-spring);
+  }
+
+  img {
+    width: 100%;
+    aspect-ratio: 2 / 3;
+    object-fit: cover;
+  }
+}
+
+// ---- Index card and quote --------------------------------------------------------
+.card {
+  position: relative;
+  background: var(--paper);
+  padding: 1.1em 1.2em 1.2em;
+  @include paper-shadow;
+  background-image: repeating-linear-gradient(transparent 0 27px, rgba(70, 110, 170, 0.2) 27px 28px);
+  background-position: 0 44px;
+  font: 400 1.08rem/28px var(--font-text);
+
+  h3 {
+    font: 500 1rem/28px var(--font-ui);
+    color: var(--red);
+  }
+}
+
+.quote {
+  position: relative;
+  background: var(--paper);
+  padding: 1.2em 1.3em;
+  font: 400 1.9rem/1.08 var(--font-display);
+  @include paper-shadow;
+
+  small {
+    display: block;
+    font: 400 0.9rem/1.3 var(--font-ui);
+    margin-top: 0.9em;
+  }
+}
+
+// ---- Folder --------------------------------------------------------------------
+.folder {
+  position: relative;
+  display: block;
+  padding-top: 34px;
+  color: #2b2410;
+
+  .folder__tab {
+    position: absolute;
+    z-index: 2;
+    left: 14px;
+    top: 0;
+    height: 38px;
+    padding: 8px 18px 0;
+    background: var(--folder);
+    border-radius: 8px 8px 0 0;
+    font: 500 0.95rem/1.2 var(--font-ui);
+    box-shadow: 0 -1px 1px rgba(0, 0, 0, 0.12);
+    white-space: nowrap;
+    max-width: 92%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: transform 0.25s var(--ease-spring);
+  }
+
+  .folder__body {
+    position: relative;
+    display: block;
+    background: linear-gradient(170deg, #efd59b, var(--folder-deep));
+    border-radius: 3px 8px 8px 8px;
+    padding: 14px 14px 16px;
+    box-shadow:
+      0 2px 2px rgba(0, 0, 0, 0.25),
+      0 16px 26px -10px rgba(0, 0, 0, 0.6);
+  }
+
+  // Above the tab: the sheet slides out of the folder and passes in front of it
+  .folder__peek {
+    position: relative;
+    z-index: 3;
+    display: block;
+    background: #fff;
+    padding: 8px;
+    transform: rotate(-1.4deg) translateY(-8px);
+    margin-bottom: 4px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s var(--ease-out);
+
+    img {
+      width: 100%;
+      aspect-ratio: 16 / 10;
+      object-fit: cover;
+      object-position: top;
+    }
+  }
+
+  h3 {
+    font: 500 1.5rem/1.06 var(--font-ui);
+    letter-spacing: -0.02em;
+  }
+
+  p {
+    font: italic 400 1.02rem/1.25 var(--font-text);
+    margin-top: 0.4em;
+  }
+
+  // Status of a project ("In beta", "Released"…): used by the portfolio folders
+  .folder__status {
+    display: inline-block;
+    margin-top: 0.6em;
+    padding: 0.28em 0.7em;
+    background: var(--tape);
+    font: 500 0.85rem/1.1 var(--font-ui);
+    transform: rotate(-1deg);
+  }
+}
+
+// ---- Chalk ---------------------------------------------------------------------
+.chalk {
+  color: var(--chalk);
+  font: 400 3.25rem / 1 var(--font-chalk);
+  filter: url(#chalk);
+  pointer-events: none;
+  text-shadow: 0 1px 0 var(--chalk-shadow);
+
+  &--small {
+    font-size: 2.5rem;
+    white-space: nowrap;
+  }
+
+  // On a phone: a step smaller than on the desktop, still large enough to stand out
+  @include narrow {
+    font-size: 3rem;
+
+    &--small {
+      font-size: 2.35rem;
+    }
+  }
+}
+
+.chalk-drawing {
+  color: var(--chalk);
+  filter: url(#chalk);
+  pointer-events: none;
+  overflow: visible;
+
+  path,
+  circle {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 3;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+}
+
+// Chalk and drawings move with the object but never catch the pointer themselves:
+// the outer `.item` does, so they can be dragged too.
+.item[data-material="chalk"] {
+  pointer-events: auto;
+}
+
+// ---- Stickers -------------------------------------------------------------------
+.sticker {
+  display: block;
+
+  svg {
+    width: 100%;
+    height: auto;
+    filter: drop-shadow(0 3px 3px rgba(0, 0, 0, 0.45));
+    overflow: visible;
+  }
+
+  text {
+    font-family: var(--font-ui);
+    font-weight: 700;
+  }
+
+
+  .sticker__display {
+    font-family: var(--font-display);
+    font-weight: 500;
+  }
+
+  &.is-popping {
+    animation: pop 0.4s var(--ease-spring);
+  }
+}
+
+@keyframes pop {
+  0% {
+    transform: rotate(var(--rot, 0deg)) scale(0.82);
+  }
+  100% {
+    transform: rotate(var(--rot, 0deg)) scale(1);
+  }
+}
+
+@keyframes wobble {
+  0%,
+  100% {
+    transform: rotate(var(--rot, 0deg)) scale(1);
+  }
+  25% {
+    transform: rotate(calc(var(--rot, 0deg) - 9deg)) scale(1.13);
+  }
+  60% {
+    transform: rotate(calc(var(--rot, 0deg) + 7deg)) scale(1.1);
+  }
+  80% {
+    transform: rotate(calc(var(--rot, 0deg) - 3deg)) scale(1.04);
+  }
+}
+
+// ---- Reactions on hover, mouse only, motion allowed ------------------------------------
+@include mouse {
+  @include motion-ok {
+    .item:hover .paper,
+    .item:hover .quote,
+    .item:hover .card {
+      --ly: -6px;
+      box-shadow:
+        0 3px 3px rgba(0, 0, 0, 0.2),
+        0 26px 30px -10px rgba(0, 0, 0, 0.5);
+    }
+
+    .item:hover .tape {
+      transform: rotate(3deg) translateY(-2px);
+    }
+
+    .item:hover .print {
+      --ly: -8px;
+      --sc: 1.03;
+      --rot: 0deg;
+    }
+
+    .item:hover .card {
+      --rot: 0deg;
+    }
+
+    .item:not(.is-dragging):hover .postit {
+      transform: rotate(calc(var(--rot, 0deg) * 0.3)) perspective(700px) rotateX(-9deg) scale(var(--sc, 1));
+    }
+
+    .item:hover .postit::after {
+      width: 38px;
+      height: 38px;
+    }
+
+    .item:hover .sheet {
+      --ly: -6px;
+    }
+
+    .item:hover .sheet img {
+      object-position: bottom;
+    }
+
+    .item:hover .slide {
+      --sc: 1.06;
+      --rot: 0deg;
+    }
+
+    .path li:hover .strip {
+      transform: translateX(8px) rotate(0deg);
+    }
+
+    .item:hover .sticker {
+      animation: wobble 0.55s ease-in-out;
+    }
+
+    .film a:hover {
+      transform: scale(1.05);
+      z-index: 2;
+    }
+
+    .folder:hover .folder__tab {
+      transform: translateY(-4px);
+    }
+
+    .folder:hover .folder__peek {
+      transform: rotate(0.6deg) translateY(-26px);
+    }
+
+    // Contacts and profiles
+    .item:hover .business-card,
+    .item:hover .ticket,
+    .item:hover .stamp,
+    .item:hover .dymo {
+      --ly: -5px;
+    }
+
+    .item:hover .stamp {
+      --rot: 0deg;
+    }
+
+    .item:hover .ticket {
+      --tilt: 2deg;
+    }
+
+    // The tag swings on its hole
+    .item:not(.is-dragging):hover .luggage-tag {
+      animation: swing 0.9s ease-in-out;
+    }
+
+    // Fabric does not bounce: the patch lifts a corner, as if sewn only on one side
+    .item:hover .patch {
+      --ly: -4px;
+      --tilt: -4deg;
+    }
+
+    .item:hover .strip--button {
+      background-color: #fff;
+    }
+  }
+}
+
+@keyframes swing {
+  0%,
+  100% {
+    transform: rotate(var(--rot, 0deg));
+  }
+  25% {
+    transform: rotate(calc(var(--rot, 0deg) + 9deg));
+  }
+  55% {
+    transform: rotate(calc(var(--rot, 0deg) - 6deg));
+  }
+  80% {
+    transform: rotate(calc(var(--rot, 0deg) + 2deg));
+  }
+}
+
+// ---- Props: things lying on the desk ------------------------------------------------
+.prop {
+  display: block;
+
+  svg {
+    width: 100%;
+    height: auto;
+    overflow: visible;
+    filter: drop-shadow(0 3px 2px rgba(0, 0, 0, 0.4));
+  }
+
+  // Stains are in the surface, not on it: no shadow, and they blend with the mat
+  &--flat svg {
+    filter: none;
+    mix-blend-mode: multiply;
+  }
+}
+
+@include mouse {
+  @include motion-ok {
+    .item:hover .prop:not(.prop--flat) {
+      --ly: -3px;
+    }
+  }
+}
+
+// ---- Books ------------------------------------------------------------------------
+// Drawn, not photographed: each spine borrows the colours and the type of its real cover.
+.book-stack {
+  display: block;
+
+  svg {
+    width: 100%;
+    height: auto;
+    overflow: visible;
+    filter: drop-shadow(0 3px 2px rgba(0, 0, 0, 0.35)) drop-shadow(4px 10px 10px rgba(0, 0, 0, 0.25));
+  }
+
+  .book-stack__serif {
+    font: 400 12px var(--font-text);
+  }
+
+  .book-stack__sans {
+    font: 500 13px var(--font-ui);
+  }
+
+  .book-stack__bold {
+    font: 700 14px var(--font-ui);
+    letter-spacing: 0.02em;
+  }
+
+  .book-stack__tight {
+    letter-spacing: -0.01em;
+  }
+
+  .book-stack__hand {
+    font: 400 20px var(--font-chalk);
+  }
+
+  .book-stack__small {
+    font-size: 9.5px;
+  }
+
+  // A long title on a narrow spine
+  .book-stack__long {
+    font-size: 10px;
+  }
+}
+
+// The Italian Dream, the book being read: white cover, red serif title, AMERICAN struck out
+.italian-dream {
+  position: relative;
+  display: grid;
+  align-content: start;
+  aspect-ratio: 2 / 3;
+  padding: 0.9em 0.9em 0.8em 1.1em;
+  background:
+    linear-gradient(90deg, rgba(0, 0, 0, 0.14) 0 5px, rgba(255, 255, 255, 0.6) 5px 7px, transparent 7px),
+    #fbfaf6;
+  color: #1d1d1b;
+  border-radius: 2px 5px 5px 2px;
+  box-shadow:
+    0 1px 0 #e8e4d8,
+    0 3px 0 #d8d3c4,
+    0 4px 2px rgba(0, 0, 0, 0.35),
+    6px 14px 18px -8px rgba(0, 0, 0, 0.55);
+
+  &__author {
+    font: 400 1.2rem/1 var(--font-text);
+    letter-spacing: 0.02em;
+  }
+
+  &__title {
+    margin-top: 0.45em;
+    font: 400 1.25rem/1.02 var(--font-text);
+    color: #c8202a;
+  }
+
+  // AMERICAN, in black, crossed out in red
+  &__crossed {
+    position: relative;
+    width: max-content;
+    color: #1d1d1b;
+
+    &::after {
+      content: "";
+      position: absolute;
+      left: 34%;
+      top: 50%;
+      width: 26%;
+      height: 2px;
+      background: #c8202a;
+      transform: rotate(-35deg);
+    }
+  }
+
+  &__subtitle {
+    margin-top: 0.6em;
+    font: italic 400 0.75rem/1.1 var(--font-text);
+    color: #6a6a66;
+  }
+
+  // "Reading now": a strip of tape across the bottom corner
+  &__note {
+    position: absolute;
+    z-index: 2;
+    bottom: 16px;
+    left: -18px;
+    padding: 0.25em 0.8em;
+    background: var(--tape);
+    color: #29271c;
+    font: italic 400 0.9rem/1.2 var(--font-text);
+    white-space: nowrap;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
+    transform: rotate(-6deg);
+  }
+
+  &__ribbon {
+    position: absolute;
+    right: 22px;
+    bottom: -16px;
+    width: 9px;
+    height: 30px;
+    background: var(--red);
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 80%, 0 100%);
+  }
+}
+
+@include mouse {
+  @include motion-ok {
+    .item:hover .italian-dream,
+    .item:hover .book-stack {
+      --ly: -4px;
+    }
+  }
+}
+
+// ---- Phone ------------------------------------------------------------------------
+// The round dot-matrix display glows softly, and lights up fully when the mouse passes over.
+.phone .phone__glyph {
+  filter: drop-shadow(0 0 1.5px rgba(255, 255, 255, 0.8));
+  opacity: 0.6;
+  transition: opacity 0.25s ease;
+}
+
+@include mouse {
+  .item:hover .phone .phone__glyph {
+    opacity: 1;
+  }
+
+  @include motion-ok {
+    .item:hover .tack {
+      transform: translateY(-1px) scale(1.06);
+    }
+  }
+}
+
+// ---- Text: no orphans -------------------------------------------------------------
+// Short blocks are balanced; longer ones avoid a single word on the last line.
+// Where a browser ignores these (older Firefox), the HTML ties the last two words
+// with a non-breaking space.
+.item {
+  h1,
+  h3,
+  b,
+  .chalk {
+    text-wrap: balance;
+  }
+
+  p,
+  small,
+  li,
+  blockquote,
+  .postit,
+  .card {
+    text-wrap: pretty;
+  }
+}
+
+// A clause that starts on its own line (the hero, the line under it)
+.line {
+  display: block;
+}
+
+// Two sentences on a post-it, with air between them
+.postit__line {
+  display: block;
+
+  & + & {
+    margin-top: 0.55em;
+  }
+}
+
+// ---- Phone sizes ----------------------------------------------------------------
+@include narrow {
+  // Each clause of the hero must fit one line. Sizes are fixed: phone objects keep
+  // the widths of a 390 px screen and the whole table scales on other screens.
+  .note h1 {
+    font-size: 2rem;
+    line-height: 1;
+  }
+
+  .note p {
+    font-size: 1.1rem;
+  }
+
+  .paper {
+    padding: 1.5em 1.15em 1.3em;
+  }
+
+  // "everyone around him." on one line, no word left alone in the middle
+  .quote {
+    font-size: 1.75rem;
+  }
+
+  .postit {
+    font-size: 1.12rem;
+    line-height: 1.2;
+    padding: 1em 0.95em 1.2em;
+    hyphens: none;
+  }
+
+  .ask {
+    font-size: 1.9rem;
+  }
+}

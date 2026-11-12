@@ -1,0 +1,67 @@
+// Web fonts. Antonia (text and display) and Circular (interface) are the fonts of
+// Darwin's CV and portfolio; Have Heart is the chalk hand. Licences: Darwin verifies
+// them before the site goes live.
+
+@font-face {
+  font-family: "Circular";
+  src: url("../Font/Circular/circular-book.woff2") format("woff2");
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Circular";
+  src: url("../Font/Circular/circular-book-italic.woff2") format("woff2");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Circular";
+  src: url("../Font/Circular/circular-medium.woff2") format("woff2");
+  font-weight: 500;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Circular";
+  src: url("../Font/Circular/circular-bold.woff2") format("woff2");
+  font-weight: 700;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Antonia";
+  src: url("../Font/Antonia/antonia-text-regular.woff2") format("woff2");
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Antonia";
+  src: url("../Font/Antonia/antonia-text-italic.woff2") format("woff2");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Antonia Display";
+  src: url("../Font/Antonia/antonia-h1-medium.woff2") format("woff2");
+  font-weight: 500;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Antonia Display";
+  src: url("../Font/Antonia/antonia-h2-regular.woff2") format("woff2");
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Antonia Display";
+  src: url("../Font/Antonia/antonia-h2-italic.woff2") format("woff2");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Have Heart";
+  src: url("../Font/HaveHeart/have-heart-one.otf") format("opentype");
+  font-weight: 400;
+  font-display: swap;
+}

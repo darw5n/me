@@ -1,47 +1,31 @@
 # Me
 
-Personal portfolio site — design + frontend.
+Personal site — design + frontend. Since November 2026 it is "the table": an endless surface with
+objects you can move around and tidy up.
 
 **Live:** [darw.it](https://darw.it)
 
 ## Stack
 
-Vanilla HTML + SCSS + JavaScript. No bundler, no framework. Dependencies via CDN.
-
-| | |
-|---|---|
-| Locomotive Scroll 3.5.4 | Virtual scroll + scroll-based animations |
-| GSAP 3 + ScrollTrigger | Animations & horizontal scroll section |
-| Splitting.js | Character-level text animations |
-| Bootstrap 5 | Grid only |
-| FontAwesome 6 | Icons |
+Vanilla HTML + SCSS + TypeScript, compiled to plain ES modules. No bundler, no framework, no
+dependencies: the compilers are fetched with `npx` when needed.
 
 ## Structure
 
 ```
-index.html          ← single page
-CSS/
-  main.scss         ← source (edit this)
-  main.css          ← compiled output
-  _variables.scss
-  _common.scss
-  _typo.scss
-  _light-theme.scss
-  _dark-theme.scss
-Script/
-  preloader.js
-  theme.js
-  Accordion.js
-  email.js
-Font/
-  Matahari/
-  Nognathy/
+index.html          ← the home, content in the HTML
+src/tavola/         ← TypeScript sources (layout, camera, input, board…)
+Script/tavola/      ← compiled JavaScript (committed, do not edit)
+CSS/tavola.scss     ← SCSS entry; partials in CSS/tavola/
+CSS/tavola.css      ← compiled CSS (committed, do not edit)
+tests/              ← unit tests of the pure layout functions
 ```
 
 ## Development
 
-SCSS is compiled manually — no build step needed in production.
-
 ```bash
-sass CSS/main.scss CSS/main.css
+sh scripts/build.sh              # TypeScript + SCSS + tests
+python3 -m http.server 4142      # then open http://127.0.0.1:4142/
 ```
+
+Decisions: `DECISIONS.md`.

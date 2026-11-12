@@ -1,0 +1,602 @@
+// Interface over the table: corners, toolbar, minimap, hint, cursor, viewer, preloader.
+
+@use "tokens" as *;
+
+// The veil behind dialogs (viewer, request): the mat's colour at 82%, the table blurred
+// behind. Falls back to the felt green where color-mix or the variable is missing.
+@mixin veil {
+  background: rgba(23, 68, 58, 0.82);
+  background: color-mix(in srgb, var(--mat, #17443a) 82%, transparent);
+  backdrop-filter: blur(18px) saturate(1.15);
+}
+
+@mixin veil-in {
+  @media (prefers-reduced-motion: no-preference) {
+    animation: veil-in 0.25s ease-out;
+  }
+}
+
+@keyframes veil-in {
+  from {
+    opacity: 0;
+  }
+}
+
+
+// ---- Corner: the name, top left -------------------------------------------------------
+.corner {
+  position: fixed;
+  z-index: var(--z-ui);
+  top: 6px;
+  left: 0;
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+  color: var(--chalk);
+  font: 500 0.95rem/1 var(--font-ui);
+  padding-inline: 16px;
+}
+
+// ---- Toolbar under the thumb ------------------------------------------------------------
+.controls {
+  position: fixed;
+  z-index: var(--z-ui);
+  left: 50%;
+  bottom: 14px;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 2px;
+  align-items: stretch;
+  background: #0f0f0d;
+  color: #f4f1e4;
+  border-radius: 12px;
+  padding: 4px;
+  font: 500 0.92rem/1 var(--font-ui);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.4);
+  max-width: calc(100% - 16px);
+  white-space: nowrap;
+
+  button {
+    min-height: 44px;
+    min-width: 44px;
+    padding-inline: 12px;
+    border-radius: 8px;
+    color: inherit;
+    white-space: nowrap;
+
+    &:hover {
+      background: #2c2c28;
+    }
+
+    &:focus-visible {
+      outline-offset: -2px;
+    }
+  }
+
+  .controls__primary {
+    background: var(--yellow);
+    color: #000;
+    // Air after the main action, so it does not read as one block with See all
+    margin-right: 6px;
+
+    &:hover {
+      background: #fff;
+    }
+  }
+
+  output {
+    min-width: 3.4em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-variant-numeric: tabular-nums;
+  }
+
+  // Two labels in the same grid cell: the cell is as wide as the longer one, so the
+  // button keeps its size when "Tidy up" becomes "Mess it up"
+  .controls__swap {
+    display: inline-grid;
+    place-items: center;
+  }
+
+  .controls__label {
+    grid-area: 1 / 1;
+  }
+
+  .controls__swap[data-state="messy"] .controls__label--tidy,
+  .controls__swap[data-state="tidy"] .controls__label--messy,
+  .controls__swap[data-state="all"] .controls__label--back,
+  .controls__swap[data-state="back"] .controls__label--all {
+    visibility: hidden;
+  }
+
+  // − 100% + in one segment, so they read as a single control (the viewer's
+  // ‹ 2 / 6 › is built the same way)
+  .controls__zoom,
+  .controls__steps {
+    display: inline-flex;
+    align-items: stretch;
+    margin-inline: 4px;
+    border-radius: 8px;
+    background: #22221f;
+
+    button {
+      min-width: 40px;
+      padding-inline: 8px;
+    }
+
+    output {
+      min-width: 3.2em;
+      color: #c9c6b9;
+    }
+  }
+
+  // Thin divider between the table commands and the settings
+  .controls__gap {
+    width: 1px;
+    margin: 8px 4px;
+    background: #3a3a35;
+  }
+
+  // The surface button: a disc filled with the current pattern
+  .controls__surface {
+    padding-inline: 8px;
+
+    .swatch {
+      display: block;
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      box-shadow:
+        inset 0 0 0 1px rgba(255, 255, 255, 0.25),
+        0 0 0 2px #f4f1e4;
+      transition: transform 0.25s var(--ease-spring);
+    }
+
+    &:hover .swatch {
+      transform: scale(1.1) rotate(15deg);
+    }
+  }
+
+  // The sound button: a speaker; the waves appear when it is on, a cross when it is off
+  .controls__sound {
+    svg {
+      width: 24px;
+      height: 24px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .speaker {
+      fill: currentColor;
+    }
+
+    .wave {
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+
+    .mute {
+      opacity: 1;
+      transition: opacity 0.2s;
+    }
+
+    &.is-on .wave {
+      opacity: 1;
+    }
+
+    &.is-on .mute {
+      opacity: 0;
+    }
+  }
+
+  @include narrow {
+    font-size: 0.86rem;
+
+    button {
+      padding-inline: 9px;
+    }
+
+    // No camera on a phone: zoom makes no sense there
+    .controls__zoom {
+      display: none;
+    }
+  }
+}
+
+// ---- Hint at the top, chalk, gone after the first move -------------------------------------
+.hint {
+  position: fixed;
+  z-index: calc(var(--z-ui) - 1);
+  left: 50%;
+  top: 8px;
+  margin: 0;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  font-size: clamp(1.9rem, 3vw, 2.6rem);
+  transition: opacity 0.3s;
+
+  body.has-moved & {
+    opacity: 0;
+  }
+
+  @include narrow {
+    display: none;
+  }
+}
+
+// ---- Cursor (cursor.ts) -------------------------------------------------------------------
+html.has-cursor,
+html.has-cursor * {
+  cursor: none !important;
+}
+
+.cursor {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: var(--z-cursor);
+  pointer-events: none;
+  display: none;
+  will-change: transform;
+
+  html.has-cursor & {
+    display: block;
+  }
+
+  svg {
+    position: absolute;
+    display: none;
+    overflow: visible;
+    max-width: none; // the reset's max-width: 100% would squash it to zero inside a sizeless parent
+  }
+
+  // One drawing per state (cursor.ts): what a click will do, or the hand that carries
+  &[data-state="hand"] .cursor__open,
+  &[data-state="grab"] .cursor__open,
+  &[data-state="fist"] .cursor__fist,
+  &[data-state="pen"] .cursor__pen,
+  &[data-state="lens"] .cursor__lens,
+  &[data-state="go"] .cursor__go {
+    display: block;
+  }
+
+  // Hands: the hot spot is the palm
+  .cursor__open,
+  .cursor__fist {
+    width: 32px;
+    height: 32px;
+    left: -16px;
+    top: -14px;
+    color: var(--chalk);
+    transition: transform 0.14s var(--ease-spring);
+  }
+
+  // On a sticker or a prop: yellow, a little bigger, ready to grab
+  &[data-state="grab"] .cursor__open {
+    color: var(--yellow);
+    transform: scale(1.14);
+  }
+
+  .cursor__fist {
+    color: var(--yellow);
+    transform: scale(1.06);
+  }
+
+  // Pencil: the hot spot is the tip
+  .cursor__pen {
+    width: 40px;
+    height: 40px;
+    left: -2px;
+    top: -2px;
+  }
+
+  // Magnifier: the hot spot is the centre of the lens
+  .cursor__lens {
+    width: 40px;
+    height: 40px;
+    left: -15px;
+    top: -15px;
+  }
+
+  // Arrow out of a disc: the hot spot is the centre
+  .cursor__go {
+    width: 34px;
+    height: 34px;
+    left: -17px;
+    top: -17px;
+  }
+
+  // A strip of tape next to the cursor, saying where the link goes
+  .cursor__label {
+    position: absolute;
+    left: 26px;
+    top: 24px;
+    display: none;
+    white-space: nowrap;
+    padding: 0.3em 0.7em;
+    background: var(--tape);
+    color: #29271c;
+    font: italic 400 0.95rem/1.1 var(--font-text);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
+    transform: rotate(-2deg);
+  }
+
+  &[data-state="lens"] .cursor__label.is-on,
+  &[data-state="go"] .cursor__label.is-on {
+    display: block;
+  }
+}
+
+// ---- Viewer (viewer.ts): a plain base, to be redesigned ----------------------------------------
+// The commands are the table's own bar (.controls), in the same spot at the bottom.
+.viewer {
+  border: 0;
+  padding: 0;
+  max-width: min(94vw, 1200px);
+  max-height: 100svh;
+  background: transparent;
+  // The chalk of the current mat: made to read on it, light or dark (kraft)
+  color: var(--chalk, #f4f4ee);
+
+  // A veil in the mat's own colour, not black: the photo comes first and the table is
+  // still there behind it, out of focus (Darwin, 12/11/2026: the black was too dark).
+  &::backdrop {
+    @include veil;
+  }
+
+  &[open]::backdrop {
+    @include veil-in;
+  }
+
+  .viewer__figure {
+    margin: 0;
+    // Room for the bar at the bottom, so it never covers the photo or the caption
+    padding-block: 24px 96px;
+  }
+
+  .viewer__image {
+    max-height: calc(100svh - 190px);
+    width: auto;
+    max-width: 100%;
+    margin: 0 auto;
+  }
+
+  .viewer__caption {
+    font: italic 400 1.05rem/1.4 var(--font-text);
+    margin-top: 12px;
+    text-align: center;
+  }
+
+  // Same bar as the table's, inverted: the black one would sink into the dark
+  // backdrop, a light one stands out like a paper on it
+  .viewer__bar {
+    background: var(--paper);
+    color: var(--ink);
+
+    button:hover {
+      background: #e9e6da;
+    }
+
+    .controls__primary:hover {
+      background: #ffd400;
+    }
+
+    // The yellow focus ring vanishes on the light bar
+    :focus-visible {
+      outline-color: var(--ink);
+    }
+  }
+
+  // Arrows are full thumb targets; the count between them is only a label
+  .viewer__steps {
+    margin-inline: 0 4px;
+    background: #ecE9de;
+
+    button {
+      min-width: 48px;
+      font-size: 1.25rem;
+    }
+
+    output {
+      min-width: 3.6em;
+      color: var(--ink-soft);
+      pointer-events: none;
+    }
+
+    &[hidden] {
+      display: none;
+    }
+  }
+}
+
+// One bar at a time: while a dialog is open the table's bar would show through the blur
+html.has-dialog body > .controls {
+  visibility: hidden;
+}
+
+// ---- Ask for the portfolio (request.ts) ------------------------------------------------
+// A paper card on the same dark backdrop as the viewer. Its buttons have the shape of
+// "Tidy up": yellow for the main action, warm grey for the others, side by side at
+// the bottom of the card (in the flow, so they stay above the phone keyboard).
+.request {
+  border: 0;
+  padding: 0;
+  width: min(440px, calc(100vw - 32px));
+  max-height: calc(100svh - 32px);
+  background: transparent;
+  overflow: visible;
+
+  &::backdrop {
+    @include veil;
+  }
+
+  &[open]::backdrop {
+    @include veil-in;
+  }
+
+  .request__card {
+    position: relative;
+    background: var(--paper);
+    color: var(--ink);
+    padding: 1.6em 1.4em 1.2em;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5);
+    max-height: calc(100svh - 32px);
+    overflow-y: auto;
+  }
+
+  h2 {
+    font: 500 1.9rem / 1 var(--font-ui);
+    letter-spacing: -0.035em;
+    margin: 0;
+    text-wrap: balance;
+  }
+
+  p {
+    margin: 0.7em 0 0;
+    text-wrap: pretty;
+  }
+
+  .request__intro {
+    font-size: 1.15rem;
+    line-height: 1.3;
+  }
+
+  .request__field {
+    display: grid;
+    gap: 6px;
+    margin-top: 1.1em;
+    font: 500 0.95rem / 1.2 var(--font-ui);
+
+    i {
+      font-style: normal;
+      font-weight: 400;
+      color: var(--ink-soft);
+    }
+  }
+
+  input,
+  textarea {
+    width: 100%;
+    min-height: 44px;
+    padding: 10px 12px;
+    border: 1px solid #a9a597;
+    border-radius: 6px;
+    background: #fff;
+    color: var(--ink);
+    font: 400 1.05rem / 1.35 var(--font-text);
+
+    &:focus-visible {
+      outline: 2px solid var(--ink);
+      outline-offset: 1px;
+    }
+
+    &[aria-invalid="true"] {
+      border-color: var(--red);
+    }
+  }
+
+  textarea {
+    resize: vertical;
+  }
+
+  .request__error {
+    color: #b3200b;
+    font: 500 0.95rem / 1.3 var(--font-ui);
+  }
+
+  .request__note,
+  .request__status {
+    font: 400 var(--text-small) / 1.4 var(--font-ui);
+    color: var(--ink-soft);
+  }
+
+  .request__address {
+    font-weight: 600;
+    overflow-wrap: anywhere;
+  }
+
+  .request__copy {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 1em;
+  }
+
+  .request__actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 1.4em;
+  }
+
+  // Same shape as "Tidy up" in the bar
+  .request__button,
+  .request__copy button {
+    min-height: 44px;
+    padding-inline: 16px;
+    border-radius: 8px;
+    background: #e9e6da;
+    color: var(--ink);
+    font: 500 0.92rem / 1 var(--font-ui);
+    white-space: nowrap;
+
+    &:hover {
+      background: #dedacc;
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--ink);
+      outline-offset: 2px;
+    }
+  }
+
+  .request__button--primary {
+    background: var(--yellow);
+    color: #000;
+
+    &:hover {
+      background: #ffd400;
+    }
+  }
+}
+
+// ---- Preloader (preloader.ts) ------------------------------------------------------------
+.preloader {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-preloader);
+  display: grid;
+  place-content: center;
+  background: var(--mat);
+  transition: opacity 0.6s var(--ease-out);
+
+  .chalk {
+    font-size: clamp(2.6rem, 4vw, 3.9rem);
+    animation: breathe 1.6s ease-in-out infinite;
+  }
+
+  html.is-ready & {
+    opacity: 0;
+    pointer-events: none;
+  }
+}
+
+@keyframes breathe {
+  0%,
+  100% {
+    opacity: 0.55;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+// Without JavaScript there is no preloader and everything is visible at once
+html.no-js .preloader {
+  display: none;
+}

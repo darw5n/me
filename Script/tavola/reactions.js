@@ -1,0 +1,113 @@
+/**
+ * How objects answer a tap: the red pencil ring, the sticker bounce.
+ *
+ * The ring is an SVG path drawn in real pixels around the object's body and
+ * revealed with a dash offset, so it looks hand-drawn. It is redrawn when the
+ * object changes size (Tidy up, resize).
+ */
+import { PENCIL_ENABLED, clickActionOf } from "./actions.js";
+const SVG_NS = "http://www.w3.org/2000/svg";
+/** A slightly wobbly ellipse in a 100×100 box, as control points. */
+const RING_POINTS = [
+    [52, 3],
+    [22, 2, 5, 10, 4, 40],
+    [3, 68, 6, 96, 34, 97],
+    [58, 98, 92, 99, 96, 67],
+    [99, 40, 98, 5, 66, 3],
+    [54, 2, 40, 4, 32, 9],
+];
+const ringPath = (w, h) => {
+    const scale = (v, i) => ((v * (i % 2 ? h : w)) / 100).toFixed(1);
+    const [start = [], ...curves] = RING_POINTS;
+    return `M${start.map(scale).join(" ")}` + curves.map((c) => `C${c.map(scale).join(" ")}`).join("");
+};
+/** Ensures a ring SVG exists inside `host` and fits its current size. */
+const ringIn = (host) => {
+    let svg = host.querySelector(":scope > .ring");
+    if (!svg) {
+        svg = document.createElementNS(SVG_NS, "svg");
+        svg.setAttribute("class", "ring");
+        svg.setAttribute("aria-hidden", "true");
+        const path = document.createElementNS(SVG_NS, "path");
+        path.setAttribute("pathLength", "1");
+        svg.append(path);
+        host.append(svg);
+        if (getComputedStyle(host).position === "static")
+            host.style.position = "relative";
+    }
+    const w = host.offsetWidth * 1.1;
+    const h = host.offsetHeight * 1.12;
+    svg.setAttribute("viewBox", `0 0 ${w} ${h}`);
+    svg.querySelector("path")?.setAttribute("d", ringPath(w, h));
+    return svg;
+};
+export const createRings = (sound) => ({
+    toggle(host, force) {
+        const had = host.querySelector(":scope > .ring.is-on") !== null;
+        const svg = ringIn(host);
+        svg.getBoundingClientRect(); // flush, so the stroke animates from zero on first draw
+        const on = force ?? !had;
+        svg.classList.toggle("is-on", on);
+        sound.play(on ? "mark" : "lift");
+        return on;
+    },
+    refresh(root) {
+        root.querySelectorAll(".ring").forEach((svg) => {
+            const host = svg.parentElement;
+            if (host)
+                ringIn(host);
+        });
+    },
+});
+/**
+ * A tap on an object, by what the click means there (actions.ts): links that
+ * leave the table are left alone; stickers bounce; photos keep their ring, so a
+ * returning visitor sees what they already opened; notes and cards toggle it.
+ */
+export const reactToTap = (item, target, rings, sound) => {
+    switch (clickActionOf(target)) {
+        case "leave":
+        case "none":
+            return;
+        case "move":
+            if (item.material === "sticker") {
+                item.body.classList.remove("is-popping");
+                void item.body.offsetWidth; // restart the animation
+                item.body.classList.add("is-popping");
+                sound.play("press");
+            }
+            return;
+        case "view": {
+            if (!PENCIL_ENABLED)
+                return;
+            const frame = target.closest(".film a");
+            if (frame)
+                frame.dataset["kept"] = "1";
+            rings.toggle(frame ?? item.body, true);
+            return;
+        }
+        case "ring":
+            rings.toggle(item.body);
+    }
+};
+/**
+ * On the film strip the red ring follows the mouse from frame to frame, like a
+ * pencil choosing on a contact sheet. Hover only (Darwin, 10/11/2026): it stays on
+ * even while the rest of the pencil is on hold. With the pencil on, a clicked
+ * frame keeps its ring.
+ */
+export const attachFilmHover = (root) => {
+    root.querySelectorAll(".film a").forEach((frame) => {
+        frame.addEventListener("pointerenter", (e) => {
+            if (e.pointerType !== "mouse")
+                return;
+            const svg = ringIn(frame);
+            svg.getBoundingClientRect();
+            svg.classList.add("is-on");
+        });
+        frame.addEventListener("pointerleave", () => {
+            if (!(PENCIL_ENABLED && frame.dataset["kept"]))
+                frame.querySelector(".ring")?.classList.remove("is-on");
+        });
+    });
+};
