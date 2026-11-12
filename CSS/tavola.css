@@ -1390,6 +1390,11 @@ body.is-leaving .curtain {
     font-size: 1.9rem;
   }
 }
+@keyframes veil-in {
+  from {
+    opacity: 0;
+  }
+}
 .corner {
   position: fixed;
   z-index: var(--z-ui);
@@ -1642,11 +1647,17 @@ html.has-cursor .cursor {
   max-width: min(94vw, 1200px);
   max-height: 100svh;
   background: transparent;
-  color: #f4f4ee;
+  color: var(--chalk, #f4f4ee);
 }
 .viewer::backdrop {
-  background: rgba(12, 12, 10, 0.86);
-  backdrop-filter: blur(8px);
+  background: rgba(23, 68, 58, 0.82);
+  background: color-mix(in srgb, var(--mat, #17443a) 82%, transparent);
+  backdrop-filter: blur(18px) saturate(1.15);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .viewer[open]::backdrop {
+    animation: veil-in 0.25s ease-out;
+  }
 }
 .viewer .viewer__figure {
   margin: 0;
@@ -1706,8 +1717,14 @@ html.has-dialog body > .controls {
   overflow: visible;
 }
 .request::backdrop {
-  background: rgba(12, 12, 10, 0.86);
-  backdrop-filter: blur(8px);
+  background: rgba(23, 68, 58, 0.82);
+  background: color-mix(in srgb, var(--mat, #17443a) 82%, transparent);
+  backdrop-filter: blur(18px) saturate(1.15);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .request[open]::backdrop {
+    animation: veil-in 0.25s ease-out;
+  }
 }
 .request .request__card {
   position: relative;
