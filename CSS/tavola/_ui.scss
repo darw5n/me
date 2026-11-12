@@ -2,6 +2,27 @@
 
 @use "tokens" as *;
 
+// The veil behind dialogs (viewer, request): the mat's colour at 82%, the table blurred
+// behind. Falls back to the felt green where color-mix or the variable is missing.
+@mixin veil {
+  background: rgba(23, 68, 58, 0.82);
+  background: color-mix(in srgb, var(--mat, #17443a) 82%, transparent);
+  backdrop-filter: blur(18px) saturate(1.15);
+}
+
+@mixin veil-in {
+  @media (prefers-reduced-motion: no-preference) {
+    animation: veil-in 0.25s ease-out;
+  }
+}
+
+@keyframes veil-in {
+  from {
+    opacity: 0;
+  }
+}
+
+
 // ---- Corner: the name, top left -------------------------------------------------------
 .corner {
   position: fixed;
@@ -318,12 +339,17 @@ html.has-cursor * {
   max-width: min(94vw, 1200px);
   max-height: 100svh;
   background: transparent;
-  color: #f4f4ee;
+  // The chalk of the current mat: made to read on it, light or dark (kraft)
+  color: var(--chalk, #f4f4ee);
 
-  // Dark enough to put the photo first, the table still faintly there behind it
+  // A veil in the mat's own colour, not black: the photo comes first and the table is
+  // still there behind it, out of focus (Darwin, 12/11/2026: the black was too dark).
   &::backdrop {
-    background: rgba(12, 12, 10, 0.86);
-    backdrop-filter: blur(8px);
+    @include veil;
+  }
+
+  &[open]::backdrop {
+    @include veil-in;
   }
 
   .viewer__figure {
@@ -405,8 +431,11 @@ html.has-dialog body > .controls {
   overflow: visible;
 
   &::backdrop {
-    background: rgba(12, 12, 10, 0.86);
-    backdrop-filter: blur(8px);
+    @include veil;
+  }
+
+  &[open]::backdrop {
+    @include veil-in;
   }
 
   .request__card {

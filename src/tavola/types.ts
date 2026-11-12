@@ -45,6 +45,8 @@ export interface LayoutItem {
   small: boolean;
   /** Decorations fade out under "Tidy up" and are skipped by its grid. */
   decoration: boolean;
+  /** Lies on top of other objects (a sticker on a folder): never pushed apart, nor pushes. */
+  onTop: boolean;
   /**
    * Where it lies on a phone when the table is messy: top-left corner in px on a
    * 390 px screen, x from the left edge of the opening screen (negative: off to
