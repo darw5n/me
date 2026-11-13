@@ -46,7 +46,7 @@
   <!-- Layout configuration read by Script/tavola/main.js -->
   <script type="application/json" id="table-config">
     {
-      "clusters": ["about", "work", "path", "photos", "trips", "lab", "tools", "words", "records", "ask", "elsewhere"],
+      "clusters": ["about", "work", "path", "photos", "trips", "lab", "tools", "words", "caramella", "records", "ask", "elsewhere"],
       "groups": [
         ["about", "who"],
         ["path", "where I've been"],
@@ -56,6 +56,7 @@
         ["photos", "photos"],
         ["trips", "been there"],
         ["words", "off the clock"],
+        ["caramella", "the boss"],
         ["records", "on repeat"],
         ["ask", "your turn"],
         ["elsewhere", "elsewhere"],
@@ -331,7 +332,7 @@
         <div class="item" data-phone="144,2535" data-cluster="words" data-at="0,0" data-width="420" data-rotate="1.4" data-material="paper">
           <blockquote class="item__body quote"><i class="tack" aria-hidden="true"></i>“He just makes things easier for everyone around&nbsp;him.”<small>Nikola Gluhovic, Senior Software&nbsp;Developer</small></blockquote>
         </div>
-        <div class="item" data-phone="-197,2533" data-cluster="words" data-at="456,10" data-width="270" data-rotate="-2" data-material="card">
+        <div class="item" data-phone="-197,2533" data-cluster="caramella" data-at="0,10" data-width="270" data-rotate="-2" data-material="card">
           <div class="item__body card"><i class="tack tack--yellow" aria-hidden="true"></i><h3>Caramella</h3>A cat from a shelter. She’d eat all day if I let&nbsp;her.</div>
         </div>
         <div class="item" data-phone="-209,2714" data-cluster="words" data-at="20,270" data-width="290" data-rotate="1.2" data-material="card">
@@ -339,6 +340,20 @@
         </div>
         <div class="item" data-phone="555,2611" data-cluster="words" data-at="346,250" data-width="260" data-rotate="-1.4" data-material="card">
           <div class="item__body card"><i class="tack tack--blue" aria-hidden="true"></i><h3>Football</h3>Playmaker, seven-a-side.</div>
+        </div>
+
+        <!-- THE BOSS: Caramella, as polaroids (her card and her sticker live here too) -->
+        <div class="item" data-phone="-373,3810" data-cluster="caramella" data-at="6,-56" data-width="200" data-rotate="-2" data-small data-decoration data-material="chalk">
+          <p class="item__body chalk chalk--small">the boss</p>
+        </div>
+        <div class="item" data-phone="-383,3866" data-cluster="caramella" data-at="300,-10" data-width="220" data-rotate="3.2" data-material="print">
+          <a class="item__body print print--polaroid" href="Img/caramella/caramella-desk.webp" data-view data-caption="Caramella, supervising my work from my hand"><img src="Img/caramella/caramella-desk-thumb.webp" alt="Caramella resting her paws on my hand at the desk" width="480" height="480" draggable="false"><span>on duty</span></a>
+        </div>
+        <div class="item" data-phone="-383,4160" data-cluster="caramella" data-at="545,25" data-width="220" data-rotate="-3.5" data-material="print">
+          <a class="item__body print print--polaroid" href="Img/caramella/caramella-window.webp" data-view data-caption="Caramella at the window"><img src="Img/caramella/caramella-window-thumb.webp" alt="Caramella sitting on the windowsill, looking up" width="480" height="480" draggable="false"><span>waiting for dinner</span></a>
+        </div>
+        <div class="item" data-phone="-383,4454" data-cluster="caramella" data-at="790,-5" data-width="220" data-rotate="2.4" data-material="print">
+          <a class="item__body print print--polaroid" href="Img/caramella/caramella-and-me.webp" data-view data-caption="Caramella and me"><img src="Img/caramella/caramella-and-me-thumb.webp" alt="A selfie of me holding Caramella" width="480" height="480" draggable="false"><span>us</span></a>
         </div>
 
         <!-- ON REPEAT: records as sleeves, the vinyl peeking out (it slides out under the mouse).
@@ -624,8 +639,8 @@
         </div>
 
         <!-- STICKERS (drafts: Darwin will redraw them) -->
-        <div class="item" data-phone="457,3233" data-cluster="words" data-group="pack" data-at="740,190" data-width="110" data-rotate="-8" data-small data-material="sticker">
-          <div class="item__body sticker"><svg viewBox="0 0 120 120" role="img" aria-label="Sticker: Caramella the cat"><path d="M18 22 42 38C52 34 68 34 78 38L102 22 104 76C104 98 84 110 60 110S16 98 16 76Z" fill="#e8843a" stroke="#fff" stroke-width="9" stroke-linejoin="round"/><circle cx="44" cy="66" r="6" fill="#141414"/><circle cx="76" cy="66" r="6" fill="#141414"/><path d="M60 76l-6-5h12zM60 78c0 8-10 10-14 6M60 78c0 8 10 10 14 6" fill="#141414" stroke="#141414" stroke-width="3" stroke-linecap="round"/><path d="M24 74 8 70M24 84 8 88M96 74l16-4M96 84l16 4" stroke="#141414" stroke-width="3" stroke-linecap="round"/><text x="60" y="52" text-anchor="middle" font-size="12" fill="#141414">Caramella</text></svg></div>
+        <div class="item" data-phone="457,3233" data-cluster="caramella" data-group="pack" data-at="215,105" data-width="104" data-rotate="-8" data-small data-on-top data-material="sticker">
+          <div class="item__body sticker sticker--photo"><img src="Img/caramella/caramella-sticker.webp" alt="Sticker: Caramella, my cat" width="360" height="354" draggable="false"></div>
         </div>
         <div class="item" data-phone="-47,1543" data-cluster="path" data-group="pack" data-at="360,-34" data-width="110" data-rotate="7" data-small data-material="sticker">
           <div class="item__body sticker"><svg viewBox="0 0 130 130" role="img" aria-label="Sticker: Made in the Dolomites"><circle cx="65" cy="65" r="58" fill="#f4e9cf" stroke="#fff" stroke-width="9"/><path d="M14 92 42 46l12 20 16-30 18 32 10-14 20 38Q65 112 14 92Z" fill="#c8452a"/><path d="M42 46l-8 14 7-3 5 5 3-3zM70 36l-9 18 8-4 6 6 4-4z" fill="#f4e9cf"/><path id="dolo-arc" d="M18 66a47 47 0 0 1 94 0" fill="none"/><text font-size="10" fill="#141414"><textPath href="#dolo-arc" startOffset="50%" text-anchor="middle">MADE IN THE DOLOMITES</textPath></text></svg></div>

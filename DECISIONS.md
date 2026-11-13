@@ -257,3 +257,10 @@ its own script (서울, 京都…), the country code on the left, a line icon of
 
 **Privacy rule.** The site is public: only city and year. No companions, costs, reasons or exact dates, and the
 next trip has no dates (they would say when the house is empty). The full diary lives in Darwin's private notes.
+
+## 2026-11-13 · The boss: Caramella in polaroids
+
+**Decision.** Caramella gets her own cluster (`caramella`, "the boss"): her card, three polaroids (square photo,
+handwritten caption, no tape: `.print--polaroid`) and her sticker, now cut from a real photo along the outline of her
+head (`.sticker--photo`, the white edge is in the image). Photos are cropped from Darwin's originals with the
+orientation applied and **all metadata removed** (phone photos carry GPS).

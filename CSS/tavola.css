@@ -620,6 +620,21 @@ body.is-leaving .curtain {
   color: #33342e;
 }
 
+.print--polaroid {
+  padding: 5% 5% 24%;
+  background: #fbfaf7;
+}
+.print--polaroid img {
+  aspect-ratio: 1;
+  object-fit: cover;
+}
+.print--polaroid span {
+  bottom: 5%;
+  font: 400 1.6rem/1 var(--font-chalk);
+  color: #2c2c2a;
+  text-align: center;
+}
+
 .postit {
   position: relative;
   display: block;
@@ -1090,6 +1105,12 @@ body.is-leaving .curtain {
 .sticker text {
   font-family: var(--font-ui);
   font-weight: 700;
+}
+.sticker--photo img {
+  display: block;
+  width: 100%;
+  height: auto;
+  filter: drop-shadow(0 3px 3px rgba(0, 0, 0, 0.45));
 }
 .sticker .sticker__display {
   font-family: var(--font-display);
