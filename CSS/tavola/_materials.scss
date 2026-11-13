@@ -1033,6 +1033,71 @@
   }
 }
 
+// ---- Boarding pass (trips) -----------------------------------------------------------
+// The next trip: a paper pass with a perforated stub, real text (no dates on purpose).
+.pass {
+  position: relative;
+  padding: 0.9rem 1rem 0.8rem;
+  border-radius: 0.5rem;
+  background: #fbfaf6;
+  color: #24303a;
+  font-family: var(--font-ui);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+.pass__head {
+  display: flex;
+  justify-content: space-between;
+  margin: -0.9rem -1rem 0.7rem;
+  padding: 0.45rem 1rem;
+  border-radius: 0.5rem 0.5rem 0 0;
+  background: #2f4fa8;
+  color: #fff;
+  font: 700 0.7rem / 1.2 var(--font-ui);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.pass__label {
+  display: block;
+  font: 500 0.65rem / 1.2 var(--font-ui);
+  color: #5d6a75;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.pass__to {
+  margin: 0 0 0.6rem;
+  font: 400 2.2rem / 1 var(--font-display);
+}
+
+.pass__fields {
+  display: grid;
+  grid-template-columns: repeat(3, auto);
+  gap: 0.6rem;
+  margin: 0 0 0.7rem;
+  padding-top: 0.6rem;
+  border-top: 1px dashed #b9c0c6;
+
+  dt {
+    font: 500 0.6rem / 1.2 var(--font-ui);
+    color: #5d6a75;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  dd {
+    margin: 0.1rem 0 0;
+    font: 500 0.8rem / 1.2 var(--font-ui);
+  }
+}
+
+.pass__barcode {
+  display: block;
+  height: 1.6rem;
+  background: repeating-linear-gradient(90deg, #24303a 0 2px, transparent 2px 4px, #24303a 4px 5px, transparent 5px 8px, #24303a 8px 11px, transparent 11px 13px);
+}
+
 // ---- Records (on repeat) ------------------------------------------------------------
 // A sleeve with the vinyl peeking out on the right. Under the mouse the vinyl slides out
 // and turns a little; with reduced motion, or with a finger, it just stays peeking.

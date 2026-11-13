@@ -46,7 +46,7 @@
   <!-- Layout configuration read by Script/tavola/main.js -->
   <script type="application/json" id="table-config">
     {
-      "clusters": ["about", "work", "path", "photos", "lab", "tools", "words", "records", "ask", "elsewhere"],
+      "clusters": ["about", "work", "path", "photos", "trips", "lab", "tools", "words", "records", "ask", "elsewhere"],
       "groups": [
         ["about", "who"],
         ["path", "where I've been"],
@@ -54,6 +54,7 @@
         ["lab", "built for myself"],
         ["tools", "on my desk"],
         ["photos", "photos"],
+        ["trips", "been there"],
         ["words", "off the clock"],
         ["records", "on repeat"],
         ["ask", "your turn"],
@@ -233,6 +234,38 @@
         </div>
         <div class="item" data-phone="-330,2140" data-cluster="photos" data-at="540,650" data-width="200" data-rotate="3.5" data-material="print">
           <a class="item__body print" href="Img/photos/Tokyo-23-XS-043.webp" data-view data-caption="Tokyo, 2023"><i class="tape tape--top"></i><img src="Img/photos/thumbs/Tokyo-23-XS-043.webp" alt="A street in Tokyo leading to the Skytree" draggable="false"><span>Tokyo, 2023</span></a>
+        </div>
+
+        <!-- BEEN THERE: a passport with a stamp per trip (country and year only: the site is public),
+             and the boarding pass of the next one, without dates -->
+        <div class="item" data-phone="830,1600" data-cluster="trips" data-at="6,-56" data-width="260" data-rotate="-2" data-small data-decoration data-material="chalk">
+          <p class="item__body chalk chalk--small">been there</p>
+        </div>
+        <div class="item" id="passport" data-phone="820,1660" data-cluster="trips" data-at="0,0" data-width="420" data-rotate="-1.5" data-span="2" data-material="prop">
+          <div class="item__body prop passport">
+            <svg viewBox="0 0 420 210" role="img" aria-label="My passport, stamped: USA 2022, Japan 2023 and 2025, South Korea 2025, Spain 2019, Croatia 2017, North Macedonia 2020, Austria 2024, United Kingdom 2025">
+              <rect x="1" y="1" width="418" height="208" rx="8" fill="#6d1f2b"/>
+              <rect x="8" y="6" width="202" height="198" rx="3" fill="#f3eee1"/>
+              <rect x="210" y="6" width="202" height="198" rx="3" fill="#efe9da"/>
+              <g fill="none" stroke="#c9bfa6" stroke-opacity=".5" stroke-width=".6"><path d="M8 40c40-14 80 14 120 0s80-14 82 0M8 90c40-14 80 14 120 0s80-14 82 0M8 140c40-14 80 14 120 0s80-14 82 0M8 190c40-14 80 14 120 0s80-14 82 0"/><path d="M210 40c40 14 80-14 120 0s60 14 82 0M210 90c40 14 80-14 120 0s60 14 82 0M210 140c40 14 80-14 120 0s60 14 82 0M210 190c40 14 80-14 120 0s60 14 82 0"/></g>
+              <path d="M210 6v198" stroke="#b8ad92" stroke-width="1.2"/>
+              <text x="196" y="198" text-anchor="end" font-family="Circular, sans-serif" font-size="6" fill="#a89c80" letter-spacing="1">VISAS · 12</text>
+              <text x="224" y="198" font-family="Circular, sans-serif" font-size="6" fill="#a89c80" letter-spacing="1">13 · VISAS</text>
+              <g transform="translate(70 62) rotate(-12)" fill="#2f4fa8" opacity=".82"><circle r="30" fill="none" stroke="#2f4fa8" stroke-width="2.4"/><circle r="25" fill="none" stroke="#2f4fa8" stroke-width=".8"/><text y="-2" text-anchor="middle" font-family="Circular, sans-serif" font-weight="700" font-size="10" letter-spacing=".6">USA</text><text y="11" text-anchor="middle" font-family="Circular, sans-serif" font-size="8" letter-spacing="1">2022</text></g><g transform="translate(160 58) rotate(8)" fill="#b3372f" opacity=".82"><rect x="-36" y="-22" width="72" height="44" rx="4" fill="none" stroke="#b3372f" stroke-width="2.4"/><rect x="-32" y="-18" width="64" height="36" rx="2" fill="none" stroke="#b3372f" stroke-width=".8"/><text y="-2" text-anchor="middle" font-family="Circular, sans-serif" font-weight="700" font-size="10" letter-spacing=".6">JAPAN</text><text y="11" text-anchor="middle" font-family="Circular, sans-serif" font-size="8" letter-spacing="1">2023</text></g><g transform="translate(72 150) rotate(6)" fill="#2e7d4f" opacity=".82"><ellipse rx="40" ry="24" fill="none" stroke="#2e7d4f" stroke-width="2.4"/><text y="-2" text-anchor="middle" font-family="Circular, sans-serif" font-weight="700" font-size="10" letter-spacing=".6">SPAIN</text><text y="11" text-anchor="middle" font-family="Circular, sans-serif" font-size="8" letter-spacing="1">2019</text></g><g transform="translate(160 150) rotate(-9)" fill="#6b3fa0" opacity=".82"><rect x="-36" y="-22" width="72" height="44" rx="4" fill="none" stroke="#6b3fa0" stroke-width="2.4"/><rect x="-32" y="-18" width="64" height="36" rx="2" fill="none" stroke="#6b3fa0" stroke-width=".8"/><text y="-2" text-anchor="middle" font-family="Circular, sans-serif" font-weight="700" font-size="10" letter-spacing=".6">CROATIA</text><text y="11" text-anchor="middle" font-family="Circular, sans-serif" font-size="8" letter-spacing="1">2017</text></g><g transform="translate(270 64) rotate(-6)" fill="#b3372f" opacity=".82"><ellipse rx="40" ry="24" fill="none" stroke="#b3372f" stroke-width="2.4"/><text y="-2" text-anchor="middle" font-family="Circular, sans-serif" font-weight="700" font-size="10" letter-spacing=".6">KOREA</text><text y="11" text-anchor="middle" font-family="Circular, sans-serif" font-size="8" letter-spacing="1">2025</text></g><g transform="translate(352 72) rotate(10)" fill="#2f4fa8" opacity=".82"><circle r="30" fill="none" stroke="#2f4fa8" stroke-width="2.4"/><circle r="25" fill="none" stroke="#2f4fa8" stroke-width=".8"/><text y="-2" text-anchor="middle" font-family="Circular, sans-serif" font-weight="700" font-size="10" letter-spacing=".6">JAPAN</text><text y="11" text-anchor="middle" font-family="Circular, sans-serif" font-size="8" letter-spacing="1">2025</text></g><g transform="translate(268 150) rotate(12)" fill="#2e7d4f" opacity=".82"><rect x="-36" y="-22" width="72" height="44" rx="4" fill="none" stroke="#2e7d4f" stroke-width="2.4"/><rect x="-32" y="-18" width="64" height="36" rx="2" fill="none" stroke="#2e7d4f" stroke-width=".8"/><text y="-2" text-anchor="middle" font-family="Circular, sans-serif" font-weight="700" font-size="10" letter-spacing=".6">AUSTRIA</text><text y="11" text-anchor="middle" font-family="Circular, sans-serif" font-size="8" letter-spacing="1">2024</text></g><g transform="translate(352 152) rotate(-7)" fill="#6b3fa0" opacity=".82"><circle r="30" fill="none" stroke="#6b3fa0" stroke-width="2.4"/><circle r="25" fill="none" stroke="#6b3fa0" stroke-width=".8"/><text y="-2" text-anchor="middle" font-family="Circular, sans-serif" font-weight="700" font-size="10" letter-spacing=".6">UK</text><text y="11" text-anchor="middle" font-family="Circular, sans-serif" font-size="8" letter-spacing="1">2025</text></g><g transform="translate(115 108) rotate(18)" fill="#8a5a2b" opacity=".82"><ellipse rx="40" ry="24" fill="none" stroke="#8a5a2b" stroke-width="2.4"/><text y="-2" text-anchor="middle" font-family="Circular, sans-serif" font-weight="700" font-size="7" letter-spacing=".6">N. MACEDONIA</text><text y="11" text-anchor="middle" font-family="Circular, sans-serif" font-size="8" letter-spacing="1">2020</text></g>
+            </svg>
+          </div>
+        </div>
+        <div class="item" data-phone="840,1950" data-cluster="trips" data-at="450,30" data-width="270" data-rotate="3" data-material="prop">
+          <div class="item__body prop pass">
+            <p class="pass__head"><span>Boarding pass</span><span>Next</span></p>
+            <p class="pass__to"><span class="pass__label">To</span>China</p>
+            <dl class="pass__fields">
+              <div><dt>From</dt><dd>The Dolomites</dd></div>
+              <div><dt>Status</dt><dd>Planning</dd></div>
+              <div><dt>Itinerary</dt><dd>In Notion</dd></div>
+            </dl>
+            <span class="pass__barcode" aria-hidden="true"></span>
+          </div>
         </div>
 
         <!-- LAB -->

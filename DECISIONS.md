@@ -245,3 +245,11 @@ the vinyl slides out and turns. With reduced motion, or with a finger, it stays 
 Cosmo's vinyl is the real picture Darwin had; the other sleeves are drawn like the books (colours and shapes of the
 real cover). Jamie xx *In Colour* and Tame Impala *Currents* are a first pick among the artists Darwin listens to:
 to confirm or swap.
+
+## 2026-11-13 · Been there: a passport and the next boarding pass
+
+**Decision.** A cluster `trips` ("been there"): an open passport with one stamp per trip abroad, and a boarding
+pass for the next trip ("To China · Planning · In Notion").
+
+**Privacy rule.** The site is public: only country and year. No companions, costs, reasons or exact dates, and the
+next trip has no dates (they would say when the house is empty). The full diary lives in Darwin's private notes.
