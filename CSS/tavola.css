@@ -1077,6 +1077,11 @@ body.is-leaving .curtain {
   transform: rotate(-1deg);
 }
 
+html.is-zooming :is(.chalk:not(.group-label), .chalk-drawing) {
+  -webkit-mask-image: none;
+  mask-image: none;
+}
+
 .chalk {
   color: var(--chalk);
   font: 400 3.5rem/1 var(--font-chalk);

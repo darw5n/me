@@ -40,6 +40,9 @@ export class Board {
     phoneZoom;
     labels = new Map();
     homeZoom = 1;
+    /** Last camera zoom, and the timer that brings the chalk grain back once zooming stops. */
+    lastZoom = 1;
+    zoomRest = 0;
     /** Window size at the last layout: a resize keeps the same point of the table in view. */
     lastSize = viewportSize();
     zCounter = 40;
@@ -69,6 +72,14 @@ export class Board {
                 el.view.style.setProperty("--cam-y", `${c.y.toFixed(2)}px`);
                 el.view.style.setProperty("--k", c.zoom.toFixed(4));
                 callbacks.onZoom?.(c.zoom);
+                // While the scale changes, the chalk grain goes (Safari redraws a mask at every new
+                // scale: 21 fps zooming with it, 50 without); it comes back once the zoom rests
+                if (c.zoom !== this.lastZoom) {
+                    this.lastZoom = c.zoom;
+                    document.documentElement.classList.add("is-zooming");
+                    clearTimeout(this.zoomRest);
+                    this.zoomRest = window.setTimeout(() => document.documentElement.classList.remove("is-zooming"), 200);
+                }
                 // A pan or zoom by the visitor (not our own flight) leaves the overview.
                 if (this.overview && !this.camera.flying)
                     this.setOverview(false);

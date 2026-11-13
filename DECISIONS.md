@@ -417,3 +417,7 @@ of several seconds); without it, about 50 fps. Safari recomputed the filter on e
 Chrome and Firefox cache it. A mask is composited and costs almost nothing everywhere. The wobble of the edges is
 gone: the script is hand-written already. The texture lives in the CSS (not in Img/) so the portfolio, which gets
 only the compiled CSS, has it too.
+Measured again in Safari after the change: entrance 0 → 56 fps, moving 0 → 50 fps, zooming 2 → 21 fps. Zooming
+was still slow because Safari redraws a mask at every new scale (50 fps zooming without the grain), so the grain
+also goes while the scale changes and comes back 0.2 s after the zoom rests (`is-zooming`, board.ts). Moving at the
+same scale keeps it.

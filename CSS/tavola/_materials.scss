@@ -666,6 +666,13 @@
 }
 
 // ---- Chalk ---------------------------------------------------------------------
+// While the table zooms the grain goes, and comes back when it rests (board.ts): Safari
+// redraws a mask at every new scale. Moving at the same scale keeps it.
+html.is-zooming :is(.chalk:not(.group-label), .chalk-drawing) {
+  -webkit-mask-image: none;
+  mask-image: none;
+}
+
 // Written with a full stick of chalk: a thin stroke in the same colour thickens the
 // script, so it reads from afar too (13/11/2026: the area titles did not stand out)
 .chalk {
