@@ -89,7 +89,9 @@ Il sito precedente (Locomotive, accordion, tema chiaro/scuro, font Matahari e No
   del Tidy up.
 - **Computer e tablet (≥ 720 px):** `#view` fisso, `#world` trasformato dalla camera. Il tavolo è **infinito**: il pattern
   dello sfondo sta su `#view` e segue la camera (`--cam-x/--cam-y/--k`). Mouse: sposta subito gli oggetti; sul
-  vuoto sposta il tavolo. Tastiera: frecce, `+`/`-`, `0` = See all, `T` = Tidy up.
+  vuoto sposta il tavolo. Tastiera: frecce, `+`/`-` (anche con ⌘/Ctrl: zoom del tavolo, non della pagina), `0` =
+  See all, `T` = Tidy up, `B` = sfondo, `S` = suono, `?` = foglio con tutte le scorciatoie (`shortcuts.ts`); i
+  pulsanti della barra mostrano il loro tasto al passaggio del mouse.
 - **Telefono (< 720 px):** niente camera; il tavolo scorre dentro `.view` (mai la pagina, che resta larga quanto lo
   schermo). In disordine: una **griglia a tre colonne** larghe quanto lo schermo (`"phone"` in `#table-config`,
   fascia per fascia: `left` / `center` / `right`). Al centro, che si vede aprendo, l'essenziale dall'alto in basso

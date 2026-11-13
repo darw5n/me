@@ -389,3 +389,20 @@ its row; a side holding two areas stacks them. On phones "See all" can now zoom 
 wider table fits.
 Then (Darwin): music to the left of "who", books and games to its right, so they no longer lengthen the page (about
 4500 px tall instead of 5200); 240 px between two groups on the same side, so each reads as a group of its own.
+
+## Parked · Composition mode (idea, 13/11/2026)
+
+Not built. A mode for Darwin only (`?compose` in the address): Shift+click or a drawn rectangle selects several
+objects, dragging one moves them all, and a "Copy positions" button copies `data-phone` / `data-at` of every object,
+to paste in a session. It would let him compose from a real phone, and lose nothing on a reload. Alt+click was
+ruled out: on a Mac it downloads the target of a link, and most objects are links.
+
+## 2026-11-13 · Keyboard shortcuts, and a card that lists them
+
+**Decision (Darwin).** ⌘/Ctrl + and − zoom the table like the bar's buttons, not the page; ⌘/Ctrl 0 is See all.
+Plain keys join T, + − 0 and the arrows: B changes the surface, S the sound, ? opens a card with every shortcut and
+the mouse and finger gestures ("⌘ + scroll or pinch: zoom"), for those who would never guess them. The bar's
+buttons show their key on hover and announce it (`aria-keyshortcuts`). Every shortcut presses the bar's own button.
+
+**Not used:** ⌘T and ⌘M, which Darwin first suggested: the browser opens a tab and the system minimises the
+window, and no page can stop them. ⌘B would take away the bookmarks of Firefox and Safari. Hence plain letters.

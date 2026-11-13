@@ -12,6 +12,7 @@
 import { applySurface, currentSurface } from "./backgrounds.js";
 import { Board, type BoardConfig } from "./board.js";
 import { attachControls } from "./controls.js";
+import { installShortcuts } from "./shortcuts.js";
 import { installCursor } from "./cursor.js";
 import { installEmailLinks } from "./email.js";
 import { viewportSize } from "./geometry.js";
@@ -79,6 +80,7 @@ const boot = (): void => {
   view.addEventListener("pointerdown", () => board.markTouched(), { once: true });
 
   installCursor({ view });
+  installShortcuts();
   installViewer(world, sound);
   installEmailLinks(document);
   installRequest(document, sound);
