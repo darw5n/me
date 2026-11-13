@@ -243,7 +243,7 @@ sheet with Darwin's design repository in Notion ("Where I go looking for ideas")
 
 **Decision.** A cluster `records` ("on repeat"): sleeves with the vinyl peeking out on the right; under the mouse
 the vinyl slides out and turns. With reduced motion, or with a finger, it stays peeking. The headphones moved here.
-Sleeves and game cases show the real covers (13/11/2026, Darwin: drawn covers looked fake): taken from Wikipedia
+Sleeves and game cases show the real covers (Darwin's choice, 13/11/2026), taken from Wikipedia
 and, for Cosmo, from the iTunes catalogue; Cosmo's vinyl is the picture Darwin had. Jamie xx *In Colour* and Tame Impala *Currents* are a first pick among the artists Darwin listens to:
 to confirm or swap.
 
