@@ -70,7 +70,8 @@ Img/photos/             ← foto di viaggio grandi (si caricano solo nel visore)
 Img/photos/thumbs/      ← foto piccole per il tavolo (rullino 360 px, stampe 640 px); il link (href) punta al file
                           grande. Foto nuova: crea la miniatura con
                           `cwebp -resize 360 0 -q 78 Img/photos/<foto>.webp -o Img/photos/thumbs/<foto>.webp`
-Img/tools/              ← icone delle app sui tasti della tastierina (96 px; Figma in SVG)
+Img/tools/              ← icone delle app sui tasti della tastierina (96 px; Figma in SVG) e il repository Notion
+Img/records/            ← dischi veri (vinile scontornato, sfondo trasparente); le copertine sono disegnate in SVG
 ```
 
 Il sito precedente (Locomotive, accordion, tema chiaro/scuro, font Matahari e Nognathy) è stato tolto il
