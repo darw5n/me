@@ -372,3 +372,11 @@ fills with time or loading, whichever is slower. Fonts: no system fallback in th
 mid-animation); instead its two fonts are preloaded first and use `font-display: block`, and Have Heart is now
 WOFF2 (309 → 168 KB; not subset: its licence is still to be checked). The words no longer wait for the scripts:
 on 4G they show at 0.7 s instead of 1.8 s.
+
+## 2026-11-13 · The table's cursor stays in the viewer and the dialogs
+
+**Decision (Darwin).** The table's cursor no longer gives way to the system one when a photo or a dialog opens. It
+moves into the open `<dialog>` (the top layer would hide it otherwise) and says what a click does there: on the
+picture the magnifier "zoom in" (zoomed: the hand, the fist while dragging), on the veil the open hand "close", on
+the paper of the form the open hand. Bars, buttons and text fields keep the system cursor, as the table's own bar
+does: they are interface, and a text field needs its I-beam.

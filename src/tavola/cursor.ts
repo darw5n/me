@@ -11,7 +11,14 @@
  * | other site, email, folder     | arrow ↗ + taped label          |
  * | sticker, prop, chalk          | yellow open hand (move only)   |
  * | button down / dragging        | closed hand                    |
- * | bottom bar, dialogs           | the system cursor              |
+ * | photo viewer: on the picture  | magnifier "zoom in"; zoomed: hand, fist while dragging |
+ * | dialogs: the veil, off a photo | open hand "close" (a click there closes)              |
+ * | dialogs: the paper of a form  | open hand                      |
+ * | bars, buttons, text fields    | the system cursor (they are interface, not table)     |
+ *
+ * An open <dialog> sits in the top layer, over everything in the page: the cursor moves
+ * into it while it is open, or it would pass underneath (13/11/2026, Darwin: the table's
+ * cursor stays with photos and dialogs too).
  *
  * The label of a link comes from data-cursor="…".
  */
@@ -69,9 +76,45 @@ export const installCursor = ({ view }: CursorOptions): void => {
     if (words) label.textContent = words;
   };
 
+  // Inside an open dialog: what a click does there (null: the system cursor)
+  const inDialog = (dialog: HTMLDialogElement, target: Element): [CursorState, string] | null => {
+    if (target.closest(".controls, button, a, input, textarea, select, label, summary")) return null;
+    const stage = dialog.querySelector<HTMLElement>(".viewer__stage");
+    if (stage) {
+      const img = stage.querySelector("img");
+      const r = img?.getBoundingClientRect();
+      const onPicture = !!r && x >= r.left && x <= r.right && y >= r.top && y <= r.bottom;
+      const zoomed = dialog.classList.contains("is-zoomed");
+      if (down) return ["fist", ""];
+      if (onPicture) return zoomed ? ["hand", ""] : ["lens", "zoom in"];
+      return zoomed ? ["hand", ""] : ["hand", "close"];
+    }
+    // A form on paper: the paper is the dialog's own box, the rest is the veil
+    if (target === dialog) {
+      const r = dialog.getBoundingClientRect();
+      const onPaper = x >= r.left && x <= r.right && y >= r.top && y <= r.bottom;
+      return onPaper ? ["hand", ""] : ["hand", "close"];
+    }
+    return ["hand", ""];
+  };
+
   const paint = (target: EventTarget | null): void => {
-    // Interface and dialogs keep the system cursor: they are not on the table.
-    if (!(target instanceof Element) || document.querySelector("dialog[open]") || target.closest(".controls, .corner")) {
+    // The cursor lives where it can be seen: in the open dialog, else in the page
+    const dialog = document.querySelector<HTMLDialogElement>("dialog[open]");
+    const host = dialog ?? document.body;
+    if (el.parentNode !== host) host.append(el);
+    if (!(target instanceof Element)) {
+      root.classList.remove("has-cursor");
+      return;
+    }
+    if (dialog) {
+      const state = inDialog(dialog, target);
+      root.classList.toggle("has-cursor", state !== null);
+      if (state) show(...state);
+      return;
+    }
+    // The bottom bar and the corner are interface, not table: the system cursor
+    if (target.closest(".controls, .corner")) {
       root.classList.remove("has-cursor");
       return;
     }
@@ -130,7 +173,7 @@ export const installCursor = ({ view }: CursorOptions): void => {
   // The hand closes as soon as the button goes down, before any movement.
   addEventListener("pointerdown", (e) => {
     if (e.pointerType !== "mouse" || e.button !== 0) return;
-    down = view.contains(e.target as Node);
+    down = view.contains(e.target as Node) || !!(e.target as Element | null)?.closest?.(".viewer__stage");
     target = e.target;
     schedule();
   });
