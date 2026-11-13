@@ -252,5 +252,8 @@ to confirm or swap.
 **Decision.** A cluster `trips` ("been there"): an open passport with one stamp per trip abroad, and a boarding
 pass for the next trip ("To China · Planning · In Notion").
 
-**Privacy rule.** The site is public: only country and year. No companions, costs, reasons or exact dates, and the
+Stamps follow the style of travel-app stamps (13/11/2026, Darwin's reference): one ink colour, the city on top in
+its own script (서울, 京都…), the country code on the left, a line icon of a landmark, the year below.
+
+**Privacy rule.** The site is public: only city and year. No companions, costs, reasons or exact dates, and the
 next trip has no dates (they would say when the house is empty). The full diary lives in Darwin's private notes.
