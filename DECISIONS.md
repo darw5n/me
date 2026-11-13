@@ -243,8 +243,8 @@ sheet with Darwin's design repository in Notion ("Where I go looking for ideas")
 
 **Decision.** A cluster `records` ("on repeat"): sleeves with the vinyl peeking out on the right; under the mouse
 the vinyl slides out and turns. With reduced motion, or with a finger, it stays peeking. The headphones moved here.
-Cosmo's vinyl is the real picture Darwin had; the other sleeves are drawn like the books (colours and shapes of the
-real cover). Jamie xx *In Colour* and Tame Impala *Currents* are a first pick among the artists Darwin listens to:
+Sleeves and game cases show the real covers (13/11/2026, Darwin: drawn covers looked fake): taken from Wikipedia
+and, for Cosmo, from the iTunes catalogue; Cosmo's vinyl is the picture Darwin had. Jamie xx *In Colour* and Tame Impala *Currents* are a first pick among the artists Darwin listens to:
 to confirm or swap.
 
 ## 2026-11-13 · Been there: a passport and the next boarding pass
@@ -271,9 +271,9 @@ orientation applied and **all metadata removed** (phone photos carry GPS).
 
 ## 2026-11-13 · Press start: the controller and a few games
 
-**Decision.** A cluster `games` ("press start"): Darwin's white DualSense, drawn from above, and four game cases
-fanned out, picked from his favourites (Astro Bot, Ratchet & Clank: Rift Apart, The Last of Us Part I, Rayman Legends).
-Covers are drawn like the books and the records; the band says PS5 or PS4, as the real game.
+**Decision.** A cluster `games` ("press start"): Darwin's white DualSense, drawn from above, and four game cases,
+each a separate object with its real cover, picked from his favourites (Astro Bot, Ratchet & Clank: Rift Apart, The Last of Us Part I, Rayman Legends).
+The band on the case says PS5 or PS4, as the real game.
 
 ## 2026-11-13 · The viewer becomes the portfolio's
 

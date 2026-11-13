@@ -1202,11 +1202,11 @@
     inset 0 0 0 1px rgba(0, 0, 0, 0.08),
     0 6px 12px rgba(0, 0, 0, 0.35);
 
-  svg {
+  img {
     display: block;
     width: 100%;
     height: 100%;
-    filter: none;
+    object-fit: cover;
   }
 }
 
@@ -1255,6 +1255,33 @@
       transform: translateX(52%) rotate(50deg);
     }
   }
+}
+
+// ---- Game case (press start) ----------------------------------------------------------
+// A PlayStation case: a blue shell, the white band on top with PS5 or PS4, the real cover.
+.game-case {
+  display: block;
+  padding: 3px;
+  border-radius: 5px;
+  background: #1f4fa6;
+  box-shadow: 0 8px 14px -4px rgba(0, 0, 0, 0.5);
+
+  img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 135 / 170;
+    object-fit: cover;
+    border-radius: 0 0 2px 2px;
+  }
+}
+
+.game-case__band {
+  display: block;
+  padding: 0.2rem 0.4rem;
+  border-radius: 2px 2px 0 0;
+  background: #fff;
+  font: 700 0.62rem / 1 var(--font-ui);
+  color: #111;
 }
 
 // ---- Macro pad (tools) --------------------------------------------------------------
