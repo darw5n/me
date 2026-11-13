@@ -189,6 +189,11 @@ html:not(.is-ready) .item {
   pointer-events: none;
   white-space: nowrap;
   transition: opacity 0.3s;
+  // The script's first and last letters reach past the text box with their tails, and
+  // a mask clips everything outside the box: room around the word (taken back with a
+  // negative margin, so it stays in place) keeps the tails whole (13/11/2026)
+  padding: 0.25em 0.45em;
+  margin: -0.25em -0.45em;
   mask-image: linear-gradient(to right, #000 calc(var(--write) - 8%), transparent var(--write));
 
   .world.is-tidy & {

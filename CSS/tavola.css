@@ -455,6 +455,8 @@ html:not(.is-ready) .item {
   pointer-events: none;
   white-space: nowrap;
   transition: opacity 0.3s;
+  padding: 0.25em 0.45em;
+  margin: -0.25em -0.45em;
   mask-image: linear-gradient(to right, #000 calc(var(--write) - 8%), transparent var(--write));
 }
 .world.is-tidy .group-label {
