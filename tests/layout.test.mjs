@@ -97,6 +97,26 @@ for (const [w, h] of [[720, 1024], [1024, 768], [1280, 720], [1440, 900], [1920,
   });
 }
 
+// Nine areas from the twelve clusters, as on /me
+const areas = [["c0"], ["c1", "c2"], ["c3"], ["c4"], ["c5", "c6"], ["c7"], ["c8"], ["c9", "c10"], ["c11"]];
+for (const [w, h] of [[1280, 800], [1440, 900], [1920, 1080], [3440, 1440]]) {
+  test(`areas at ${w}x${h}: a 3x3 grid, read row by row, no overlaps`, () => {
+    const r = layoutMessy(big, { viewportWidth: w, viewportHeight: h, clusterOrder: bigOrder, zones: areas });
+    assertNoOverlaps(big, r.placements);
+    const firstOf = areas.map((a) => clusterBox(r.placements, a[0]));
+    for (let row = 0; row < 3; row++) {
+      const [a, b, c] = firstOf.slice(row * 3, row * 3 + 3);
+      assert.ok(a.x < b.x && b.x < c.x, `row ${row} reads left to right`);
+      if (row > 0) {
+        const above = firstOf.slice((row - 1) * 3, row * 3);
+        assert.ok(Math.min(a.y, b.y, c.y) > Math.min(...above.map((p) => p.y)), `row ${row} sits below row ${row - 1}`);
+      }
+    }
+    // Areas are set apart: the gap between columns is much wider than inside an area
+    assert.ok(firstOf[1].x - (firstOf[0].x + firstOf[0].w) >= 300, "columns of areas are well apart");
+  });
+}
+
 test("messy table: a few pixels wider keeps every cluster where it was", () => {
   const a = layoutMessy(big, { viewportWidth: 1440, viewportHeight: 900, clusterOrder: bigOrder });
   const b = layoutMessy(big, { viewportWidth: 1450, viewportHeight: 900, clusterOrder: bigOrder });

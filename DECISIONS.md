@@ -319,3 +319,18 @@ the passport, the drum-and-bass sticker joins the records.
 
 **Why.** With 13 clusters at the same distance, work and hobbies read as one pile, and hobbies outnumber work
 (38 objects against 27). Darwin asked for two versions to compare: zones only, and zones plus cuts.
+
+## 2026-11-13 · Nine areas on a grid (version A, refined)
+
+**Decision (Darwin chose version A, then asked for macro areas, more space between them, a 3×3 grid on large
+screens).** The zones become nine areas, read row by row: who · work (projects, path, quotes) · lab and tools /
+photos · trips · Caramella / music and games · books · contacts and profiles. Each area is packed on its own as a
+landscape cell (it never reshuffles inside when the window changes), then the areas sit on a grid with 320 × 300 px
+between them: 3 columns from 1200 px, below that 1–3 columns, whichever fits the screen's shape. Phones keep the
+hand-made composition.
+
+**Also.** Two more colleague quotes join the work area, from other roles than Nikola's: Franco Dall'Ongaro
+(software engineer, the designer's eye) and Francesca Tosi (product manager, the solutions), in the English
+translations prepared in `storytelling/evidence/colleague-feedback.md`, where their permission is recorded. The
+area titles in chalk are bigger (3.4rem) and thicker (a stroke in the chalk colour), and sit higher above their
+area, so they read from afar.

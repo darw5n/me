@@ -76,9 +76,13 @@ const buildCluster = (items, air) => {
     relax(boxes);
     return { boxes, bounds: union(boxes) };
 };
-/** Gap between zones: about three times the gap between clusters, so areas read apart. */
-const ZONE_GAP_X = 300;
-const ZONE_GAP_Y = 280;
+/** Gaps between areas: about three times the gap between clusters, so areas read apart. */
+const AREA_GAP_X = 320;
+const AREA_GAP_Y = 300;
+/** From this window width the areas sit on a 3-column grid (3x3 with nine areas). */
+const GRID_WIDE = 1200;
+/** Shape each area aims for on its own: a landscape cell. */
+const AREA_RATIO = 1.5;
 /** Zoom at which the messy table opens: the widest cluster fits the window. */
 export const homeZoom = (clusters, viewportWidth, margin) => {
     const widest = Math.max(1, ...clusters.map((c) => c.bounds.w));
@@ -159,29 +163,66 @@ export const layoutMessy = (items, opts) => {
     const target = (viewportWidth / viewportHeight) * 1.15;
     const from = Math.ceil(Math.max(fitWidth, widest) / WIDTH_STEP) * WIDTH_STEP;
     let pick = null;
-    // Each zone is packed on its own, then the zones are packed as blocks, wider apart
-    const packZones = (width) => {
-        const spots = Array(clusters.length);
-        const local = zoneIndexes.map((idx) => packSkyline(idx.map((i) => clusters[i]), width, gapX, gapY));
-        const blocks = local.map((zs, z) => {
-            const idx = zoneIndexes[z];
-            const w = Math.max(...zs.map((p, k) => p.x + clusters[idx[k]].bounds.w));
-            const h = Math.max(...zs.map((p, k) => p.y + clusters[idx[k]].bounds.h));
-            return { boxes: [], bounds: { x: 0, y: 0, w, h } };
+    const extent = (spots, idx) => ({
+        w: Math.max(...idx.map((i, k) => spots[k].x + clusters[i].bounds.w)),
+        h: Math.max(...idx.map((i, k) => spots[k].y + clusters[i].bounds.h)),
+    });
+    if (zoneIndexes.length < 2) {
+        // One area: clusters packed freely, the table shaped like the screen. Widths are tried
+        // on a fixed step, so resizing by a few pixels never reshuffles the clusters.
+        for (let width = from; width <= from + WIDTH_STEP * 24; width += WIDTH_STEP) {
+            const spots = packSkyline(clusters, width, gapX, gapY);
+            const e = extent(spots, clusters.map((_, i) => i));
+            const score = Math.abs(Math.log(e.w / e.h / target));
+            if (!pick || score < pick.score - 0.01)
+                pick = { spots, score };
+        }
+    }
+    else {
+        // Areas: each one packed on its own at the width that makes it a landscape cell.
+        // This does not depend on the window, so an area never reshuffles inside.
+        const areas = zoneIndexes.map((idx) => {
+            const own = idx.map((i) => clusters[i]);
+            const narrowest = Math.max(...own.map((c) => c.bounds.w));
+            const widestRow = own.reduce((sum, c) => sum + c.bounds.w + gapX, 0);
+            let best = null;
+            for (let width = narrowest; width <= Math.max(narrowest, widestRow); width += 80) {
+                const spots = packSkyline(own, width, gapX, gapY);
+                const e = extent(spots, idx);
+                const score = Math.abs(Math.log(e.w / e.h / AREA_RATIO));
+                if (!best || score < best.score - 0.01)
+                    best = { spots, ...e, score };
+            }
+            return { idx, ...best };
         });
-        const at = packSkyline(blocks, width, ZONE_GAP_X, ZONE_GAP_Y, 0);
-        local.forEach((zs, z) => zs.forEach((p, k) => {
-            spots[zoneIndexes[z][k]] = { x: at[z].x + p.x, y: at[z].y + p.y };
-        }));
-        return spots;
-    };
-    for (let width = from; width <= from + WIDTH_STEP * 24; width += WIDTH_STEP) {
-        const spots = packZones(width);
-        const right = Math.max(...spots.map((p, i) => p.x + clusters[i].bounds.w));
-        const bottom = Math.max(...spots.map((p, i) => p.y + clusters[i].bounds.h));
-        const score = Math.abs(Math.log(right / bottom / target));
-        if (!pick || score < pick.score - 0.01)
-            pick = { spots, width, score };
+        // The grid: 3 columns on large screens, else the count whose shape fits the screen
+        const gridOf = (columns) => {
+            const rows = Math.ceil(areas.length / columns);
+            const colW = Array.from({ length: columns }, (_, c) => Math.max(0, ...areas.filter((_, a) => a % columns === c).map((a) => a.w)));
+            const rowH = Array.from({ length: rows }, (_, r) => Math.max(0, ...areas.filter((_, a) => Math.floor(a / columns) === r).map((a) => a.h)));
+            const colX = colW.map((_, c) => colW.slice(0, c).reduce((x, w) => x + w + AREA_GAP_X, 0));
+            const rowY = rowH.map((_, r) => rowH.slice(0, r).reduce((y, h) => y + h + AREA_GAP_Y, 0));
+            const spots = Array(clusters.length);
+            areas.forEach((area, a) => {
+                const x = colX[a % columns], y = rowY[Math.floor(a / columns)];
+                area.idx.forEach((i, k) => {
+                    spots[i] = { x: x + area.spots[k].x, y: y + area.spots[k].y };
+                });
+            });
+            return { spots, w: colX[columns - 1] + colW[columns - 1], h: rowY[rows - 1] + rowH[rows - 1] };
+        };
+        const most = Math.min(3, areas.length);
+        if (viewportWidth >= GRID_WIDE) {
+            pick = { spots: gridOf(most).spots, score: 0 };
+        }
+        else {
+            for (let columns = 1; columns <= most; columns++) {
+                const g = gridOf(columns);
+                const score = Math.abs(Math.log(g.w / g.h / target));
+                if (!pick || score < pick.score)
+                    pick = { spots: g.spots, score };
+            }
+        }
     }
     const placements = new Map();
     const placed = [];
