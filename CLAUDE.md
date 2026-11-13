@@ -91,11 +91,14 @@ Il sito precedente (Locomotive, accordion, tema chiaro/scuro, font Matahari e No
   dello sfondo sta su `#view` e segue la camera (`--cam-x/--cam-y/--k`). Mouse: sposta subito gli oggetti; sul
   vuoto sposta il tavolo. Tastiera: frecce, `+`/`-`, `0` = See all, `T` = Tidy up.
 - **Telefono (< 720 px):** niente camera; il tavolo scorre dentro `.view` (mai la pagina, che resta larga quanto lo
-  schermo). In disordine: la composizione fatta a mano da Darwin su uno schermo di 390 px
-  (`data-phone="x,y"` su ogni oggetto, x dal bordo sinistro dello schermo iniziale), scalata sugli altri schermi;
-  gli oggetti hanno le larghezze dei 390 px, così il testo va a capo uguale ovunque. Il tavolo è largo 7 schermi
-  (3 per lato), scorre libero e si allarga quando porti un oggetto verso un bordo. Per cambiare la composizione:
-  sposta gli oggetti nel browser a 390 px e rileggi le posizioni. In Tidy up: una
+  schermo). In disordine: una **griglia a tre colonne** larghe quanto lo schermo (`"phone"` in `#table-config`,
+  fascia per fascia: `left` / `center` / `right`). Al centro, che si vede aprendo, l'essenziale dall'alto in basso
+  (chi sono e percorso, cartellina del portfolio, foto, contatti) senza vuoti; ai lati, a uno swipe, ciò che va
+  con ogni fascia, alla sua altezza (schermate dei progetti e citazioni accanto alla cartellina). Un oggetto va in
+  un'area diversa dal suo gruppo con `data-phone-area`. Senza `"phone"` (es. il portfolio) vale ancora la
+  composizione a mano `data-phone="x,y"` sui 390 px. Gli oggetti hanno le larghezze dei 390 px, così il testo va a
+  capo uguale ovunque. Il tavolo è largo 7 schermi (3 per lato), scorre libero e si allarga quando porti un oggetto
+  verso un bordo. In Tidy up: una
   colonna sola (a due colonne per gli oggetti stretti), niente scorrimento laterale. Pressione lunga per sollevare
   un oggetto. Due dita zoomano il tavolo, non la pagina (`phone-zoom.ts`, fino al 250%).
   "See all" mostra tutta la composizione in larghezza e diventa "Zoom back in" (anche dopo un pinch).

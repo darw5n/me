@@ -12,7 +12,7 @@ import { PENCIL_ENABLED } from "./actions.js";
 import { CameraController } from "./camera.js";
 import { clamp, easeInOut, union, viewportSize } from "./geometry.js";
 import { measure, positionOf, readItems, rectOf, render, setWidth, toLayoutItem, } from "./items.js";
-import { NARROW_BREAKPOINT, PHONE_BASE_WIDTH, layoutComposed, layoutMessy, layoutTidy, phoneScale, phoneTable, phoneTidyFit, tidyGrid, tidyWidth, } from "./layout.js";
+import { NARROW_BREAKPOINT, PHONE_BASE_WIDTH, layoutComposed, layoutPhoneGrid, layoutMessy, layoutTidy, phoneScale, phoneTable, phoneTidyFit, tidyGrid, tidyWidth, } from "./layout.js";
 import { attachPhoneZoom } from "./phone-zoom.js";
 import { attachFilmHover, createRings, reactToTap } from "./reactions.js";
 /** Screen padding kept around the content by "See all". */
@@ -194,6 +194,9 @@ export class Board {
                 this.items[i].scale = k;
                 return { ...li, size: { w: li.size.w * k, h: li.size.h * k } };
             });
+            if (this.config.phone?.length) {
+                return layoutPhoneGrid(sized, { viewportWidth: vw, side: this.table().side, rows: this.config.phone, padding: PHONE_PADDING });
+            }
             return layoutComposed(sized, { viewportWidth: vw, side: this.table().side, padding: PHONE_PADDING });
         }
         return layoutMessy(sized, { viewportWidth: vw, viewportHeight: viewportSize().h, clusterOrder: this.config.clusters, zones: this.config.zones });

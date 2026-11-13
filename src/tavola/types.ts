@@ -53,6 +53,8 @@ export interface LayoutItem {
    * the left). Composed by hand; other screens scale it.
    */
   phoneAt?: Point;
+  /** Area of the phone grid it belongs to (data-phone-area); defaults to the cluster. */
+  phoneArea?: string;
 }
 
 /** Position assigned to an item by a layout pass (top-left of the un-rotated element). */

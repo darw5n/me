@@ -31,6 +31,7 @@ const readConfig = (): BoardConfig => {
       clusters: Array.isArray(parsed.clusters) ? parsed.clusters : [],
       groups: Array.isArray(parsed.groups) ? parsed.groups : [],
       zones: Array.isArray(parsed.zones) ? parsed.zones : undefined,
+      phone: Array.isArray(parsed.phone) ? parsed.phone : undefined,
     };
   } catch {
     return fallback;

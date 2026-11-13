@@ -16,7 +16,7 @@ import {
   measure, positionOf, readItems, rectOf, render, setWidth, toLayoutItem, type TableItem,
 } from "./items.js";
 import {
-  NARROW_BREAKPOINT, PHONE_BASE_WIDTH, layoutComposed, layoutMessy, layoutTidy, phoneScale, phoneTable,
+  NARROW_BREAKPOINT, PHONE_BASE_WIDTH, layoutComposed, layoutPhoneGrid, type PhoneRow, layoutMessy, layoutTidy, phoneScale, phoneTable,
   phoneTidyFit, tidyGrid, tidyWidth,
 } from "./layout.js";
 import { attachPhoneZoom, type PhoneZoom } from "./phone-zoom.js";
@@ -31,6 +31,8 @@ export interface BoardConfig {
   groups: [id: string, label: string][];
   /** Optional: clusters on the same theme, kept together when messy (see layoutMessy). */
   zones?: string[][] | undefined;
+  /** Optional: the phone grid, band by band (see layoutPhoneGrid). Without it: data-phone. */
+  phone?: PhoneRow[] | undefined;
 }
 
 export interface BoardElements {
@@ -229,6 +231,9 @@ export class Board {
         this.items[i]!.scale = k;
         return { ...li, size: { w: li.size.w * k, h: li.size.h * k } };
       });
+      if (this.config.phone?.length) {
+        return layoutPhoneGrid(sized, { viewportWidth: vw, side: this.table().side, rows: this.config.phone, padding: PHONE_PADDING });
+      }
       return layoutComposed(sized, { viewportWidth: vw, side: this.table().side, padding: PHONE_PADDING });
     }
     return layoutMessy(sized, { viewportWidth: vw, viewportHeight: viewportSize().h, clusterOrder: this.config.clusters, zones: this.config.zones });

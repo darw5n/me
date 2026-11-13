@@ -283,6 +283,8 @@ export interface ColumnOptions {
   padding?: number;
   /** Where the first row starts, below the fixed corners. */
   top?: number;
+  /** Spacing: between objects side by side, between rows, between groups. */
+  gaps?: { column: number; row: number; section: number };
 }
 
 /** Phone spacing: between objects side by side, between rows, between groups (about 3x). */
@@ -298,6 +300,7 @@ const SECTION_GAP = 84;
 export const layoutColumn = (items: LayoutItem[], opts: ColumnOptions): LayoutResult => {
   const padding = opts.padding ?? 16;
   const width = opts.viewportWidth - padding * 2;
+  const gaps = opts.gaps ?? { column: COLUMN_GAP, row: ROW_GAP, section: SECTION_GAP };
   const boxes: Box[] = [];
   let x = padding;
   let y = opts.top ?? 24;
@@ -315,15 +318,15 @@ export const layoutColumn = (items: LayoutItem[], opts: ColumnOptions): LayoutRe
     cluster = item.cluster;
     if (x > padding && (newGroup || x + r.w > padding + width + 0.5)) {
       x = padding;
-      y += rowHeight + (newGroup ? SECTION_GAP : ROW_GAP);
+      y += rowHeight + (newGroup ? gaps.section : gaps.row);
       rowHeight = 0;
     }
     const box: Box = { item: softened, x, y, w: r.w, h: r.h };
     boxes.push(box);
-    x += r.w + COLUMN_GAP;
+    x += r.w + gaps.column;
     rowHeight = Math.max(rowHeight, r.h);
   }
-  relax(boxes, ROW_GAP - 4, 10, true);
+  relax(boxes, gaps.row - 4, 10, true);
   const placements: Placements = new Map();
   for (const box of boxes) placements.set(box.item.id, placementFor(box, box.item.rotation));
   return { placements, bounds: union(boxes), labels: new Map(), zoom: 1 };
@@ -380,6 +383,75 @@ export const layoutComposed = (items: LayoutItem[], opts: ComposedOptions): Layo
   }
   if (loose.length) {
     const flow = layoutColumn(loose, { viewportWidth: opts.viewportWidth, padding: opts.padding ?? 20, top: bottom + SECTION_GAP });
+    for (const [id, p] of flow.placements) placements.set(id, { ...p, x: p.x + opts.side });
+  }
+  return { placements, bounds: boundsOf(items, placements), labels: new Map(), zoom: 1 };
+};
+
+/** A band of the phone grid: areas in the column left of the opening screen, in it, right of it. */
+export interface PhoneRow {
+  left?: string[];
+  center?: string[];
+  right?: string[];
+}
+
+export interface PhoneGridOptions {
+  viewportWidth: number;
+  /** x of the opening screen on the table (PhoneTable.side). */
+  side: number;
+  rows: PhoneRow[];
+  padding?: number;
+}
+
+/** Phone grid spacing: wider than the plain column, so objects get air (13/11/2026). */
+const PHONE_GRID_GAPS = { column: 28, row: 40, section: 110 };
+const PHONE_BAND_GAP = 150;
+const PHONE_GRID_TOP = 80;
+
+/**
+ * Phone, messy, when the page declares a grid: three columns as wide as the screen.
+ * The middle one is the opening screen and holds what matters most, top to bottom, with
+ * no gaps; the side columns, a swipe away, hold what goes with it, each cell level with
+ * its row in the middle (the project sheets beside the portfolio folder, the quotes on
+ * the other side), pushed down only when the cell above it is longer. Inside a cell objects flow
+ * in reading order (layoutColumn). Items in no cell flow at the bottom of the middle.
+ */
+export const layoutPhoneGrid = (items: LayoutItem[], opts: PhoneGridOptions): LayoutResult => {
+  const vw = opts.viewportWidth;
+  const padding = opts.padding ?? 20;
+  const areaOf = (i: LayoutItem): string => i.phoneArea ?? i.cluster;
+  const used = new Set<string>();
+  const placements: Placements = new Map();
+  const cell = (keys: string[] | undefined, dx: number, top: number): number => {
+    if (!keys?.length) return 0;
+    // Items of these areas, area by area, each in reading order; the area is the group
+    const own = keys.flatMap((k) => items.filter((i) => areaOf(i) === k).map((i) => ({ ...i, cluster: k })));
+    if (!own.length) return 0;
+    own.forEach((i) => used.add(i.id));
+    const flow = layoutColumn(own, { viewportWidth: vw, padding, top: 0, gaps: PHONE_GRID_GAPS });
+    for (const [id, p] of flow.placements) placements.set(id, { ...p, x: p.x + dx, y: p.y + top });
+    return flow.bounds.y + flow.bounds.h;
+  };
+  // The middle column runs on without gaps: it is the page people read. A side cell
+  // starts level with its row in the middle, or lower if the cell above it is still going.
+  let middle = PHONE_GRID_TOP;
+  let leftEnd = 0;
+  let rightEnd = 0;
+  for (const row of opts.rows) {
+    const top = middle;
+    const h = cell(row.center, opts.side, top);
+    if (h > 0) middle = top + h + PHONE_BAND_GAP;
+    const lTop = Math.max(top, leftEnd);
+    const lh = cell(row.left, opts.side - vw, lTop);
+    if (lh > 0) leftEnd = lTop + lh + PHONE_BAND_GAP;
+    const rTop = Math.max(top, rightEnd);
+    const rh = cell(row.right, opts.side + vw, rTop);
+    if (rh > 0) rightEnd = rTop + rh + PHONE_BAND_GAP;
+  }
+  let y = middle;
+  const loose = items.filter((i) => !used.has(i.id));
+  if (loose.length) {
+    const flow = layoutColumn(loose, { viewportWidth: vw, padding, top: y, gaps: PHONE_GRID_GAPS });
     for (const [id, p] of flow.placements) placements.set(id, { ...p, x: p.x + opts.side });
   }
   return { placements, bounds: boundsOf(items, placements), labels: new Map(), zoom: 1 };

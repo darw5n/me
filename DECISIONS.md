@@ -340,3 +340,17 @@ in a long row: Caramella's card and polaroids, the records and headphones, the f
 share an area ("off the clock"), music has its own. In the work area the career path comes first, a little larger
 (1.45rem on the table, unchanged on phones), with the three quotes under it, then the project screens. Every quote
 keeps its last two words together (`&nbsp;`), so no word is left alone on a line, also in Firefox.
+
+## 2026-11-13 · Phone: a grid, the middle column first
+
+**Decision (Darwin: "on mobile the objects are too close; the middle column matters most").** On phones the
+messy table becomes a grid of three screen-wide columns (`"phone"` in `#table-config`, band by band). The middle
+column, the one that opens, reads like a page with no gaps: who and the career path, the portfolio folder, the
+film strip and the photo post-it, the contacts. The side columns, a swipe away, hold what goes with each band, level
+with it: the project sheets left of the folder and the colleague quotes right of it; lab and tools beside the photos,
+with the loose prints on the other side; trips and Caramella beside the contacts; music, books and games below.
+Inside a cell objects flow in reading order with more air (28 / 40 / 110 px instead of 20 / 28 / 84).
+`data-phone-area` puts an object in a different area than its cluster (sheets, quotes, prints).
+
+**Replaces** the hand-made composition on /me (`data-phone` stays in the markup and still drives the portfolio,
+which declares no grid). Darwin can still move objects by hand; a new object needs no coordinates any more.

@@ -2,7 +2,7 @@
 // They import the compiled modules, so compile first: npx -y -p typescript tsc
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { layoutMessy, layoutColumn, layoutComposed, layoutTidy, phoneTable, tidyGrid, tidyWidth } from "../Script/tavola/layout.js";
+import { layoutMessy, layoutColumn, layoutComposed, layoutPhoneGrid, layoutTidy, phoneTable, tidyGrid, tidyWidth } from "../Script/tavola/layout.js";
 import { rotatedBox, overlapsWithGap } from "../Script/tavola/geometry.js";
 
 const item = (id, cluster, rel, size, extra = {}) => ({
@@ -243,4 +243,31 @@ test("phone column: a new group starts further down than the next row of the sam
   const rowGap = placements.get("b").y - (placements.get("a").y + 100);
   const sectionGap = placements.get("c").y - (placements.get("b").y + 100);
   assert.ok(sectionGap >= rowGap * 2, `section gap ${sectionGap} is not at least twice the row gap ${rowGap}`);
+});
+
+test("phone grid: the middle column holds its areas in order, sides sit level with their row, nothing overlaps", () => {
+  const phone = [
+    item("hello", "about", { x: 0, y: 0 }, { w: 350, h: 260 }),
+    item("folder", "work", { x: 0, y: 0 }, { w: 340, h: 300 }),
+    item("sheet-1", "work", { x: 0, y: 0 }, { w: 340, h: 280 }, { phoneArea: "projects" }),
+    item("sheet-2", "work", { x: 0, y: 0 }, { w: 340, h: 280 }, { phoneArea: "projects" }),
+    item("quote", "path", { x: 0, y: 0 }, { w: 330, h: 180 }, { phoneArea: "quotes" }),
+    item("ask", "ask", { x: 0, y: 0 }, { w: 300, h: 300 }),
+    item("stray", "elsewhere", { x: 0, y: 0 }, { w: 200, h: 100 }),
+  ];
+  const vw = 390, side = 1170;
+  const rows = [{ center: ["about"] }, { left: ["projects"], center: ["work"], right: ["quotes"] }, { center: ["ask"] }];
+  const r = layoutPhoneGrid(phone, { viewportWidth: vw, side, rows, padding: 20 });
+  assert.equal(r.placements.size, phone.length);
+  assertNoOverlaps(phone, r.placements);
+  const at = (id) => r.placements.get(id);
+  // Middle column: about, then work, then ask, inside the opening screen
+  for (const id of ["hello", "folder", "ask", "stray"]) assert.ok(at(id).x >= side && at(id).x + 350 <= side + vw + 1, id);
+  assert.ok(at("hello").y < at("folder").y && at("folder").y < at("ask").y);
+  // The middle runs on: ask comes right after the folder, not after the two long project sheets
+  assert.ok(at("ask").y < at("sheet-2").y + 280, "the middle column does not wait for the side to end");
+  // Sides: one screen left and right, level with the folder
+  assert.ok(at("sheet-1").x < side && at("quote").x >= side + vw);
+  assert.equal(Math.round(at("sheet-1").y), Math.round(at("folder").y));
+  assert.equal(Math.round(at("quote").y), Math.round(at("folder").y));
 });
