@@ -1,27 +1,28 @@
+---
+name: deploy
+description: /deploy — Unisce il branch corrente a main e pubblica (solo dopo conferma)
+---
 # /deploy — Pubblica su main
 
-Workflow standard per questo progetto: branch attivo → update-2026 → main → push.
+Il push su `main` pubblica subito darw.it (GitHub Pages). Flusso: branch di lavoro → `main` → push.
 
 ## Passi
 
-1. Mostra il riepilogo del branch corrente:
-   - `git log update-2026..HEAD --oneline` per vedere i commit da mergare
-   - `git diff --stat update-2026` per vedere i file cambiati
-
-2. Presenta il riepilogo all'utente e **aspetta conferma esplicita** prima di procedere.
-
-3. Solo dopo conferma:
+1. Controlla che sia tutto compilato e verde: `sh scripts/build.sh`, poi `git status` pulito.
+2. Controlla che l'email non compaia in chiaro: `git grep -nE "vegher(@| ?[[(]at[])])"` deve restare vuoto.
+3. Mostra il riepilogo del branch:
+   - `git log main..HEAD --oneline`
+   - `git diff --stat main`
+4. Presenta il riepilogo e **aspetta conferma esplicita** prima di procedere.
+5. Solo dopo conferma:
    ```bash
-   git checkout update-2026
-   git merge <branch-corrente> --no-ff -m "Merge <branch> into update-2026"
    git checkout main
-   git merge update-2026 --no-ff -m "Merge update-2026 into main"
+   git merge <branch> --no-ff -m "Merge <branch>: <cosa cambia>"
    git push origin main
    ```
-
-4. Conferma il push mostrando l'output di `git log --oneline -3`.
+6. Mostra `git log --oneline -3` e ricorda di controllare il sito live (`darw5n.github.io/me`) dopo un minuto.
 
 ## Regole
-- Non fare mai `git merge` senza conferma esplicita dell'utente
-- Il branch di lavoro nasce sempre da `update-2026`, non da `main`
-- Non pushare mai direttamente su `main` senza passare da `update-2026`
+- Mai `git merge` o `git push` senza conferma esplicita.
+- Se il branch ha toccato il motore (`src/tavola/`, `CSS/tavola/`), ricorda di riportarlo nel portfolio
+  (`sh scripts/sync-tavola.sh` nel repo `portfolio`, su un suo branch).

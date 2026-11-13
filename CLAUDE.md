@@ -63,15 +63,18 @@ CSS/tavola.scss         ← entry SCSS; partial in CSS/tavola/ (_tokens _surface
 CSS/tavola.css          ← compilato (NON editare)
 tests/layout.test.mjs   ← niente sovrapposizioni, colonna dentro lo schermo, griglia del Tidy up
 Font/Antonia Circular HaveHeart   ← licenze da verificare (Darwin) prima di andare online
-Img/work/               ← copertine dei progetti usate come anteprime
-Img/thumbs/             ← foto piccole per il tavolo (rullino 360 px, stampe 640 px); il link (href) punta al file
-                          grande, che si carica solo nel visore. Foto nuova: crea la miniatura con
-                          `cwebp -resize 360 0 -q 78 Img/<foto>.webp -o Img/thumbs/<foto>.webp`
+Img/                    ← solo il ritratto e l'immagine OG (l'OG resta qui: i social la cercano a quell'indirizzo)
+Img/work/               ← immagini dei progetti (lavoro e lab) usate come anteprime
+Img/photos/             ← foto di viaggio grandi (si caricano solo nel visore)
+Img/photos/thumbs/      ← foto piccole per il tavolo (rullino 360 px, stampe 640 px); il link (href) punta al file
+                          grande. Foto nuova: crea la miniatura con
+                          `cwebp -resize 360 0 -q 78 Img/photos/<foto>.webp -o Img/photos/thumbs/<foto>.webp`
+Img/Logo/               ← loghi delle app, per la zona degli attrezzi preferiti (da fare)
 ```
 
 Il sito precedente (Locomotive, accordion, tema chiaro/scuro, font Matahari e Nognathy) è stato tolto il
-10/11/2026 con l'ok di Darwin: è nella storia git prima del commit "chore: remove the previous site". In `Img/`
-restano alcune immagini che usava solo lui (loghi, copertine di libri e dischi): da ripulire quando la Tavola è completa.
+10/11/2026 con l'ok di Darwin: è nel tag `old-site`. Il 13/11/2026 sono stati tolti anche i file che usava solo lui
+(originali jpg, favicon in più, copertine): si recuperano dal tag, es. `git checkout old-site -- Img/<file>`.
 
 ---
 
