@@ -639,33 +639,105 @@ html.has-dialog body > .controls {
 }
 
 // ---- Preloader (preloader.ts) ------------------------------------------------------------
+// The bare mat (no lines) with the name, a changing phrase and a line of real progress.
+// When the table is ready the cloth is pulled away from the top-left corner: the lines
+// of the mat appear as it goes, then the objects land (_table.scss, .is-entering).
+@property --pull {
+  syntax: "<percentage>";
+  inherits: false;
+  initial-value: 0%;
+}
+
 .preloader {
   position: fixed;
   inset: 0;
   z-index: var(--z-preloader);
   display: grid;
   place-content: center;
+  justify-items: center;
+  gap: 0.9rem;
+  padding: 24px;
   background: var(--mat);
-  transition: opacity 0.6s var(--ease-out);
-
-  .chalk {
-    font-size: clamp(2.6rem, 4vw, 3.9rem);
-    animation: breathe 1.6s ease-in-out infinite;
-  }
+  color: var(--chalk);
+  text-align: center;
 
   html.is-ready & {
-    opacity: 0;
     pointer-events: none;
+    // After the words have gone. Without @property the mask cannot move: the cloth
+    // stays, then disappears at the end, which is still fine.
+    animation: cloth-pull 0.9s cubic-bezier(0.55, 0.05, 0.35, 1) 0.2s forwards;
   }
 }
 
-@keyframes breathe {
-  0%,
-  100% {
-    opacity: 0.55;
+@keyframes cloth-pull {
+  from {
+    --pull: 0%;
   }
-  50% {
-    opacity: 1;
+
+  to {
+    --pull: 115%;
+  }
+}
+
+html.is-ready .preloader {
+  mask-image: radial-gradient(circle farthest-corner at 0 0, transparent var(--pull), #000 calc(var(--pull) + 10%));
+}
+
+// The words leave first, then the cloth goes
+html.is-ready .preloader > * {
+  opacity: 0;
+  transition: opacity 0.25s;
+}
+
+// An older page with only the phrase (the portfolio, until it adopts the name)
+.preloader > .chalk {
+  font-size: clamp(2.6rem, 4vw, 3.9rem);
+}
+
+.preloader__name {
+  margin: 0;
+  font: 500 clamp(2.4rem, 7vw, 4.6rem) / 1 var(--font-display);
+  letter-spacing: -0.01em;
+}
+
+.preloader__status {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  margin: 0;
+  min-height: 3rem;
+}
+
+.preloader__star {
+  width: 1.2em;
+  font: 400 1.6rem / 1 var(--font-ui);
+  color: #f2b84b;
+}
+
+.preloader__phrase {
+  font-size: clamp(2rem, 4.5vw, 2.8rem);
+  white-space: nowrap;
+  transition: opacity 0.18s, translate 0.18s;
+
+  &.is-changing {
+    opacity: 0;
+    translate: 0 6px;
+  }
+}
+
+// A line of chalk that fills with the real progress (--progress, 0 to 1)
+.preloader__bar {
+  display: block;
+  width: min(14rem, 60vw);
+  height: 3px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--chalk) calc(var(--progress, 0) * 100%), color-mix(in srgb, var(--chalk) 22%, transparent) 0);
+  transition: background 0.3s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .preloader__star {
+    display: none;
   }
 }
 

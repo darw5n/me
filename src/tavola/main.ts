@@ -90,7 +90,7 @@ const boot = (): void => {
   const images = [...world.querySelectorAll<HTMLImageElement>("img")];
   void document.fonts?.ready.then(() => board.settle());
   addEventListener("load", () => board.settle());
-  void runPreloader({ overlay: document.getElementById("preloader"), images, reducedMotion }).then(() => board.settle());
+  void runPreloader({ overlay: document.getElementById("preloader"), images, items: [...world.querySelectorAll<HTMLElement>(".item")], reducedMotion }).then(() => board.settle());
 
   // A resize lays the table out again once the window has stopped changing, so the
   // objects glide to their new spots once instead of restarting on every frame

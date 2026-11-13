@@ -123,6 +123,16 @@ html:not(.is-ready) .item {
   --ly: -18px;
 }
 
+// The entrance: once the cloth has gone past them, the objects land one after the other
+// (--enter, set by preloader.ts in reading order), with a little bounce.
+html.is-entering .item {
+  transition: opacity 0.45s ease calc(450ms + var(--enter, 0ms));
+}
+
+html.is-entering .item__body {
+  transition: transform 0.6s var(--ease-spring) calc(450ms + var(--enter, 0ms));
+}
+
 .item__body {
   display: block;
   transform: translateY(var(--ly, 0px)) rotate(calc(var(--rot, 0deg) + var(--tilt, 0deg))) scale(var(--sc, 1));

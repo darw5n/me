@@ -354,3 +354,14 @@ Inside a cell objects flow in reading order with more air (28 / 40 / 110 px inst
 
 **Replaces** the hand-made composition on /me (`data-phone` stays in the markup and still drives the portfolio,
 which declares no grid). Darwin can still move objects by hand; a new object needs no coordinates any more.
+
+## 2026-11-13 · Preloader and entrance
+
+**Decision (Darwin).** The preloader waits for the fonts and every image on the table, loaded and decoded (it used to
+wait at most 2.6 s, for some of them), so nothing jumps; on a slow line it opens anyway after 6 s. While it waits:
+"Darwin Vegher", a chalk line filled by the real progress, and a phrase that changes every second like Claude Code
+while it works, with its pulsing star (✻ ✽ ✶…). The phrases are the page's (`data-phrases`), so the portfolio can
+have its own; they are drafts to review. Then the entrance: the cloth is pulled away from the top-left corner, so
+the lines of the mat appear as it goes, and the objects in view land one after the other in reading order (45 ms
+apart, at most 1.3 s). Quick on a second page of the same visit; with reduced motion the phrase stays still and
+there is no pull and no stagger.

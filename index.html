@@ -78,7 +78,13 @@
     }
   </script>
 
-  <div id="preloader" class="preloader" aria-hidden="true"><p class="chalk">setting the table…</p></div>
+  <!-- Preloader (preloader.ts): the name, a phrase that changes while the table loads, a line of real progress -->
+  <div id="preloader" class="preloader" aria-hidden="true"
+       data-phrases="setting the table…|taping the notes…|sharpening the pencil…|developing the photos…|peeling the stickers…|stamping the passport…|dusting the records…|waking up Caramella…|untangling the headphones…|sorting the folders…|warming up the controller…|chalking the labels…">
+    <p class="preloader__name">Darwin Vegher</p>
+    <p class="preloader__status"><span class="preloader__star">✻</span> <span class="preloader__phrase chalk">setting the table…</span></p>
+    <span class="preloader__bar"></span>
+  </div>
 
   <!-- Chalk texture: grain plus a slight wobble, applied to writing and drawings -->
   <svg class="svg-defs" width="0" height="0" aria-hidden="true">
