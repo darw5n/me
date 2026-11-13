@@ -274,3 +274,13 @@ orientation applied and **all metadata removed** (phone photos carry GPS).
 **Decision.** A cluster `games` ("press start"): Darwin's white DualSense, drawn from above, and four game cases
 fanned out, picked from his favourites (Astro Bot, Ratchet & Clank: Rift Apart, The Last of Us Part I, Rayman Legends).
 Covers are drawn like the books and the records; the band says PS5 or PS4, as the real game.
+
+## 2026-11-13 · The viewer becomes the portfolio's
+
+**Decision.** `viewer.ts` now works like the portfolio's lightbox: the whole screen is a window on the picture, a
+click zooms in there (wheel and two fingers too, a drag moves it), a click off the picture closes; the caption is a
+strip of tape above the bar; the veil takes the colour of the picture on show (its hue, dark and soft, with grain)
+and changes with every picture. The arrows walk through every picture on the table in reading order.
+
+**Why.** With one picture per object the bar shrank to a lonely yellow Close (Darwin, 13/11/2026). Walking through
+all the pictures fixes it at the root; a Close alone, should it happen, keeps a real width (`.is-solo`).

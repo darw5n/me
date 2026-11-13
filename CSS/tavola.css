@@ -1889,66 +1889,130 @@ html.has-cursor .cursor {
 }
 
 .viewer {
-  border: 0;
+  width: 100vw;
+  max-width: none;
+  height: 100svh;
+  max-height: none;
+  margin: 0;
   padding: 0;
-  max-width: min(94vw, 1200px);
-  max-height: 100svh;
+  border: 0;
   background: transparent;
-  color: var(--chalk, #f4f4ee);
+  overflow: hidden;
+}
+.viewer[open] {
+  display: block;
 }
 .viewer::backdrop {
   background: rgba(23, 68, 58, 0.82);
   background: color-mix(in srgb, var(--mat, #17443a) 82%, transparent);
   backdrop-filter: blur(18px) saturate(1.15);
+  background-color: color-mix(in srgb, var(--veil, var(--mat, #17443a)) 82%, transparent);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.42 0 0 0 -0.1'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  transition: background-color 0.4s ease-out;
 }
 @media (prefers-reduced-motion: no-preference) {
   .viewer[open]::backdrop {
     animation: veil-in 0.25s ease-out;
   }
+  .viewer[open] .viewer__image {
+    animation: viewer-in 0.3s var(--ease-spring, ease-out);
+  }
 }
-.viewer .viewer__figure {
-  margin: 0;
-  padding-block: 24px 96px;
+@media (prefers-reduced-motion: reduce) {
+  .viewer::backdrop {
+    transition: none;
+  }
 }
-.viewer .viewer__image {
-  max-height: calc(100svh - 190px);
-  width: auto;
+
+@keyframes viewer-in {
+  from {
+    opacity: 0;
+    scale: 0.96;
+  }
+}
+.viewer__stage {
+  --fit-h: calc(100svh - 48px - 84px - var(--cap-h, 0px));
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 24px 24px calc(84px + var(--cap-h, 0px) + 24px);
+  overflow: hidden;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.viewer__image {
   max-width: 100%;
-  margin: 0 auto;
+  max-height: var(--fit-h);
+  width: auto;
+  height: auto;
+  transform-origin: center;
+  cursor: zoom-in;
+  will-change: transform;
+  box-shadow: 0 18px 40px -12px rgba(0, 0, 0, 0.55);
 }
-.viewer .viewer__caption {
-  font: italic 400 1.05rem/1.4 var(--font-text);
-  margin-top: 12px;
+
+.viewer.is-zoomed .viewer__image {
+  cursor: grab;
+}
+.viewer.is-zoomed .viewer__image:active {
+  cursor: grabbing;
+}
+
+.viewer__caption {
+  position: absolute;
+  bottom: 92px;
+  left: 50%;
+  z-index: 1;
+  max-width: min(36rem, 100% - 48px);
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.3;
   text-align: center;
+  text-wrap: balance;
+  translate: -50% 0;
+  pointer-events: none;
 }
-.viewer .viewer__bar {
+.viewer__caption:empty {
+  display: none;
+}
+
+.viewer__bar {
   background: var(--paper);
   color: var(--ink);
 }
-.viewer .viewer__bar button:hover {
+.viewer__bar button:hover {
   background: #e9e6da;
 }
-.viewer .viewer__bar .controls__primary:hover {
+.viewer__bar .controls__primary:hover {
   background: #ffd400;
 }
-.viewer .viewer__bar :focus-visible {
+.viewer__bar :focus-visible {
   outline-color: var(--ink);
 }
-.viewer .viewer__steps {
+
+.viewer__bar .viewer__steps {
   margin-inline: 0 4px;
-  background: #ecE9de;
+  background: #ece9de;
 }
-.viewer .viewer__steps button {
+.viewer__bar .viewer__steps button {
   min-width: 48px;
   font-size: 1.25rem;
 }
-.viewer .viewer__steps output {
-  min-width: 3.6em;
+.viewer__bar .viewer__steps output {
+  min-width: 4.2em;
   color: var(--ink-soft);
+  font-variant-numeric: tabular-nums;
   pointer-events: none;
 }
-.viewer .viewer__steps[hidden] {
+.viewer__bar .viewer__steps[hidden] {
   display: none;
+}
+
+.viewer.is-solo .viewer__close {
+  min-width: 8rem;
 }
 
 html.has-dialog body > .controls {

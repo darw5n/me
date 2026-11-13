@@ -331,86 +331,159 @@ html.has-cursor * {
   }
 }
 
-// ---- Viewer (viewer.ts): a plain base, to be redesigned ----------------------------------------
-// The commands are the table's own bar (.controls), in the same spot at the bottom.
+// ---- Viewer (viewer.ts): the portfolio's, on the table ------------------------------------
+// The whole screen is a window on the picture. The commands are the table's own bar
+// (.controls), light, in the same spot at the bottom; the caption is a strip of tape
+// just above it.
 .viewer {
-  border: 0;
+  width: 100vw;
+  max-width: none;
+  height: 100svh;
+  max-height: none;
+  margin: 0;
   padding: 0;
-  max-width: min(94vw, 1200px);
-  max-height: 100svh;
+  border: 0;
   background: transparent;
-  // The chalk of the current mat: made to read on it, light or dark (kraft)
-  color: var(--chalk, #f4f4ee);
+  overflow: hidden;
 
-  // A veil in the mat's own colour, not black: the photo comes first and the table is
-  // still there behind it, out of focus (Darwin, 12/11/2026: the black was too dark).
+  &[open] {
+    display: block;
+  }
+
+  // The veil takes the colour of the picture on show (--veil, set by viewer.ts: its hue,
+  // dark and soft), or the mat's for a picture with no colour, with a fine grain like
+  // paper. It shifts softly from one picture to the next. 82% keeps the bar and the
+  // caption readable on any of them.
   &::backdrop {
     @include veil;
+    background-color: color-mix(in srgb, var(--veil, var(--mat, #17443a)) 82%, transparent);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.42 0 0 0 -0.1'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    transition: background-color 0.4s ease-out;
   }
 
-  &[open]::backdrop {
-    @include veil-in;
-  }
-
-  .viewer__figure {
-    margin: 0;
-    // Room for the bar at the bottom, so it never covers the photo or the caption
-    padding-block: 24px 96px;
-  }
-
-  .viewer__image {
-    max-height: calc(100svh - 190px);
-    width: auto;
-    max-width: 100%;
-    margin: 0 auto;
-  }
-
-  .viewer__caption {
-    font: italic 400 1.05rem/1.4 var(--font-text);
-    margin-top: 12px;
-    text-align: center;
-  }
-
-  // Same bar as the table's, inverted: the black one would sink into the dark
-  // backdrop, a light one stands out like a paper on it
-  .viewer__bar {
-    background: var(--paper);
-    color: var(--ink);
-
-    button:hover {
-      background: #e9e6da;
+  @media (prefers-reduced-motion: no-preference) {
+    &[open]::backdrop {
+      animation: veil-in 0.25s ease-out;
     }
 
-    .controls__primary:hover {
-      background: #ffd400;
-    }
-
-    // The yellow focus ring vanishes on the light bar
-    :focus-visible {
-      outline-color: var(--ink);
+    &[open] .viewer__image {
+      animation: viewer-in 0.3s var(--ease-spring, ease-out);
     }
   }
 
-  // Arrows are full thumb targets; the count between them is only a label
-  .viewer__steps {
-    margin-inline: 0 4px;
-    background: #ecE9de;
-
-    button {
-      min-width: 48px;
-      font-size: 1.25rem;
-    }
-
-    output {
-      min-width: 3.6em;
-      color: var(--ink-soft);
-      pointer-events: none;
-    }
-
-    &[hidden] {
-      display: none;
+  @media (prefers-reduced-motion: reduce) {
+    &::backdrop {
+      transition: none;
     }
   }
+}
+
+@keyframes viewer-in {
+  from {
+    opacity: 0;
+    scale: 0.96;
+  }
+}
+
+// Fitted, the picture sits above the caption and the bar (the bottom padding); zoomed,
+// it can run under both. touch-action: none hands pinch and drag to viewer.ts.
+.viewer__stage {
+  --fit-h: calc(100svh - 48px - 84px - var(--cap-h, 0px));
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 24px 24px calc(84px + var(--cap-h, 0px) + 24px);
+  overflow: hidden;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.viewer__image {
+  max-width: 100%;
+  max-height: var(--fit-h);
+  width: auto;
+  height: auto;
+  transform-origin: center;
+  cursor: zoom-in;
+  will-change: transform;
+  box-shadow: 0 18px 40px -12px rgba(0, 0, 0, 0.55);
+}
+
+.viewer.is-zoomed .viewer__image {
+  cursor: grab;
+
+  &:active {
+    cursor: grabbing;
+  }
+}
+
+.viewer__caption {
+  position: absolute;
+  bottom: calc(84px + 8px);
+  left: 50%;
+  z-index: 1;
+  max-width: min(36rem, calc(100% - 48px));
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.3;
+  text-align: center;
+  text-wrap: balance;
+  translate: -50% 0;
+  pointer-events: none;
+
+  &:empty {
+    display: none;
+  }
+}
+
+// Same bar as the table's, inverted: the black one would sink into the veil,
+// a light one stands out like a paper on it
+.viewer__bar {
+  background: var(--paper);
+  color: var(--ink);
+
+  button:hover {
+    background: #e9e6da;
+  }
+
+  .controls__primary:hover {
+    background: #ffd400;
+  }
+
+  // The yellow focus ring vanishes on the light bar
+  :focus-visible {
+    outline-color: var(--ink);
+  }
+}
+
+// Arrows are full thumb targets; the count between them is only a label.
+// Scoped to the bar so it wins over the table's dark .controls__steps.
+.viewer__bar .viewer__steps {
+  margin-inline: 0 4px;
+  background: #ece9de;
+
+  button {
+    min-width: 48px;
+    font-size: 1.25rem;
+  }
+
+  output {
+    min-width: 4.2em;
+    color: var(--ink-soft);
+    font-variant-numeric: tabular-nums;
+    pointer-events: none;
+  }
+
+  &[hidden] {
+    display: none;
+  }
+}
+
+// One picture only: Close keeps the bar's height and a real width, not a bare yellow chip
+.viewer.is-solo .viewer__close {
+  min-width: 8rem;
 }
 
 // One bar at a time: while a dialog is open the table's bar would show through the blur
