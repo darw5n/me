@@ -639,37 +639,258 @@ html.has-dialog body > .controls {
 }
 
 // ---- Preloader (preloader.ts) ------------------------------------------------------------
+// The bare mat (no lines) with the name, a changing phrase and a line of real progress.
+// When the table is ready the cloth is pulled away from the top-left corner: the lines
+// of the mat appear as it goes, then the objects land (_table.scss, .is-entering).
+@property --pull {
+  syntax: "<percentage>";
+  inherits: false;
+  initial-value: 0%;
+}
+
 .preloader {
   position: fixed;
   inset: 0;
   z-index: var(--z-preloader);
   display: grid;
   place-content: center;
+  justify-items: center;
+  gap: 0.9rem;
+  padding: 24px;
   background: var(--mat);
-  transition: opacity 0.6s var(--ease-out);
-
-  .chalk {
-    font-size: clamp(2.6rem, 4vw, 3.9rem);
-    animation: breathe 1.6s ease-in-out infinite;
-  }
+  color: var(--chalk);
+  text-align: center;
 
   html.is-ready & {
-    opacity: 0;
     pointer-events: none;
+    // After the words have gone. Without @property the mask cannot move: the cloth
+    // stays, then disappears at the end, which is still fine.
+    animation: cloth-pull 0.9s cubic-bezier(0.55, 0.05, 0.35, 1) 0.2s forwards;
   }
 }
 
-@keyframes breathe {
+@keyframes cloth-pull {
+  from {
+    --pull: 0%;
+  }
+
+  to {
+    --pull: 115%;
+  }
+}
+
+html.is-ready .preloader {
+  mask-image: radial-gradient(circle farthest-corner at 0 0, transparent var(--pull), #000 calc(var(--pull) + 10%));
+}
+
+// The words rise in without waiting for the scripts; their two fonts are preloaded and
+// `font-display: block`, so they show in their own face. They leave first when the
+// table is ready; then the cloth goes.
+.preloader > * {
+  animation: words-in 0.5s var(--ease-out) 0.15s both;
+}
+
+.preloader > :nth-child(2) {
+  animation-delay: 0.27s;
+}
+
+.preloader > :nth-child(3) {
+  animation-delay: 0.39s;
+}
+
+@keyframes words-in {
+  from {
+    opacity: 0;
+    translate: 0 8px;
+  }
+}
+
+html.is-ready .preloader > * {
+  opacity: 0;
+  transition: opacity 0.25s;
+  transition-delay: 0s;
+}
+
+// An older page with only the phrase (the portfolio, until it adopts the name)
+.preloader > .chalk {
+  font-size: clamp(2.6rem, 4vw, 3.9rem);
+}
+
+.preloader__name {
+  margin: 0;
+  font: 500 clamp(2.4rem, 7vw, 4.6rem) / 1 var(--font-display);
+  letter-spacing: -0.01em;
+}
+
+.preloader__status {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  margin: 0;
+  min-height: 3rem;
+}
+
+// Claude Code's working star: its frames change in preloader.ts, and it breathes and turns
+.preloader__star {
+  display: inline-block;
+  width: 1.2em;
+  font: 400 1.6rem / 1 var(--font-ui);
+  color: #f2b84b;
+  animation: star-work 1.6s ease-in-out infinite;
+}
+
+@keyframes star-work {
   0%,
   100% {
-    opacity: 0.55;
+    transform: scale(0.85) rotate(0deg);
+    color: #f2b84b;
   }
+
   50% {
-    opacity: 1;
+    transform: scale(1.15) rotate(90deg);
+    color: #f5d27a;
+  }
+}
+
+.preloader__phrase {
+  font-size: clamp(2rem, 4.5vw, 2.8rem);
+  white-space: nowrap;
+  transition: opacity 0.18s, translate 0.18s;
+
+  &.is-changing {
+    opacity: 0;
+    translate: 0 6px;
+  }
+}
+
+// A line of chalk that fills with the real progress (--progress, 0 to 1)
+.preloader__bar {
+  display: block;
+  width: min(14rem, 60vw);
+  height: 3px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--chalk) calc(var(--progress, 0) * 100%), color-mix(in srgb, var(--chalk) 22%, transparent) 0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .preloader__star {
+    display: none;
+  }
+
+  .preloader > * {
+    animation: none;
   }
 }
 
 // Without JavaScript there is no preloader and everything is visible at once
 html.no-js .preloader {
   display: none;
+}
+
+// ---- Shortcuts (shortcuts.ts) ---------------------------------------------------------------
+// The key of a bar button, on hover, in a small chip above it
+@include mouse {
+  .controls [data-key] {
+    position: relative;
+  }
+
+  .controls [data-key]::after {
+    content: attr(data-key);
+    position: absolute;
+    left: 50%;
+    bottom: calc(100% + 10px);
+    padding: 0.2rem 0.45rem;
+    border-radius: 6px;
+    background: var(--paper);
+    color: var(--ink);
+    font: 600 0.75rem / 1 var(--font-ui);
+    white-space: nowrap;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    opacity: 0;
+    translate: -50% 4px;
+    pointer-events: none;
+    transition: opacity 0.15s, translate 0.15s;
+  }
+
+  .controls [data-key]:hover::after,
+  .controls [data-key]:focus-visible::after {
+    opacity: 1;
+    translate: -50% 0;
+  }
+}
+
+// The card that lists every shortcut: an index card on the veil, like the form
+.shortcuts {
+  border: 0;
+  padding: 0;
+  width: min(460px, calc(100vw - 32px));
+  max-height: calc(100svh - 32px);
+  background: transparent;
+  overflow: visible;
+
+  &::backdrop {
+    @include veil;
+  }
+
+  &[open]::backdrop {
+    @include veil-in;
+  }
+}
+
+.shortcuts__card {
+  padding: 1.5rem 1.5rem 1.2rem;
+  border-radius: 4px;
+  background: var(--paper);
+  color: var(--ink);
+  box-shadow: 0 18px 40px -12px rgba(0, 0, 0, 0.55);
+
+  h2 {
+    margin: 0 0 1rem;
+    font: 500 1.6rem / 1.1 var(--font-display);
+  }
+}
+
+.shortcuts__list {
+  display: grid;
+  gap: 0.55rem;
+  margin: 0 0 1.2rem;
+
+  div {
+    display: grid;
+    grid-template-columns: 9.5rem 1fr;
+    align-items: baseline;
+    gap: 0.8rem;
+  }
+
+  dt {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+  }
+
+  dd {
+    margin: 0;
+    font: 400 1rem / 1.35 var(--font-text);
+  }
+
+  kbd {
+    display: inline-block;
+    min-width: 1.6em;
+    padding: 0.15rem 0.4rem;
+    border-radius: 5px;
+    background: #ece9de;
+    box-shadow: inset 0 -2px 0 #cfcabd;
+    font: 600 0.8rem / 1.2 var(--font-ui);
+    text-align: center;
+  }
+}
+
+.shortcuts__close {
+  min-height: 44px;
+  padding: 0 1.2rem;
+  border: 0;
+  border-radius: 10px;
+  background: #ffe24d;
+  color: #111;
+  font: 600 1rem / 1 var(--font-ui);
 }

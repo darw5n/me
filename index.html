@@ -30,6 +30,9 @@
     } catch (e) {}
   </script>
 
+  <!-- First the two fonts of the preloader (name and chalk phrase), then the table's -->
+  <link rel="preload" href="Font/Antonia/antonia-h1-medium.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="Font/HaveHeart/have-heart-one.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="Font/Circular/circular-medium.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="Font/Antonia/antonia-text-regular.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="CSS/tavola.css">
@@ -46,7 +49,18 @@
   <!-- Layout configuration read by Script/tavola/main.js -->
   <script type="application/json" id="table-config">
     {
-      "clusters": ["about", "work", "path", "photos", "trips", "lab", "tools", "words", "caramella", "records", "games", "ask", "elsewhere"],
+      "clusters": ["about", "path", "work", "lab", "tools", "photos", "trips", "caramella", "records", "words", "games", "ask", "elsewhere"],
+      "zones": [
+        ["about"], ["path", "work"], ["lab", "tools"],
+        ["photos"], ["trips"], ["caramella"],
+        ["records"], ["words", "games"], ["ask", "elsewhere"]
+      ],
+      "phone": [
+        { "left": ["records"], "center": ["about", "path"], "right": ["words", "games"] },
+        { "left": ["projects"], "center": ["work"], "right": ["quotes"] },
+        { "left": ["lab", "tools"], "center": ["photos"], "right": ["prints"] },
+        { "left": ["trips"], "center": ["ask", "elsewhere"], "right": ["caramella"] }
+      ],
       "groups": [
         ["about", "who"],
         ["path", "where I've been"],
@@ -55,9 +69,9 @@
         ["tools", "on my desk"],
         ["photos", "photos"],
         ["trips", "been there"],
-        ["words", "off the clock"],
         ["caramella", "the boss"],
         ["records", "on repeat"],
+        ["words", "off the clock"],
         ["games", "press start"],
         ["ask", "your turn"],
         ["elsewhere", "elsewhere"],
@@ -66,11 +80,17 @@
     }
   </script>
 
-  <div id="preloader" class="preloader" aria-hidden="true"><p class="chalk">setting the table…</p></div>
+  <!-- Preloader (preloader.ts): the name, a phrase that changes while the table loads, a line of real progress -->
+  <div id="preloader" class="preloader" aria-hidden="true"
+       data-phrases="setting the table…|taping the notes…|sharpening the pencil…|developing the photos…|peeling the stickers…|stamping the passport…|dusting the records…|waking up Caramella…|untangling the headphones…|sorting the folders…|warming up the controller…|chalking the labels…">
+    <p class="preloader__name">Darwin Vegher</p>
+    <p class="preloader__status"><span class="preloader__star">✻</span> <span class="preloader__phrase chalk">setting the table…</span></p>
+    <span class="preloader__bar"></span>
+  </div>
 
   <!-- Chalk texture: grain plus a slight wobble, applied to writing and drawings -->
   <svg class="svg-defs" width="0" height="0" aria-hidden="true">
-    <filter id="chalk" x="-5%" y="-5%" width="110%" height="110%">
+    <filter id="chalk" x="-15%" y="-25%" width="130%" height="150%">
       <feTurbulence type="fractalNoise" baseFrequency=".8" numOctaves="2" seed="4" result="noise"/>
       <feColorMatrix in="noise" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -1.5 1.72" result="mask"/>
       <feComposite in="SourceGraphic" in2="mask" operator="in" result="grain"/>
@@ -148,7 +168,7 @@
       <main class="items">
 
         <!-- WHO -->
-        <div class="item" data-phone="20,72" id="hello" data-cluster="about" data-at="0,0" data-width="680" data-rotate="-0.6" data-span="2" data-material="paper">
+        <div class="item" data-phone="20,80" id="hello" data-cluster="about" data-at="0,0" data-width="680" data-rotate="-0.6" data-span="2" data-material="paper">
           <div class="item__body paper note"><i class="tape tape--top"></i>
             <p class="note__name">Darwin Vegher</p>
             <h1><span class="line">Tinkerer by nature,</span> <span class="line">product designer by&nbsp;trade.</span></h1>
@@ -156,38 +176,38 @@
             <small>Product Designer &amp; Builder. Based in the&nbsp;Dolomites.</small>
           </div>
         </div>
-        <div class="item" data-phone="27,392" id="portrait" data-cluster="about" data-at="660,-10" data-width="250" data-rotate="2.6" data-material="print">
+        <div class="item" data-phone="30,433" id="portrait" data-cluster="about" data-at="660,-10" data-width="250" data-rotate="2.6" data-material="print">
           <div class="item__body print"><i class="tape tape--top"></i>
             <img src="Img/1200x1200_darwin_low.webp" alt="Portrait of Darwin" width="1200" height="1200" draggable="false"><span>That’s me.</span>
           </div>
         </div>
-        <div class="item" data-phone="153,600" id="now" data-cluster="about" data-at="950,20" data-width="270" data-rotate="-3" data-material="postit">
+        <div class="item" data-phone="140,683" id="now" data-cluster="about" data-at="950,20" data-width="270" data-rotate="-3" data-material="postit">
           <div class="item__body postit"><b>Now</b><span class="postit__line">Learning TypeScript and React properly.</span> <span class="postit__line">Looking for my next product design&nbsp;role.</span></div>
         </div>
-        <div class="item" data-phone="-399,429" data-cluster="about" data-at="664,440" data-width="700" data-rotate="-1.5" data-small data-decoration data-material="chalk">
+        <div class="item" data-phone="31,927" data-cluster="about" data-at="664,440" data-width="700" data-rotate="-1.5" data-small data-decoration data-material="chalk">
           <p class="item__body chalk">As a kid I wanted to be an inventor. This is close&nbsp;enough.</p>
         </div>
 
         <!-- WORK -->
-        <div class="item" data-phone="460,913" data-cluster="work" data-at="6,-56" data-width="340" data-rotate="-2" data-small data-decoration data-material="chalk">
+        <div class="item" data-phone="27,1516" data-cluster="work" data-at="6,-104" data-width="476" data-rotate="-2" data-small data-decoration data-material="chalk">
           <p class="item__body chalk chalk--small">work, on paper</p>
         </div>
-        <div class="item" data-phone="-417,983" data-cluster="work" data-at="0,0" data-width="360" data-rotate="-1.6" data-material="paper">
+        <div class="item" data-phone="-417,983" data-phone-area="projects" data-cluster="work" data-at="0,0" data-width="360" data-rotate="-1.6" data-material="paper">
           <a class="item__body sheet" href="Img/work/document-registration.webp" data-view data-caption="Document registration, Fiscozen, 2026. The full story is in the portfolio."><i class="tape tape--top"></i>
             <img src="Img/work/document-registration.webp" alt="Screens of the document registration project" draggable="false"><span>Document registration</span>
           </a>
         </div>
-        <div class="item" data-phone="-410,1300" data-cluster="work" data-at="400,34" data-width="360" data-rotate="1.4" data-material="paper">
+        <div class="item" data-phone="-410,1300" data-phone-area="projects" data-cluster="work" data-at="400,34" data-width="360" data-rotate="1.4" data-material="paper">
           <a class="item__body sheet" href="Img/work/two-factor-login.webp" data-view data-caption="Two-factor login, Fiscozen, 2026. The full story is in the portfolio."><i class="tape tape--top"></i>
             <img src="Img/work/two-factor-login.webp" alt="Screens of the two-factor login project" draggable="false"><span>Two-factor login</span>
           </a>
         </div>
-        <div class="item" data-phone="494,982" data-cluster="work" data-at="10,330" data-width="360" data-rotate="0.9" data-material="paper">
+        <div class="item" data-phone="494,982" data-phone-area="projects" data-cluster="work" data-at="10,330" data-width="360" data-rotate="0.9" data-material="paper">
           <a class="item__body sheet" href="Img/work/design-system.webp" data-view data-caption="Rethinking the design system, Fiscozen, 2026. The full story is in the portfolio."><i class="tape tape--top"></i>
             <img src="Img/work/design-system.webp" alt="Screens of the design system project" draggable="false"><span>Design system</span>
           </a>
         </div>
-        <div class="item" data-phone="27,918" data-cluster="work" data-at="412,360" data-width="340" data-rotate="-1.2" data-material="folder">
+        <div class="item" data-phone="23,1594" data-cluster="work" data-at="412,360" data-width="340" data-rotate="-1.2" data-material="folder">
           <a class="item__body folder" href="#request" data-cursor="ask for the link">
             <span class="folder__tab">Portfolio</span>
             <span class="folder__body">
@@ -199,7 +219,7 @@
         </div>
 
         <!-- PATH -->
-        <div class="item" data-phone="29,1326" data-cluster="path" data-at="0,0" data-width="470" data-rotate="0" data-span="2" data-material="strip">
+        <div class="item" data-phone="29,1223" data-cluster="path" data-at="0,0" data-width="600" data-rotate="0" data-span="2" data-material="strip">
           <ol class="item__body path" aria-label="Path">
             <li class="strip"><time>2022–26</time>Product Designer, Fiscozen</li>
             <li class="strip"><time>2017–22</time>Full Stack Designer, Erickson</li>
@@ -209,7 +229,7 @@
         </div>
 
         <!-- PHOTOS -->
-        <div class="item" data-phone="116,1583" data-cluster="photos" data-at="0,0" data-width="780" data-rotate="-1.6" data-span="3" data-material="film">
+        <div class="item" data-phone="113,2035" data-cluster="photos" data-at="0,0" data-width="780" data-rotate="-1.6" data-span="3" data-material="film">
           <div class="item__body film">
             <a href="Img/photos/Kyoto-23-XS-119.webp" data-view data-caption="Kyoto, 2023"><img src="Img/photos/thumbs/Kyoto-23-XS-119.webp" alt="Red torii gates in Kyoto" draggable="false"></a>
             <a href="Img/photos/Hakone-23-XS-29.webp" data-view data-caption="Hakone, 2023"><img src="Img/photos/thumbs/Hakone-23-XS-29.webp" alt="Mount Fuji from Hakone" draggable="false"></a>
@@ -219,28 +239,28 @@
             <a href="Img/photos/Jeju-2025_HD-09.webp" data-view data-caption="Jeju, 2025"><img src="Img/photos/thumbs/Jeju-2025_HD-09.webp" alt="The coast of Jeju" draggable="false"></a>
           </div>
         </div>
-        <div class="item" data-phone="14,1763" data-cluster="photos" data-at="24,260" data-width="240" data-rotate="-4" data-material="postit">
+        <div class="item" data-phone="18,2203" data-cluster="photos" data-at="24,260" data-width="240" data-rotate="-4" data-material="postit">
           <a class="item__body postit postit--mint" href="https://unsplash.com/@darwiiiin" target="_blank" rel="noopener" data-cursor="see them on Unsplash"><b>Photos, since I was a&nbsp;teenager</b>57M+ views on&nbsp;Unsplash<small>More on Unsplash <svg class="arrow" viewBox="0 0 56 56" aria-hidden="true"><path d="M12 44 44 12M20 12h24v24"/></svg><span class="sr-only">(opens in a new tab)</span></small></a>
         </div>
-        <div class="item" data-phone="-288,1717" data-cluster="photos" data-at="300,270" data-width="210" data-rotate="-3" data-material="print">
+        <div class="item" data-phone="-288,1717" data-phone-area="prints" data-cluster="photos" data-at="300,270" data-width="210" data-rotate="-3" data-material="print">
           <a class="item__body print" href="Img/photos/Seoul-2025_HD-007.webp" data-view data-caption="Seoul, 2025"><i class="tape tape--top"></i><img src="Img/photos/thumbs/Seoul-2025_HD-007.webp" alt="A market stall in Seoul" draggable="false"><span>Seoul, 2025</span></a>
         </div>
-        <div class="item" data-phone="351,1801" data-cluster="photos" data-at="546,256" data-width="210" data-rotate="3" data-material="print">
+        <div class="item" data-phone="351,1801" data-phone-area="prints" data-cluster="photos" data-at="546,256" data-width="210" data-rotate="3" data-material="print">
           <a class="item__body print" href="Img/photos/Hiroshima-23-XS-39.webp" data-view data-caption="Hiroshima, 2023"><i class="tape tape--top"></i><img src="Img/photos/thumbs/Hiroshima-23-XS-39.webp" alt="Hiroshima castle" draggable="false"><span>Hiroshima, 2023</span></a>
         </div>
-        <div class="item" data-phone="587,1650" data-cluster="photos" data-at="40,640" data-width="200" data-rotate="2" data-material="print">
+        <div class="item" data-phone="587,1650" data-phone-area="prints" data-cluster="photos" data-at="40,640" data-width="200" data-rotate="2" data-material="print">
           <a class="item__body print" href="Img/photos/Busan-2025_HD-093.webp" data-view data-caption="Busan, 2025"><i class="tape tape--top"></i><img src="Img/photos/thumbs/Busan-2025_HD-093.webp" alt="A temple on the rocks by the sea in Busan" draggable="false"><span>Busan, 2025</span></a>
         </div>
-        <div class="item" data-phone="-523,1700" data-cluster="photos" data-at="290,680" data-width="200" data-rotate="-2.4" data-material="print">
+        <div class="item" data-phone="-523,1700" data-phone-area="prints" data-cluster="photos" data-at="290,680" data-width="200" data-rotate="-2.4" data-material="print">
           <a class="item__body print" href="Img/photos/Seoul-2025_HD-049.webp" data-view data-caption="Seoul, 2025"><i class="tape tape--top"></i><img src="Img/photos/thumbs/Seoul-2025_HD-049.webp" alt="A street in Seoul, with N Seoul Tower on the hill" draggable="false"><span>Seoul, 2025</span></a>
         </div>
-        <div class="item" data-phone="-293,2080" data-cluster="photos" data-at="540,650" data-width="200" data-rotate="3.5" data-material="print">
+        <div class="item" data-phone="-293,2080" data-phone-area="prints" data-cluster="photos" data-at="540,650" data-width="200" data-rotate="3.5" data-material="print">
           <a class="item__body print" href="Img/photos/Tokyo-23-XS-043.webp" data-view data-caption="Tokyo, 2023"><i class="tape tape--top"></i><img src="Img/photos/thumbs/Tokyo-23-XS-043.webp" alt="A street in Tokyo leading to the Skytree" draggable="false"><span>Tokyo, 2023</span></a>
         </div>
 
         <!-- BEEN THERE: a passport with a stamp per trip (country and year only: the site is public),
              and the boarding pass of the next one, without dates -->
-        <div class="item" data-phone="47,4350" data-cluster="trips" data-at="6,-56" data-width="260" data-rotate="-2" data-small data-decoration data-material="chalk">
+        <div class="item" data-phone="47,4350" data-cluster="trips" data-at="6,-104" data-width="364" data-rotate="-2" data-small data-decoration data-material="chalk">
           <p class="item__body chalk chalk--small">been there</p>
         </div>
         <div class="item" id="passport" data-phone="37,4406" data-cluster="trips" data-at="0,0" data-width="460" data-rotate="-1.5" data-span="2" data-material="prop">
@@ -315,7 +335,7 @@
         </div>
 
         <!-- TOOLS: the apps open every day, as keycaps on a small macro pad, and the mouse next to it -->
-        <div class="item" data-phone="-353,3570" data-cluster="tools" data-at="6,-56" data-width="360" data-rotate="1.5" data-small data-decoration data-material="chalk">
+        <div class="item" data-phone="-353,3570" data-cluster="tools" data-at="6,-104" data-width="504" data-rotate="1.5" data-small data-decoration data-material="chalk">
           <p class="item__body chalk chalk--small">on my desk, every day</p>
         </div>
         <div class="item" id="tools" data-phone="-363,3626" data-cluster="tools" data-at="0,0" data-width="380" data-rotate="-1.2" data-span="2" data-material="prop">
@@ -363,35 +383,43 @@
         </div>
 
         <!-- OFF THE CLOCK -->
-        <div class="item" data-phone="144,2535" data-cluster="words" data-at="0,0" data-width="420" data-rotate="1.4" data-material="paper">
+        <div class="item" data-phone="144,2535" data-phone-area="quotes" data-cluster="path" data-at="0,300" data-width="420" data-rotate="1.4" data-material="paper">
           <blockquote class="item__body quote"><i class="tack" aria-hidden="true"></i>“He just makes things easier for everyone around&nbsp;him.”<small>Nikola Gluhovic, Senior Software&nbsp;Developer</small></blockquote>
+        </div>
+        <!-- Two more colleagues, from other roles: an engineer on the eye, a PM on the solutions (translated from
+             Italian; permission to quote in storytelling/evidence/colleague-feedback.md) -->
+        <div class="item" data-phone="407,4610" data-phone-area="quotes" data-cluster="path" data-at="460,290" data-width="400" data-rotate="-1.6" data-material="paper">
+          <blockquote class="item__body quote"><i class="tack tack--blue" aria-hidden="true"></i>“A remarkable designer’s eye. He knows how to give a product that extra&nbsp;touch.”<small>Franco Dall’Ongaro, Software&nbsp;Engineer</small></blockquote>
+        </div>
+        <div class="item" data-phone="-333,4740" data-phone-area="quotes" data-cluster="path" data-at="200,540" data-width="400" data-rotate="1" data-material="paper">
+          <blockquote class="item__body quote"><i class="tack tack--yellow" aria-hidden="true"></i>“He sees things I don’t, and comes up with a much more effective&nbsp;solution.”<small>Francesca Tosi, Product&nbsp;Manager</small></blockquote>
         </div>
         <div class="item" data-phone="-197,2533" data-cluster="caramella" data-at="0,10" data-width="270" data-rotate="-2" data-material="card">
           <div class="item__body card"><i class="tack tack--yellow" aria-hidden="true"></i><h3>Caramella</h3>A cat from a shelter. She’d eat all day if I let&nbsp;her.</div>
         </div>
-        <div class="item" data-phone="-209,2714" data-cluster="words" data-at="20,270" data-width="290" data-rotate="1.2" data-material="card">
+        <div class="item" data-phone="-209,2714" data-cluster="trips" data-at="0,300" data-width="290" data-rotate="1.2" data-material="card">
           <div class="item__body card"><i class="tack tack--green" aria-hidden="true"></i><h3>Trips</h3>Planned down to the last&nbsp;detail. Korea: 17 days, 7 linked&nbsp;databases.</div>
         </div>
-        <div class="item" data-phone="555,2611" data-cluster="words" data-at="346,250" data-width="260" data-rotate="-1.4" data-material="card">
+        <div class="item" data-phone="555,2611" data-cluster="words" data-at="10,330" data-width="260" data-rotate="-1.4" data-material="card">
           <div class="item__body card"><i class="tack tack--blue" aria-hidden="true"></i><h3>Football</h3>Playmaker, seven-a-side.</div>
         </div>
 
         <!-- THE BOSS: Caramella, as polaroids (her card and her sticker live here too) -->
-        <div class="item" data-phone="-373,3810" data-cluster="caramella" data-at="6,-56" data-width="200" data-rotate="-2" data-small data-decoration data-material="chalk">
+        <div class="item" data-phone="-373,3810" data-cluster="caramella" data-at="6,-104" data-width="280" data-rotate="-2" data-small data-decoration data-material="chalk">
           <p class="item__body chalk chalk--small">the boss</p>
         </div>
         <div class="item" data-phone="-383,3866" data-cluster="caramella" data-at="300,-10" data-width="220" data-rotate="3.2" data-material="print">
           <a class="item__body print print--polaroid" href="Img/caramella/caramella-desk.webp" data-view data-caption="Caramella, supervising my work from my hand"><img src="Img/caramella/caramella-desk-thumb.webp" alt="Caramella resting her paws on my hand at the desk" width="480" height="480" draggable="false"><span>on duty</span></a>
         </div>
-        <div class="item" data-phone="-383,4160" data-cluster="caramella" data-at="545,25" data-width="220" data-rotate="-3.5" data-material="print">
+        <div class="item" data-phone="-383,4160" data-cluster="caramella" data-at="20,190" data-width="220" data-rotate="-3.5" data-material="print">
           <a class="item__body print print--polaroid" href="Img/caramella/caramella-window.webp" data-view data-caption="Caramella at the window"><img src="Img/caramella/caramella-window-thumb.webp" alt="Caramella sitting on the windowsill, looking up" width="480" height="480" draggable="false"><span>waiting for dinner</span></a>
         </div>
-        <div class="item" data-phone="-383,4454" data-cluster="caramella" data-at="790,-5" data-width="220" data-rotate="2.4" data-material="print">
+        <div class="item" data-phone="-383,4454" data-cluster="caramella" data-at="300,300" data-width="220" data-rotate="2.4" data-material="print">
           <a class="item__body print print--polaroid" href="Img/caramella/caramella-and-me.webp" data-view data-caption="Caramella and me"><img src="Img/caramella/caramella-and-me-thumb.webp" alt="A selfie of me holding Caramella" width="480" height="480" draggable="false"><span>us</span></a>
         </div>
 
         <!-- ON REPEAT: records as sleeves with their real covers, the vinyl peeking out (it slides out under the mouse) -->
-        <div class="item" data-phone="417,3810" data-cluster="records" data-at="6,-56" data-width="260" data-rotate="-2" data-small data-decoration data-material="chalk">
+        <div class="item" data-phone="417,3810" data-cluster="records" data-at="6,-104" data-width="364" data-rotate="-2" data-small data-decoration data-material="chalk">
           <p class="item__body chalk chalk--small">on repeat</p>
         </div>
         <div class="item" data-phone="407,3866" data-cluster="records" data-at="0,0" data-width="260" data-rotate="-2.5" data-material="prop">
@@ -401,14 +429,14 @@
             <figcaption class="record__caption">Cosmo, Sulle ali del cavallo&nbsp;bianco</figcaption>
           </figure>
         </div>
-        <div class="item" data-phone="407,4116" data-cluster="records" data-at="280,30" data-width="260" data-rotate="1.8" data-material="prop">
+        <div class="item" data-phone="407,4116" data-cluster="records" data-at="290,40" data-width="260" data-rotate="1.8" data-material="prop">
           <figure class="item__body prop record">
             <span class="record__disc record__disc--black record__disc--in-colour" aria-hidden="true"></span>
             <span class="record__sleeve" role="img" aria-label="Record: Jamie xx, In Colour"><img src="Img/records/in-colour-cover.svg" alt="" width="480" height="480" draggable="false"></span>
             <figcaption class="record__caption">Jamie xx, In&nbsp;Colour</figcaption>
           </figure>
         </div>
-        <div class="item" data-phone="407,4366" data-cluster="records" data-at="560,0" data-width="260" data-rotate="-1.2" data-material="prop">
+        <div class="item" data-phone="407,4366" data-cluster="records" data-at="10,340" data-width="260" data-rotate="-1.2" data-material="prop">
           <figure class="item__body prop record">
             <span class="record__disc record__disc--black record__disc--currents" aria-hidden="true"></span>
             <span class="record__sleeve" role="img" aria-label="Record: Tame Impala, Currents"><img src="Img/records/currents-cover.webp" alt="" width="480" height="480" draggable="false"></span>
@@ -417,10 +445,10 @@
         </div>
 
         <!-- PRESS START: the controller and a few games Darwin loved, each case on its own with the real cover -->
-        <div class="item" data-phone="467,3340" data-cluster="games" data-at="6,-56" data-width="240" data-rotate="-2" data-small data-decoration data-material="chalk">
+        <div class="item" data-phone="467,3340" data-cluster="games" data-at="6,-104" data-width="336" data-rotate="-2" data-small data-decoration data-material="chalk">
           <p class="item__body chalk chalk--small">press start</p>
         </div>
-        <div class="item" data-phone="477,3396" data-cluster="games" data-at="0,20" data-width="230" data-rotate="-6" data-material="prop">
+        <div class="item" data-phone="477,3396" data-cluster="games" data-at="0,60" data-width="230" data-rotate="-6" data-material="prop">
           <div class="item__body prop dualsense">
             <svg viewBox="0 0 240 160" role="img" aria-label="My controller, a white PlayStation 5 DualSense">
               <path d="M40 30C60 18 90 22 120 22s60-4 80 8c22 12 36 50 38 82 2 28-12 44-28 42-14-2-24-22-34-36-8-10-20-14-56-14s-48 4-56 14c-10 14-20 34-34 36-16 2-30-14-28-42 2-32 16-70 38-82z" fill="#f3f3f1" stroke="#c4c4c0" stroke-width="2"/>
@@ -441,38 +469,38 @@
             </svg>
           </div>
         </div>
-        <div class="item" data-phone="247,3610" data-cluster="games" data-at="265,4" data-width="120" data-rotate="-6" data-material="prop">
+        <div class="item" data-phone="247,3610" data-cluster="games" data-at="260,0" data-width="120" data-rotate="-6" data-material="prop">
           <div class="item__body prop game-case"><span class="game-case__band" aria-hidden="true">PS5</span><img src="Img/games/astro-bot.webp" alt="Game: Astro Bot" draggable="false"></div>
         </div>
-        <div class="item" data-phone="391,3618" data-cluster="games" data-at="400,0" data-width="120" data-rotate="-1.5" data-material="prop">
+        <div class="item" data-phone="391,3618" data-cluster="games" data-at="395,12" data-width="120" data-rotate="-1.5" data-material="prop">
           <div class="item__body prop game-case"><span class="game-case__band" aria-hidden="true">PS5</span><img src="Img/games/rift-apart.webp" alt="Game: Ratchet &amp; Clank: Rift Apart" draggable="false"></div>
         </div>
-        <div class="item" data-phone="535,3610" data-cluster="games" data-at="535,8" data-width="120" data-rotate="2.5" data-material="prop">
+        <div class="item" data-phone="535,3610" data-cluster="games" data-at="262,200" data-width="120" data-rotate="2.5" data-material="prop">
           <div class="item__body prop game-case"><span class="game-case__band" aria-hidden="true">PS5</span><img src="Img/games/tlou.webp" alt="Game: The Last of Us Part I" draggable="false"></div>
         </div>
-        <div class="item" data-phone="680,3618" data-cluster="games" data-at="670,2" data-width="120" data-rotate="6" data-material="prop">
+        <div class="item" data-phone="680,3618" data-cluster="games" data-at="400,192" data-width="120" data-rotate="6" data-material="prop">
           <div class="item__body prop game-case"><span class="game-case__band" aria-hidden="true">PS4</span><img src="Img/games/rayman.webp" alt="Game: Rayman Legends" draggable="false"></div>
         </div>
 
         <!-- YOUR TURN -->
-        <div class="item" data-phone="254,2925" data-cluster="ask" data-at="0,0" data-width="260" data-rotate="-4" data-small data-decoration data-material="chalk">
+        <div class="item" data-phone="31,2533" data-cluster="ask" data-at="0,-50" data-width="364" data-rotate="-4" data-small data-decoration data-material="chalk">
           <p class="item__body chalk chalk--small">your turn!</p>
         </div>
-        <div class="item" data-phone="23,2994" id="request" data-cluster="ask" data-at="10,62" data-width="340" data-rotate="1.6" data-material="postit">
+        <div class="item" data-phone="32,2615" id="request" data-cluster="ask" data-at="10,62" data-width="340" data-rotate="1.6" data-material="postit">
           <a class="item__body postit postit--orange ask" href="#request-dialog" data-request data-cursor="ask me"><span>Ask for the&nbsp;portfolio</span><svg class="arrow" viewBox="0 0 56 56" aria-hidden="true"><path d="M12 44 44 12M20 12h24v24"/></svg></a>
         </div>
         <!-- Write to me: a business card, a tape strip, a luggage tag -->
-        <div class="item" data-phone="152,3406" data-cluster="ask" data-at="390,40" data-width="280" data-rotate="-2" data-material="card">
+        <div class="item" data-phone="153,3012" data-cluster="ask" data-at="390,40" data-width="280" data-rotate="-2" data-material="card">
           <a class="item__body business-card" href="#" data-mail="bW9jLmxpYW1nQHJlaGdldi5uaXdyYWQ=" data-email-subject="Hello Darwin" data-cursor="write an email">
             <span class="business-card__name">Darwin Vegher</span>
             <span class="business-card__role">Product Designer &amp; Builder</span>
             <span class="business-card__action">Email me</span>
           </a>
         </div>
-        <div class="item" data-phone="-10,3492" data-cluster="ask" data-at="400,250" data-width="190" data-rotate="1.5" data-material="strip">
+        <div class="item" data-phone="246,3269" data-cluster="ask" data-at="400,250" data-width="190" data-rotate="1.5" data-material="strip">
           <a class="item__body strip strip--button" href="https://www.linkedin.com/in/darwinvegher" target="_blank" rel="noopener" data-cursor="open LinkedIn">LinkedIn<span class="sr-only"> (opens in a new tab)</span></a>
         </div>
-        <div class="item" data-phone="15,3621" data-cluster="ask" data-at="420,340" data-width="190" data-rotate="5" data-material="tag">
+        <div class="item" data-phone="16,3238" data-cluster="ask" data-at="420,340" data-width="190" data-rotate="5" data-material="tag">
           <a class="item__body luggage-tag" href="https://t.me/Darwiiiin" target="_blank" rel="noopener" data-cursor="open Telegram">
             <span class="luggage-tag__hole" aria-hidden="true"></span>
             <span class="luggage-tag__name">Telegram</span>
@@ -481,13 +509,13 @@
         </div>
 
         <!-- ELSEWHERE: every profile is a different object -->
-        <div class="item" data-phone="36,3804" data-cluster="elsewhere" data-at="0,0" data-width="340" data-rotate="-2" data-small data-decoration data-material="chalk">
+        <div class="item" data-phone="33,3431" data-cluster="elsewhere" data-at="0,0" data-width="476" data-rotate="-2" data-small data-decoration data-material="chalk">
           <p class="item__body chalk chalk--small">find me elsewhere</p>
         </div>
-        <div class="item" data-phone="19,3891" data-cluster="elsewhere" data-at="0,70" data-width="250" data-rotate="-1.5" data-material="label">
+        <div class="item" data-phone="23,3509" data-cluster="elsewhere" data-at="0,70" data-width="250" data-rotate="-1.5" data-material="label">
           <a class="item__body dymo" href="https://github.com/darw5n/" target="_blank" rel="noopener" data-cursor="open GitHub">GITHUB · DARW5N<span class="sr-only"> (opens in a new tab)</span></a>
         </div>
-        <div class="item" data-phone="273,3864" data-cluster="elsewhere" data-at="290,40" data-width="112" data-rotate="8" data-material="patch">
+        <div class="item" data-phone="269,3559" data-cluster="elsewhere" data-at="290,40" data-width="112" data-rotate="8" data-material="patch">
           <a class="item__body patch" href="https://dribbble.com/darwinvegher" target="_blank" rel="noopener" data-cursor="open Dribbble">
             <svg viewBox="0 0 100 100" aria-hidden="true">
               <defs><clipPath id="patch-dribbble-ball"><circle cx="50" cy="50" r="38"/></clipPath></defs>
@@ -502,18 +530,18 @@
             </svg><span class="sr-only">Dribbble (opens in a new tab)</span>
           </a>
         </div>
-        <div class="item" data-phone="43,3989" data-cluster="elsewhere" data-at="10,170" data-width="230" data-rotate="2" data-material="ticket">
+        <div class="item" data-phone="-52,3622" data-cluster="elsewhere" data-at="10,170" data-width="230" data-rotate="2" data-material="ticket">
           <a class="item__body ticket" href="https://www.behance.net/darwinvegher" target="_blank" rel="noopener" data-cursor="open Behance">
             <span class="ticket__stub" aria-hidden="true">Nº&nbsp;01</span>
             <span class="ticket__main"><span class="ticket__name">Behance</span><span class="ticket__note">Admit one</span></span><span class="sr-only"> (opens in a new tab)</span>
           </a>
         </div>
-        <div class="item" data-phone="26,4140" data-cluster="elsewhere" data-at="290,200" data-width="150" data-rotate="-4" data-material="stamp">
+        <div class="item" data-phone="34,3771" data-cluster="elsewhere" data-at="290,200" data-width="150" data-rotate="-4" data-material="stamp">
           <a class="item__body stamp" href="https://www.instagram.com/darwiiiin/" target="_blank" rel="noopener" data-cursor="open Instagram">
             <span class="stamp__value">@darwiiiin</span><span class="stamp__name">Instagram</span><span class="sr-only"> (opens in a new tab)</span>
           </a>
         </div>
-        <div class="item" data-phone="243,4141" data-cluster="elsewhere" data-at="470,90" data-width="100" data-rotate="-6" data-material="patch">
+        <div class="item" data-phone="241,3759" data-cluster="elsewhere" data-at="470,90" data-width="100" data-rotate="-6" data-material="patch">
           <a class="item__body patch" href="https://www.figma.com/@darw5n" target="_blank" rel="noopener" data-cursor="open Figma Community">
             <svg viewBox="0 0 100 100" aria-hidden="true">
               <rect x="4" y="4" width="92" height="92" rx="20" fill="#2b2b2b"/>
@@ -532,19 +560,19 @@
 
         <!-- PROPS (drafts): things lying on the desk. Movable, hidden when tidy, never ringed -->
         <!-- The red pencil: the one that draws the rings -->
-        <div class="item" data-phone="316,436" data-cluster="about" data-at="640,560" data-width="250" data-rotate="-14" data-small data-decoration data-no-ring data-material="prop">
+        <div class="item" data-phone="319,527" data-cluster="about" data-at="640,560" data-width="250" data-rotate="-14" data-small data-decoration data-no-ring data-material="prop">
           <div class="item__body prop" aria-hidden="true">
             <svg viewBox="0 0 250 22"><path d="M0 11 26 2h176v18H26Z" fill="#e2361b"/><path d="M26 2h176v6H26Z" fill="#f26b4f"/><path d="M26 14h176v6H26Z" fill="#b8260f"/><path d="M0 11 26 2v18Z" fill="#e8c9a0"/><path d="M0 11 9 8v6Z" fill="#7f1d0d"/><path d="M202 1h18v20h-18Z" fill="#c9c6bb"/><path d="M205 1v20M209 1v20M213 1v20M217 1v20" stroke="#9a978c" stroke-width="1"/><path d="M220 1h24a6 6 0 0 1 6 6v8a6 6 0 0 1-6 6h-24Z" fill="#f2a7a7"/></svg>
           </div>
         </div>
         <!-- A roll of film, next to the photos -->
-        <div class="item" data-phone="742,1552" data-cluster="photos" data-at="830,30" data-width="70" data-rotate="12" data-small data-decoration data-no-ring data-material="prop">
+        <div class="item" data-phone="310,2276" data-cluster="photos" data-at="830,30" data-width="70" data-rotate="12" data-small data-decoration data-no-ring data-material="prop">
           <div class="item__body prop" aria-hidden="true">
             <svg viewBox="0 0 70 100"><rect x="12" y="2" width="46" height="10" rx="3" fill="#2a2a28"/><rect x="6" y="10" width="58" height="80" rx="6" fill="#d8d4c4"/><rect x="6" y="28" width="58" height="40" fill="#e2361b"/><text x="35" y="53" text-anchor="middle" font-size="12" font-weight="700" fill="#fff">400</text><rect x="12" y="88" width="46" height="10" rx="3" fill="#2a2a28"/><path d="M64 40h4v24h-4" fill="#3b2a1a"/></svg>
           </div>
         </div>
         <!-- A paper clip, an eraser, a coffee ring: just life on a desk -->
-        <div class="item" data-phone="430,1178" data-cluster="work" data-at="330,-40" data-width="34" data-rotate="18" data-small data-decoration data-no-ring data-material="prop">
+        <div class="item" data-phone="430,1178" data-phone-area="projects" data-cluster="work" data-at="330,-40" data-width="34" data-rotate="18" data-small data-decoration data-no-ring data-material="prop">
           <div class="item__body prop" aria-hidden="true">
             <svg viewBox="0 0 34 90"><path d="M10 30V14a7 7 0 0 1 14 0v58a12 12 0 0 1-24 0V20" fill="none" stroke="#b9bcc0" stroke-width="3.5" stroke-linecap="round"/><path d="M10 30v38a5 5 0 0 0 10 0V22" fill="none" stroke="#b9bcc0" stroke-width="3.5" stroke-linecap="round"/></svg>
           </div>
@@ -554,7 +582,7 @@
             <svg viewBox="0 0 96 48"><rect x="2" y="4" width="92" height="40" rx="6" fill="#f0a5a0"/><rect x="2" y="4" width="40" height="40" rx="6" fill="#4a7bd0"/><rect x="36" y="4" width="8" height="40" fill="#4a7bd0"/><path d="M60 10l26 0" stroke="#fff" stroke-opacity=".5" stroke-width="2" stroke-linecap="round"/></svg>
           </div>
         </div>
-        <div class="item" data-phone="412,2726" data-cluster="words" data-at="640,40" data-width="150" data-rotate="0" data-small data-decoration data-no-ring data-material="prop">
+        <div class="item" data-phone="412,2726" data-cluster="words" data-at="520,40" data-width="150" data-rotate="0" data-small data-decoration data-no-ring data-material="prop">
           <div class="item__body prop prop--flat" aria-hidden="true">
             <svg viewBox="0 0 150 150"><circle cx="75" cy="75" r="62" fill="none" stroke="#5a3a1c" stroke-opacity=".35" stroke-width="7" stroke-dasharray="210 14 90 8 60"/><circle cx="76" cy="73" r="58" fill="none" stroke="#5a3a1c" stroke-opacity=".15" stroke-width="3"/></svg>
           </div>
@@ -563,7 +591,7 @@
 
         <!-- BOOKS: a stack of what Darwin has read (and the Vignelli Canon), and the book he is reading.
              Drawn here, in the colours and type of the real covers (English editions). -->
-        <div class="item" data-phone="-528,3010" data-cluster="words" data-at="0,470" data-width="300" data-rotate="-2" data-material="prop">
+        <div class="item" data-phone="-528,3010" data-cluster="words" data-at="0,40" data-width="300" data-rotate="-2" data-material="prop">
           <div class="item__body book-stack">
             <svg viewBox="0 0 300 232" role="img" aria-label="A stack of books I have read: Thinking, Fast and Slow by Daniel Kahneman; Rich Dad Poor Dad by Robert T. Kiyosaki; How to Be Everything by Emilie Wapnick; and The Vignelli Canon by Massimo Vignelli">
               <!-- Thinking, Fast and Slow: cream, spaced serif capitals, a yellow pencil -->
@@ -600,7 +628,7 @@
             </svg>
           </div>
         </div>
-        <div class="item" data-phone="-263,3296" data-cluster="words" data-at="330,470" data-width="170" data-rotate="5" data-material="prop">
+        <div class="item" data-phone="-263,3296" data-cluster="words" data-at="330,30" data-width="170" data-rotate="5" data-material="prop">
           <div class="item__body italian-dream" role="img" aria-label="The Italian Dream by Alec Ross: the book I am reading now">
             <span class="italian-dream__author" aria-hidden="true">ALEC ROSS</span>
             <span class="italian-dream__title" aria-hidden="true">
@@ -648,7 +676,7 @@
         </div>
 
         <!-- The headphones: Nothing Headphone (1), white, seen from the back. A simplified drawing. -->
-        <div class="item" data-phone="481,2913" data-cluster="records" data-at="560,330" data-width="220" data-rotate="8" data-material="prop">
+        <div class="item" data-phone="481,2913" data-cluster="records" data-at="330,400" data-width="220" data-rotate="8" data-material="prop">
           <div class="item__body prop headphones">
             <svg viewBox="0 0 240 240" role="img" aria-label="My headphones, Nothing Headphone (1), white">
               <defs><linearGradient id="cup-metal" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#eeeff0"/><stop offset="1" stop-color="#cfd0d3"/></linearGradient></defs>
@@ -680,28 +708,28 @@
         <div class="item" data-phone="457,3233" data-cluster="caramella" data-group="pack" data-at="215,105" data-width="104" data-rotate="-8" data-small data-on-top data-material="sticker">
           <div class="item__body sticker sticker--photo"><img src="Img/caramella/caramella-sticker.webp" alt="Sticker: Caramella, my cat" width="360" height="354" draggable="false"></div>
         </div>
-        <div class="item" data-phone="-47,1543" data-cluster="path" data-group="pack" data-at="360,-34" data-width="110" data-rotate="7" data-small data-material="sticker">
+        <div class="item" data-phone="274,1454" data-cluster="path" data-group="pack" data-at="620,-20" data-width="110" data-rotate="7" data-small data-material="sticker">
           <div class="item__body sticker"><svg viewBox="0 0 130 130" role="img" aria-label="Sticker: Made in the Dolomites"><circle cx="65" cy="65" r="58" fill="#f4e9cf" stroke="#fff" stroke-width="9"/><path d="M14 92 42 46l12 20 16-30 18 32 10-14 20 38Q65 112 14 92Z" fill="#c8452a"/><path d="M42 46l-8 14 7-3 5 5 3-3zM70 36l-9 18 8-4 6 6 4-4z" fill="#f4e9cf"/><path id="dolo-arc" d="M18 66a47 47 0 0 1 94 0" fill="none"/><text font-size="10" fill="#141414"><textPath href="#dolo-arc" startOffset="50%" text-anchor="middle">MADE IN THE DOLOMITES</textPath></text></svg></div>
         </div>
-        <div class="item" data-phone="568,241" data-cluster="about" data-group="pack" data-at="770,345" data-width="70" data-rotate="10" data-small data-material="sticker">
+        <div class="item" data-phone="312,1009" data-cluster="about" data-group="pack" data-at="770,345" data-width="70" data-rotate="10" data-small data-material="sticker">
           <div class="item__body sticker"><svg viewBox="0 0 90 120" role="img" aria-label="Sticker: inventor light bulb"><path d="M45 6C22 6 8 24 8 44c0 16 10 24 15 36v16a6 6 0 0 0 6 6h4a12 12 0 0 0 24 0h4a6 6 0 0 0 6-6V80c5-12 15-20 15-36C82 24 68 6 45 6Z" fill="#ffd400" stroke="#fff" stroke-width="9" stroke-linejoin="round"/><path d="M33 80h24M35 90h20M36 62l9-16 9 16" fill="none" stroke="#141414" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
         </div>
-        <div class="item" data-phone="199,1851" data-cluster="photos" data-group="pack" data-at="790,226" data-width="110" data-rotate="-6" data-small data-material="sticker">
+        <div class="item" data-phone="68,2375" data-cluster="photos" data-group="pack" data-at="790,226" data-width="110" data-rotate="-6" data-small data-material="sticker">
           <div class="item__body sticker"><svg viewBox="0 0 140 92" role="img" aria-label="Sticker: Ricoh GR IIIx camera"><g stroke="#fff" stroke-width="10" stroke-linejoin="round"><rect x="8" y="16" width="124" height="68" rx="9" fill="#fff"/><rect x="14" y="9" width="32" height="10" rx="3" fill="#fff"/></g><rect x="14" y="9" width="32" height="10" rx="3" fill="#5c6270"/><rect x="8" y="16" width="124" height="68" rx="9" fill="#4d535e"/><rect x="8" y="16" width="44" height="12" rx="6" fill="#646a76"/><rect x="8" y="28" width="38" height="52" rx="5" fill="#25272c"/><g fill="#3a3d44"><circle cx="16" cy="38" r="1.2"/><circle cx="27" cy="46" r="1.2"/><circle cx="36" cy="36" r="1.2"/><circle cx="19" cy="58" r="1.2"/><circle cx="33" cy="64" r="1.2"/><circle cx="24" cy="72" r="1.2"/><circle cx="39" cy="54" r="1.2"/></g><circle cx="54" cy="25" r="2.2" fill="#2a1e1e"/><circle cx="90" cy="50" r="27" fill="#454a54" stroke="#626874"/><circle cx="90" cy="50" r="23" fill="none" stroke="#3156d8" stroke-width="3.2"/><circle cx="90" cy="50" r="19" fill="#17181b"/><rect x="81" y="41" width="18" height="18" rx="5" fill="#24272d"/><circle cx="90" cy="50" r="5.5" fill="#363b5e"/><circle cx="88" cy="48" r="1.6" fill="#c9cdf0" fill-opacity=".7"/><text x="113" y="78" font-family="Circular, sans-serif" font-weight="700" font-size="9" fill="#3e434c" stroke="#2c3037" stroke-width=".4">GR</text></svg></div>
         </div>
         <div class="item" data-phone="-62,2253" data-cluster="lab" data-group="pack" data-at="350,250" data-width="104" data-rotate="8" data-small data-material="sticker">
           <div class="item__body sticker"><svg viewBox="0 0 130 130" role="img" aria-label="Sticker: Pages Organizer, 7,600+ users"><path d="M65 6l14 13 18-6 6 18 18 6-6 18 13 14-13 14 6 18-18 6-6 18-18-6-14 13-14-13-18 6-6-18-18-6 6-18L3 68l13-14-6-18 18-6 6-18 18 6Z" fill="#7b4df0" stroke="#fff" stroke-width="8" stroke-linejoin="round"/><text x="65" y="66" text-anchor="middle" font-size="24" fill="#fff">7,600+</text><text x="65" y="84" text-anchor="middle" font-size="11" fill="#fff">plugin users</text></svg></div>
         </div>
-        <div class="item" data-phone="205,330" data-cluster="about" data-group="pack" data-at="960,356" data-width="208" data-rotate="-3" data-small data-material="sticker">
+        <div class="item" data-phone="90,1102" data-cluster="about" data-group="pack" data-at="960,356" data-width="208" data-rotate="-3" data-small data-material="sticker">
           <div class="item__body sticker"><svg viewBox="0 0 241 76" role="img" aria-label="Sticker: Open to new roles"><rect x="6" y="6" width="229" height="64" rx="32" fill="#35d07f" stroke="#fff" stroke-width="9"/><circle cx="38" cy="38" r="11" fill="#141414"/><text x="56" y="44" font-size="18" fill="#141414">Open to new roles</text></svg></div>
         </div>
-        <div class="item" data-phone="675,2013" data-cluster="photos" data-group="pack" data-at="790,100" data-width="110" data-rotate="12" data-small data-material="sticker">
+        <div class="item" data-phone="219,2383" data-cluster="photos" data-group="pack" data-at="790,100" data-width="110" data-rotate="12" data-small data-material="sticker">
           <div class="item__body sticker"><svg viewBox="0 0 130 130" role="img" aria-label="Sticker: 57M+ views"><path d="M65 4 80 34l32-10-8 32 22 13-24 16 10 32-33-6-14 21-14-21-33 6 10-32L4 69l22-13-8-32 32 10Z" fill="#e2361b" stroke="#fff" stroke-width="8" stroke-linejoin="round"/><text x="65" y="70" text-anchor="middle" font-size="25" fill="#fff">57M+</text><text x="65" y="88" text-anchor="middle" font-size="11" fill="#fff">views</text></svg></div>
         </div>
-        <div class="item" data-phone="141,2846" data-cluster="words" data-group="pack" data-at="620,290" data-width="90" data-rotate="-10" data-small data-material="sticker">
+        <div class="item" data-phone="141,2846" data-cluster="words" data-group="pack" data-at="290,340" data-width="90" data-rotate="-10" data-small data-material="sticker">
           <div class="item__body sticker"><svg viewBox="0 0 110 110" role="img" aria-label="Sticker: playmaker, football"><circle cx="55" cy="55" r="48" fill="#fff" stroke="#fff" stroke-width="9"/><circle cx="55" cy="55" r="47" fill="none" stroke="#141414" stroke-width="2.5"/><path d="M55 34l19 14-7 22H43l-7-22ZM55 34V10M74 48l22-8M67 70l14 20M43 70 29 90M36 48l-22-8" fill="none" stroke="#141414" stroke-width="3.5" stroke-linejoin="round"/><path d="M55 34l19 14-7 22H43l-7-22Z" fill="#141414"/></svg></div>
         </div>
-        <div class="item" data-phone="434,1463" data-cluster="path" data-group="pack" data-at="370,190" data-width="100" data-rotate="6" data-small data-material="sticker">
+        <div class="item" data-phone="434,1463" data-cluster="records" data-group="pack" data-at="250,300" data-width="100" data-rotate="6" data-small data-material="sticker">
           <div class="item__body sticker"><svg viewBox="0 0 120 120" role="img" aria-label="Sticker: vinyl, drum and bass"><circle cx="60" cy="60" r="53" fill="#191919" stroke="#fff" stroke-width="9"/><circle cx="60" cy="60" r="41" fill="none" stroke="#3b3b3b" stroke-width="2"/><circle cx="60" cy="60" r="33" fill="none" stroke="#3b3b3b" stroke-width="2"/><circle cx="60" cy="60" r="21" fill="#a64bd6"/><circle cx="60" cy="60" r="3.5" fill="#fff"/><text x="60" y="53" text-anchor="middle" font-size="7.5" fill="#fff">drum &amp; bass</text></svg></div>
         </div>
         <div class="item" data-phone="449,2465" data-cluster="lab" data-group="pack" data-at="430,60" data-width="140" data-rotate="-5" data-small data-material="sticker">

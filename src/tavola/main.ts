@@ -3,7 +3,7 @@
  * cursor, viewer and preloader.
  *
  * Expected markup (see index.html):
- *   <script type="application/json" id="table-config">{ "clusters": [...], "groups": [[id, label], ...] }</script>
+ *   <script type="application/json" id="table-config">{ "clusters": [...], "groups": [[id, label], ...], "zones": [[cluster, ...], ...] }</script>
  *   <div id="view"><div id="world"><main class="items">…</main></div></div>
  *   toolbar buttons: #tidy #see-all #zoom-in #zoom-out #zoom-level #surface #sound
  *   optional: #preloader
@@ -12,6 +12,7 @@
 import { applySurface, currentSurface } from "./backgrounds.js";
 import { Board, type BoardConfig } from "./board.js";
 import { attachControls } from "./controls.js";
+import { installShortcuts } from "./shortcuts.js";
 import { installCursor } from "./cursor.js";
 import { installEmailLinks } from "./email.js";
 import { viewportSize } from "./geometry.js";
@@ -30,6 +31,8 @@ const readConfig = (): BoardConfig => {
     return {
       clusters: Array.isArray(parsed.clusters) ? parsed.clusters : [],
       groups: Array.isArray(parsed.groups) ? parsed.groups : [],
+      zones: Array.isArray(parsed.zones) ? parsed.zones : undefined,
+      phone: Array.isArray(parsed.phone) ? parsed.phone : undefined,
     };
   } catch {
     return fallback;
@@ -77,6 +80,7 @@ const boot = (): void => {
   view.addEventListener("pointerdown", () => board.markTouched(), { once: true });
 
   installCursor({ view });
+  installShortcuts();
   installViewer(world, sound);
   installEmailLinks(document);
   installRequest(document, sound);
@@ -88,7 +92,7 @@ const boot = (): void => {
   const images = [...world.querySelectorAll<HTMLImageElement>("img")];
   void document.fonts?.ready.then(() => board.settle());
   addEventListener("load", () => board.settle());
-  void runPreloader({ overlay: document.getElementById("preloader"), images, reducedMotion }).then(() => board.settle());
+  void runPreloader({ overlay: document.getElementById("preloader"), images, items: [...world.querySelectorAll<HTMLElement>(".item")], reducedMotion }).then(() => board.settle());
 
   // A resize lays the table out again once the window has stopped changing, so the
   // objects glide to their new spots once instead of restarting on every frame

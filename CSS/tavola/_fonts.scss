@@ -44,7 +44,8 @@
   font-family: "Antonia Display";
   src: url("../Font/Antonia/antonia-h1-medium.woff2") format("woff2");
   font-weight: 500;
-  font-display: swap;
+  // block: the preloader's name waits for it (preloaded) instead of flashing a fallback
+  font-display: block;
 }
 @font-face {
   font-family: "Antonia Display";
@@ -61,7 +62,8 @@
 }
 @font-face {
   font-family: "Have Heart";
-  src: url("../Font/HaveHeart/have-heart-one.otf") format("opentype");
+  src: url("../Font/HaveHeart/have-heart-one.woff2") format("woff2");
   font-weight: 400;
-  font-display: swap;
+  // block: the preloader's phrase waits for it (preloaded) instead of flashing a fallback
+  font-display: block;
 }

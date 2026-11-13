@@ -307,3 +307,102 @@ at 12% on a 1440×900 screen, and wide screens stayed mostly empty. Now 29–31%
 **Trade-off.** A table shaped by the screen reshuffles a few times while a window is dragged wider (about 8
 times from 900 to 2560 px, before: 4). Fixed gaps between clusters and a single step of extra air (≥ 1800 px)
 keep it from reshuffling for nothing, and each reshuffle is a glide, not a jump.
+
+## 2026-11-13 · Zones: work, life, contacts
+
+**Decision.** The messy table is split into three zones (`zones` in `#table-config`): how Darwin works (who, work,
+path, lab, tools), off the clock (photos, trips, Caramella, records, games, books), and contacts. Each zone is packed
+on its own, then the zones are packed as blocks with a gap about three times the gap between clusters
+(`ZONE_GAP_X/Y`), so the areas read apart; the work zone opens the table top left. Tidy up follows the same order.
+Three objects moved to their theme: the colleague's quote joins the path (it is proof of work), the Trips card joins
+the passport, the drum-and-bass sticker joins the records.
+
+**Why.** With 13 clusters at the same distance, work and hobbies read as one pile, and hobbies outnumber work
+(38 objects against 27). Darwin asked for two versions to compare: zones only, and zones plus cuts.
+
+## 2026-11-13 · Nine areas on a grid (version A, refined)
+
+**Decision (Darwin chose version A, then asked for macro areas, more space between them, a 3×3 grid on large
+screens).** The zones become nine areas, read row by row: who · work (projects, path, quotes) · lab and tools /
+photos · trips · Caramella / music and games · books · contacts and profiles. Each area is packed on its own as a
+landscape cell (it never reshuffles inside when the window changes), then the areas sit on a grid with 320 × 300 px
+between them: 3 columns from 1200 px, below that 1–3 columns, whichever fits the screen's shape. Phones keep the
+hand-made composition.
+
+**Also.** Two more colleague quotes join the work area, from other roles than Nikola's: Franco Dall'Ongaro
+(software engineer, the designer's eye) and Francesca Tosi (product manager, the solutions), in the English
+translations prepared in `storytelling/evidence/colleague-feedback.md`, where their permission is recorded. The
+area titles in chalk are bigger (3.4rem) and thicker (a stroke in the chalk colour), and sit higher above their
+area, so they read from afar.
+
+**Refined the same day (Darwin).** Inside each area the objects sit as a compact block (two above, two below), not
+in a long row: Caramella's card and polaroids, the records and headphones, the four game cases. Books and games now
+share an area ("off the clock"), music has its own. In the work area the career path comes first, a little larger
+(1.45rem on the table, unchanged on phones), with the three quotes under it, then the project screens. Every quote
+keeps its last two words together (`&nbsp;`), so no word is left alone on a line, also in Firefox.
+
+## 2026-11-13 · Phone: a grid, the middle column first
+
+**Decision (Darwin: "on mobile the objects are too close; the middle column matters most").** On phones the
+messy table becomes a grid of three screen-wide columns (`"phone"` in `#table-config`, band by band). The middle
+column, the one that opens, reads like a page with no gaps: who and the career path, the portfolio folder, the
+film strip and the photo post-it, the contacts. The side columns, a swipe away, hold what goes with each band, level
+with it: the project sheets left of the folder and the colleague quotes right of it; lab and tools beside the photos,
+with the loose prints on the other side; trips and Caramella beside the contacts; music, books and games below.
+Inside a cell objects flow in reading order with more air (28 / 40 / 110 px instead of 20 / 28 / 84).
+`data-phone-area` puts an object in a different area than its cluster (sheets, quotes, prints).
+
+**Replaces** the hand-made composition on /me (`data-phone` stays in the markup and still drives the portfolio,
+which declares no grid). Darwin can still move objects by hand; a new object needs no coordinates any more.
+
+## 2026-11-13 · Preloader and entrance
+
+**Decision (Darwin).** The preloader waits for the fonts and every image on the table, loaded and decoded (it used to
+wait at most 2.6 s, for some of them), so nothing jumps; on a slow line it opens anyway after 6 s. While it waits:
+"Darwin Vegher", a chalk line filled by the real progress, and a phrase that changes every second like Claude Code
+while it works, with its pulsing star (✻ ✽ ✶…). The phrases are the page's (`data-phrases`), so the portfolio can
+have its own; they are drafts to review. Then the entrance: the cloth is pulled away from the top-left corner, so
+the lines of the mat appear as it goes, and the objects in view land one after the other in reading order (45 ms
+apart, at most 1.3 s). Quick on a second page of the same visit; with reduced motion the phrase stays still and
+there is no pull and no stagger.
+
+**Refined (Darwin: "a bit longer than needed, so the animation shows; optimise the fonts").** At least 3.4 s from
+the opening of the page (about four phrases), a phrase every 0.85 s, the star breathes and turns, the progress line
+fills with time or loading, whichever is slower. Fonts: no system fallback in the preloader (it would change face
+mid-animation); instead its two fonts are preloaded first and use `font-display: block`, and Have Heart is now
+WOFF2 (309 → 168 KB; not subset: its licence is still to be checked). The words no longer wait for the scripts:
+on 4G they show at 0.7 s instead of 1.8 s.
+
+## 2026-11-13 · The table's cursor stays in the viewer and the dialogs
+
+**Decision (Darwin).** The table's cursor no longer gives way to the system one when a photo or a dialog opens. It
+moves into the open `<dialog>` (the top layer would hide it otherwise) and says what a click does there: on the
+picture the magnifier "zoom in" (zoomed: the hand, the fist while dragging), on the veil the open hand "close", on
+the paper of the form the open hand. Bars, buttons and text fields keep the system cursor, as the table's own bar
+does: they are interface, and a text field needs its I-beam.
+
+**Revised the same day (Darwin moved the middle column by hand, then: "the other areas grouped at the sides, not too
+close to the middle").** The middle column is Darwin's own composition (`data-phone` on its items), more compact
+than the computed one (it ends at about 3950 px instead of 4800), with stickers and the pencil tucked at its edges.
+Beside it each area is a compact group shaped like on the desktop (its `data-at`), 200 px from the middle, level with
+its row; a side holding two areas stacks them. On phones "See all" can now zoom out to 12% (was 20%), so the
+wider table fits.
+Then (Darwin): music to the left of "who", books and games to its right, so they no longer lengthen the page (about
+4500 px tall instead of 5200); 240 px between two groups on the same side, so each reads as a group of its own.
+
+## Parked · Composition mode (idea, 13/11/2026)
+
+Not built. A mode for Darwin only (`?compose` in the address): Shift+click or a drawn rectangle selects several
+objects, dragging one moves them all, and a "Copy positions" button copies `data-phone` / `data-at` of every object,
+to paste in a session. It would let him compose from a real phone, and lose nothing on a reload. Alt+click was
+ruled out: on a Mac it downloads the target of a link, and most objects are links.
+
+## 2026-11-13 · Keyboard shortcuts, and a card that lists them
+
+**Decision (Darwin).** ⌘/Ctrl + and − zoom the table like the bar's buttons, not the page; ⌘/Ctrl 0 is See all.
+Plain keys join T, + − 0 and the arrows: B changes the surface, S the sound, ? opens a card with every shortcut and
+the mouse and finger gestures ("⌘ + scroll or pinch: zoom"), for those who would never guess them. The bar's
+buttons show their key on hover and announce it (`aria-keyshortcuts`). Every shortcut presses the bar's own button.
+
+**Not used:** ⌘T and ⌘M, which Darwin first suggested: the browser opens a tab and the system minimises the
+window, and no page can stop them. ⌘B would take away the bookmarks of Firefox and Safari. Hence plain letters.

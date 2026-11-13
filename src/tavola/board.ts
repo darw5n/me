@@ -16,10 +16,10 @@ import {
   measure, positionOf, readItems, rectOf, render, setWidth, toLayoutItem, type TableItem,
 } from "./items.js";
 import {
-  NARROW_BREAKPOINT, PHONE_BASE_WIDTH, layoutComposed, layoutMessy, layoutTidy, phoneScale, phoneTable,
+  NARROW_BREAKPOINT, PHONE_BASE_WIDTH, layoutComposed, layoutPhoneGrid, type PhoneRow, layoutMessy, layoutTidy, phoneScale, phoneTable,
   phoneTidyFit, tidyGrid, tidyWidth,
 } from "./layout.js";
-import { attachPhoneZoom, type PhoneZoom } from "./phone-zoom.js";
+import { attachPhoneZoom, PHONE_ZOOM_MIN, type PhoneZoom } from "./phone-zoom.js";
 import { attachFilmHover, createRings, reactToTap, type Rings } from "./reactions.js";
 import type { Sound } from "./sound.js";
 import type { Arrangement, LayoutResult, Point, Rect } from "./types.js";
@@ -29,6 +29,10 @@ export interface BoardConfig {
   clusters: string[];
   /** Groups under "Tidy up", with their chalk label, in order. */
   groups: [id: string, label: string][];
+  /** Optional: clusters on the same theme, kept together when messy (see layoutMessy). */
+  zones?: string[][] | undefined;
+  /** Optional: the phone grid, band by band (see layoutPhoneGrid). Without it: data-phone. */
+  phone?: PhoneRow[] | undefined;
 }
 
 export interface BoardElements {
@@ -227,9 +231,12 @@ export class Board {
         this.items[i]!.scale = k;
         return { ...li, size: { w: li.size.w * k, h: li.size.h * k } };
       });
+      if (this.config.phone?.length) {
+        return layoutPhoneGrid(sized, { viewportWidth: vw, side: this.table().side, rows: this.config.phone, padding: PHONE_PADDING });
+      }
       return layoutComposed(sized, { viewportWidth: vw, side: this.table().side, padding: PHONE_PADDING });
     }
-    return layoutMessy(sized, { viewportWidth: vw, viewportHeight: viewportSize().h, clusterOrder: this.config.clusters });
+    return layoutMessy(sized, { viewportWidth: vw, viewportHeight: viewportSize().h, clusterOrder: this.config.clusters, zones: this.config.zones });
   }
 
   /** Opening view of the current arrangement. */
@@ -408,7 +415,7 @@ export class Board {
     }
     const margin = 12;
     const content = this.contentRect();
-    const fit = Math.max(0.2, (view.clientWidth - margin * 2) / content.w);
+    const fit = Math.max(PHONE_ZOOM_MIN, (view.clientWidth - margin * 2) / content.w);
     if (fit > 0.9) {
       this.scrollPhoneHome();
       return;

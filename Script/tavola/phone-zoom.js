@@ -9,7 +9,7 @@
  */
 import { clamp, easeInOut, lerp } from "./geometry.js";
 /** Low enough for "See all" to show the whole composition across. */
-export const PHONE_ZOOM_MIN = 0.2;
+export const PHONE_ZOOM_MIN = 0.12;
 export const PHONE_ZOOM_MAX = 2.5;
 /** A pinch that ends within this distance of 100% comes back to exactly 100%. */
 const SETTLE_RANGE = 0.1;

@@ -19,6 +19,8 @@
  * - data-on-top    lies on top of other objects, e.g. a sticker stuck on a folder: the
  *                  layout lets it overlap them and it stays above when they are lifted
  * - data-material  how the object reacts (see types.ts)
+ * - data-phone-area on a phone with a grid (config "phone"): the area the item joins,
+ *                  when it is not its cluster (e.g. the project sheets beside the folder)
  * - data-phone     on a phone, when messy: "x,y" in px on a 390 px screen, x from
  *                  the left edge of the opening screen (see layoutComposed)
  *
@@ -70,6 +72,7 @@ export const readItems = (root) => [...root.querySelectorAll(".item")].map((el, 
         decoration: "decoration" in d,
         onTop: "onTop" in d,
         phoneAt: d["phone"] ? pointOf(d["phone"]) : undefined,
+        phoneArea: d["phoneArea"] || undefined,
         material: materialOf(el),
         home: { x: 0, y: 0, rotation: 0 },
         offset: { messy: { x: 0, y: 0 }, tidy: { x: 0, y: 0 } },
@@ -94,6 +97,7 @@ export const toLayoutItem = (item, size) => ({
     decoration: item.decoration,
     onTop: item.onTop,
     ...(item.phoneAt ? { phoneAt: item.phoneAt } : {}),
+    ...(item.phoneArea ? { phoneArea: item.phoneArea } : {}),
 });
 /** Position actually shown: home plus the visitor's drag offset. */
 export const positionOf = (item, mode) => ({

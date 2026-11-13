@@ -215,10 +215,16 @@
 }
 
 // ---- Tape strips (path, contact labels) -------------------------------------------
+// The path opens the work area: a little larger than the rest, so it reads before the screens
 .path {
   display: grid;
   gap: 0.55em;
-  font-size: 1.15rem;
+  font-size: 1.45rem;
+
+  // The phone keeps the size its composition was drawn with
+  @include narrow {
+    font-size: 1.15rem;
+  }
 
   // Each strip of tape is stuck on by hand: a little tilt and offset, never the same
   li:nth-child(4n + 1) {
@@ -660,15 +666,20 @@
 }
 
 // ---- Chalk ---------------------------------------------------------------------
+// Written with a full stick of chalk: a thin stroke in the same colour thickens the
+// script, so it reads from afar too (13/11/2026: the area titles did not stand out)
 .chalk {
   color: var(--chalk);
-  font: 400 3.25rem / 1 var(--font-chalk);
+  font: 400 3.5rem / 1 var(--font-chalk);
   filter: url(#chalk);
   pointer-events: none;
-  text-shadow: 0 1px 0 var(--chalk-shadow);
+  -webkit-text-stroke: 0.035em currentColor;
+  paint-order: stroke fill;
+  text-shadow: 0 2px 0 var(--chalk-shadow);
 
+  // The title of an area
   &--small {
-    font-size: 2.5rem;
+    font-size: 3.4rem;
     white-space: nowrap;
   }
 
@@ -677,7 +688,7 @@
     font-size: 3rem;
 
     &--small {
-      font-size: 2.35rem;
+      font-size: 2.6rem;
     }
   }
 }

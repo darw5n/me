@@ -76,6 +76,13 @@ const buildCluster = (items, air) => {
     relax(boxes);
     return { boxes, bounds: union(boxes) };
 };
+/** Gaps between areas: about three times the gap between clusters, so areas read apart. */
+const AREA_GAP_X = 320;
+const AREA_GAP_Y = 300;
+/** From this window width the areas sit on a 3-column grid (3x3 with nine areas). */
+const GRID_WIDE = 1200;
+/** Shape each area aims for on its own: a landscape cell. */
+const AREA_RATIO = 1.5;
 /** Zoom at which the messy table opens: the widest cluster fits the window. */
 export const homeZoom = (clusters, viewportWidth, margin) => {
     const widest = Math.max(1, ...clusters.map((c) => c.bounds.w));
@@ -88,7 +95,7 @@ export const homeZoom = (clusters, viewportWidth, margin) => {
  * one instead of starting a new row. Every other cluster sits a little lower, so the
  * table never reads as a grid.
  */
-const packSkyline = (clusters, width, gapX, gapY) => {
+const packSkyline = (clusters, width, gapX, gapY, stagger = 46) => {
     // The skyline: x positions where its height changes, and the height from each on
     let edges = [{ x: 0, y: 0 }];
     const heightOver = (x0, x1) => {
@@ -110,7 +117,7 @@ const packSkyline = (clusters, width, gapX, gapY) => {
     };
     return clusters.map((c, i) => {
         const w = c.bounds.w + gapX;
-        const h = c.bounds.h + gapY + (i % 2 ? 46 : 0);
+        const h = c.bounds.h + gapY + (i % 2 ? stagger : 0);
         let best = null;
         for (const e of edges) {
             const x = Math.min(e.x, Math.max(0, width - c.bounds.w));
@@ -119,7 +126,7 @@ const packSkyline = (clusters, width, gapX, gapY) => {
                 best = { x, y };
         }
         raise(best.x, best.x + w, best.y + h);
-        return { x: best.x, y: best.y + (i % 2 ? 46 : 0) };
+        return { x: best.x, y: best.y + (i % 2 ? stagger : 0) };
     });
 };
 /** Candidate table widths step by this much, so a small resize keeps the same table. */
@@ -131,9 +138,17 @@ export const layoutMessy = (items, opts) => {
     // A large window gets a little more air between objects: one step, not a slope, so
     // clusters keep their size (and their spots) while the window is resized
     const air = viewportWidth >= 1800 ? 1.1 : 1;
-    const clusters = opts.clusterOrder
-        .map((key) => buildCluster(items.filter((i) => i.cluster === key), air))
-        .filter((c) => c.boxes.length > 0);
+    const keys = opts.clusterOrder.filter((key) => items.some((i) => i.cluster === key));
+    const clusters = keys.map((key) => buildCluster(items.filter((i) => i.cluster === key), air));
+    // Zones as lists of indexes into `clusters`, in table order
+    const zoned = new Set();
+    const zones = (opts.zones ?? [])
+        .map((zone) => zone.filter((key) => keys.includes(key) && !zoned.has(key) && zoned.add(key)))
+        .filter((zone) => zone.length > 0);
+    const rest = keys.filter((key) => !zoned.has(key));
+    if (rest.length)
+        zones.push(rest);
+    const zoneIndexes = zones.map((zone) => zone.map((key) => keys.indexOf(key)));
     const zoom = homeZoom(clusters, viewportWidth, margin);
     // The table is at least as wide as the opening screen, so the first clusters fill it
     const fitWidth = (viewportWidth - margin * 2) / zoom;
@@ -148,13 +163,66 @@ export const layoutMessy = (items, opts) => {
     const target = (viewportWidth / viewportHeight) * 1.15;
     const from = Math.ceil(Math.max(fitWidth, widest) / WIDTH_STEP) * WIDTH_STEP;
     let pick = null;
-    for (let width = from; width <= from + WIDTH_STEP * 24; width += WIDTH_STEP) {
-        const spots = packSkyline(clusters, width, gapX, gapY);
-        const right = Math.max(...spots.map((p, i) => p.x + clusters[i].bounds.w));
-        const bottom = Math.max(...spots.map((p, i) => p.y + clusters[i].bounds.h));
-        const score = Math.abs(Math.log(right / bottom / target));
-        if (!pick || score < pick.score - 0.01)
-            pick = { spots, width, score };
+    const extent = (spots, idx) => ({
+        w: Math.max(...idx.map((i, k) => spots[k].x + clusters[i].bounds.w)),
+        h: Math.max(...idx.map((i, k) => spots[k].y + clusters[i].bounds.h)),
+    });
+    if (zoneIndexes.length < 2) {
+        // One area: clusters packed freely, the table shaped like the screen. Widths are tried
+        // on a fixed step, so resizing by a few pixels never reshuffles the clusters.
+        for (let width = from; width <= from + WIDTH_STEP * 24; width += WIDTH_STEP) {
+            const spots = packSkyline(clusters, width, gapX, gapY);
+            const e = extent(spots, clusters.map((_, i) => i));
+            const score = Math.abs(Math.log(e.w / e.h / target));
+            if (!pick || score < pick.score - 0.01)
+                pick = { spots, score };
+        }
+    }
+    else {
+        // Areas: each one packed on its own at the width that makes it a landscape cell.
+        // This does not depend on the window, so an area never reshuffles inside.
+        const areas = zoneIndexes.map((idx) => {
+            const own = idx.map((i) => clusters[i]);
+            const narrowest = Math.max(...own.map((c) => c.bounds.w));
+            const widestRow = own.reduce((sum, c) => sum + c.bounds.w + gapX, 0);
+            let best = null;
+            for (let width = narrowest; width <= Math.max(narrowest, widestRow); width += 80) {
+                const spots = packSkyline(own, width, gapX, gapY);
+                const e = extent(spots, idx);
+                const score = Math.abs(Math.log(e.w / e.h / AREA_RATIO));
+                if (!best || score < best.score - 0.01)
+                    best = { spots, ...e, score };
+            }
+            return { idx, ...best };
+        });
+        // The grid: 3 columns on large screens, else the count whose shape fits the screen
+        const gridOf = (columns) => {
+            const rows = Math.ceil(areas.length / columns);
+            const colW = Array.from({ length: columns }, (_, c) => Math.max(0, ...areas.filter((_, a) => a % columns === c).map((a) => a.w)));
+            const rowH = Array.from({ length: rows }, (_, r) => Math.max(0, ...areas.filter((_, a) => Math.floor(a / columns) === r).map((a) => a.h)));
+            const colX = colW.map((_, c) => colW.slice(0, c).reduce((x, w) => x + w + AREA_GAP_X, 0));
+            const rowY = rowH.map((_, r) => rowH.slice(0, r).reduce((y, h) => y + h + AREA_GAP_Y, 0));
+            const spots = Array(clusters.length);
+            areas.forEach((area, a) => {
+                const x = colX[a % columns], y = rowY[Math.floor(a / columns)];
+                area.idx.forEach((i, k) => {
+                    spots[i] = { x: x + area.spots[k].x, y: y + area.spots[k].y };
+                });
+            });
+            return { spots, w: colX[columns - 1] + colW[columns - 1], h: rowY[rows - 1] + rowH[rows - 1] };
+        };
+        const most = Math.min(3, areas.length);
+        if (viewportWidth >= GRID_WIDE) {
+            pick = { spots: gridOf(most).spots, score: 0 };
+        }
+        else {
+            for (let columns = 1; columns <= most; columns++) {
+                const g = gridOf(columns);
+                const score = Math.abs(Math.log(g.w / g.h / target));
+                if (!pick || score < pick.score)
+                    pick = { spots: g.spots, score };
+            }
+        }
     }
     const placements = new Map();
     const placed = [];
@@ -182,6 +250,7 @@ const SECTION_GAP = 84;
 export const layoutColumn = (items, opts) => {
     const padding = opts.padding ?? 16;
     const width = opts.viewportWidth - padding * 2;
+    const gaps = opts.gaps ?? { column: COLUMN_GAP, row: ROW_GAP, section: SECTION_GAP };
     const boxes = [];
     let x = padding;
     let y = opts.top ?? 24;
@@ -199,15 +268,15 @@ export const layoutColumn = (items, opts) => {
         cluster = item.cluster;
         if (x > padding && (newGroup || x + r.w > padding + width + 0.5)) {
             x = padding;
-            y += rowHeight + (newGroup ? SECTION_GAP : ROW_GAP);
+            y += rowHeight + (newGroup ? gaps.section : gaps.row);
             rowHeight = 0;
         }
         const box = { item: softened, x, y, w: r.w, h: r.h };
         boxes.push(box);
-        x += r.w + COLUMN_GAP;
+        x += r.w + gaps.column;
         rowHeight = Math.max(rowHeight, r.h);
     }
-    relax(boxes, ROW_GAP - 4, 10, true);
+    relax(boxes, gaps.row - 4, 10, true);
     const placements = new Map();
     for (const box of boxes)
         placements.set(box.item.id, placementFor(box, box.item.rotation));
@@ -246,6 +315,96 @@ export const layoutComposed = (items, opts) => {
     }
     if (loose.length) {
         const flow = layoutColumn(loose, { viewportWidth: opts.viewportWidth, padding: opts.padding ?? 20, top: bottom + SECTION_GAP });
+        for (const [id, p] of flow.placements)
+            placements.set(id, { ...p, x: p.x + opts.side });
+    }
+    return { placements, bounds: boundsOf(items, placements), labels: new Map(), zoom: 1 };
+};
+/** Phone grid spacing: wider than the plain column, so objects get air (13/11/2026). */
+const PHONE_GRID_GAPS = { column: 28, row: 40, section: 110 };
+const PHONE_BAND_GAP = 150;
+const PHONE_GRID_TOP = 80;
+/** Distance between the middle column and the groups beside it (Darwin, 13/11/2026). */
+const PHONE_SIDE_GAP = 200;
+/** Between two groups on the same side: wide, so each reads as a group of its own. */
+const PHONE_GROUP_GAP = 240;
+/**
+ * Phone, messy, when the page declares a grid. The middle column is the opening screen
+ * and holds what matters most, top to bottom: laid out by hand (`phoneAt`, on a 390 px
+ * screen, scaled), or flowing in reading order for items without a spot. Beside it, a
+ * swipe away, each other area is a compact group shaped like on the desktop (its
+ * `data-at`), PHONE_SIDE_GAP from the middle, starting level with its row in the middle
+ * (the project sheets beside the portfolio folder, the quotes on the other side) and
+ * pushed down only when the group above it is longer. Items in no cell flow at the bottom.
+ */
+export const layoutPhoneGrid = (items, opts) => {
+    const vw = opts.viewportWidth;
+    const k = phoneScale(vw);
+    const padding = opts.padding ?? 20;
+    const areaOf = (i) => i.phoneArea ?? i.cluster;
+    const used = new Set();
+    const placements = new Map();
+    const of = (keys) => (keys ?? []).flatMap((key) => items.filter((i) => areaOf(i) === key && !used.has(i.id)));
+    // Middle: hand-made spots first, the rest flows under them. Returns [top, bottom].
+    const middle = (keys, from) => {
+        const own = of(keys);
+        if (!own.length)
+            return null;
+        own.forEach((i) => used.add(i.id));
+        let top = Infinity;
+        let bottom = from;
+        for (const i of own.filter((i) => i.phoneAt)) {
+            const y = i.phoneAt.y * k;
+            placements.set(i.id, { x: opts.side + i.phoneAt.x * k, y, rotation: i.rotation * 0.6 });
+            top = Math.min(top, y);
+            bottom = Math.max(bottom, y + i.size.h);
+        }
+        const loose = own.filter((i) => !i.phoneAt).map((i) => ({ ...i, cluster: areaOf(i) }));
+        if (loose.length) {
+            const y0 = Number.isFinite(top) ? bottom + PHONE_GRID_GAPS.section : from;
+            const flow = layoutColumn(loose, { viewportWidth: vw, padding, top: 0, gaps: PHONE_GRID_GAPS });
+            for (const [id, p] of flow.placements)
+                placements.set(id, { ...p, x: p.x + opts.side, y: p.y + y0 });
+            top = Math.min(top, y0);
+            bottom = y0 + flow.bounds.y + flow.bounds.h;
+        }
+        return [top, bottom];
+    };
+    // A side: each area a compact group, stacked, its inner edge PHONE_SIDE_GAP from the middle
+    const beside = (keys, dir, top) => {
+        let y = top;
+        for (const key of keys ?? []) {
+            const own = of([key]);
+            if (!own.length)
+                continue;
+            own.forEach((i) => used.add(i.id));
+            const group = buildCluster(own, k);
+            const b = group.bounds;
+            const x = dir < 0 ? opts.side - PHONE_SIDE_GAP - b.w : opts.side + vw + PHONE_SIDE_GAP;
+            for (const box of group.boxes) {
+                const at = { ...box, x: x + box.x - b.x, y: y + box.y - b.y };
+                placements.set(box.item.id, placementFor(at, box.item.rotation * 0.6));
+            }
+            y += b.h + PHONE_GROUP_GAP;
+        }
+        return y;
+    };
+    let y = PHONE_GRID_TOP;
+    let leftEnd = 0;
+    let rightEnd = 0;
+    for (const row of opts.rows) {
+        const span = middle(row.center, y);
+        const top = span ? span[0] : y;
+        if (span)
+            y = span[1] + PHONE_BAND_GAP;
+        if (row.left?.length)
+            leftEnd = beside(row.left, -1, Math.max(top, leftEnd));
+        if (row.right?.length)
+            rightEnd = beside(row.right, 1, Math.max(top, rightEnd));
+    }
+    const loose = items.filter((i) => !used.has(i.id));
+    if (loose.length) {
+        const flow = layoutColumn(loose, { viewportWidth: vw, padding, top: y, gaps: PHONE_GRID_GAPS });
         for (const [id, p] of flow.placements)
             placements.set(id, { ...p, x: p.x + opts.side });
     }
