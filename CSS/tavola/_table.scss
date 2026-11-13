@@ -204,7 +204,13 @@ html.is-entering .item__body {
   // negative margin, so it stays in place) keeps the tails whole (13/11/2026)
   padding: 0.25em 0.45em;
   margin: -0.25em -0.45em;
-  mask-image: linear-gradient(to right, #000 calc(var(--write) - 8%), transparent var(--write));
+  // Two layers: the writing (left to right) and the chalk grain, both must let a pixel through
+  -webkit-mask-image: linear-gradient(to right, #000 calc(var(--write) - 8%), transparent var(--write)), $chalk-grain;
+  mask-image: linear-gradient(to right, #000 calc(var(--write) - 8%), transparent var(--write)), $chalk-grain;
+  -webkit-mask-size: auto, 64px 64px;
+  mask-size: auto, 64px 64px;
+  -webkit-mask-composite: source-in;
+  mask-composite: intersect;
 
   .world.is-tidy & {
     opacity: 1;
@@ -225,7 +231,10 @@ html.is-entering .item__body {
 
 @media (prefers-reduced-motion: reduce) {
   .group-label {
-    mask-image: none;
+    -webkit-mask-image: $chalk-grain;
+    mask-image: $chalk-grain;
+    -webkit-mask-composite: source-over;
+    mask-composite: add;
 
     .world.is-tidy & {
       animation: none;
