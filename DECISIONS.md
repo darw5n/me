@@ -334,3 +334,9 @@ hand-made composition.
 translations prepared in `storytelling/evidence/colleague-feedback.md`, where their permission is recorded. The
 area titles in chalk are bigger (3.4rem) and thicker (a stroke in the chalk colour), and sit higher above their
 area, so they read from afar.
+
+**Refined the same day (Darwin).** Inside each area the objects sit as a compact block (two above, two below), not
+in a long row: Caramella's card and polaroids, the records and headphones, the four game cases. Books and games now
+share an area ("off the clock"), music has its own. In the work area the career path comes first, a little larger
+(1.45rem on the table, unchanged on phones), with the three quotes under it, then the project screens. Every quote
+keeps its last two words together (`&nbsp;`), so no word is left alone on a line, also in Firefox.

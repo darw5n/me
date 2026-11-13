@@ -696,7 +696,12 @@ body.is-leaving .curtain {
 .path {
   display: grid;
   gap: 0.55em;
-  font-size: 1.15rem;
+  font-size: 1.45rem;
+}
+@media (max-width: 719px) {
+  .path {
+    font-size: 1.15rem;
+  }
 }
 .path li:nth-child(4n+1) {
   --t: -0.5deg;

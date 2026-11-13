@@ -215,10 +215,16 @@
 }
 
 // ---- Tape strips (path, contact labels) -------------------------------------------
+// The path opens the work area: a little larger than the rest, so it reads before the screens
 .path {
   display: grid;
   gap: 0.55em;
-  font-size: 1.15rem;
+  font-size: 1.45rem;
+
+  // The phone keeps the size its composition was drawn with
+  @include narrow {
+    font-size: 1.15rem;
+  }
 
   // Each strip of tape is stuck on by hand: a little tilt and offset, never the same
   li:nth-child(4n + 1) {

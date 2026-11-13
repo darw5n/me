@@ -46,24 +46,24 @@
   <!-- Layout configuration read by Script/tavola/main.js -->
   <script type="application/json" id="table-config">
     {
-      "clusters": ["about", "work", "path", "lab", "tools", "photos", "trips", "caramella", "records", "games", "words", "ask", "elsewhere"],
+      "clusters": ["about", "path", "work", "lab", "tools", "photos", "trips", "caramella", "records", "words", "games", "ask", "elsewhere"],
       "zones": [
-        ["about"], ["work", "path"], ["lab", "tools"],
+        ["about"], ["path", "work"], ["lab", "tools"],
         ["photos"], ["trips"], ["caramella"],
-        ["records", "games"], ["words"], ["ask", "elsewhere"]
+        ["records"], ["words", "games"], ["ask", "elsewhere"]
       ],
       "groups": [
         ["about", "who"],
-        ["work", "work"],
         ["path", "where I've been"],
+        ["work", "work"],
         ["lab", "built for myself"],
         ["tools", "on my desk"],
         ["photos", "photos"],
         ["trips", "been there"],
         ["caramella", "the boss"],
         ["records", "on repeat"],
-        ["games", "press start"],
         ["words", "off the clock"],
+        ["games", "press start"],
         ["ask", "your turn"],
         ["elsewhere", "elsewhere"],
         ["pack", "sticker pack"]
@@ -204,7 +204,7 @@
         </div>
 
         <!-- PATH -->
-        <div class="item" data-phone="29,1326" data-cluster="path" data-at="0,0" data-width="470" data-rotate="0" data-span="2" data-material="strip">
+        <div class="item" data-phone="29,1326" data-cluster="path" data-at="0,0" data-width="600" data-rotate="0" data-span="2" data-material="strip">
           <ol class="item__body path" aria-label="Path">
             <li class="strip"><time>2022–26</time>Product Designer, Fiscozen</li>
             <li class="strip"><time>2017–22</time>Full Stack Designer, Erickson</li>
@@ -368,15 +368,15 @@
         </div>
 
         <!-- OFF THE CLOCK -->
-        <div class="item" data-phone="144,2535" data-cluster="path" data-at="10,330" data-width="420" data-rotate="1.4" data-material="paper">
+        <div class="item" data-phone="144,2535" data-cluster="path" data-at="0,300" data-width="420" data-rotate="1.4" data-material="paper">
           <blockquote class="item__body quote"><i class="tack" aria-hidden="true"></i>“He just makes things easier for everyone around&nbsp;him.”<small>Nikola Gluhovic, Senior Software&nbsp;Developer</small></blockquote>
         </div>
         <!-- Two more colleagues, from other roles: an engineer on the eye, a PM on the solutions (translated from
              Italian; permission to quote in storytelling/evidence/colleague-feedback.md) -->
-        <div class="item" data-phone="407,4610" data-cluster="path" data-at="470,320" data-width="360" data-rotate="-1.6" data-material="paper">
+        <div class="item" data-phone="407,4610" data-cluster="path" data-at="460,290" data-width="400" data-rotate="-1.6" data-material="paper">
           <blockquote class="item__body quote"><i class="tack tack--blue" aria-hidden="true"></i>“A remarkable designer’s eye. He knows how to give a product that extra&nbsp;touch.”<small>Franco Dall’Ongaro, Software&nbsp;Engineer</small></blockquote>
         </div>
-        <div class="item" data-phone="-333,4740" data-cluster="path" data-at="200,560" data-width="380" data-rotate="1" data-material="paper">
+        <div class="item" data-phone="-333,4740" data-cluster="path" data-at="200,540" data-width="400" data-rotate="1" data-material="paper">
           <blockquote class="item__body quote"><i class="tack tack--yellow" aria-hidden="true"></i>“He sees things I don’t, and comes up with a much more effective&nbsp;solution.”<small>Francesca Tosi, Product&nbsp;Manager</small></blockquote>
         </div>
         <div class="item" data-phone="-197,2533" data-cluster="caramella" data-at="0,10" data-width="270" data-rotate="-2" data-material="card">
@@ -385,7 +385,7 @@
         <div class="item" data-phone="-209,2714" data-cluster="trips" data-at="0,300" data-width="290" data-rotate="1.2" data-material="card">
           <div class="item__body card"><i class="tack tack--green" aria-hidden="true"></i><h3>Trips</h3>Planned down to the last&nbsp;detail. Korea: 17 days, 7 linked&nbsp;databases.</div>
         </div>
-        <div class="item" data-phone="555,2611" data-cluster="words" data-at="540,20" data-width="260" data-rotate="-1.4" data-material="card">
+        <div class="item" data-phone="555,2611" data-cluster="words" data-at="10,330" data-width="260" data-rotate="-1.4" data-material="card">
           <div class="item__body card"><i class="tack tack--blue" aria-hidden="true"></i><h3>Football</h3>Playmaker, seven-a-side.</div>
         </div>
 
@@ -396,10 +396,10 @@
         <div class="item" data-phone="-383,3866" data-cluster="caramella" data-at="300,-10" data-width="220" data-rotate="3.2" data-material="print">
           <a class="item__body print print--polaroid" href="Img/caramella/caramella-desk.webp" data-view data-caption="Caramella, supervising my work from my hand"><img src="Img/caramella/caramella-desk-thumb.webp" alt="Caramella resting her paws on my hand at the desk" width="480" height="480" draggable="false"><span>on duty</span></a>
         </div>
-        <div class="item" data-phone="-383,4160" data-cluster="caramella" data-at="545,25" data-width="220" data-rotate="-3.5" data-material="print">
+        <div class="item" data-phone="-383,4160" data-cluster="caramella" data-at="20,190" data-width="220" data-rotate="-3.5" data-material="print">
           <a class="item__body print print--polaroid" href="Img/caramella/caramella-window.webp" data-view data-caption="Caramella at the window"><img src="Img/caramella/caramella-window-thumb.webp" alt="Caramella sitting on the windowsill, looking up" width="480" height="480" draggable="false"><span>waiting for dinner</span></a>
         </div>
-        <div class="item" data-phone="-383,4454" data-cluster="caramella" data-at="790,-5" data-width="220" data-rotate="2.4" data-material="print">
+        <div class="item" data-phone="-383,4454" data-cluster="caramella" data-at="300,300" data-width="220" data-rotate="2.4" data-material="print">
           <a class="item__body print print--polaroid" href="Img/caramella/caramella-and-me.webp" data-view data-caption="Caramella and me"><img src="Img/caramella/caramella-and-me-thumb.webp" alt="A selfie of me holding Caramella" width="480" height="480" draggable="false"><span>us</span></a>
         </div>
 
@@ -414,14 +414,14 @@
             <figcaption class="record__caption">Cosmo, Sulle ali del cavallo&nbsp;bianco</figcaption>
           </figure>
         </div>
-        <div class="item" data-phone="407,4116" data-cluster="records" data-at="280,30" data-width="260" data-rotate="1.8" data-material="prop">
+        <div class="item" data-phone="407,4116" data-cluster="records" data-at="290,40" data-width="260" data-rotate="1.8" data-material="prop">
           <figure class="item__body prop record">
             <span class="record__disc record__disc--black record__disc--in-colour" aria-hidden="true"></span>
             <span class="record__sleeve" role="img" aria-label="Record: Jamie xx, In Colour"><img src="Img/records/in-colour-cover.svg" alt="" width="480" height="480" draggable="false"></span>
             <figcaption class="record__caption">Jamie xx, In&nbsp;Colour</figcaption>
           </figure>
         </div>
-        <div class="item" data-phone="407,4366" data-cluster="records" data-at="560,0" data-width="260" data-rotate="-1.2" data-material="prop">
+        <div class="item" data-phone="407,4366" data-cluster="records" data-at="10,340" data-width="260" data-rotate="-1.2" data-material="prop">
           <figure class="item__body prop record">
             <span class="record__disc record__disc--black record__disc--currents" aria-hidden="true"></span>
             <span class="record__sleeve" role="img" aria-label="Record: Tame Impala, Currents"><img src="Img/records/currents-cover.webp" alt="" width="480" height="480" draggable="false"></span>
@@ -433,7 +433,7 @@
         <div class="item" data-phone="467,3340" data-cluster="games" data-at="6,-104" data-width="336" data-rotate="-2" data-small data-decoration data-material="chalk">
           <p class="item__body chalk chalk--small">press start</p>
         </div>
-        <div class="item" data-phone="477,3396" data-cluster="games" data-at="0,20" data-width="230" data-rotate="-6" data-material="prop">
+        <div class="item" data-phone="477,3396" data-cluster="games" data-at="0,60" data-width="230" data-rotate="-6" data-material="prop">
           <div class="item__body prop dualsense">
             <svg viewBox="0 0 240 160" role="img" aria-label="My controller, a white PlayStation 5 DualSense">
               <path d="M40 30C60 18 90 22 120 22s60-4 80 8c22 12 36 50 38 82 2 28-12 44-28 42-14-2-24-22-34-36-8-10-20-14-56-14s-48 4-56 14c-10 14-20 34-34 36-16 2-30-14-28-42 2-32 16-70 38-82z" fill="#f3f3f1" stroke="#c4c4c0" stroke-width="2"/>
@@ -454,16 +454,16 @@
             </svg>
           </div>
         </div>
-        <div class="item" data-phone="247,3610" data-cluster="games" data-at="265,4" data-width="120" data-rotate="-6" data-material="prop">
+        <div class="item" data-phone="247,3610" data-cluster="games" data-at="260,0" data-width="120" data-rotate="-6" data-material="prop">
           <div class="item__body prop game-case"><span class="game-case__band" aria-hidden="true">PS5</span><img src="Img/games/astro-bot.webp" alt="Game: Astro Bot" draggable="false"></div>
         </div>
-        <div class="item" data-phone="391,3618" data-cluster="games" data-at="400,0" data-width="120" data-rotate="-1.5" data-material="prop">
+        <div class="item" data-phone="391,3618" data-cluster="games" data-at="395,12" data-width="120" data-rotate="-1.5" data-material="prop">
           <div class="item__body prop game-case"><span class="game-case__band" aria-hidden="true">PS5</span><img src="Img/games/rift-apart.webp" alt="Game: Ratchet &amp; Clank: Rift Apart" draggable="false"></div>
         </div>
-        <div class="item" data-phone="535,3610" data-cluster="games" data-at="535,8" data-width="120" data-rotate="2.5" data-material="prop">
+        <div class="item" data-phone="535,3610" data-cluster="games" data-at="262,200" data-width="120" data-rotate="2.5" data-material="prop">
           <div class="item__body prop game-case"><span class="game-case__band" aria-hidden="true">PS5</span><img src="Img/games/tlou.webp" alt="Game: The Last of Us Part I" draggable="false"></div>
         </div>
-        <div class="item" data-phone="680,3618" data-cluster="games" data-at="670,2" data-width="120" data-rotate="6" data-material="prop">
+        <div class="item" data-phone="680,3618" data-cluster="games" data-at="400,192" data-width="120" data-rotate="6" data-material="prop">
           <div class="item__body prop game-case"><span class="game-case__band" aria-hidden="true">PS4</span><img src="Img/games/rayman.webp" alt="Game: Rayman Legends" draggable="false"></div>
         </div>
 
@@ -567,7 +567,7 @@
             <svg viewBox="0 0 96 48"><rect x="2" y="4" width="92" height="40" rx="6" fill="#f0a5a0"/><rect x="2" y="4" width="40" height="40" rx="6" fill="#4a7bd0"/><rect x="36" y="4" width="8" height="40" fill="#4a7bd0"/><path d="M60 10l26 0" stroke="#fff" stroke-opacity=".5" stroke-width="2" stroke-linecap="round"/></svg>
           </div>
         </div>
-        <div class="item" data-phone="412,2726" data-cluster="words" data-at="560,230" data-width="150" data-rotate="0" data-small data-decoration data-no-ring data-material="prop">
+        <div class="item" data-phone="412,2726" data-cluster="words" data-at="520,40" data-width="150" data-rotate="0" data-small data-decoration data-no-ring data-material="prop">
           <div class="item__body prop prop--flat" aria-hidden="true">
             <svg viewBox="0 0 150 150"><circle cx="75" cy="75" r="62" fill="none" stroke="#5a3a1c" stroke-opacity=".35" stroke-width="7" stroke-dasharray="210 14 90 8 60"/><circle cx="76" cy="73" r="58" fill="none" stroke="#5a3a1c" stroke-opacity=".15" stroke-width="3"/></svg>
           </div>
@@ -661,7 +661,7 @@
         </div>
 
         <!-- The headphones: Nothing Headphone (1), white, seen from the back. A simplified drawing. -->
-        <div class="item" data-phone="481,2913" data-cluster="records" data-at="560,330" data-width="220" data-rotate="8" data-material="prop">
+        <div class="item" data-phone="481,2913" data-cluster="records" data-at="330,400" data-width="220" data-rotate="8" data-material="prop">
           <div class="item__body prop headphones">
             <svg viewBox="0 0 240 240" role="img" aria-label="My headphones, Nothing Headphone (1), white">
               <defs><linearGradient id="cup-metal" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#eeeff0"/><stop offset="1" stop-color="#cfd0d3"/></linearGradient></defs>
@@ -693,7 +693,7 @@
         <div class="item" data-phone="457,3233" data-cluster="caramella" data-group="pack" data-at="215,105" data-width="104" data-rotate="-8" data-small data-on-top data-material="sticker">
           <div class="item__body sticker sticker--photo"><img src="Img/caramella/caramella-sticker.webp" alt="Sticker: Caramella, my cat" width="360" height="354" draggable="false"></div>
         </div>
-        <div class="item" data-phone="-47,1543" data-cluster="path" data-group="pack" data-at="360,-34" data-width="110" data-rotate="7" data-small data-material="sticker">
+        <div class="item" data-phone="-47,1543" data-cluster="path" data-group="pack" data-at="620,-20" data-width="110" data-rotate="7" data-small data-material="sticker">
           <div class="item__body sticker"><svg viewBox="0 0 130 130" role="img" aria-label="Sticker: Made in the Dolomites"><circle cx="65" cy="65" r="58" fill="#f4e9cf" stroke="#fff" stroke-width="9"/><path d="M14 92 42 46l12 20 16-30 18 32 10-14 20 38Q65 112 14 92Z" fill="#c8452a"/><path d="M42 46l-8 14 7-3 5 5 3-3zM70 36l-9 18 8-4 6 6 4-4z" fill="#f4e9cf"/><path id="dolo-arc" d="M18 66a47 47 0 0 1 94 0" fill="none"/><text font-size="10" fill="#141414"><textPath href="#dolo-arc" startOffset="50%" text-anchor="middle">MADE IN THE DOLOMITES</textPath></text></svg></div>
         </div>
         <div class="item" data-phone="568,241" data-cluster="about" data-group="pack" data-at="770,345" data-width="70" data-rotate="10" data-small data-material="sticker">
@@ -711,10 +711,10 @@
         <div class="item" data-phone="675,2013" data-cluster="photos" data-group="pack" data-at="790,100" data-width="110" data-rotate="12" data-small data-material="sticker">
           <div class="item__body sticker"><svg viewBox="0 0 130 130" role="img" aria-label="Sticker: 57M+ views"><path d="M65 4 80 34l32-10-8 32 22 13-24 16 10 32-33-6-14 21-14-21-33 6 10-32L4 69l22-13-8-32 32 10Z" fill="#e2361b" stroke="#fff" stroke-width="8" stroke-linejoin="round"/><text x="65" y="70" text-anchor="middle" font-size="25" fill="#fff">57M+</text><text x="65" y="88" text-anchor="middle" font-size="11" fill="#fff">views</text></svg></div>
         </div>
-        <div class="item" data-phone="141,2846" data-cluster="words" data-group="pack" data-at="620,290" data-width="90" data-rotate="-10" data-small data-material="sticker">
+        <div class="item" data-phone="141,2846" data-cluster="words" data-group="pack" data-at="290,340" data-width="90" data-rotate="-10" data-small data-material="sticker">
           <div class="item__body sticker"><svg viewBox="0 0 110 110" role="img" aria-label="Sticker: playmaker, football"><circle cx="55" cy="55" r="48" fill="#fff" stroke="#fff" stroke-width="9"/><circle cx="55" cy="55" r="47" fill="none" stroke="#141414" stroke-width="2.5"/><path d="M55 34l19 14-7 22H43l-7-22ZM55 34V10M74 48l22-8M67 70l14 20M43 70 29 90M36 48l-22-8" fill="none" stroke="#141414" stroke-width="3.5" stroke-linejoin="round"/><path d="M55 34l19 14-7 22H43l-7-22Z" fill="#141414"/></svg></div>
         </div>
-        <div class="item" data-phone="434,1463" data-cluster="records" data-group="pack" data-at="840,170" data-width="100" data-rotate="6" data-small data-material="sticker">
+        <div class="item" data-phone="434,1463" data-cluster="records" data-group="pack" data-at="250,300" data-width="100" data-rotate="6" data-small data-material="sticker">
           <div class="item__body sticker"><svg viewBox="0 0 120 120" role="img" aria-label="Sticker: vinyl, drum and bass"><circle cx="60" cy="60" r="53" fill="#191919" stroke="#fff" stroke-width="9"/><circle cx="60" cy="60" r="41" fill="none" stroke="#3b3b3b" stroke-width="2"/><circle cx="60" cy="60" r="33" fill="none" stroke="#3b3b3b" stroke-width="2"/><circle cx="60" cy="60" r="21" fill="#a64bd6"/><circle cx="60" cy="60" r="3.5" fill="#fff"/><text x="60" y="53" text-anchor="middle" font-size="7.5" fill="#fff">drum &amp; bass</text></svg></div>
         </div>
         <div class="item" data-phone="449,2465" data-cluster="lab" data-group="pack" data-at="430,60" data-width="140" data-rotate="-5" data-small data-material="sticker">
