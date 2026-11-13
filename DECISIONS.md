@@ -268,3 +268,9 @@ next trip has no dates (they would say when the house is empty). The full diary 
 handwritten caption, no tape: `.print--polaroid`) and her sticker, now cut from a real photo along the outline of her
 head (`.sticker--photo`, the white edge is in the image). Photos are cropped from Darwin's originals with the
 orientation applied and **all metadata removed** (phone photos carry GPS).
+
+## 2026-11-13 · Press start: the controller and a few games
+
+**Decision.** A cluster `games` ("press start"): Darwin's white DualSense, drawn from above, and four game cases
+fanned out, picked from his favourites (Astro Bot, Ratchet & Clank: Rift Apart, The Last of Us Part I, Rayman Legends).
+Covers are drawn like the books and the records; the band says PS5 or PS4, as the real game.
