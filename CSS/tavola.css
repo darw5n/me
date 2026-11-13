@@ -1345,6 +1345,52 @@ body.is-leaving .curtain {
     transform: translateY(-1px) scale(1.06);
   }
 }
+.macropad {
+  padding: 0.75rem;
+  border-radius: 1rem;
+  background: linear-gradient(160deg, #3a3c40, #232427 60%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12), 0 2px 0 #121314, 0 10px 18px rgba(0, 0, 0, 0.35);
+}
+
+.macropad__keys {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.key {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+  padding: 0.45rem 0.3rem 0.3rem;
+  border-radius: 0.6rem;
+  background: linear-gradient(#f6f4ee, #e6e2d8);
+  box-shadow: inset 0 -0.3rem 0 #cfcabd, inset 0 1px 0 #fff, 0 0.15rem 0 #0e0f10;
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+.key img {
+  display: block;
+  width: 2.6rem;
+  height: 2.6rem;
+  object-fit: contain;
+}
+
+.key__name {
+  font: 500 0.6rem/1 var(--font-ui);
+  color: #6c675b;
+  white-space: nowrap;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .key:hover {
+    transform: translateY(0.12rem);
+    box-shadow: inset 0 -0.15rem 0 #cfcabd, inset 0 1px 0 #fff, 0 0.03rem 0 #0e0f10;
+  }
+}
 .item h1,
 .item h3,
 .item b,

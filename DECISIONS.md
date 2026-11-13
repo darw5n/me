@@ -226,3 +226,14 @@ title). A new file name for the preview also makes LinkedIn and WhatsApp fetch i
 "darw.it", no description, no image), not this page. Until the domain points to GitHub Pages, `og:url` and
 `og:image` use the github.io address. When it moves: Aruba A records → GitHub Pages, custom domain in the repo
 settings, then switch those two URLs to `https://darw.it/`.
+
+## 2026-11-13 · Tools: a macro pad, not a row of logos
+
+**Decision.** The apps Darwin opens every day sit on ten keycaps of a small macro pad (cluster `tools`, "on my
+desk"): the icon printed on top, the name on the front edge. Next to it, his mouse (MX Master 4), drawn.
+The list comes from the `tools` note of his context (Claude, Figma, Notion, Notion Calendar, Granola, Wispr Flow,
+Raycast, Zen, Goldfish, Spotify); tools he no longer uses (Arc, VS Code, Cursor…) are out, and their logos left the repo.
+
+**Why.** The icons come in mixed styles (some with their own rounded square, some cut out). On a keycap they read as
+one set, and a keycap is a real object on a desk, like everything else on the table. The name on the key keeps them
+readable for those who don't know the icon; the `alt` of each icon carries it for screen readers.
