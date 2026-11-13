@@ -239,10 +239,10 @@
 
         <!-- BEEN THERE: a passport with a stamp per trip (country and year only: the site is public),
              and the boarding pass of the next one, without dates -->
-        <div class="item" data-phone="467,3340" data-cluster="trips" data-at="6,-56" data-width="260" data-rotate="-2" data-small data-decoration data-material="chalk">
+        <div class="item" data-phone="47,4350" data-cluster="trips" data-at="6,-56" data-width="260" data-rotate="-2" data-small data-decoration data-material="chalk">
           <p class="item__body chalk chalk--small">been there</p>
         </div>
-        <div class="item" id="passport" data-phone="457,3396" data-cluster="trips" data-at="0,0" data-width="460" data-rotate="-1.5" data-span="2" data-material="prop">
+        <div class="item" id="passport" data-phone="37,4406" data-cluster="trips" data-at="0,0" data-width="460" data-rotate="-1.5" data-span="2" data-material="prop">
           <div class="item__body prop passport">
             <svg viewBox="0 0 460 244" role="img" aria-label="My passport, stamped: New York 2022, Kyoto 2023, North Macedonia 2020, Seville 2019, Poreč 2020, Tokyo 2025, Seoul 2025, London 2025, Jeju 2025, Vienna 2024">
               <rect x="1" y="1" width="458" height="242" rx="9" fill="#6d1f2b"/>
@@ -256,16 +256,49 @@
             </svg>
           </div>
         </div>
-        <div class="item" data-phone="487,3596" data-cluster="trips" data-at="490,40" data-width="270" data-rotate="3" data-material="prop">
+        <div class="item" data-phone="37,4621" data-cluster="trips" data-at="490,0" data-width="380" data-rotate="2.5" data-material="prop">
           <div class="item__body prop pass">
-            <p class="pass__head"><span>Boarding pass</span><span>Next</span></p>
-            <p class="pass__to"><span class="pass__label">To</span>China</p>
-            <dl class="pass__fields">
-              <div><dt>From</dt><dd>The Dolomites</dd></div>
-              <div><dt>Status</dt><dd>Planning</dd></div>
-              <div><dt>Itinerary</dt><dd>In Notion</dd></div>
-            </dl>
-            <span class="pass__barcode" aria-hidden="true"></span>
+            <div class="pass__main">
+              <p class="pass__head"><span>Boarding pass</span><span>Next trip</span></p>
+              <div class="pass__route">
+                <p><span class="pass__label">From</span><b>Trento</b>Italy</p>
+                <svg class="pass__plane" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 13l8-1 5-8h2l-2 8 5-.5 1.5-2.5H23l-1 4 1 4h-1.5L20 14.5l-5-.5 2 8h-2l-5-8-8-1z"/></svg>
+                <p><span class="pass__label">To</span><b>Shanghai</b>China</p>
+              </div>
+              <dl class="pass__fields">
+                <div><dt>Passenger</dt><dd>Darwin&nbsp;V.</dd></div>
+                <div><dt>Seat</dt><dd>Window</dd></div>
+                <div><dt>Itinerary</dt><dd>In Notion</dd></div>
+                <div><dt>Status</dt><dd>Planning</dd></div>
+              </dl>
+            </div>
+            <div class="pass__stub" aria-hidden="true">
+              <span>Trento</span><span>Shanghai</span>
+              <i class="pass__barcode"></i>
+            </div>
+          </div>
+        </div>
+
+        <!-- The map of the next trip: coast and cities in their real places, the route drawn by hand, no dates -->
+        <div class="item" data-phone="37,4816" data-cluster="trips" data-at="510,235" data-width="340" data-rotate="-2" data-material="prop">
+          <div class="item__body prop trip-map">
+            <svg viewBox="0 0 320 240" role="img" aria-label="Map of my next trip, drawn by hand: Shanghai, Hong Kong, Guilin and Yangshuo, Kunming, Lijiang, then back to Shanghai">
+              <defs><clipPath id="map-paper"><rect width="320" height="240" rx="3"/></clipPath></defs>
+              <g clip-path="url(#map-paper)">
+                <rect width="320" height="240" fill="#f3eddc"/>
+                <path d="M265,0 L265,14 L273,35 L284,55 L284,70 L280,87 L274,105 L266,120 L258,135 L251,147 L240,159 L228,171 L217,182 L203,188 L196,193 L188,194 L177,199 L163,205 L153,212 L146,203 L133,202 L125,203 L125,240 L320,240 L320,0 Z" fill="#c9dde0"/>
+                <g fill="none" stroke="#9fbfc4" stroke-width=".8" stroke-linecap="round"><path d="M268 150q5-3 10 0t10 0M250 200q5-3 10 0t10 0M290 110q5-3 10 0t10 0M230 228q5-3 10 0t10 0"/></g>
+                <path d="M265,14 L273,35 L284,55 L284,70 L280,87 L274,105 L266,120 L258,135 L251,147 L240,159 L228,171 L217,182 L203,188 L196,193 L188,194 L177,199 L163,205 L153,212 L146,203 L133,202 L125,203" fill="none" stroke="#8aa6ab" stroke-width="1.2"/>
+                <path d="M30 70c30 10 60 4 92 14s70 8 100 2" fill="none" stroke="#b8cfd2" stroke-width="2" stroke-linecap="round"/>
+                <path d="M107 0V240M213 0V240M0 120H320" stroke="#000" stroke-opacity=".06"/>
+                <path d="M37 122Q140 21 280 56" fill="none" stroke="#c8402f" stroke-width="1.6" stroke-dasharray="2 5" stroke-linecap="round" opacity=".7"/>
+                <path d="M280 56Q214 109 196 191 M196 191Q183 162 153 150 M153 150Q109 135 66 150 M66 150Q58 129 37 122" fill="none" stroke="#c8402f" stroke-width="2" stroke-dasharray="6 5" stroke-linecap="round"/>
+                <g transform="translate(280 56)"><circle r="6.5" fill="#c8402f"/><text y="2.6" text-anchor="middle" font-family="Circular, sans-serif" font-weight="700" font-size="7.5" fill="#fff">1</text><text x="-9" y="-8" text-anchor="end" font-family="Have Heart, cursive" font-size="15" fill="#2c2c2a">Shanghai</text></g><g transform="translate(196 191)"><circle r="6.5" fill="#c8402f"/><text y="2.6" text-anchor="middle" font-family="Circular, sans-serif" font-weight="700" font-size="7.5" fill="#fff">2</text><text x="-6" y="18" text-anchor="middle" font-family="Have Heart, cursive" font-size="15" fill="#2c2c2a">Hong Kong</text></g><g transform="translate(153 150)"><circle r="6.5" fill="#c8402f"/><text y="2.6" text-anchor="middle" font-family="Circular, sans-serif" font-weight="700" font-size="7.5" fill="#fff">3</text><text x="8" y="-8" text-anchor="start" font-family="Have Heart, cursive" font-size="15" fill="#2c2c2a">Guilin · Yangshuo</text></g><g transform="translate(66 150)"><circle r="6.5" fill="#c8402f"/><text y="2.6" text-anchor="middle" font-family="Circular, sans-serif" font-weight="700" font-size="7.5" fill="#fff">4</text><text x="0" y="18" text-anchor="middle" font-family="Have Heart, cursive" font-size="15" fill="#2c2c2a">Kunming</text></g><g transform="translate(37 122)"><circle r="6.5" fill="#c8402f"/><text y="2.6" text-anchor="middle" font-family="Circular, sans-serif" font-weight="700" font-size="7.5" fill="#fff">5</text><text x="6" y="-9" text-anchor="start" font-family="Have Heart, cursive" font-size="15" fill="#2c2c2a">Lijiang</text></g>
+                <text x="14" y="30" font-family="Have Heart, cursive" font-size="24" fill="#2c2c2a">next stop: China</text>
+                <g transform="translate(296 222)" fill="none" stroke="#2c2c2a" stroke-width="1"><circle r="9"/><path d="M0 -12V12M-12 0H12"/></g>
+                <text x="296" y="207" text-anchor="middle" font-family="Circular, sans-serif" font-size="6" fill="#2c2c2a">N</text>
+              </g>
+            </svg>
           </div>
         </div>
 

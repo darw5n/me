@@ -255,6 +255,10 @@ pass for the next trip ("To China · Planning · In Notion").
 Stamps follow the style of travel-app stamps (13/11/2026, Darwin's reference): one ink colour, the city on top in
 its own script (서울, 京都…), the country code on the left, a line icon of a landmark, the year below.
 
+The boarding pass is a real one (Trento → Shanghai, a perforated stub with the barcode), and next to it a folded map
+of China with the route drawn by hand: Shanghai, Hong Kong, Guilin · Yangshuo, Kunming, Lijiang, back to Shanghai.
+Coast and cities sit at their real longitude and latitude (`index.html`, simple equirectangular projection).
+
 **Privacy rule.** The site is public: only city and year. No companions, costs, reasons or exact dates, and the
 next trip has no dates (they would say when the house is empty). The full diary lives in Darwin's private notes.
 
