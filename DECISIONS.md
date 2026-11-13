@@ -387,3 +387,5 @@ than the computed one (it ends at about 3950 px instead of 4800), with stickers 
 Beside it each area is a compact group shaped like on the desktop (its `data-at`), 200 px from the middle, level with
 its row; a side holding two areas stacks them. On phones "See all" can now zoom out to 12% (was 20%), so the
 wider table fits.
+Then (Darwin): music to the left of "who", books and games to its right, so they no longer lengthen the page (about
+4500 px tall instead of 5200); 240 px between two groups on the same side, so each reads as a group of its own.

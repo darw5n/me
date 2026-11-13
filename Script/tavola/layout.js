@@ -326,6 +326,8 @@ const PHONE_BAND_GAP = 150;
 const PHONE_GRID_TOP = 80;
 /** Distance between the middle column and the groups beside it (Darwin, 13/11/2026). */
 const PHONE_SIDE_GAP = 200;
+/** Between two groups on the same side: wide, so each reads as a group of its own. */
+const PHONE_GROUP_GAP = 240;
 /**
  * Phone, messy, when the page declares a grid. The middle column is the opening screen
  * and holds what matters most, top to bottom: laid out by hand (`phoneAt`, on a 390 px
@@ -383,7 +385,7 @@ export const layoutPhoneGrid = (items, opts) => {
                 const at = { ...box, x: x + box.x - b.x, y: y + box.y - b.y };
                 placements.set(box.item.id, placementFor(at, box.item.rotation * 0.6));
             }
-            y += b.h + PHONE_GRID_GAPS.section;
+            y += b.h + PHONE_GROUP_GAP;
         }
         return y;
     };
@@ -396,9 +398,9 @@ export const layoutPhoneGrid = (items, opts) => {
         if (span)
             y = span[1] + PHONE_BAND_GAP;
         if (row.left?.length)
-            leftEnd = beside(row.left, -1, Math.max(top, leftEnd)) + PHONE_BAND_GAP - PHONE_GRID_GAPS.section;
+            leftEnd = beside(row.left, -1, Math.max(top, leftEnd));
         if (row.right?.length)
-            rightEnd = beside(row.right, 1, Math.max(top, rightEnd)) + PHONE_BAND_GAP - PHONE_GRID_GAPS.section;
+            rightEnd = beside(row.right, 1, Math.max(top, rightEnd));
     }
     const loose = items.filter((i) => !used.has(i.id));
     if (loose.length) {
