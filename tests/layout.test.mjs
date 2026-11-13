@@ -67,6 +67,45 @@ test("messy layout pushes the overlapping prints apart by at least the large gap
   assert.ok(!overlapsWithGap(a, b, 33.9));
 });
 
+// A bigger table, a dozen clusters of different shapes, like the real one
+const clusterOf = (key, w, h) => [
+  item(`${key}-a`, key, { x: 0, y: 0 }, { w: Math.round(w * 0.55), h }, { rotation: -1 }),
+  item(`${key}-b`, key, { x: Math.round(w * 0.6), y: 10 }, { w: Math.round(w * 0.4), h: Math.round(h * 0.7) }, { rotation: 2 }),
+];
+const shapes = [["c0", 1360, 520], ["c1", 760, 600], ["c2", 600, 330], ["c3", 1070, 700], ["c4", 880, 500], ["c5", 760, 410],
+  ["c6", 560, 520], ["c7", 790, 640], ["c8", 1070, 350], ["c9", 860, 600], ["c10", 900, 250], ["c11", 680, 450]];
+const big = shapes.flatMap(([k, w, h]) => clusterOf(k, w, h));
+const bigOrder = shapes.map(([k]) => k);
+const clusterBox = (placements, key) => {
+  const rs = big.filter((i) => i.cluster === key).map((i) => rectOf(big, placements, i.id));
+  const x = Math.min(...rs.map((r) => r.x)), y = Math.min(...rs.map((r) => r.y));
+  return { x, y, w: Math.max(...rs.map((r) => r.x + r.w)) - x, h: Math.max(...rs.map((r) => r.y + r.h)) - y };
+};
+
+for (const [w, h] of [[720, 1024], [1024, 768], [1280, 720], [1440, 900], [1920, 1080], [2560, 1440], [3440, 1440]]) {
+  test(`messy table at ${w}x${h}: no overlaps, first cluster top left, a shape close to the screen`, () => {
+    const r = layoutMessy(big, { viewportWidth: w, viewportHeight: h, clusterOrder: bigOrder });
+    assertNoOverlaps(big, r.placements);
+    const first = clusterBox(r.placements, "c0");
+    for (const key of bigOrder.slice(1)) {
+      const c = clusterBox(r.placements, key);
+      assert.ok(c.y >= first.y - 1 || c.x >= first.x + first.w, `${key} sits above or left of the first cluster`);
+    }
+    const ratio = r.bounds.w / r.bounds.h;
+    const screen = w / h;
+    assert.ok(ratio > screen * 0.6 && ratio < screen * 2, `table ${ratio.toFixed(2)} vs screen ${screen.toFixed(2)}`);
+  });
+}
+
+test("messy table: a few pixels wider keeps every cluster where it was", () => {
+  const a = layoutMessy(big, { viewportWidth: 1440, viewportHeight: 900, clusterOrder: bigOrder });
+  const b = layoutMessy(big, { viewportWidth: 1450, viewportHeight: 900, clusterOrder: bigOrder });
+  for (const key of bigOrder) {
+    const p = clusterBox(a.placements, key), q = clusterBox(b.placements, key);
+    assert.ok(Math.abs(p.x - q.x) < 40 && Math.abs(p.y - q.y) < 40, `${key} moved`);
+  }
+});
+
 test("messy layout is deterministic", () => {
   const opts = { viewportWidth: 1440, clusterOrder: ["about", "work", "path"] };
   const a = layoutMessy(sample, opts);

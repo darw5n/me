@@ -83,6 +83,8 @@ const boot = () => {
     void document.fonts?.ready.then(() => board.settle());
     addEventListener("load", () => board.settle());
     void runPreloader({ overlay: document.getElementById("preloader"), images, reducedMotion }).then(() => board.settle());
+    // A resize lays the table out again once the window has stopped changing, so the
+    // objects glide to their new spots once instead of restarting on every frame
     let frame = 0;
     const sizeKey = () => {
         const v = viewportSize();
@@ -94,8 +96,8 @@ const boot = () => {
         if (size === lastSize)
             return;
         lastSize = size;
-        cancelAnimationFrame(frame);
-        frame = requestAnimationFrame(() => board.resized());
+        clearTimeout(frame);
+        frame = window.setTimeout(() => board.resized(), 160);
     });
 };
 if (document.readyState === "loading")

@@ -24,11 +24,12 @@ import type { LayoutItem, LayoutResult, Placement, Placements, Point, Rect, Size
 const GAP_LARGE = 34;
 const GAP_SMALL = 12;
 
-/** Width the messy table never goes below, so "See all" keeps a landscape shape. */
-const MIN_MESSY_WIDTH = 2150;
-
-/** Breakpoint under which the table becomes a vertical column. Shared with the SCSS. */
-export const NARROW_BREAKPOINT = 900;
+/**
+ * Breakpoint under which the table becomes the hand-made phone composition. Shared with
+ * the SCSS ($narrow). From here up, tablets and landscape phones get the camera table,
+ * which works with fingers too (13/11/2026: 900 left half of a tablet empty).
+ */
+export const NARROW_BREAKPOINT = 720;
 
 interface Box extends Rect {
   item: LayoutItem;
@@ -90,6 +91,8 @@ const buildCluster = (items: LayoutItem[], air: number): Cluster => {
 
 export interface MessyOptions {
   viewportWidth: number;
+  /** Height of the window: the table takes a shape close to the screen's. */
+  viewportHeight?: number;
   /** Order in which clusters are laid out, left to right, top to bottom. */
   clusterOrder: string[];
 }
@@ -100,59 +103,100 @@ export const homeZoom = (clusters: Cluster[], viewportWidth: number, margin: num
   return clamp((viewportWidth - margin * 2) / widest, 0.62, 1);
 };
 
+interface Spot {
+  x: number;
+  y: number;
+}
+
+/**
+ * Skyline packing (bottom-left): clusters are placed in their order, each one where
+ * the skyline is lowest for its width (ties: further left). The first cluster lands top
+ * left and reading order mostly holds, but a short cluster fills the gap next to a tall
+ * one instead of starting a new row. Every other cluster sits a little lower, so the
+ * table never reads as a grid.
+ */
+const packSkyline = (clusters: Cluster[], width: number, gapX: number, gapY: number): Spot[] => {
+  // The skyline: x positions where its height changes, and the height from each on
+  let edges: { x: number; y: number }[] = [{ x: 0, y: 0 }];
+  const heightOver = (x0: number, x1: number): number => {
+    let h = 0;
+    for (let i = 0; i < edges.length; i++) {
+      const a = edges[i]!.x, b = i + 1 < edges.length ? edges[i + 1]!.x : Infinity;
+      if (b > x0 && a < x1) h = Math.max(h, edges[i]!.y);
+    }
+    return h;
+  };
+  const raise = (x0: number, x1: number, y: number): void => {
+    const after = heightOver(x1, x1 + 0.01);
+    const kept = edges.filter((e) => e.x < x0 || e.x > x1);
+    kept.push({ x: x0, y }, { x: x1, y: after });
+    kept.sort((p, q) => p.x - q.x);
+    // Drop the edges that do not change the height
+    edges = kept.filter((e, i) => i === 0 || e.y !== kept[i - 1]!.y);
+  };
+  return clusters.map((c, i) => {
+    const w = c.bounds.w + gapX;
+    const h = c.bounds.h + gapY + (i % 2 ? 46 : 0);
+    let best: Spot | null = null;
+    for (const e of edges) {
+      const x = Math.min(e.x, Math.max(0, width - c.bounds.w));
+      const y = heightOver(x, x + w);
+      if (!best || y < best.y - 0.5 || (Math.abs(y - best.y) <= 0.5 && x < best.x)) best = { x, y };
+    }
+    raise(best!.x, best!.x + w, best!.y + h);
+    return { x: best!.x, y: best!.y + (i % 2 ? 46 : 0) };
+  });
+};
+
+/** Candidate table widths step by this much, so a small resize keeps the same table. */
+const WIDTH_STEP = 320;
+
 export const layoutMessy = (items: LayoutItem[], opts: MessyOptions): LayoutResult => {
   const { viewportWidth } = opts;
+  const viewportHeight = opts.viewportHeight ?? viewportWidth / 1.6;
   const margin = clamp(viewportWidth * 0.04, 36, 96);
-  // A larger window gets slightly more air between objects.
-  const air = clamp(viewportWidth / 1600, 1, 1.12);
+  // A large window gets a little more air between objects: one step, not a slope, so
+  // clusters keep their size (and their spots) while the window is resized
+  const air = viewportWidth >= 1800 ? 1.1 : 1;
 
   const clusters = opts.clusterOrder
     .map((key) => buildCluster(items.filter((i) => i.cluster === key), air))
     .filter((c) => c.boxes.length > 0);
 
   const zoom = homeZoom(clusters, viewportWidth, margin);
-  // The table is wider than a small window: the first row fits, the rest peeks
-  // out on the right and invites a drag.
+  // The table is at least as wide as the opening screen, so the first clusters fill it
   const fitWidth = (viewportWidth - margin * 2) / zoom;
-  const tableWidth = Math.max(fitWidth, MIN_MESSY_WIDTH);
-  const gapX = clamp(tableWidth * 0.045, 56, 150);
-  const gapY = clamp(tableWidth * 0.065, 70, 150);
-  const x0 = margin / zoom;
+  const widest = Math.max(...clusters.map((c) => c.bounds.w));
+  // Fixed gaps between clusters: if they grew with the window, a cluster could fit a
+  // gap at one width and not at the next, and the table would reshuffle while resizing
+  const gapX = 96;
+  const gapY = 104;
 
-  // Shelf packing: clusters fill a row until it is full, then wrap.
-  const rows: { clusters: Cluster[]; width: number }[] = [];
-  for (const c of clusters) {
-    const row = rows[rows.length - 1];
-    if (row && row.width + gapX + c.bounds.w <= tableWidth) {
-      row.clusters.push(c);
-      row.width += gapX + c.bounds.w;
-    } else {
-      rows.push({ clusters: [c], width: c.bounds.w });
-    }
+  // The table takes the shape closest to the screen's (a little wider: the opening
+  // screen shows its top left and the rest invites a drag). Widths are tried on a fixed
+  // step, so resizing by a few pixels never reshuffles the clusters.
+  const target = (viewportWidth / viewportHeight) * 1.15;
+  const from = Math.ceil(Math.max(fitWidth, widest) / WIDTH_STEP) * WIDTH_STEP;
+  let pick: { spots: Spot[]; width: number; score: number } | null = null;
+  for (let width = from; width <= from + WIDTH_STEP * 24; width += WIDTH_STEP) {
+    const spots = packSkyline(clusters, width, gapX, gapY);
+    const right = Math.max(...spots.map((p, i) => p.x + clusters[i]!.bounds.w));
+    const bottom = Math.max(...spots.map((p, i) => p.y + clusters[i]!.bounds.h));
+    const score = Math.abs(Math.log(right / bottom / target));
+    if (!pick || score < pick.score - 0.01) pick = { spots, width, score };
   }
 
   const placements: Placements = new Map();
   const placed: Rect[] = [];
-  let y = 70 / zoom;
-  rows.forEach((row, rowIndex) => {
-    const free = tableWidth - row.width;
-    const n = row.clusters.length;
-    // Leftover space goes between clusters. A lone cluster on an odd row is
-    // shifted, so the left edge does not read as a grid.
-    const extra = n > 1 ? Math.min(free / (n - 1), 180) : 0;
-    let x = x0 + (n === 1 && rowIndex % 2 ? Math.min(free * 0.55, fitWidth * 0.25) : 0);
-    let rowHeight = 0;
-    row.clusters.forEach((c, i) => {
-      const dy = n > 1 && i % 2 ? 46 : 0;
-      for (const box of c.boxes) {
-        const shifted: Box = { ...box, x: x + (box.x - c.bounds.x), y: y + dy + (box.y - c.bounds.y) };
-        placements.set(box.item.id, placementFor(shifted, box.item.rotation));
-        placed.push(shifted);
-      }
-      x += c.bounds.w + gapX + extra;
-      rowHeight = Math.max(rowHeight, c.bounds.h + dy);
-    });
-    y += rowHeight + gapY;
+  const x0 = margin / zoom;
+  const y0 = 70 / zoom;
+  clusters.forEach((c, i) => {
+    const spot = pick!.spots[i]!;
+    for (const box of c.boxes) {
+      const shifted: Box = { ...box, x: x0 + spot.x + (box.x - c.bounds.x), y: y0 + spot.y + (box.y - c.bounds.y) };
+      placements.set(box.item.id, placementFor(shifted, box.item.rotation));
+      placed.push(shifted);
+    }
   });
 
   return { placements, bounds: union(placed), labels: new Map(), zoom };

@@ -63,15 +63,20 @@ CSS/tavola.scss         ← entry SCSS; partial in CSS/tavola/ (_tokens _surface
 CSS/tavola.css          ← compilato (NON editare)
 tests/layout.test.mjs   ← niente sovrapposizioni, colonna dentro lo schermo, griglia del Tidy up
 Font/Antonia Circular HaveHeart   ← licenze da verificare (Darwin) prima di andare online
-Img/work/               ← copertine dei progetti usate come anteprime
-Img/thumbs/             ← foto piccole per il tavolo (rullino 360 px, stampe 640 px); il link (href) punta al file
-                          grande, che si carica solo nel visore. Foto nuova: crea la miniatura con
-                          `cwebp -resize 360 0 -q 78 Img/<foto>.webp -o Img/thumbs/<foto>.webp`
+Img/                    ← il ritratto e `og-darwin.jpg`, l'anteprima per i link (1200×630, foto vera del tavolo).
+                          Se cambia, cambia anche il nome del file: così LinkedIn e WhatsApp non usano quella vecchia
+Img/work/               ← immagini dei progetti (lavoro e lab) usate come anteprime
+Img/photos/             ← foto di viaggio grandi (si caricano solo nel visore)
+Img/photos/thumbs/      ← foto piccole per il tavolo (rullino 360 px, stampe 640 px); il link (href) punta al file
+                          grande. Foto nuova: crea la miniatura con
+                          `cwebp -resize 360 0 -q 78 Img/photos/<foto>.webp -o Img/photos/thumbs/<foto>.webp`
+Img/tools/              ← icone delle app sui tasti della tastierina (96 px; Figma in SVG) e il repository Notion
+Img/records/            ← dischi veri (vinile scontornato, sfondo trasparente); le copertine sono disegnate in SVG
 ```
 
 Il sito precedente (Locomotive, accordion, tema chiaro/scuro, font Matahari e Nognathy) è stato tolto il
-10/11/2026 con l'ok di Darwin: è nella storia git prima del commit "chore: remove the previous site". In `Img/`
-restano alcune immagini che usava solo lui (loghi, copertine di libri e dischi): da ripulire quando la Tavola è completa.
+10/11/2026 con l'ok di Darwin: è nel tag `old-site`. Il 13/11/2026 sono stati tolti anche i file che usava solo lui
+(originali jpg, favicon in più, copertine): si recuperano dal tag, es. `git checkout old-site -- Img/<file>`.
 
 ---
 
@@ -82,10 +87,10 @@ restano alcune immagini che usava solo lui (loghi, copertine di libri e dischi):
   L'ordine nel DOM è l'ordine di lettura (Tab).
 - **Configurazione** nel JSON `#table-config` dentro `index.html`: ordine dei gruppi (messy) e etichette a gesso
   del Tidy up.
-- **Computer (≥ 900 px):** `#view` fisso, `#world` trasformato dalla camera. Il tavolo è **infinito**: il pattern
+- **Computer e tablet (≥ 720 px):** `#view` fisso, `#world` trasformato dalla camera. Il tavolo è **infinito**: il pattern
   dello sfondo sta su `#view` e segue la camera (`--cam-x/--cam-y/--k`). Mouse: sposta subito gli oggetti; sul
   vuoto sposta il tavolo. Tastiera: frecce, `+`/`-`, `0` = See all, `T` = Tidy up.
-- **Telefono (< 900 px):** niente camera; il tavolo scorre dentro `.view` (mai la pagina, che resta larga quanto lo
+- **Telefono (< 720 px):** niente camera; il tavolo scorre dentro `.view` (mai la pagina, che resta larga quanto lo
   schermo). In disordine: la composizione fatta a mano da Darwin su uno schermo di 390 px
   (`data-phone="x,y"` su ogni oggetto, x dal bordo sinistro dello schermo iniziale), scalata sugli altri schermi;
   gli oggetti hanno le larghezze dei 390 px, così il testo va a capo uguale ovunque. Il tavolo è largo 7 schermi

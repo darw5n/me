@@ -21,7 +21,7 @@ push.
 - All commands live in one floating bar at the bottom: Tidy up, See all, zoom, surface
   (a disc filled with the current pattern, a click moves to the next), sound. No minimap.
 - Sounds are original and synthesised with Web Audio: no files, no library.
-- On phones (< 900 px) the table is as wide as the screen and the page scrolls vertically.
+- On phones (< 900 px, < 720 px since 13/11/2026) the table is as wide as the screen and the page scrolls vertically.
   No camera. A long press lifts an object; it stays inside the column.
 - Every object can be moved, also under Tidy up (offsets are kept per arrangement).
 - Objects are drafts: they are reviewed one at a time. Darwin redraws some stickers.
@@ -211,3 +211,99 @@ ways offered (a form service, a Cloudflare Worker that needs the DNS moved, a pr
 email), Darwin chose the pre-filled email: no third party, no cost. The copy buttons cover
 its weak spot.
 
+
+## 2026-11-13 · Meta, link preview and icon follow the table
+
+**Decision.** Title and description use the headline from the storytelling folder ("Tinkerer by nature, product
+designer by trade…"), not the older "complicated products feel simple" line. The preview image (`Img/og-darwin.jpg`)
+is a real shot of the table at 1200×630, and the favicon is a chalk "D" on the felt mat, the same in the portfolio.
+Both are proposals: Darwin may redraw them in Figma at the end.
+
+**Why.** Everything in the head still came from the previous site (pink "chi sono e cosa faccio" image, Trento in the
+title). A new file name for the preview also makes LinkedIn and WhatsApp fetch it again instead of the cached one.
+
+**Open: the domain.** darw.it is an Aruba frame around `darw5n.github.io/me`: crawlers read the frame (title
+"darw.it", no description, no image), not this page. Until the domain points to GitHub Pages, `og:url` and
+`og:image` use the github.io address. When it moves: Aruba A records → GitHub Pages, custom domain in the repo
+settings, then switch those two URLs to `https://darw.it/`.
+
+## 2026-11-13 · Tools: a macro pad, not a row of logos
+
+**Decision.** The apps Darwin opens every day sit on ten keycaps of a small macro pad (cluster `tools`, "on my
+desk"): the icon printed on top, the name on the front edge. Next to it, his mouse (MX Master 4), drawn.
+The list comes from the `tools` note of his context (Claude, Figma, Notion, Notion Calendar, Granola, Wispr Flow,
+Raycast, Zen, Goldfish, Spotify); tools he no longer uses (Arc, VS Code, Cursor…) are out, and their logos left the repo.
+
+**Why.** The icons come in mixed styles (some with their own rounded square, some cut out). On a keycap they read as
+one set, and a keycap is a real object on a desk, like everything else on the table. The name on the key keeps them
+readable for those who don't know the icon; the `alt` of each icon carries it for screen readers. Under the pad, a
+sheet with Darwin's design repository in Notion ("Where I go looking for ideas"), shareable by his choice.
+
+## 2026-11-13 · On repeat: records whose vinyl slides out
+
+**Decision.** A cluster `records` ("on repeat"): sleeves with the vinyl peeking out on the right; under the mouse
+the vinyl slides out and turns. With reduced motion, or with a finger, it stays peeking. The headphones moved here.
+Sleeves and game cases show the real covers (Darwin's choice, 13/11/2026), taken from Wikipedia
+and, for Cosmo, from the iTunes catalogue; Cosmo's vinyl is the picture Darwin had. Jamie xx *In Colour* and Tame Impala *Currents* are a first pick among the artists Darwin listens to:
+to confirm or swap.
+
+## 2026-11-13 · Been there: a passport and the next boarding pass
+
+**Decision.** A cluster `trips` ("been there"): an open passport with one stamp per trip abroad, and a boarding
+pass for the next trip ("To China · Planning · In Notion").
+
+Stamps follow the style of travel-app stamps (13/11/2026, Darwin's reference): one ink colour, the city on top in
+its own script (서울, 京都…), the country code on the left, a line icon of a landmark, the year below.
+
+The boarding pass is a real one (Trento → Shanghai, a perforated stub with the barcode), and next to it a folded map
+of China with the route drawn by hand: Shanghai, Hong Kong, Guilin · Yangshuo, Kunming, Lijiang, back to Shanghai.
+Coast and cities sit at their real longitude and latitude (`index.html`, simple equirectangular projection).
+
+**Privacy rule.** The site is public: only city and year. No companions, costs, reasons or exact dates, and the
+next trip has no dates (they would say when the house is empty). The full diary lives in Darwin's private notes.
+
+## 2026-11-13 · The boss: Caramella in polaroids
+
+**Decision.** Caramella gets her own cluster (`caramella`, "the boss"): her card, three polaroids (square photo,
+handwritten caption, no tape: `.print--polaroid`) and her sticker, now cut from a real photo along the outline of her
+head (`.sticker--photo`, the white edge is in the image). Photos are cropped from Darwin's originals with the
+orientation applied and **all metadata removed** (phone photos carry GPS).
+
+## 2026-11-13 · Press start: the controller and a few games
+
+**Decision.** A cluster `games` ("press start"): Darwin's white DualSense, drawn from above, and four game cases,
+each a separate object with its real cover, picked from his favourites (Astro Bot, Ratchet & Clank: Rift Apart, The Last of Us Part I, Rayman Legends).
+The band on the case says PS5 or PS4, as the real game.
+
+## 2026-11-13 · The viewer becomes the portfolio's
+
+**Decision.** `viewer.ts` now works like the portfolio's lightbox: the whole screen is a window on the picture, a
+click zooms in there (wheel and two fingers too, a drag moves it), a click off the picture closes; the caption is a
+strip of tape above the bar; the veil takes the colour of the picture on show (its hue, dark and soft, with grain)
+and changes with every picture. The arrows walk through every picture on the table in reading order.
+
+**Why.** With one picture per object the bar shrank to a lonely yellow Close (Darwin, 13/11/2026). Walking through
+all the pictures fixes it at the root; a Close alone, should it happen, keeps a real width (`.is-solo`).
+
+## 2026-11-13 · Breakpoints: the table takes the shape of the screen
+
+**Decision.**
+- **Tablets and landscape phones get the camera table.** The breakpoint moves from 900 to 720 px
+  (`NARROW_BREAKPOINT`, SCSS `$narrow`/`$wide`). Between 600 and 900 px the 390-px phone composition filled
+  only the left half of the screen. The camera table already works with fingers (drag pans, pinch zooms, long
+  press lifts an object). Under 720 px the hand-made phone composition stays as it was.
+- **The messy table takes a shape close to the screen's**, a little wider (×1.15), instead of a fixed 2150 px
+  strip. `layoutMessy` tries table widths on a 320-px step and keeps the one whose packed shape is nearest the
+  screen's ratio. Clusters are packed bottom-left (skyline), in their order: the first stays top left, a short
+  cluster fills the gap next to a tall one. Every other cluster sits 46 px lower, so it never reads as a grid.
+- **Resizing is a glide.** The layout waits until the window stops changing (160 ms), then the objects glide to
+  their new spots with the Tidy up curve (no glide with reduced motion). If the visitor had moved around, the
+  camera stays on the same point of the table; otherwise it goes back to the opening view.
+
+**Why.** Before, a dozen clusters stacked one per row: a table 6000 px tall and 2150 wide, so "See all" showed it
+at 12% on a 1440×900 screen, and wide screens stayed mostly empty. Now 29–31% at 1440, 37% at 1920, 60% at
+3440 (portfolio home: 21% → 41% at 1440).
+
+**Trade-off.** A table shaped by the screen reshuffles a few times while a window is dragged wider (about 8
+times from 900 to 2560 px, before: 4). Fixed gaps between clusters and a single step of extra air (≥ 1800 px)
+keep it from reshuffling for nothing, and each reshuffle is a glide, not a jump.

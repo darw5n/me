@@ -43,8 +43,8 @@
 }
 
 // Shared breakpoint with layout.ts (NARROW_BREAKPOINT)
-$narrow: 900px;
-$wide: 900px;
+$narrow: 720px;
+$wide: 720px;
 
 @mixin narrow {
   @media (max-width: #{$narrow - 1px}) {
