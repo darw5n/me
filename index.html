@@ -46,7 +46,7 @@
   <!-- Layout configuration read by Script/tavola/main.js -->
   <script type="application/json" id="table-config">
     {
-      "clusters": ["about", "work", "path", "photos", "lab", "tools", "words", "ask", "elsewhere"],
+      "clusters": ["about", "work", "path", "photos", "lab", "tools", "words", "records", "ask", "elsewhere"],
       "groups": [
         ["about", "who"],
         ["path", "where I've been"],
@@ -55,6 +55,7 @@
         ["tools", "on my desk"],
         ["photos", "photos"],
         ["words", "off the clock"],
+        ["records", "on repeat"],
         ["ask", "your turn"],
         ["elsewhere", "elsewhere"],
         ["pack", "sticker pack"]
@@ -301,6 +302,66 @@
           <div class="item__body card"><i class="tack tack--blue" aria-hidden="true"></i><h3>Football</h3>Playmaker, seven-a-side.</div>
         </div>
 
+        <!-- ON REPEAT: records as sleeves, the vinyl peeking out (it slides out under the mouse).
+             Covers drawn, not photographed, like the books: they borrow colours and type of the real ones. -->
+        <div class="item" data-phone="-560,2560" data-cluster="records" data-at="6,-56" data-width="260" data-rotate="-2" data-small data-decoration data-material="chalk">
+          <p class="item__body chalk chalk--small">on repeat</p>
+        </div>
+        <div class="item" data-phone="-560,2620" data-cluster="records" data-at="0,0" data-width="260" data-rotate="-2.5" data-material="prop">
+          <figure class="item__body prop record">
+            <img class="record__disc" src="Img/records/cosmo-disc.webp" alt="" width="480" height="480" draggable="false">
+            <span class="record__sleeve" role="img" aria-label="Record: Cosmo, Sulle ali del cavallo bianco">
+              <svg viewBox="0 0 100 100" aria-hidden="true">
+                <defs><radialGradient id="cosmo-sky" cx=".35" cy=".3" r=".9"><stop offset="0" stop-color="#f3f1f4"/><stop offset=".6" stop-color="#cfcad6"/><stop offset="1" stop-color="#9c95a8"/></radialGradient></defs>
+                <rect width="100" height="100" fill="url(#cosmo-sky)"/>
+                <path d="M-4 78c14-8 26-4 36 2 10-8 24-10 36-2 10-6 24-6 34 2v24H-4z" fill="#fff" fill-opacity=".55"/>
+                <g fill="#fbfbfc" stroke="#b9b2c4" stroke-width=".5"><path d="M38 84c0-14 8-26 22-30 8-2 16-1 22 3-10 0-18 3-24 9 8-3 16-3 22 1-10 0-17 3-22 8 6-1 12 0 16 3-8 0-14 2-18 6z"/><path d="M38 84c-3-6-2-12 2-16"/></g>
+                <path d="M22 18h56M22 21h56" stroke="#2a2730" stroke-width=".5"/>
+                <text x="50" y="16" text-anchor="middle" font-family="Antonia Display, Georgia, serif" font-size="5.2" font-weight="700" fill="#2a2730" letter-spacing=".6">COSMO</text>
+                <text x="50" y="31" text-anchor="middle" font-family="Antonia Display, Georgia, serif" font-size="8.4" fill="#2a2730">SULLE ALI DEL</text>
+                <text x="50" y="40" text-anchor="middle" font-family="Antonia Display, Georgia, serif" font-size="8.4" fill="#2a2730">CAVALLO BIANCO</text>
+              </svg>
+            </span>
+            <figcaption class="record__caption">Cosmo, Sulle ali del cavallo&nbsp;bianco</figcaption>
+          </figure>
+        </div>
+        <div class="item" data-phone="-300,2760" data-cluster="records" data-at="280,30" data-width="260" data-rotate="1.8" data-material="prop">
+          <figure class="item__body prop record">
+            <span class="record__disc record__disc--black record__disc--in-colour" aria-hidden="true"></span>
+            <span class="record__sleeve" role="img" aria-label="Record: Jamie xx, In Colour">
+              <svg viewBox="0 0 100 100" aria-hidden="true">
+                <defs><linearGradient id="in-colour" x1="0" x2="1">
+                  <stop offset="0" stop-color="#d93b4a"/><stop offset=".16" stop-color="#ef7d3a"/><stop offset=".3" stop-color="#f4d23c"/><stop offset=".45" stop-color="#7cc96b"/>
+                  <stop offset=".6" stop-color="#3fb3c9"/><stop offset=".74" stop-color="#4a6fd0"/><stop offset=".88" stop-color="#8a5cc9"/><stop offset="1" stop-color="#d65aa8"/>
+                </linearGradient></defs>
+                <rect width="100" height="100" fill="url(#in-colour)"/>
+                <g fill="#fff" fill-opacity=".14"><rect x="8" width="3" height="100"/><rect x="27" width="2" height="100"/><rect x="51" width="4" height="100"/><rect x="73" width="2" height="100"/><rect x="90" width="3" height="100"/></g>
+              </svg>
+            </span>
+            <figcaption class="record__caption">Jamie xx, In&nbsp;Colour</figcaption>
+          </figure>
+        </div>
+        <div class="item" data-phone="-560,2930" data-cluster="records" data-at="560,0" data-width="260" data-rotate="-1.2" data-material="prop">
+          <figure class="item__body prop record">
+            <span class="record__disc record__disc--black record__disc--currents" aria-hidden="true"></span>
+            <span class="record__sleeve" role="img" aria-label="Record: Tame Impala, Currents">
+              <svg viewBox="0 0 100 100" aria-hidden="true">
+                <rect width="100" height="100" fill="#2a1540"/>
+                <g fill="none" stroke-width="1.6" stroke-linecap="round">
+                  <path d="M-2 30C20 30 34 34 44 44s22 14 58 12" stroke="#f4e9da"/>
+                  <path d="M-2 38C20 38 32 42 42 50s24 12 60 10" stroke="#f08a4b"/>
+                  <path d="M-2 46C18 46 30 48 40 55s26 10 62 9" stroke="#f4e9da"/>
+                  <path d="M-2 54c20 0 32 2 42 8s26 8 62 7" stroke="#f08a4b"/>
+                  <path d="M-2 62c20 0 34 2 44 6s26 6 60 5" stroke="#f4e9da"/>
+                  <path d="M-2 70c22 0 36 1 46 4s24 4 58 3" stroke="#f08a4b"/>
+                </g>
+                <circle cx="40" cy="47" r="4.5" fill="#f4e9da"/>
+              </svg>
+            </span>
+            <figcaption class="record__caption">Tame Impala, Currents</figcaption>
+          </figure>
+        </div>
+
         <!-- YOUR TURN -->
         <div class="item" data-phone="254,2925" data-cluster="ask" data-at="0,0" data-width="260" data-rotate="-4" data-small data-decoration data-material="chalk">
           <p class="item__body chalk chalk--small">your turn!</p>
@@ -483,7 +544,7 @@
         </div>
 
         <!-- The headphones: Nothing Headphone (1), seen from above. A simplified drawing. -->
-        <div class="item" data-phone="481,2913" data-cluster="words" data-at="520,470" data-width="220" data-rotate="8" data-material="prop">
+        <div class="item" data-phone="481,2913" data-cluster="records" data-at="560,330" data-width="220" data-rotate="8" data-material="prop">
           <div class="item__body prop headphones">
             <svg viewBox="0 0 220 210" role="img" aria-label="My headphones, Nothing Headphone (1)">
               <path d="M41 100V84a69 62 0 0 1 138 0v16" fill="none" stroke="#1f2023" stroke-width="16" stroke-linecap="round"/>

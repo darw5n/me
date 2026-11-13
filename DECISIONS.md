@@ -237,3 +237,11 @@ Raycast, Zen, Goldfish, Spotify); tools he no longer uses (Arc, VS Code, Cursorâ
 **Why.** The icons come in mixed styles (some with their own rounded square, some cut out). On a keycap they read as
 one set, and a keycap is a real object on a desk, like everything else on the table. The name on the key keeps them
 readable for those who don't know the icon; the `alt` of each icon carries it for screen readers.
+
+## 2026-11-13 Â· On repeat: records whose vinyl slides out
+
+**Decision.** A cluster `records` ("on repeat"): sleeves with the vinyl peeking out on the right; under the mouse
+the vinyl slides out and turns. With reduced motion, or with a finger, it stays peeking. The headphones moved here.
+Cosmo's vinyl is the real picture Darwin had; the other sleeves are drawn like the books (colours and shapes of the
+real cover). Jamie xx *In Colour* and Tame Impala *Currents* are a first pick among the artists Darwin listens to:
+to confirm or swap.
