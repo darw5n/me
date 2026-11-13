@@ -380,3 +380,10 @@ moves into the open `<dialog>` (the top layer would hide it otherwise) and says 
 picture the magnifier "zoom in" (zoomed: the hand, the fist while dragging), on the veil the open hand "close", on
 the paper of the form the open hand. Bars, buttons and text fields keep the system cursor, as the table's own bar
 does: they are interface, and a text field needs its I-beam.
+
+**Revised the same day (Darwin moved the middle column by hand, then: "the other areas grouped at the sides, not too
+close to the middle").** The middle column is Darwin's own composition (`data-phone` on its items), more compact
+than the computed one (it ends at about 3950 px instead of 4800), with stickers and the pencil tucked at its edges.
+Beside it each area is a compact group shaped like on the desktop (its `data-at`), 200 px from the middle, level with
+its row; a side holding two areas stacks them. On phones "See all" can now zoom out to 12% (was 20%), so the
+wider table fits.

@@ -407,48 +407,81 @@ export interface PhoneGridOptions {
 const PHONE_GRID_GAPS = { column: 28, row: 40, section: 110 };
 const PHONE_BAND_GAP = 150;
 const PHONE_GRID_TOP = 80;
+/** Distance between the middle column and the groups beside it (Darwin, 13/11/2026). */
+const PHONE_SIDE_GAP = 200;
 
 /**
- * Phone, messy, when the page declares a grid: three columns as wide as the screen.
- * The middle one is the opening screen and holds what matters most, top to bottom, with
- * no gaps; the side columns, a swipe away, hold what goes with it, each cell level with
- * its row in the middle (the project sheets beside the portfolio folder, the quotes on
- * the other side), pushed down only when the cell above it is longer. Inside a cell objects flow
- * in reading order (layoutColumn). Items in no cell flow at the bottom of the middle.
+ * Phone, messy, when the page declares a grid. The middle column is the opening screen
+ * and holds what matters most, top to bottom: laid out by hand (`phoneAt`, on a 390 px
+ * screen, scaled), or flowing in reading order for items without a spot. Beside it, a
+ * swipe away, each other area is a compact group shaped like on the desktop (its
+ * `data-at`), PHONE_SIDE_GAP from the middle, starting level with its row in the middle
+ * (the project sheets beside the portfolio folder, the quotes on the other side) and
+ * pushed down only when the group above it is longer. Items in no cell flow at the bottom.
  */
 export const layoutPhoneGrid = (items: LayoutItem[], opts: PhoneGridOptions): LayoutResult => {
   const vw = opts.viewportWidth;
+  const k = phoneScale(vw);
   const padding = opts.padding ?? 20;
   const areaOf = (i: LayoutItem): string => i.phoneArea ?? i.cluster;
   const used = new Set<string>();
   const placements: Placements = new Map();
-  const cell = (keys: string[] | undefined, dx: number, top: number): number => {
-    if (!keys?.length) return 0;
-    // Items of these areas, area by area, each in reading order; the area is the group
-    const own = keys.flatMap((k) => items.filter((i) => areaOf(i) === k).map((i) => ({ ...i, cluster: k })));
-    if (!own.length) return 0;
+  const of = (keys: string[] | undefined): LayoutItem[] =>
+    (keys ?? []).flatMap((key) => items.filter((i) => areaOf(i) === key && !used.has(i.id)));
+
+  // Middle: hand-made spots first, the rest flows under them. Returns [top, bottom].
+  const middle = (keys: string[] | undefined, from: number): [number, number] | null => {
+    const own = of(keys);
+    if (!own.length) return null;
     own.forEach((i) => used.add(i.id));
-    const flow = layoutColumn(own, { viewportWidth: vw, padding, top: 0, gaps: PHONE_GRID_GAPS });
-    for (const [id, p] of flow.placements) placements.set(id, { ...p, x: p.x + dx, y: p.y + top });
-    return flow.bounds.y + flow.bounds.h;
+    let top = Infinity;
+    let bottom = from;
+    for (const i of own.filter((i) => i.phoneAt)) {
+      const y = i.phoneAt!.y * k;
+      placements.set(i.id, { x: opts.side + i.phoneAt!.x * k, y, rotation: i.rotation * 0.6 });
+      top = Math.min(top, y);
+      bottom = Math.max(bottom, y + i.size.h);
+    }
+    const loose = own.filter((i) => !i.phoneAt).map((i) => ({ ...i, cluster: areaOf(i) }));
+    if (loose.length) {
+      const y0 = Number.isFinite(top) ? bottom + PHONE_GRID_GAPS.section : from;
+      const flow = layoutColumn(loose, { viewportWidth: vw, padding, top: 0, gaps: PHONE_GRID_GAPS });
+      for (const [id, p] of flow.placements) placements.set(id, { ...p, x: p.x + opts.side, y: p.y + y0 });
+      top = Math.min(top, y0);
+      bottom = y0 + flow.bounds.y + flow.bounds.h;
+    }
+    return [top, bottom];
   };
-  // The middle column runs on without gaps: it is the page people read. A side cell
-  // starts level with its row in the middle, or lower if the cell above it is still going.
-  let middle = PHONE_GRID_TOP;
+
+  // A side: each area a compact group, stacked, its inner edge PHONE_SIDE_GAP from the middle
+  const beside = (keys: string[] | undefined, dir: -1 | 1, top: number): number => {
+    let y = top;
+    for (const key of keys ?? []) {
+      const own = of([key]);
+      if (!own.length) continue;
+      own.forEach((i) => used.add(i.id));
+      const group = buildCluster(own, k);
+      const b = group.bounds;
+      const x = dir < 0 ? opts.side - PHONE_SIDE_GAP - b.w : opts.side + vw + PHONE_SIDE_GAP;
+      for (const box of group.boxes) {
+        const at: Box = { ...box, x: x + box.x - b.x, y: y + box.y - b.y };
+        placements.set(box.item.id, placementFor(at, box.item.rotation * 0.6));
+      }
+      y += b.h + PHONE_GRID_GAPS.section;
+    }
+    return y;
+  };
+
+  let y = PHONE_GRID_TOP;
   let leftEnd = 0;
   let rightEnd = 0;
   for (const row of opts.rows) {
-    const top = middle;
-    const h = cell(row.center, opts.side, top);
-    if (h > 0) middle = top + h + PHONE_BAND_GAP;
-    const lTop = Math.max(top, leftEnd);
-    const lh = cell(row.left, opts.side - vw, lTop);
-    if (lh > 0) leftEnd = lTop + lh + PHONE_BAND_GAP;
-    const rTop = Math.max(top, rightEnd);
-    const rh = cell(row.right, opts.side + vw, rTop);
-    if (rh > 0) rightEnd = rTop + rh + PHONE_BAND_GAP;
+    const span = middle(row.center, y);
+    const top = span ? span[0] : y;
+    if (span) y = span[1] + PHONE_BAND_GAP;
+    if (row.left?.length) leftEnd = beside(row.left, -1, Math.max(top, leftEnd)) + PHONE_BAND_GAP - PHONE_GRID_GAPS.section;
+    if (row.right?.length) rightEnd = beside(row.right, 1, Math.max(top, rightEnd)) + PHONE_BAND_GAP - PHONE_GRID_GAPS.section;
   }
-  let y = middle;
   const loose = items.filter((i) => !used.has(i.id));
   if (loose.length) {
     const flow = layoutColumn(loose, { viewportWidth: vw, padding, top: y, gaps: PHONE_GRID_GAPS });

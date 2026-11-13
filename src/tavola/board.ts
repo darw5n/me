@@ -19,7 +19,7 @@ import {
   NARROW_BREAKPOINT, PHONE_BASE_WIDTH, layoutComposed, layoutPhoneGrid, type PhoneRow, layoutMessy, layoutTidy, phoneScale, phoneTable,
   phoneTidyFit, tidyGrid, tidyWidth,
 } from "./layout.js";
-import { attachPhoneZoom, type PhoneZoom } from "./phone-zoom.js";
+import { attachPhoneZoom, PHONE_ZOOM_MIN, type PhoneZoom } from "./phone-zoom.js";
 import { attachFilmHover, createRings, reactToTap, type Rings } from "./reactions.js";
 import type { Sound } from "./sound.js";
 import type { Arrangement, LayoutResult, Point, Rect } from "./types.js";
@@ -415,7 +415,7 @@ export class Board {
     }
     const margin = 12;
     const content = this.contentRect();
-    const fit = Math.max(0.2, (view.clientWidth - margin * 2) / content.w);
+    const fit = Math.max(PHONE_ZOOM_MIN, (view.clientWidth - margin * 2) / content.w);
     if (fit > 0.9) {
       this.scrollPhoneHome();
       return;

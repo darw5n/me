@@ -13,7 +13,7 @@ import { CameraController } from "./camera.js";
 import { clamp, easeInOut, union, viewportSize } from "./geometry.js";
 import { measure, positionOf, readItems, rectOf, render, setWidth, toLayoutItem, } from "./items.js";
 import { NARROW_BREAKPOINT, PHONE_BASE_WIDTH, layoutComposed, layoutPhoneGrid, layoutMessy, layoutTidy, phoneScale, phoneTable, phoneTidyFit, tidyGrid, tidyWidth, } from "./layout.js";
-import { attachPhoneZoom } from "./phone-zoom.js";
+import { attachPhoneZoom, PHONE_ZOOM_MIN } from "./phone-zoom.js";
 import { attachFilmHover, createRings, reactToTap } from "./reactions.js";
 /** Screen padding kept around the content by "See all". */
 const SEE_ALL_PADDING = { x: 40, top: 58, bottom: 76 };
@@ -372,7 +372,7 @@ export class Board {
         }
         const margin = 12;
         const content = this.contentRect();
-        const fit = Math.max(0.2, (view.clientWidth - margin * 2) / content.w);
+        const fit = Math.max(PHONE_ZOOM_MIN, (view.clientWidth - margin * 2) / content.w);
         if (fit > 0.9) {
             this.scrollPhoneHome();
             return;

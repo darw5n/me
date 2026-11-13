@@ -93,10 +93,11 @@ Il sito precedente (Locomotive, accordion, tema chiaro/scuro, font Matahari e No
 - **Telefono (< 720 px):** niente camera; il tavolo scorre dentro `.view` (mai la pagina, che resta larga quanto lo
   schermo). In disordine: una **griglia a tre colonne** larghe quanto lo schermo (`"phone"` in `#table-config`,
   fascia per fascia: `left` / `center` / `right`). Al centro, che si vede aprendo, l'essenziale dall'alto in basso
-  (chi sono e percorso, cartellina del portfolio, foto, contatti) senza vuoti; ai lati, a uno swipe, ciò che va
-  con ogni fascia, alla sua altezza (schermate dei progetti e citazioni accanto alla cartellina). Un oggetto va in
-  un'area diversa dal suo gruppo con `data-phone-area`. Senza `"phone"` (es. il portfolio) vale ancora la
-  composizione a mano `data-phone="x,y"` sui 390 px. Gli oggetti hanno le larghezze dei 390 px, così il testo va a
+  (chi sono e percorso, cartellina del portfolio, foto, contatti), **composto a mano da Darwin** (`data-phone="x,y"`
+  sui 390 px; per cambiarlo: sposta gli oggetti nel browser a 390 px e rileggi le posizioni). Ai lati, a 200 px dal
+  centro, ogni altra area è un gruppo raccolto con la stessa disposizione del computer (`data-at`), alla sua altezza
+  (schermate dei progetti a sinistra della cartellina, citazioni a destra). Un oggetto va in un'area diversa dal suo
+  gruppo con `data-phone-area`. Senza `"phone"` (es. il portfolio) vale la composizione a mano su tutto il tavolo. Gli oggetti hanno le larghezze dei 390 px, così il testo va a
   capo uguale ovunque. Il tavolo è largo 7 schermi (3 per lato), scorre libero e si allarga quando porti un oggetto
   verso un bordo. In Tidy up: una
   colonna sola (a due colonne per gli oggetti stretti), niente scorrimento laterale. Pressione lunga per sollevare
