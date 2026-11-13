@@ -365,3 +365,10 @@ have its own; they are drafts to review. Then the entrance: the cloth is pulled 
 the lines of the mat appear as it goes, and the objects in view land one after the other in reading order (45 ms
 apart, at most 1.3 s). Quick on a second page of the same visit; with reduced motion the phrase stays still and
 there is no pull and no stagger.
+
+**Refined (Darwin: "a bit longer than needed, so the animation shows; optimise the fonts").** At least 3.4 s from
+the opening of the page (about four phrases), a phrase every 0.85 s, the star breathes and turns, the progress line
+fills with time or loading, whichever is slower. Fonts: no system fallback in the preloader (it would change face
+mid-animation); instead its two fonts are preloaded first and use `font-display: block`, and Have Heart is now
+WOFF2 (309 → 168 KB; not subset: its licence is still to be checked). The words no longer wait for the scripts:
+on 4G they show at 0.7 s instead of 1.8 s.

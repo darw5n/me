@@ -40,7 +40,7 @@
   font-family: "Antonia Display";
   src: url("../Font/Antonia/antonia-h1-medium.woff2") format("woff2");
   font-weight: 500;
-  font-display: swap;
+  font-display: block;
 }
 @font-face {
   font-family: "Antonia Display";
@@ -57,9 +57,9 @@
 }
 @font-face {
   font-family: "Have Heart";
-  src: url("../Font/HaveHeart/have-heart-one.otf") format("opentype");
+  src: url("../Font/HaveHeart/have-heart-one.woff2") format("woff2");
   font-weight: 400;
-  font-display: swap;
+  font-display: block;
 }
 :root {
   --ink: #151613;
@@ -2223,9 +2223,28 @@ html.is-ready .preloader {
   mask-image: radial-gradient(circle farthest-corner at 0 0, transparent var(--pull), #000 calc(var(--pull) + 10%));
 }
 
+.preloader > * {
+  animation: words-in 0.5s var(--ease-out) 0.15s both;
+}
+
+.preloader > :nth-child(2) {
+  animation-delay: 0.27s;
+}
+
+.preloader > :nth-child(3) {
+  animation-delay: 0.39s;
+}
+
+@keyframes words-in {
+  from {
+    opacity: 0;
+    translate: 0 8px;
+  }
+}
 html.is-ready .preloader > * {
   opacity: 0;
   transition: opacity 0.25s;
+  transition-delay: 0s;
 }
 
 .preloader > .chalk {
@@ -2247,11 +2266,23 @@ html.is-ready .preloader > * {
 }
 
 .preloader__star {
+  display: inline-block;
   width: 1.2em;
   font: 400 1.6rem/1 var(--font-ui);
   color: #f2b84b;
+  animation: star-work 1.6s ease-in-out infinite;
 }
 
+@keyframes star-work {
+  0%, 100% {
+    transform: scale(0.85) rotate(0deg);
+    color: #f2b84b;
+  }
+  50% {
+    transform: scale(1.15) rotate(90deg);
+    color: #f5d27a;
+  }
+}
 .preloader__phrase {
   font-size: clamp(2rem, 4.5vw, 2.8rem);
   white-space: nowrap;
@@ -2268,12 +2299,14 @@ html.is-ready .preloader > * {
   height: 3px;
   border-radius: 2px;
   background: linear-gradient(90deg, var(--chalk) calc(var(--progress, 0) * 100%), color-mix(in srgb, var(--chalk) 22%, transparent) 0);
-  transition: background 0.3s;
 }
 
 @media (prefers-reduced-motion: reduce) {
   .preloader__star {
     display: none;
+  }
+  .preloader > * {
+    animation: none;
   }
 }
 html.no-js .preloader {

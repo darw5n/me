@@ -12,13 +12,20 @@
  * of the mat appear as it goes, and the objects land one after the other in reading
  * order (`--enter` on each, see _table.scss).
  *
- * - shown at least MIN_MS (the name must be readable), never more than MAX_MS: on a
+ * - shown at least MIN_MS from the opening of the page, a little longer than loading needs on a fast line, so the
+ *   name and a few phrases are seen (Darwin, 13/11/2026); never more than MAX_MS: on a
  *   slow line the table opens anyway and late images arrive in place;
+ * - its own words do not wait for this script: their two fonts are preloaded with
+ *   `font-display: block` and the CSS brings them in, so no fallback font flashes;
+ * - the progress line moves with time and with loading, whichever is slower, so it
+ *   fills evenly instead of jumping to the end;
  * - quick on the next page of the same visit (sessionStorage), when all is cached;
  * - with reduced motion: no phrase changes, no pull, no stagger.
  */
 
-const MIN_MS = 1400;
+const MIN_MS = 3400;
+/** How often the phrase changes. */
+const PHRASE_MS = 850;
 const MAX_MS = 6000;
 const SESSION_KEY = "tavola-seen";
 /** The pull of the cloth (keep in step with .preloader in _ui.scss). */
@@ -80,7 +87,7 @@ const animatePhrases = (overlay: HTMLElement, still: boolean): (() => void) => {
           phrase.textContent = rest[i++ % rest.length]!;
           phrase.classList.remove("is-changing");
         }, 180);
-      }, 1100)
+      }, PHRASE_MS)
     : 0;
   return () => {
     clearInterval(starTimer);
@@ -120,19 +127,33 @@ export interface PreloaderOptions {
 export const runPreloader = async ({ overlay, images, items = [], reducedMotion }: PreloaderOptions): Promise<void> => {
   const root = document.documentElement;
   const quick = seenThisVisit() || reducedMotion;
+  // Counted from the opening of the page, not from when this script runs
+  const least = quick ? 250 : Math.max(250, MIN_MS - performance.now());
+  const start = performance.now();
+
   const stopPhrases = overlay ? animatePhrases(overlay, reducedMotion) : () => {};
 
-  // Real progress: fonts count as one step, every image as one
+  // Progress: fonts count as one step, every image as one; shown no faster than time
   const total = images.length + 1;
   let done = 0;
+  let frame = 0;
+  const paint = (): void => {
+    const loaded = done / total;
+    const timed = Math.min(1, (performance.now() - start) / least);
+    overlay?.style.setProperty("--progress", Math.min(loaded, timed).toFixed(3));
+    if (Math.min(loaded, timed) < 1) frame = requestAnimationFrame(paint);
+  };
+  if (overlay && !reducedMotion) frame = requestAnimationFrame(paint);
   const tick = (): void => {
     done += 1;
-    overlay?.style.setProperty("--progress", String(Math.min(1, done / total)));
   };
   const fonts = (document.fonts?.ready ?? Promise.resolve()).then(tick);
   const assets = Promise.all([fonts, ...images.map((img) => whenImageSettles(img).then(tick))]);
-  await Promise.race([Promise.all([assets, wait(quick ? 250 : MIN_MS)]), wait(MAX_MS)]);
+  await Promise.race([Promise.all([assets, wait(least)]), wait(MAX_MS)]);
+  cancelAnimationFrame(frame);
   overlay?.style.setProperty("--progress", "1");
+  // A beat on the full line before the cloth goes
+  if (!quick) await wait(250);
   stopPhrases();
   markSeen();
 
