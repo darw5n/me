@@ -236,7 +236,8 @@ Raycast, Zen, Goldfish, Spotify); tools he no longer uses (Arc, VS Code, Cursorâ
 
 **Why.** The icons come in mixed styles (some with their own rounded square, some cut out). On a keycap they read as
 one set, and a keycap is a real object on a desk, like everything else on the table. The name on the key keeps them
-readable for those who don't know the icon; the `alt` of each icon carries it for screen readers.
+readable for those who don't know the icon; the `alt` of each icon carries it for screen readers. Under the pad, a
+sheet with Darwin's design repository in Notion ("Where I go looking for ideas"), shareable by his choice.
 
 ## 2026-11-13 Â· On repeat: records whose vinyl slides out
 
