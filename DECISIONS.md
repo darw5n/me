@@ -21,7 +21,7 @@ push.
 - All commands live in one floating bar at the bottom: Tidy up, See all, zoom, surface
   (a disc filled with the current pattern, a click moves to the next), sound. No minimap.
 - Sounds are original and synthesised with Web Audio: no files, no library.
-- On phones (< 900 px) the table is as wide as the screen and the page scrolls vertically.
+- On phones (< 900 px, < 720 px since 13/11/2026) the table is as wide as the screen and the page scrolls vertically.
   No camera. A long press lifts an object; it stays inside the column.
 - Every object can be moved, also under Tidy up (offsets are kept per arrangement).
 - Objects are drafts: they are reviewed one at a time. Darwin redraws some stickers.
@@ -284,3 +284,26 @@ and changes with every picture. The arrows walk through every picture on the tab
 
 **Why.** With one picture per object the bar shrank to a lonely yellow Close (Darwin, 13/11/2026). Walking through
 all the pictures fixes it at the root; a Close alone, should it happen, keeps a real width (`.is-solo`).
+
+## 2026-11-13 · Breakpoints: the table takes the shape of the screen
+
+**Decision.**
+- **Tablets and landscape phones get the camera table.** The breakpoint moves from 900 to 720 px
+  (`NARROW_BREAKPOINT`, SCSS `$narrow`/`$wide`). Between 600 and 900 px the 390-px phone composition filled
+  only the left half of the screen. The camera table already works with fingers (drag pans, pinch zooms, long
+  press lifts an object). Under 720 px the hand-made phone composition stays as it was.
+- **The messy table takes a shape close to the screen's**, a little wider (×1.15), instead of a fixed 2150 px
+  strip. `layoutMessy` tries table widths on a 320-px step and keeps the one whose packed shape is nearest the
+  screen's ratio. Clusters are packed bottom-left (skyline), in their order: the first stays top left, a short
+  cluster fills the gap next to a tall one. Every other cluster sits 46 px lower, so it never reads as a grid.
+- **Resizing is a glide.** The layout waits until the window stops changing (160 ms), then the objects glide to
+  their new spots with the Tidy up curve (no glide with reduced motion). If the visitor had moved around, the
+  camera stays on the same point of the table; otherwise it goes back to the opening view.
+
+**Why.** Before, a dozen clusters stacked one per row: a table 6000 px tall and 2150 wide, so "See all" showed it
+at 12% on a 1440×900 screen, and wide screens stayed mostly empty. Now 29–31% at 1440, 37% at 1920, 60% at
+3440 (portfolio home: 21% → 41% at 1440).
+
+**Trade-off.** A table shaped by the screen reshuffles a few times while a window is dragged wider (about 8
+times from 900 to 2560 px, before: 4). Fixed gaps between clusters and a single step of extra air (≥ 1800 px)
+keep it from reshuffling for nothing, and each reshuffle is a glide, not a jump.

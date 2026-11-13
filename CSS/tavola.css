@@ -192,13 +192,13 @@ body {
   background: var(--mat);
 }
 
-@media (max-width: 899px) {
+@media (max-width: 719px) {
   html,
   body {
     overflow-x: clip;
   }
 }
-@media (min-width: 900px) {
+@media (min-width: 720px) {
   html,
   body {
     overflow: hidden;
@@ -302,7 +302,7 @@ button:hover > .arrow {
   min-height: 100svh;
   outline: none;
 }
-@media (max-width: 899px) {
+@media (max-width: 719px) {
   .view {
     position: fixed;
     inset: 0;
@@ -317,7 +317,7 @@ button:hover > .arrow {
     overflow-x: auto;
   }
 }
-@media (min-width: 900px) {
+@media (min-width: 720px) {
   .view {
     position: fixed;
     inset: 0;
@@ -335,12 +335,12 @@ button:hover > .arrow {
   width: 100%;
   transform-origin: 0 0;
 }
-@media (max-width: 899px) {
+@media (max-width: 719px) {
   .world {
     transform: scale(var(--phone-zoom, 1));
   }
 }
-@media (min-width: 900px) {
+@media (min-width: 720px) {
   .world {
     position: absolute;
     left: 0;
@@ -369,12 +369,12 @@ button:hover > .arrow {
 .item {
   transition: opacity 0.5s var(--ease-out) calc(var(--i, 0) * 30ms), visibility 0s;
 }
-@media (min-width: 900px) {
+@media (min-width: 720px) {
   .item {
     cursor: grab;
   }
 }
-@media (max-width: 899px) {
+@media (max-width: 719px) {
   .item {
     touch-action: pan-x pan-y;
   }
@@ -395,7 +395,7 @@ button:hover > .arrow {
 .item a {
   -webkit-user-drag: none;
 }
-@media (min-width: 900px) {
+@media (min-width: 720px) {
   .item {
     user-select: none;
   }
@@ -1065,7 +1065,7 @@ body.is-leaving .curtain {
   font-size: 2.5rem;
   white-space: nowrap;
 }
-@media (max-width: 899px) {
+@media (max-width: 719px) {
   .chalk {
     font-size: 3rem;
   }
@@ -1637,7 +1637,7 @@ body.is-leaving .curtain {
   margin-top: 0.55em;
 }
 
-@media (max-width: 899px) {
+@media (max-width: 719px) {
   .note h1 {
     font-size: 2rem;
     line-height: 1;
@@ -1802,7 +1802,7 @@ body.is-leaving .curtain {
 .controls .controls__sound.is-on .mute {
   opacity: 0;
 }
-@media (max-width: 899px) {
+@media (max-width: 719px) {
   .controls {
     font-size: 0.86rem;
   }
@@ -1828,7 +1828,7 @@ body.is-leaving .curtain {
 body.has-moved .hint {
   opacity: 0;
 }
-@media (max-width: 899px) {
+@media (max-width: 719px) {
   .hint {
     display: none;
   }

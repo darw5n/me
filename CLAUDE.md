@@ -87,10 +87,10 @@ Il sito precedente (Locomotive, accordion, tema chiaro/scuro, font Matahari e No
   L'ordine nel DOM è l'ordine di lettura (Tab).
 - **Configurazione** nel JSON `#table-config` dentro `index.html`: ordine dei gruppi (messy) e etichette a gesso
   del Tidy up.
-- **Computer (≥ 900 px):** `#view` fisso, `#world` trasformato dalla camera. Il tavolo è **infinito**: il pattern
+- **Computer e tablet (≥ 720 px):** `#view` fisso, `#world` trasformato dalla camera. Il tavolo è **infinito**: il pattern
   dello sfondo sta su `#view` e segue la camera (`--cam-x/--cam-y/--k`). Mouse: sposta subito gli oggetti; sul
   vuoto sposta il tavolo. Tastiera: frecce, `+`/`-`, `0` = See all, `T` = Tidy up.
-- **Telefono (< 900 px):** niente camera; il tavolo scorre dentro `.view` (mai la pagina, che resta larga quanto lo
+- **Telefono (< 720 px):** niente camera; il tavolo scorre dentro `.view` (mai la pagina, che resta larga quanto lo
   schermo). In disordine: la composizione fatta a mano da Darwin su uno schermo di 390 px
   (`data-phone="x,y"` su ogni oggetto, x dal bordo sinistro dello schermo iniziale), scalata sugli altri schermi;
   gli oggetti hanno le larghezze dei 390 px, così il testo va a capo uguale ovunque. Il tavolo è largo 7 schermi

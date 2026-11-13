@@ -64,6 +64,8 @@ export class Board {
   private readonly phoneZoom: PhoneZoom;
   private readonly labels = new Map<string, HTMLElement>();
   private homeZoom = 1;
+  /** Window size at the last layout: a resize keeps the same point of the table in view. */
+  private lastSize = viewportSize();
   private zCounter = 40;
   private animationEnd = 0;
   /** Once the visitor has panned or dragged, a relayout keeps the camera still. */
@@ -227,7 +229,7 @@ export class Board {
       });
       return layoutComposed(sized, { viewportWidth: vw, side: this.table().side, padding: PHONE_PADDING });
     }
-    return layoutMessy(sized, { viewportWidth: vw, clusterOrder: this.config.clusters });
+    return layoutMessy(sized, { viewportWidth: vw, viewportHeight: viewportSize().h, clusterOrder: this.config.clusters });
   }
 
   /** Opening view of the current arrangement. */
@@ -340,12 +342,33 @@ export class Board {
     if (!this.touched) this.home(0);
   }
 
-  /** Window resized: same arrangement, fresh layout, opening view. */
+  /**
+   * Window resized (called once the resize has stopped): same arrangement, fresh layout.
+   * On the camera table the objects glide to their new spots, like Tidy up; the camera
+   * goes back to the opening view, unless the visitor had moved around: then it keeps
+   * centred on the same point of the table. Crossing the phone breakpoint is a swap.
+   */
   resized(): void {
+    const wasNarrow = this.narrow;
+    const camera = this.camera.state;
+    const before = viewportSize();
+    // The point of the table at the centre of the screen, before the resize
+    const centre = { x: (this.lastSize.w / 2 - camera.x) / camera.zoom, y: (this.lastSize.h / 2 - camera.y) / camera.zoom };
+    this.lastSize = before;
     this.setOverview(false);
     this.phoneExtraScreens = 0;
+    const glide = !wasNarrow && before.w >= NARROW_BREAKPOINT && !this.reducedMotion;
+    const { world } = this.el;
+    if (glide) {
+      clearTimeout(this.animationEnd);
+      world.classList.add("is-animating");
+    }
     this.relayout();
-    this.home(0);
+    if (glide) {
+      this.animationEnd = window.setTimeout(() => world.classList.remove("is-animating"), TIDY_MS + this.items.length * 8 + 100);
+    }
+    if (this.touched && !this.narrow && !wasNarrow) void this.camera.centreOn(centre, camera.zoom, glide ? TIDY_MS : 0);
+    else this.home(glide ? TIDY_MS : 0, easeInOut);
   }
 
   /** Phone table for the current screen and growth. */
