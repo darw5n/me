@@ -211,3 +211,18 @@ ways offered (a form service, a Cloudflare Worker that needs the DNS moved, a pr
 email), Darwin chose the pre-filled email: no third party, no cost. The copy buttons cover
 its weak spot.
 
+
+## 2026-11-13 · Meta, link preview and icon follow the table
+
+**Decision.** Title and description use the headline from the storytelling folder ("Tinkerer by nature, product
+designer by trade…"), not the older "complicated products feel simple" line. The preview image (`Img/og-darwin.jpg`)
+is a real shot of the table at 1200×630, and the favicon is a chalk "D" on the felt mat, the same in the portfolio.
+Both are proposals: Darwin may redraw them in Figma at the end.
+
+**Why.** Everything in the head still came from the previous site (pink "chi sono e cosa faccio" image, Trento in the
+title). A new file name for the preview also makes LinkedIn and WhatsApp fetch it again instead of the cached one.
+
+**Open: the domain.** darw.it is an Aruba frame around `darw5n.github.io/me`: crawlers read the frame (title
+"darw.it", no description, no image), not this page. Until the domain points to GitHub Pages, `og:url` and
+`og:image` use the github.io address. When it moves: Aruba A records → GitHub Pages, custom domain in the repo
+settings, then switch those two URLs to `https://darw.it/`.

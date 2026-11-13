@@ -63,7 +63,8 @@ CSS/tavola.scss         ← entry SCSS; partial in CSS/tavola/ (_tokens _surface
 CSS/tavola.css          ← compilato (NON editare)
 tests/layout.test.mjs   ← niente sovrapposizioni, colonna dentro lo schermo, griglia del Tidy up
 Font/Antonia Circular HaveHeart   ← licenze da verificare (Darwin) prima di andare online
-Img/                    ← solo il ritratto e l'immagine OG (l'OG resta qui: i social la cercano a quell'indirizzo)
+Img/                    ← il ritratto e `og-darwin.jpg`, l'anteprima per i link (1200×630, foto vera del tavolo).
+                          Se cambia, cambia anche il nome del file: così LinkedIn e WhatsApp non usano quella vecchia
 Img/work/               ← immagini dei progetti (lavoro e lab) usate come anteprime
 Img/photos/             ← foto di viaggio grandi (si caricano solo nel visore)
 Img/photos/thumbs/      ← foto piccole per il tavolo (rullino 360 px, stampe 640 px); il link (href) punta al file
