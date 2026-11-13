@@ -88,15 +88,7 @@
     <span class="preloader__bar"></span>
   </div>
 
-  <!-- Chalk texture: grain plus a slight wobble, applied to writing and drawings -->
   <svg class="svg-defs" width="0" height="0" aria-hidden="true">
-    <filter id="chalk" x="-15%" y="-25%" width="130%" height="150%">
-      <feTurbulence type="fractalNoise" baseFrequency=".8" numOctaves="2" seed="4" result="noise"/>
-      <feColorMatrix in="noise" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -1.5 1.72" result="mask"/>
-      <feComposite in="SourceGraphic" in2="mask" operator="in" result="grain"/>
-      <feTurbulence type="fractalNoise" baseFrequency=".05" numOctaves="1" seed="9" result="wobble"/>
-      <feDisplacementMap in="grain" in2="wobble" scale="1.6"/>
-    </filter>
     <!-- Satin stitch: fine diagonal threads over the colour of a patch -->
     <pattern id="satin" width="3" height="3" patternUnits="userSpaceOnUse" patternTransform="rotate(35)">
       <rect width="3" height="1.2" fill="#fff" fill-opacity=".12"/>

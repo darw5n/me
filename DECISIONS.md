@@ -406,3 +406,14 @@ buttons show their key on hover and announce it (`aria-keyshortcuts`). Every sho
 
 **Not used:** ⌘T and ⌘M, which Darwin first suggested: the browser opens a tab and the system minimises the
 window, and no page can stop them. ⌘B would take away the bookmarks of Firefox and Safari. Hence plain letters.
+
+## 2026-11-13 · Chalk grain as a mask, not a live filter (Safari)
+
+**Decision.** The chalk grain is a still texture of speckles (a 96 px PNG inside the CSS, tiled at 64 px) used as a
+mask on writing and drawings, instead of the SVG filter `#chalk` (noise plus a slight wobble).
+
+**Why.** Measured in Safari 27 on Darwin's Mac, 3840 px window: with the filter the table moved at 0–2 fps (frames
+of several seconds); without it, about 50 fps. Safari recomputed the filter on every chalk mark at every frame;
+Chrome and Firefox cache it. A mask is composited and costs almost nothing everywhere. The wobble of the edges is
+gone: the script is hand-written already. The texture lives in the CSS (not in Img/) so the portfolio, which gets
+only the compiled CSS, has it too.
