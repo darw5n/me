@@ -95,7 +95,17 @@ export interface MessyOptions {
   viewportHeight?: number;
   /** Order in which clusters are laid out, left to right, top to bottom. */
   clusterOrder: string[];
+  /**
+   * Zones: clusters on the same theme, kept together and set apart from the other zones
+   * by a wider gap. The first zone opens the table top left. Clusters missing from every
+   * zone form one last zone. Without zones, the whole table is one zone.
+   */
+  zones?: string[][] | undefined;
 }
+
+/** Gap between zones: about three times the gap between clusters, so areas read apart. */
+const ZONE_GAP_X = 300;
+const ZONE_GAP_Y = 280;
 
 /** Zoom at which the messy table opens: the widest cluster fits the window. */
 export const homeZoom = (clusters: Cluster[], viewportWidth: number, margin: number): number => {
@@ -115,7 +125,7 @@ interface Spot {
  * one instead of starting a new row. Every other cluster sits a little lower, so the
  * table never reads as a grid.
  */
-const packSkyline = (clusters: Cluster[], width: number, gapX: number, gapY: number): Spot[] => {
+const packSkyline = (clusters: Cluster[], width: number, gapX: number, gapY: number, stagger = 46): Spot[] => {
   // The skyline: x positions where its height changes, and the height from each on
   let edges: { x: number; y: number }[] = [{ x: 0, y: 0 }];
   const heightOver = (x0: number, x1: number): number => {
@@ -136,7 +146,7 @@ const packSkyline = (clusters: Cluster[], width: number, gapX: number, gapY: num
   };
   return clusters.map((c, i) => {
     const w = c.bounds.w + gapX;
-    const h = c.bounds.h + gapY + (i % 2 ? 46 : 0);
+    const h = c.bounds.h + gapY + (i % 2 ? stagger : 0);
     let best: Spot | null = null;
     for (const e of edges) {
       const x = Math.min(e.x, Math.max(0, width - c.bounds.w));
@@ -144,7 +154,7 @@ const packSkyline = (clusters: Cluster[], width: number, gapX: number, gapY: num
       if (!best || y < best.y - 0.5 || (Math.abs(y - best.y) <= 0.5 && x < best.x)) best = { x, y };
     }
     raise(best!.x, best!.x + w, best!.y + h);
-    return { x: best!.x, y: best!.y + (i % 2 ? 46 : 0) };
+    return { x: best!.x, y: best!.y + (i % 2 ? stagger : 0) };
   });
 };
 
@@ -159,9 +169,16 @@ export const layoutMessy = (items: LayoutItem[], opts: MessyOptions): LayoutResu
   // clusters keep their size (and their spots) while the window is resized
   const air = viewportWidth >= 1800 ? 1.1 : 1;
 
-  const clusters = opts.clusterOrder
-    .map((key) => buildCluster(items.filter((i) => i.cluster === key), air))
-    .filter((c) => c.boxes.length > 0);
+  const keys = opts.clusterOrder.filter((key) => items.some((i) => i.cluster === key));
+  const clusters = keys.map((key) => buildCluster(items.filter((i) => i.cluster === key), air));
+  // Zones as lists of indexes into `clusters`, in table order
+  const zoned = new Set<string>();
+  const zones = (opts.zones ?? [])
+    .map((zone) => zone.filter((key) => keys.includes(key) && !zoned.has(key) && zoned.add(key)))
+    .filter((zone) => zone.length > 0);
+  const rest = keys.filter((key) => !zoned.has(key));
+  if (rest.length) zones.push(rest);
+  const zoneIndexes = zones.map((zone) => zone.map((key) => keys.indexOf(key)));
 
   const zoom = homeZoom(clusters, viewportWidth, margin);
   // The table is at least as wide as the opening screen, so the first clusters fill it
@@ -178,8 +195,24 @@ export const layoutMessy = (items: LayoutItem[], opts: MessyOptions): LayoutResu
   const target = (viewportWidth / viewportHeight) * 1.15;
   const from = Math.ceil(Math.max(fitWidth, widest) / WIDTH_STEP) * WIDTH_STEP;
   let pick: { spots: Spot[]; width: number; score: number } | null = null;
+  // Each zone is packed on its own, then the zones are packed as blocks, wider apart
+  const packZones = (width: number): Spot[] => {
+    const spots: Spot[] = Array<Spot>(clusters.length);
+    const local = zoneIndexes.map((idx) => packSkyline(idx.map((i) => clusters[i]!), width, gapX, gapY));
+    const blocks: Cluster[] = local.map((zs, z) => {
+      const idx = zoneIndexes[z]!;
+      const w = Math.max(...zs.map((p, k) => p.x + clusters[idx[k]!]!.bounds.w));
+      const h = Math.max(...zs.map((p, k) => p.y + clusters[idx[k]!]!.bounds.h));
+      return { boxes: [], bounds: { x: 0, y: 0, w, h } };
+    });
+    const at = packSkyline(blocks, width, ZONE_GAP_X, ZONE_GAP_Y, 0);
+    local.forEach((zs, z) => zs.forEach((p, k) => {
+      spots[zoneIndexes[z]![k]!] = { x: at[z]!.x + p.x, y: at[z]!.y + p.y };
+    }));
+    return spots;
+  };
   for (let width = from; width <= from + WIDTH_STEP * 24; width += WIDTH_STEP) {
-    const spots = packSkyline(clusters, width, gapX, gapY);
+    const spots = packZones(width);
     const right = Math.max(...spots.map((p, i) => p.x + clusters[i]!.bounds.w));
     const bottom = Math.max(...spots.map((p, i) => p.y + clusters[i]!.bounds.h));
     const score = Math.abs(Math.log(right / bottom / target));

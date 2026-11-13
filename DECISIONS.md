@@ -307,3 +307,15 @@ at 12% on a 1440×900 screen, and wide screens stayed mostly empty. Now 29–31%
 **Trade-off.** A table shaped by the screen reshuffles a few times while a window is dragged wider (about 8
 times from 900 to 2560 px, before: 4). Fixed gaps between clusters and a single step of extra air (≥ 1800 px)
 keep it from reshuffling for nothing, and each reshuffle is a glide, not a jump.
+
+## 2026-11-13 · Zones: work, life, contacts
+
+**Decision.** The messy table is split into three zones (`zones` in `#table-config`): how Darwin works (who, work,
+path, lab, tools), off the clock (photos, trips, Caramella, records, games, books), and contacts. Each zone is packed
+on its own, then the zones are packed as blocks with a gap about three times the gap between clusters
+(`ZONE_GAP_X/Y`), so the areas read apart; the work zone opens the table top left. Tidy up follows the same order.
+Three objects moved to their theme: the colleague's quote joins the path (it is proof of work), the Trips card joins
+the passport, the drum-and-bass sticker joins the records.
+
+**Why.** With 13 clusters at the same distance, work and hobbies read as one pile, and hobbies outnumber work
+(38 objects against 27). Darwin asked for two versions to compare: zones only, and zones plus cuts.

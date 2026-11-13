@@ -46,19 +46,24 @@
   <!-- Layout configuration read by Script/tavola/main.js -->
   <script type="application/json" id="table-config">
     {
-      "clusters": ["about", "work", "path", "photos", "trips", "lab", "tools", "words", "caramella", "records", "games", "ask", "elsewhere"],
+      "clusters": ["about", "work", "path", "lab", "tools", "photos", "trips", "caramella", "records", "games", "words", "ask", "elsewhere"],
+      "zones": [
+        ["about", "work", "path", "lab", "tools"],
+        ["photos", "trips", "caramella", "records", "games", "words"],
+        ["ask", "elsewhere"]
+      ],
       "groups": [
         ["about", "who"],
-        ["path", "where I've been"],
         ["work", "work"],
+        ["path", "where I've been"],
         ["lab", "built for myself"],
         ["tools", "on my desk"],
         ["photos", "photos"],
         ["trips", "been there"],
-        ["words", "off the clock"],
         ["caramella", "the boss"],
         ["records", "on repeat"],
         ["games", "press start"],
+        ["words", "off the clock"],
         ["ask", "your turn"],
         ["elsewhere", "elsewhere"],
         ["pack", "sticker pack"]
@@ -363,13 +368,13 @@
         </div>
 
         <!-- OFF THE CLOCK -->
-        <div class="item" data-phone="144,2535" data-cluster="words" data-at="0,0" data-width="420" data-rotate="1.4" data-material="paper">
+        <div class="item" data-phone="144,2535" data-cluster="path" data-at="10,330" data-width="420" data-rotate="1.4" data-material="paper">
           <blockquote class="item__body quote"><i class="tack" aria-hidden="true"></i>“He just makes things easier for everyone around&nbsp;him.”<small>Nikola Gluhovic, Senior Software&nbsp;Developer</small></blockquote>
         </div>
         <div class="item" data-phone="-197,2533" data-cluster="caramella" data-at="0,10" data-width="270" data-rotate="-2" data-material="card">
           <div class="item__body card"><i class="tack tack--yellow" aria-hidden="true"></i><h3>Caramella</h3>A cat from a shelter. She’d eat all day if I let&nbsp;her.</div>
         </div>
-        <div class="item" data-phone="-209,2714" data-cluster="words" data-at="20,270" data-width="290" data-rotate="1.2" data-material="card">
+        <div class="item" data-phone="-209,2714" data-cluster="trips" data-at="0,300" data-width="290" data-rotate="1.2" data-material="card">
           <div class="item__body card"><i class="tack tack--green" aria-hidden="true"></i><h3>Trips</h3>Planned down to the last&nbsp;detail. Korea: 17 days, 7 linked&nbsp;databases.</div>
         </div>
         <div class="item" data-phone="555,2611" data-cluster="words" data-at="346,250" data-width="260" data-rotate="-1.4" data-material="card">
@@ -701,7 +706,7 @@
         <div class="item" data-phone="141,2846" data-cluster="words" data-group="pack" data-at="620,290" data-width="90" data-rotate="-10" data-small data-material="sticker">
           <div class="item__body sticker"><svg viewBox="0 0 110 110" role="img" aria-label="Sticker: playmaker, football"><circle cx="55" cy="55" r="48" fill="#fff" stroke="#fff" stroke-width="9"/><circle cx="55" cy="55" r="47" fill="none" stroke="#141414" stroke-width="2.5"/><path d="M55 34l19 14-7 22H43l-7-22ZM55 34V10M74 48l22-8M67 70l14 20M43 70 29 90M36 48l-22-8" fill="none" stroke="#141414" stroke-width="3.5" stroke-linejoin="round"/><path d="M55 34l19 14-7 22H43l-7-22Z" fill="#141414"/></svg></div>
         </div>
-        <div class="item" data-phone="434,1463" data-cluster="path" data-group="pack" data-at="370,190" data-width="100" data-rotate="6" data-small data-material="sticker">
+        <div class="item" data-phone="434,1463" data-cluster="records" data-group="pack" data-at="840,170" data-width="100" data-rotate="6" data-small data-material="sticker">
           <div class="item__body sticker"><svg viewBox="0 0 120 120" role="img" aria-label="Sticker: vinyl, drum and bass"><circle cx="60" cy="60" r="53" fill="#191919" stroke="#fff" stroke-width="9"/><circle cx="60" cy="60" r="41" fill="none" stroke="#3b3b3b" stroke-width="2"/><circle cx="60" cy="60" r="33" fill="none" stroke="#3b3b3b" stroke-width="2"/><circle cx="60" cy="60" r="21" fill="#a64bd6"/><circle cx="60" cy="60" r="3.5" fill="#fff"/><text x="60" y="53" text-anchor="middle" font-size="7.5" fill="#fff">drum &amp; bass</text></svg></div>
         </div>
         <div class="item" data-phone="449,2465" data-cluster="lab" data-group="pack" data-at="430,60" data-width="140" data-rotate="-5" data-small data-material="sticker">

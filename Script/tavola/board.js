@@ -196,7 +196,7 @@ export class Board {
             });
             return layoutComposed(sized, { viewportWidth: vw, side: this.table().side, padding: PHONE_PADDING });
         }
-        return layoutMessy(sized, { viewportWidth: vw, viewportHeight: viewportSize().h, clusterOrder: this.config.clusters });
+        return layoutMessy(sized, { viewportWidth: vw, viewportHeight: viewportSize().h, clusterOrder: this.config.clusters, zones: this.config.zones });
     }
     /** Opening view of the current arrangement. */
     home(ms = 0, ease) {

@@ -3,7 +3,7 @@
  * cursor, viewer and preloader.
  *
  * Expected markup (see index.html):
- *   <script type="application/json" id="table-config">{ "clusters": [...], "groups": [[id, label], ...] }</script>
+ *   <script type="application/json" id="table-config">{ "clusters": [...], "groups": [[id, label], ...], "zones": [[cluster, ...], ...] }</script>
  *   <div id="view"><div id="world"><main class="items">…</main></div></div>
  *   toolbar buttons: #tidy #see-all #zoom-in #zoom-out #zoom-level #surface #sound
  *   optional: #preloader
@@ -29,6 +29,7 @@ const readConfig = () => {
         return {
             clusters: Array.isArray(parsed.clusters) ? parsed.clusters : [],
             groups: Array.isArray(parsed.groups) ? parsed.groups : [],
+            zones: Array.isArray(parsed.zones) ? parsed.zones : undefined,
         };
     }
     catch {
