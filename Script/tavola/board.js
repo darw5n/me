@@ -17,6 +17,12 @@ import { attachPhoneZoom, PHONE_ZOOM_MIN } from "./phone-zoom.js";
 import { attachFilmHover, createRings, reactToTap } from "./reactions.js";
 /** Screen padding kept around the content by "See all". */
 const SEE_ALL_PADDING = { x: 40, top: 58, bottom: 76 };
+/**
+ * Phone, "See all" when the table already fits across (Tidy up): the whole column would
+ * be a thin unreadable strip, so a step back that still shows the objects (about 2,000 px
+ * of column on the screen).
+ */
+const PHONE_OVERVIEW_ZOOM = 0.4;
 /** Column padding on a phone. */
 const PHONE_PADDING = 20;
 /** Scale range for objects fitted to the Tidy up grid. */
@@ -367,7 +373,9 @@ export class Board {
     /**
      * Phone. Zoomed (pinch or overview): back to 100% at the height of the spot in
      * the middle of the screen, lined up with the opening screen. At 100%: the whole table across the screen, keeping the spot in
-     * the middle at the same height. Tidy, the column already fits across: to the top.
+     * the middle at the same height. When the table already fits across (Tidy up: one
+     * column), a step back instead (PHONE_OVERVIEW_ZOOM): a few groups at once, the column
+     * in the middle, so the button never does nothing.
      */
     phoneSeeAll() {
         const { view } = this.el;
@@ -385,7 +393,8 @@ export class Board {
         const content = this.contentRect();
         const fit = Math.max(PHONE_ZOOM_MIN, (view.clientWidth - margin * 2) / content.w);
         if (fit > 0.9) {
-            this.scrollPhoneHome();
+            const cx = content.x + content.w / 2;
+            this.phoneZoom.animateTo(PHONE_OVERVIEW_ZOOM, { x: cx, y: anchor.y }, { x: centre.x, y: centre.y }, ms);
             return;
         }
         this.phoneZoom.animateTo(fit, anchor, { x: (anchor.x - content.x) * fit + margin, y: centre.y }, ms);
