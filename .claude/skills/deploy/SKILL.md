@@ -20,7 +20,7 @@ Il push su `main` pubblica subito darw.it (GitHub Pages). Flusso: branch di lavo
    git merge <branch> --no-ff -m "Merge <branch>: <cosa cambia>"
    git push origin main
    ```
-6. Mostra `git log --oneline -3` e ricorda di controllare il sito live (`darw5n.github.io/me`) dopo un minuto.
+6. Mostra `git log --oneline -3` e ricorda di controllare il sito live (`https://darw.it`) dopo un minuto.
 
 ## Regole
 - Mai `git merge` o `git push` senza conferma esplicita.
