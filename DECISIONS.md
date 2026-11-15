@@ -227,6 +227,20 @@ title). A new file name for the preview also makes LinkedIn and WhatsApp fetch i
 `og:image` use the github.io address. When it moves: Aruba A records → GitHub Pages, custom domain in the repo
 settings, then switch those two URLs to `https://darw.it/`.
 
+## 2026-11-15 · darw.it points to GitHub Pages, no more frame
+
+**Decision.** The Aruba frame goes: the DNS of `darw.it` points to GitHub Pages (A records of `@` to GitHub's four
+addresses, `www` as a CNAME to `darw5n.github.io`), the repo has a `CNAME` file with `darw.it`, and GitHub serves the
+site there with HTTPS; `darw5n.github.io/me` redirects to it. The page names `https://darw.it/` as canonical, in
+`og:url` and `og:image`, and gives its name to search engines (WebSite in JSON-LD). The mail records on Aruba stay
+as they are.
+
+**Why.** Google showed two results: the frame on darw.it (old title and text, plain http, no preview) and the real page
+on github.io, named "GitHub Pages documentation". One address, the real page on it, merges them over time.
+
+**Order.** DNS first, then the push with the `CNAME`: with the frame still on, github.io would send visitors to
+darw.it, which frames github.io again. **Back:** the old values in the Aruba DNS and the frame, then remove `CNAME`.
+
 ## 2026-11-13 · Tools: a macro pad, not a row of logos
 
 **Decision.** The apps Darwin opens every day sit on ten keycaps of a small macro pad (cluster `tools`, "on my
