@@ -23,6 +23,11 @@ const SEE_ALL_PADDING = { x: 40, top: 58, bottom: 76 };
  * of column on the screen).
  */
 const PHONE_OVERVIEW_ZOOM = 0.4;
+/**
+ * Computer, "See all" under Tidy up: the groups stack into one tall column, so the
+ * whole of it would sit at about 10%. Never below this: a step back, then the visitor scrolls.
+ */
+const TIDY_OVERVIEW_ZOOM = 0.35;
 /** Column padding on a phone. */
 const PHONE_PADDING = 20;
 /** Scale range for objects fitted to the Tidy up grid. */
@@ -57,6 +62,8 @@ export class Board {
     touched = false;
     /** Desktop: the camera frames everything after "See all", until the visitor moves. */
     overview = false;
+    /** Where "Zoom back in" returns to under Tidy up: the view before "See all". */
+    tidyReturn = null;
     /** Phone: x where the centre column starts, to scroll back to it after a resize. */
     phoneSide = -1;
     /** Phone: screens added on the left because an object was carried there. */
@@ -229,14 +236,35 @@ export class Board {
             this.phoneSeeAll();
             return;
         }
-        // Second press: back to the opening view
+        const v = viewportSize();
+        const cam = this.camera.state;
+        // The point of the table in the middle of the screen, kept there by the tidy step back
+        const midY = (v.h / 2 - cam.y) / cam.zoom;
+        // Second press: back to the opening view; tidy, back where the visitor was reading
         if (this.overview) {
             this.setOverview(false);
-            this.home(620);
+            const back = this.mode === "tidy" ? this.tidyReturn : null;
+            if (back)
+                void this.camera.flyTo(back.x, back.y, back.zoom, 620);
+            else
+                this.home(620);
             return;
         }
+        // Already stepped back (moved in the overview, then See all again): back means 100%
+        this.tidyReturn = cam.zoom > TIDY_OVERVIEW_ZOOM ? { ...cam } : { x: 0, y: Math.min(0, v.h / 2 - midY), zoom: 1 };
+        const content = this.contentRect();
+        const fit = (v.h - SEE_ALL_PADDING.top - SEE_ALL_PADDING.bottom) / content.h;
         // Flight first: an instant one (reduced motion) must not count as the visitor moving.
-        void this.camera.fitRect(this.contentRect(), SEE_ALL_PADDING);
+        if (this.mode === "tidy" && fit < TIDY_OVERVIEW_ZOOM) {
+            // The whole column would be an unreadable strip: a step back, the column in the middle
+            const z = TIDY_OVERVIEW_ZOOM;
+            const x = v.w / 2 - (content.x + content.w / 2) * z;
+            const y = Math.min(SEE_ALL_PADDING.top - content.y * z, v.h / 2 - midY * z);
+            void this.camera.flyTo(x, y, z, 620);
+        }
+        else {
+            void this.camera.fitRect(content, SEE_ALL_PADDING);
+        }
         this.setOverview(true);
     }
     setOverview(on) {
