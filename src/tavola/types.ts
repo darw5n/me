@@ -47,6 +47,8 @@ export interface LayoutItem {
   decoration: boolean;
   /** Lies on top of other objects (a sticker on a folder): never pushed apart, nor pushes. */
   onTop: boolean;
+  /** The messy table opens framing the objects marked so (data-opening, computer only). */
+  opening?: boolean;
   /**
    * Where it lies on a phone when the table is messy: top-left corner in px on a
    * 390 px screen, x from the left edge of the opening screen (negative: off to

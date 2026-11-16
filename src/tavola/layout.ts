@@ -97,7 +97,8 @@ export interface MessyOptions {
   clusterOrder: string[];
   /**
    * Zones (areas): clusters on the same theme, packed together, then laid out on a grid
-   * with wide gaps between areas: 3 columns on large screens (from 1200 px), else the
+   * with wide gaps between areas: up to 3 columns on large screens (from 1200 px, the count
+   * that leaves the fewest empty cells: 3x3, 2x2), else the
    * column count whose shape is closest to the screen's. Reading order is row by row; the
    * first area opens the table top left. Clusters missing from every zone form one last
    * area. Without zones, clusters are packed freely in a table shaped like the screen.
@@ -112,6 +113,9 @@ const AREA_GAP_Y = 300;
 const GRID_WIDE = 1200;
 /** Shape each area aims for on its own: a landscape cell. */
 const AREA_RATIO = 1.5;
+/** Screen room above the table (the name in the corner) and below it (the bar), in px. */
+const OPENING_TOP = 70;
+const OPENING_BOTTOM = 110;
 
 /** Zoom at which the messy table opens: the widest cluster fits the window. */
 export const homeZoom = (clusters: Cluster[], viewportWidth: number, margin: number): number => {
@@ -251,7 +255,12 @@ export const layoutMessy = (items: LayoutItem[], opts: MessyOptions): LayoutResu
     };
     const most = Math.min(3, areas.length);
     if (viewportWidth >= GRID_WIDE) {
-      pick = { spots: gridOf(most).spots, score: 0 };
+      // Up to 3 columns, as many as leave the fewest empty cells: nine areas make 3x3,
+      // four make 2x2 (not 3 + 1)
+      const empty = (columns: number): number => Math.ceil(areas.length / columns) * columns - areas.length;
+      let columns = most;
+      for (let c = most - 1; c >= 2; c--) if (empty(c) < empty(columns)) columns = c;
+      pick = { spots: gridOf(columns).spots, score: 0 };
     } else {
       for (let columns = 1; columns <= most; columns++) {
         const g = gridOf(columns);
@@ -261,10 +270,23 @@ export const layoutMessy = (items: LayoutItem[], opts: MessyOptions): LayoutResu
     }
   }
 
+  // Objects marked data-opening (the portfolio's intro and starred folders): the table
+  // opens framing all of them, from the top left corner, between 50% and 100%
+  const framed = clusters.flatMap((c, i) => c.boxes
+    .filter((box) => box.item.opening)
+    .map((box) => ({ ...box, x: pick!.spots[i]!.x + (box.x - c.bounds.x), y: pick!.spots[i]!.y + (box.y - c.bounds.y) })));
+  const frame = framed.length ? union(framed) : null;
+  const openZoom = frame
+    ? clamp(Math.min(
+        (viewportWidth - margin * 2) / (frame.x + frame.w),
+        (viewportHeight - OPENING_TOP - OPENING_BOTTOM) / (frame.y + frame.h),
+      ), 0.5, 1)
+    : zoom;
+
   const placements: Placements = new Map();
   const placed: Rect[] = [];
-  const x0 = margin / zoom;
-  const y0 = 70 / zoom;
+  const x0 = margin / openZoom;
+  const y0 = OPENING_TOP / openZoom;
   clusters.forEach((c, i) => {
     const spot = pick!.spots[i]!;
     for (const box of c.boxes) {
@@ -274,7 +296,7 @@ export const layoutMessy = (items: LayoutItem[], opts: MessyOptions): LayoutResu
     }
   });
 
-  return { placements, bounds: union(placed), labels: new Map(), zoom };
+  return { placements, bounds: union(placed), labels: new Map(), zoom: openZoom };
 };
 
 export interface ColumnOptions {

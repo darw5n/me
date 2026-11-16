@@ -435,3 +435,14 @@ Measured again in Safari after the change: entrance 0 → 56 fps, moving 0 → 5
 was still slow because Safari redraws a mask at every new scale (50 fps zooming without the grain), so the grain
 also goes while the scale changes and comes back 0.2 s after the zoom rests (`is-zooming`, board.ts). Moving at the
 same scale keeps it.
+
+## 2026-11-16 · Area grid without holes, and an opening frame chosen by hand (for the portfolio)
+
+**Decision.** On large screens the areas take up to 3 columns, as many as leave the fewest empty cells: nine areas
+stay 3×3 (/me unchanged), four become 2×2 instead of three in a row and one below. And a new, optional mark:
+objects with `data-opening` set the opening view on a computer, which frames all of them (from the top left,
+between 50% and 100%). /me has none, so it still opens at 100%.
+
+**Why.** Darwin asked the portfolio to get /me's roomy areas, in four blocks on a 2×2 grid, and to show projects
+as soon as it loads, at least the starred folders. With areas far apart, the opening at 100% showed only the intro;
+framing the intro and the three starred folders opens at about 60% on a 1440 px screen, still readable.
