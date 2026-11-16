@@ -113,9 +113,16 @@ const AREA_GAP_Y = 300;
 const GRID_WIDE = 1200;
 /** Shape each area aims for on its own: a landscape cell. */
 const AREA_RATIO = 1.5;
-/** Screen room above the table (the name in the corner) and below it (the bar), in px. */
-const OPENING_TOP = 70;
-const OPENING_BOTTOM = 110;
+/**
+ * Opening frame (data-opening): room above it for the name in the corner, and only a small
+ * edge to the right and below, in px. The table goes on past the right edge, and the bar
+ * is narrow and centred: a composition made by hand keeps the middle clear above it (the
+ * portfolio's centre folder sits higher).
+ */
+const OPENING_TOP = 60;
+const OPENING_EDGE = 24;
+/** Where the messy table starts below the top of the screen, without an opening frame. */
+const TABLE_TOP = 70;
 
 /** Zoom at which the messy table opens: the widest cluster fits the window. */
 export const homeZoom = (clusters: Cluster[], viewportWidth: number, margin: number): number => {
@@ -278,15 +285,15 @@ export const layoutMessy = (items: LayoutItem[], opts: MessyOptions): LayoutResu
   const frame = framed.length ? union(framed) : null;
   const openZoom = frame
     ? clamp(Math.min(
-        (viewportWidth - margin * 2) / (frame.x + frame.w),
-        (viewportHeight - OPENING_TOP - OPENING_BOTTOM) / (frame.y + frame.h),
+        (viewportWidth - margin - OPENING_EDGE) / (frame.x + frame.w),
+        (viewportHeight - OPENING_TOP - OPENING_EDGE) / (frame.y + frame.h),
       ), 0.5, 1)
     : zoom;
 
   const placements: Placements = new Map();
   const placed: Rect[] = [];
   const x0 = margin / openZoom;
-  const y0 = OPENING_TOP / openZoom;
+  const y0 = (frame ? OPENING_TOP : TABLE_TOP) / openZoom;
   clusters.forEach((c, i) => {
     const spot = pick!.spots[i]!;
     for (const box of c.boxes) {
