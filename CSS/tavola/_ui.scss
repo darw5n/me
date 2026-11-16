@@ -213,7 +213,9 @@
   z-index: calc(var(--z-ui) - 1);
   left: 50%;
   top: 8px;
-  margin: 0;
+  // Chalk's room for the tails (_materials.scss) taken back only at the top: a side
+  // margin would push the centred hint off centre
+  margin: -0.25em 0 0;
   transform: translateX(-50%);
   white-space: nowrap;
   font-size: clamp(1.9rem, 3vw, 2.6rem);

@@ -684,6 +684,13 @@ html.is-zooming :is(.chalk:not(.group-label), .chalk-drawing) {
   paint-order: stroke fill;
   text-shadow: 0 2px 0 var(--chalk-shadow);
 
+  // The script's first and last letters reach past the text box with their tails, and the
+  // grain mask clips everything outside the box: room around the words, taken back with a
+  // negative margin so they stay in place (16/11/2026: "start with this one" and the
+  // preloader lost their first letter). Same as the Tidy up labels (_table.scss).
+  padding: 0.25em 0.45em;
+  margin: -0.25em -0.45em;
+
   // The title of an area
   &--small {
     font-size: 3.4rem;

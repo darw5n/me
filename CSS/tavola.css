@@ -1093,6 +1093,8 @@ html.is-zooming :is(.chalk:not(.group-label), .chalk-drawing) {
   -webkit-text-stroke: 0.035em currentColor;
   paint-order: stroke fill;
   text-shadow: 0 2px 0 var(--chalk-shadow);
+  padding: 0.25em 0.45em;
+  margin: -0.25em -0.45em;
 }
 .chalk--small {
   font-size: 3.4rem;
@@ -1855,7 +1857,7 @@ html.is-zooming :is(.chalk:not(.group-label), .chalk-drawing) {
   z-index: calc(var(--z-ui) - 1);
   left: 50%;
   top: 8px;
-  margin: 0;
+  margin: -0.25em 0 0;
   transform: translateX(-50%);
   white-space: nowrap;
   font-size: clamp(1.9rem, 3vw, 2.6rem);
