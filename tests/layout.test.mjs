@@ -117,6 +117,33 @@ for (const [w, h] of [[1280, 800], [1440, 900], [1920, 1080], [3440, 1440]]) {
   });
 }
 
+// Four areas, as on the portfolio: a 2x2 grid on large screens, not three in a row and one below
+test("four areas on a large screen: a 2x2 grid", () => {
+  const four = [["c0", "c1"], ["c2", "c3", "c4"], ["c5", "c6", "c7"], ["c8", "c9", "c10", "c11"]];
+  const r = layoutMessy(big, { viewportWidth: 1440, viewportHeight: 900, clusterOrder: bigOrder, zones: four });
+  assertNoOverlaps(big, r.placements);
+  const [a, b, c, d] = four.map((z) => clusterBox(r.placements, z[0]));
+  assert.ok(a.x < b.x && c.x < d.x, "each row reads left to right");
+  assert.ok(Math.abs(a.x - c.x) < 1 && Math.abs(b.x - d.x) < 1, "two columns");
+  assert.ok(c.y > a.y && d.y > b.y, "two rows");
+});
+
+// data-opening: the table opens framing the marked objects (portfolio: intro + starred folders)
+test("opening frame: every marked object fits the opening screen", () => {
+  const four = [["c0", "c1"], ["c2", "c3", "c4"], ["c5", "c6", "c7"], ["c8", "c9", "c10", "c11"]];
+  const marked = big.map((it) => (it.cluster === "c0" || it.cluster === "c1" ? { ...it, opening: true } : it));
+  const [w, h] = [1440, 900];
+  const plain = layoutMessy(big, { viewportWidth: w, viewportHeight: h, clusterOrder: bigOrder, zones: four });
+  const r = layoutMessy(marked, { viewportWidth: w, viewportHeight: h, clusterOrder: bigOrder, zones: four });
+  assertNoOverlaps(marked, r.placements);
+  assert.ok(r.zoom >= 0.5 && r.zoom <= plain.zoom, `zoom ${r.zoom}`);
+  for (const it of marked.filter((i) => i.opening)) {
+    const p = r.placements.get(it.id);
+    assert.ok((p.x + it.size.w) * r.zoom <= w + 1, `${it.id} inside the screen width`);
+    assert.ok((p.y + it.size.h) * r.zoom <= h + 1, `${it.id} inside the screen height`);
+  }
+});
+
 test("messy table: a few pixels wider keeps every cluster where it was", () => {
   const a = layoutMessy(big, { viewportWidth: 1440, viewportHeight: 900, clusterOrder: bigOrder });
   const b = layoutMessy(big, { viewportWidth: 1450, viewportHeight: 900, clusterOrder: bigOrder });

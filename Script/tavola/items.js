@@ -19,6 +19,8 @@
  * - data-on-top    lies on top of other objects, e.g. a sticker stuck on a folder: the
  *                  layout lets it overlap them and it stays above when they are lifted
  * - data-material  how the object reacts (see types.ts)
+ * - data-opening   on a computer, the messy table opens framing every object marked so
+ *                  (e.g. the intro and the starred folders); without it, at 100%
  * - data-phone-area on a phone with a grid (config "phone"): the area the item joins,
  *                  when it is not its cluster (e.g. the project sheets beside the folder)
  * - data-phone     on a phone, when messy: "x,y" in px on a 390 px screen, x from
@@ -71,6 +73,7 @@ export const readItems = (root) => [...root.querySelectorAll(".item")].map((el, 
         small: "small" in d,
         decoration: "decoration" in d,
         onTop: "onTop" in d,
+        opening: "opening" in d,
         phoneAt: d["phone"] ? pointOf(d["phone"]) : undefined,
         phoneArea: d["phoneArea"] || undefined,
         material: materialOf(el),
@@ -96,6 +99,7 @@ export const toLayoutItem = (item, size) => ({
     small: item.small,
     decoration: item.decoration,
     onTop: item.onTop,
+    ...(item.opening ? { opening: true } : {}),
     ...(item.phoneAt ? { phoneAt: item.phoneAt } : {}),
     ...(item.phoneArea ? { phoneArea: item.phoneArea } : {}),
 });

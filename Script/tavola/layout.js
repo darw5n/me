@@ -83,6 +83,16 @@ const AREA_GAP_Y = 300;
 const GRID_WIDE = 1200;
 /** Shape each area aims for on its own: a landscape cell. */
 const AREA_RATIO = 1.5;
+/**
+ * Opening frame (data-opening): room above it for the name in the corner, and only a small
+ * edge to the right and below, in px. The table goes on past the right edge, and the bar
+ * is narrow and centred: a composition made by hand keeps the middle clear above it (the
+ * portfolio's centre folder sits higher).
+ */
+const OPENING_TOP = 60;
+const OPENING_EDGE = 24;
+/** Where the messy table starts below the top of the screen, without an opening frame. */
+const TABLE_TOP = 70;
 /** Zoom at which the messy table opens: the widest cluster fits the window. */
 export const homeZoom = (clusters, viewportWidth, margin) => {
     const widest = Math.max(1, ...clusters.map((c) => c.bounds.w));
@@ -213,7 +223,14 @@ export const layoutMessy = (items, opts) => {
         };
         const most = Math.min(3, areas.length);
         if (viewportWidth >= GRID_WIDE) {
-            pick = { spots: gridOf(most).spots, score: 0 };
+            // Up to 3 columns, as many as leave the fewest empty cells: nine areas make 3x3,
+            // four make 2x2 (not 3 + 1)
+            const empty = (columns) => Math.ceil(areas.length / columns) * columns - areas.length;
+            let columns = most;
+            for (let c = most - 1; c >= 2; c--)
+                if (empty(c) < empty(columns))
+                    columns = c;
+            pick = { spots: gridOf(columns).spots, score: 0 };
         }
         else {
             for (let columns = 1; columns <= most; columns++) {
@@ -224,10 +241,19 @@ export const layoutMessy = (items, opts) => {
             }
         }
     }
+    // Objects marked data-opening (the portfolio's intro and starred folders): the table
+    // opens framing all of them, from the top left corner, between 50% and 100%
+    const framed = clusters.flatMap((c, i) => c.boxes
+        .filter((box) => box.item.opening)
+        .map((box) => ({ ...box, x: pick.spots[i].x + (box.x - c.bounds.x), y: pick.spots[i].y + (box.y - c.bounds.y) })));
+    const frame = framed.length ? union(framed) : null;
+    const openZoom = frame
+        ? clamp(Math.min((viewportWidth - margin - OPENING_EDGE) / (frame.x + frame.w), (viewportHeight - OPENING_TOP - OPENING_EDGE) / (frame.y + frame.h)), 0.5, 1)
+        : zoom;
     const placements = new Map();
     const placed = [];
-    const x0 = margin / zoom;
-    const y0 = 70 / zoom;
+    const x0 = margin / openZoom;
+    const y0 = (frame ? OPENING_TOP : TABLE_TOP) / openZoom;
     clusters.forEach((c, i) => {
         const spot = pick.spots[i];
         for (const box of c.boxes) {
@@ -236,7 +262,7 @@ export const layoutMessy = (items, opts) => {
             placed.push(shifted);
         }
     });
-    return { placements, bounds: union(placed), labels: new Map(), zoom };
+    return { placements, bounds: union(placed), labels: new Map(), zoom: openZoom };
 };
 /** Phone spacing: between objects side by side, between rows, between groups (about 3x). */
 const COLUMN_GAP = 20;
