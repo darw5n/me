@@ -8,9 +8,33 @@
   <meta name="author" content="Darwin Vegher">
   <!-- The one address of the site: GitHub Pages serves it on darw.it (CNAME) and sends darw5n.github.io/me there -->
   <link rel="canonical" href="https://darw.it/">
-  <!-- The site's name in search results (otherwise Google may take the host's) -->
+  <!-- For search engines: the site's name in results (otherwise Google may take the host's) and who it is about,
+       with the same profiles linked on the table, so a search for the name finds this site -->
   <script type="application/ld+json">
-    {"@context": "https://schema.org", "@type": "WebSite", "name": "Darwin Vegher", "alternateName": "darw.it", "url": "https://darw.it/"}
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {"@type": "WebSite", "@id": "https://darw.it/#website", "name": "Darwin Vegher", "alternateName": "darw.it", "url": "https://darw.it/", "about": {"@id": "https://darw.it/#darwin"}},
+        {
+          "@type": "Person",
+          "@id": "https://darw.it/#darwin",
+          "name": "Darwin Vegher",
+          "url": "https://darw.it/",
+          "image": "https://darw.it/Img/1200x1200_darwin_low.webp",
+          "jobTitle": "Product Designer",
+          "description": "Tinkerer by nature, product designer by trade. I make products and processes simpler, with AI on my workbench.",
+          "sameAs": [
+            "https://www.linkedin.com/in/darwinvegher",
+            "https://github.com/darw5n",
+            "https://dribbble.com/darwinvegher",
+            "https://www.behance.net/darwinvegher",
+            "https://www.figma.com/@darw5n",
+            "https://www.instagram.com/darwiiiin/",
+            "https://unsplash.com/@darwiiiin"
+          ]
+        }
+      ]
+    }
   </script>
   <!-- Link previews (LinkedIn, WhatsApp, Slack…) -->
   <meta property="og:type" content="website">
