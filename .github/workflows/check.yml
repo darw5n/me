@@ -1,0 +1,31 @@
+# Checks every push to main and every pull request. The site has no build step in production:
+# the compiled files are committed, so this makes sure they match the sources.
+name: check
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+      - name: Build and tests
+        run: sh scripts/build.sh
+      - name: Compiled files match the sources
+        run: |
+          if ! git diff --quiet; then
+            echo "The compiled files are out of date: run sh scripts/build.sh and commit the result."
+            git diff --stat
+            exit 1
+          fi
+      - name: No email address in plain text
+        run: |
+          if git grep -nE "vegher(@| ?[[(]at[])])"; then
+            echo "The email address must stay encoded (data-mail), never in plain text."
+            exit 1
+          fi
