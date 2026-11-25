@@ -62,6 +62,8 @@ const PHONE_OVERVIEW_ZOOM = 0.4;
 const TIDY_OVERVIEW_ZOOM = 0.35;
 /** Column padding on a phone. */
 const PHONE_PADDING = 20;
+/** Phone: room above a group opened with `?at=`, so the name in the corner does not cover its title. */
+const PHONE_TOP_ROOM = 64;
 /** Scale range for objects fitted to the Tidy up grid. */
 const TIDY_SCALE_MIN = 0.72;
 const TIDY_SCALE_MAX = 1.3;
@@ -96,6 +98,12 @@ export class Board {
   private phoneSide = -1;
   /** Phone: screens added on the left because an object was carried there. */
   private phoneExtraScreens = 0;
+  /**
+   * `?at=<cluster or object id>` in the address: the table opens on that group (e.g. `?at=records`)
+   * instead of the usual opening view. For links to one spot of the table, and for checking a group
+   * during development without flying there by hand.
+   */
+  private readonly startAt = new URLSearchParams(location.search).get("at");
 
   constructor(
     private readonly el: BoardElements,
@@ -201,11 +209,19 @@ export class Board {
       // Room to the right of the rightmost object, so the table keeps going
       this.el.world.style.width = `${Math.round(Math.max(table.width, content.x + content.w + vw))}px`;
       this.el.world.style.height = `${Math.round(content.y + content.h + 96)}px`;
-      // First layout or a new screen width: the visitor starts on the centre column.
+      // First layout or a new screen width: the visitor starts on the centre column,
+      // or with the `?at=` group in the top left corner (a side area is wider than the
+      // screen: it starts with its chalk title, the rest comes by scrolling)
       if (table.side !== this.phoneSide) {
+        const firstLayout = this.phoneSide === -1;
         this.phoneSide = table.side;
         this.phoneZoom.reset();
         this.el.view.scrollLeft = table.side;
+        const start = firstLayout ? this.startRect() : null;
+        if (start) {
+          this.el.view.scrollLeft = Math.max(0, start.x - PHONE_PADDING);
+          this.el.view.scrollTop = Math.max(0, start.y - PHONE_TOP_ROOM);
+        }
       }
     } else {
       this.phoneSide = -1;
@@ -263,10 +279,20 @@ export class Board {
     return layoutMessy(sized, { viewportWidth: vw, viewportHeight: viewportSize().h, clusterOrder: this.config.clusters, zones: this.config.zones });
   }
 
-  /** Opening view of the current arrangement. */
+  /** Opening view of the current arrangement (the `?at=` group, when there is one, on the messy table). */
   home(ms = 0, ease?: (t: number) => number): void {
     if (this.narrow) return;
-    void this.camera.flyTo(0, 0, this.mode === "tidy" ? 1 : this.homeZoom, ms, ease);
+    const start = this.startRect();
+    if (start) void this.camera.fitRect(start, SEE_ALL_PADDING, ms);
+    else void this.camera.flyTo(0, 0, this.mode === "tidy" ? 1 : this.homeZoom, ms, ease);
+  }
+
+  /** Where `?at=` points on the messy table: every object of that cluster, else the object with that id. */
+  private startRect(): Rect | null {
+    if (!this.startAt || this.mode !== "messy") return null;
+    let found = this.items.filter((i) => i.cluster === this.startAt);
+    if (!found.length) found = this.items.filter((i) => i.id === this.startAt);
+    return found.length ? union(found.map((i) => rectOf(i, this.mode))) : null;
   }
 
   seeAll(): void {
