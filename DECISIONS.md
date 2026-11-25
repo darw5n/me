@@ -448,3 +448,27 @@ goes on past the edge and the bar is narrow and centred). /me has none, so it st
 as soon as it loads, at least the starred folders. With areas far apart, the opening at 100% showed only the intro;
 Darwin then composed the opening by hand (intro on top, the three starred folders below, the centre one higher so
 the bar sits under it), and wants it at 100% where it fits: 100% from about 1710×920, 87% at 1440×900.
+
+## 2026-11-25 · Home details: records, a card about the table, the design repository
+
+**Decision.**
+- The two black records (Jamie xx, Tame Impala) are drawn in CSS to look like Cosmo's real
+  disc (fine grooves, gaps between tracks, a smooth ring around the label, two soft
+  reflections), with a label cut from the album cover: each record keeps its album's colours.
+  No new image files.
+- The Forma card is gone ("the app I train with at home" did not say what it was). In its
+  place, in the lab, a card about the table itself: the project visitors already have in
+  front of them, and the one that shows the frontend side.
+- The design repository sheet opens the public Notion board in a new tab (it used to open a
+  screenshot in the viewer); the large screenshot it used is removed, the thumbnail stays.
+- The table card links to the public repo (`darw5n/me`), with the arrow next to its title:
+  the card says how the site is made, the link lets the curious check.
+- Football sticker and controller redrawn (a real ball pattern with some volume; the
+  DualSense with its real parts: black core, light bars, create/options, mute).
+- The opening view on a computer had an empty lower left: the chalk line, the pencil, the
+  bulb and "Open to new roles" sat to the right and further down. Darwin recomposed it by
+  hand: the intro top left, the portrait lower on the right with the "Now" post-it stuck on
+  its corner, the chalk line under the intro, the bulb after it, the pencil at the bottom,
+  the green sticker under the post-it. The post-it and the bulb are `data-on-top`: they
+  touch other objects on purpose, and the layout would otherwise push them apart. The first
+  screen holds above the bar at 1440×900 (100%) and in a small window (75%).

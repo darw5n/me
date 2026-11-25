@@ -584,6 +584,23 @@
   }
 }
 
+// A card that leads somewhere else: block like the others, the arrow next to the title
+.card--link {
+  display: block;
+  color: var(--ink);
+
+  h3 {
+    display: flex;
+    align-items: center;
+    gap: 0.3em;
+  }
+
+  .arrow {
+    width: 0.8em;
+    height: 0.8em;
+  }
+}
+
 .quote {
   position: relative;
   background: var(--paper);
@@ -1256,21 +1273,71 @@ html.is-zooming :is(.chalk:not(.group-label), .chalk-drawing) {
   filter: drop-shadow(0 3px 3px rgba(0, 0, 0, 0.4));
 }
 
-// Black vinyl, drawn: grooves and a coloured label
-.record__disc--black {
-  --label: #e8e4dc;
-  background:
-    radial-gradient(circle, #e8e4dc 0 2.4%, var(--label) 2.6% 17%, #141414 17.6% 19%, transparent 19.2%),
-    repeating-radial-gradient(circle, rgba(255, 255, 255, 0.06) 0 1px, transparent 1px 3px),
-    radial-gradient(circle at 35% 30%, #3a3a3a, #0e0e0e 70%);
+// Black vinyl drawn like Cosmo's real disc: fine grooves, the gaps between tracks, a smooth
+// ring around the label and two soft reflections. The label is cut from the album cover,
+// so each record keeps the colours of its album.
+.record__disc--pressed {
+  &::before,
+  &::after {
+    content: "";
+    position: absolute;
+    border-radius: 50%;
+  }
+
+  // Cosmo's photo leaves a thin margin around the disc: the same margin here keeps the three the same size
+  &::before {
+    inset: 3%;
+    background:
+      // reflections of a light above the table
+      conic-gradient(
+        from 15deg,
+        transparent 0 4%,
+        rgba(255, 255, 255, 0.16) 10%,
+        transparent 17% 50%,
+        rgba(255, 255, 255, 0.11) 59%,
+        transparent 66%
+      ),
+      // gaps between tracks, the smooth run-out ring and the rim
+      radial-gradient(
+        closest-side,
+        transparent 0 40%,
+        #2a2a2a 40.5% 41.5%,
+        transparent 42% 55%,
+        rgba(0, 0, 0, 0.55) 55.6% 56.4%,
+        transparent 56.8% 69%,
+        rgba(0, 0, 0, 0.55) 69.6% 70.4%,
+        transparent 70.8% 83%,
+        rgba(0, 0, 0, 0.55) 83.6% 84.4%,
+        transparent 84.8% 97%,
+        #232323 97.5% 100%
+      ),
+      // grooves (not on the smooth ring around the label)
+      radial-gradient(closest-side, #161616 0 41%, transparent 41.5%),
+      repeating-radial-gradient(closest-side, rgba(255, 255, 255, 0.035) 0 0.4%, transparent 0.4% 0.8%),
+      #161616;
+  }
+
+  // The label: the cover, a spindle hole and a thin ring where the paper meets the vinyl
+  &::after {
+    inset: 35%;
+    background:
+      radial-gradient(circle, #ece9e2 0 5%, rgba(0, 0, 0, 0.35) 5.5% 6.5%, transparent 7%),
+      var(--cover) var(--cover-at, center) / var(--cover-size, cover);
+    box-shadow:
+      0 0 0 1px rgba(0, 0, 0, 0.55),
+      inset 0 0 0 1px rgba(255, 255, 255, 0.12);
+  }
 }
 
 .record__disc--in-colour {
-  --label: #f4d23c;
+  --cover: url("../Img/records/in-colour-cover.svg");
+  --cover-size: 260%;
 }
 
 .record__disc--currents {
-  --label: #f08a4b;
+  --cover: url("../Img/records/currents-cover.webp");
+  --cover-at: 58% 62%;
+  --cover-size: 220%;
 }
 
 .record__caption {
