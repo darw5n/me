@@ -448,3 +448,19 @@ goes on past the edge and the bar is narrow and centred). /me has none, so it st
 as soon as it loads, at least the starred folders. With areas far apart, the opening at 100% showed only the intro;
 Darwin then composed the opening by hand (intro on top, the three starred folders below, the centre one higher so
 the bar sits under it), and wants it at 100% where it fits: 100% from about 1710×920, 87% at 1440×900.
+
+## 2026-11-25 · Home details: records, a card about the table, the design repository
+
+**Decision.**
+- The two black records (Jamie xx, Tame Impala) are drawn in CSS to look like Cosmo's real
+  disc (fine grooves, gaps between tracks, a smooth ring around the label, two soft
+  reflections), with a label cut from the album cover: each record keeps its album's colours.
+  No new image files.
+- The Forma card is gone ("the app I train with at home" did not say what it was). In its
+  place, in the lab, a card about the table itself: the project visitors already have in
+  front of them, and the one that shows the frontend side.
+- The design repository sheet opens the public Notion board in a new tab (it used to open a
+  screenshot in the viewer). The large screenshot `Img/tools/design-repository.webp` is no
+  longer used by the page.
+- Football sticker and controller redrawn (a real ball pattern with some volume; the
+  DualSense with its real parts: black core, light bars, create/options, mute).
