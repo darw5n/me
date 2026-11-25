@@ -466,6 +466,9 @@ the bar sits under it), and wants it at 100% where it fits: 100% from about 1710
 - Football sticker and controller redrawn (a real ball pattern with some volume; the
   DualSense with its real parts: black core, light bars, create/options, mute).
 - The opening view on a computer had an empty lower left: the chalk line, the pencil, the
-  bulb and "Open to new roles" sat to the right and further down. Now the chalk sits right
-  under the intro, pencil and bulb below it, the green sticker under the "Now" post-it: the
-  first screen is full from 1280×720 (91%) to 1440×900 (100%), above the bar.
+  bulb and "Open to new roles" sat to the right and further down. Darwin recomposed it by
+  hand: the intro top left, the portrait lower on the right with the "Now" post-it stuck on
+  its corner, the chalk line under the intro, the bulb after it, the pencil at the bottom,
+  the green sticker under the post-it. The post-it and the bulb are `data-on-top`: they
+  touch other objects on purpose, and the layout would otherwise push them apart. The first
+  screen holds above the bar at 1440×900 (100%) and in a small window (75%).
