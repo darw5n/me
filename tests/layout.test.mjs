@@ -298,3 +298,32 @@ test("phone grid: the middle column holds its areas in order, sides sit level wi
   assert.equal(Math.round(at("sheet-1").y), Math.round(at("folder").y));
   assert.equal(Math.round(at("quote").y), Math.round(at("folder").y));
 });
+
+// Composition tool: what the layout reports as "settled" (data-at after relax) must reproduce the
+// same table when written back, at every window width, so copied positions never make things jump.
+test("settled positions written back as data-at give the same messy table", () => {
+  for (const viewportWidth of [1280, 1440, 1920]) {
+    const opts = { viewportWidth, viewportHeight: 900, clusterOrder: ["about", "work", "path"] };
+    const first = layoutMessy(sample, opts);
+    assert.equal(first.settled.size, sample.length);
+    const rewritten = sample.map((i) => ({ ...i, rel: first.settled.get(i.id).at }));
+    const again = layoutMessy(rewritten, opts);
+    for (const i of sample) {
+      const a = first.placements.get(i.id);
+      const b = again.placements.get(i.id);
+      assert.ok(Math.abs(a.x - b.x) < 0.01 && Math.abs(a.y - b.y) < 0.01, `${i.id} moved at ${viewportWidth}px`);
+    }
+  }
+});
+
+test("on the phone grid, the middle column is settled as data-phone and the side groups as data-at", () => {
+  const phone = [
+    item("note", "about", { x: 0, y: 0 }, { w: 300, h: 200 }, { phoneAt: { x: 20, y: 80 } }),
+    item("work-1", "work", { x: 0, y: 0 }, { w: 300, h: 200 }),
+    item("work-2", "work", { x: 20, y: 40 }, { w: 300, h: 200 }),
+  ];
+  const r = layoutPhoneGrid(phone, { viewportWidth: 390, side: 1170, rows: [{ center: ["about"], right: ["work"] }] });
+  assert.deepEqual(r.settled.get("note"), { attr: "data-phone", at: { x: 20, y: 80 }, scale: 1, set: "phone" });
+  assert.equal(r.settled.get("work-2").attr, "data-at");
+  assert.equal(r.settled.get("work-2").set, "work");
+});

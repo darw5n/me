@@ -18,6 +18,7 @@ import { installEmailLinks } from "./email.js";
 import { viewportSize } from "./geometry.js";
 import { attachInput } from "./input.js";
 import { runPreloader } from "./preloader.js";
+import { installComposer } from "./compose.js";
 import { createSound } from "./sound.js";
 import { installRequest } from "./request.js";
 import { installViewer } from "./viewer.js";
@@ -84,6 +85,7 @@ const boot = (): void => {
   installViewer(world, sound);
   installEmailLinks(document);
   installRequest(document, sound);
+  installComposer(board, board.items.length);
 
   board.relayout();
   board.home(0);
