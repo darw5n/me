@@ -935,6 +935,13 @@ body.is-leaving .curtain {
   font: italic 400 1.05rem/1.2 var(--font-text);
   margin-top: 0.55em;
 }
+.sheet .sheet__note {
+  display: block;
+  margin-top: 0.3em;
+  font: 400 0.86rem/1.35 var(--font-text);
+  color: var(--ink-soft);
+  text-wrap: pretty;
+}
 
 .slide {
   position: relative;
