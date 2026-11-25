@@ -16,13 +16,13 @@ import {
   measure, positionOf, readItems, rectOf, render, setWidth, toLayoutItem, type TableItem,
 } from "./items.js";
 import {
-  NARROW_BREAKPOINT, PHONE_BASE_WIDTH, layoutComposed, layoutPhoneGrid, type PhoneRow, layoutMessy, layoutTidy, phoneScale, phoneTable,
+  GAP_LARGE, GAP_SMALL, NARROW_BREAKPOINT, PHONE_BASE_WIDTH, layoutComposed, layoutPhoneGrid, type PhoneRow, layoutMessy, layoutTidy, phoneScale, phoneTable,
   phoneTidyFit, tidyGrid, tidyWidth,
 } from "./layout.js";
 import { attachPhoneZoom, PHONE_ZOOM_MIN, type PhoneZoom } from "./phone-zoom.js";
 import { attachFilmHover, createRings, reactToTap, type Rings } from "./reactions.js";
 import type { Sound } from "./sound.js";
-import type { Arrangement, LayoutResult, Point, Rect } from "./types.js";
+import type { Arrangement, LayoutResult, Point, Rect, Settled } from "./types.js";
 
 export interface BoardConfig {
   /** Clusters in layout order when the table is messy. */
@@ -38,6 +38,18 @@ export interface BoardConfig {
 export interface BoardElements {
   view: HTMLElement;
   world: HTMLElement;
+}
+
+/** One attribute to rewrite in the page, from the composition tool (compose.ts). */
+export interface PositionChange {
+  /** Position of the object among the page's `.item` elements (DOM order = source order). */
+  index: number;
+  id: string;
+  attr: Settled["attr"];
+  from: string;
+  to: string;
+  /** Dragged next to this object: relax will push them apart unless one is data-on-top. */
+  near?: string;
 }
 
 export interface BoardCallbacks {
@@ -96,6 +108,8 @@ export class Board {
   private phoneSide = -1;
   /** Phone: screens added on the left because an object was carried there. */
   private phoneExtraScreens = 0;
+  /** Messy table: where each object settled in the last layout (composition tool). */
+  private settled: Map<string, Settled> | undefined;
 
   constructor(
     private readonly el: BoardElements,
@@ -190,6 +204,7 @@ export class Board {
       }
     }
     this.homeZoom = result.zoom;
+    this.settled = result.settled;
     if (this.narrow) {
       this.el.world.style.transform = "";
       this.el.view.style.removeProperty("--cam-x");
@@ -261,6 +276,45 @@ export class Board {
       return layoutComposed(sized, { viewportWidth: vw, side: this.table().side, padding: PHONE_PADDING });
     }
     return layoutMessy(sized, { viewportWidth: vw, viewportHeight: viewportSize().h, clusterOrder: this.config.clusters, zones: this.config.zones });
+  }
+
+  /**
+   * Composition tool (`?edit`): the attribute values that reproduce what is on screen. Every
+   * object of a set where something was dragged is frozen where it lies now (the dragged ones
+   * where they were dropped, the others where relax settled them), so nothing jumps when the
+   * page reloads with the new values. On a phone only the middle column is written: the groups
+   * beside it are laid out from the computer's data-at, which is composed on a computer.
+   */
+  positionChanges(): PositionChange[] {
+    const settled = this.mode === "messy" ? this.settled : undefined;
+    if (!settled) return [];
+    const moved = (i: TableItem): boolean => i.offset.messy.x !== 0 || i.offset.messy.y !== 0;
+    const writable = (s: Settled | undefined): s is Settled => !!s && (!this.narrow || s.attr === "data-phone");
+    const sets = new Set(this.items.filter(moved).map((i) => settled.get(i.id)).filter(writable).map((s) => s.set));
+    const changes: PositionChange[] = [];
+    this.items.forEach((item, index) => {
+      const s = settled.get(item.id);
+      if (!writable(s) || !sets.has(s.set)) return;
+      if (s.attr === "data-phone" && !moved(item)) return; // nothing pushes the middle column
+      const off = item.offset.messy;
+      const to = `${Math.round(s.at.x + off.x / s.scale)},${Math.round(s.at.y + off.y / s.scale)}`;
+      const from = item.el.getAttribute(s.attr) ?? "0,0";
+      if (to === from.replace(/\s/g, "")) return;
+      const near = moved(item) && !item.onTop ? this.neighbourOf(item, s.set) : undefined;
+      changes.push({ index, id: item.id, attr: s.attr, from, to, ...(near ? { near } : {}) });
+    });
+    return changes;
+  }
+
+  /** An object of the same set close enough for relax to push one of the two. */
+  private neighbourOf(item: TableItem, set: string): string | undefined {
+    const a = rectOf(item, "messy");
+    return this.items.find((other) => {
+      if (other === item || other.onTop || this.settled?.get(other.id)?.set !== set) return false;
+      const gap = item.small || other.small ? GAP_SMALL : GAP_LARGE;
+      const b = rectOf(other, "messy");
+      return a.x < b.x + b.w + gap && b.x < a.x + a.w + gap && a.y < b.y + b.h + gap && b.y < a.y + a.h + gap;
+    })?.id;
   }
 
   /** Opening view of the current arrangement. */

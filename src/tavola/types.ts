@@ -74,6 +74,23 @@ export interface LayoutResult {
   labels: Map<string, Point>;
   /** Zoom at which this arrangement should open. */
   zoom: number;
+  /** Messy table: where each object settled, as the attribute that put it there (see Settled). */
+  settled?: Map<string, Settled>;
+}
+
+/**
+ * Where an object settled, written as its own attribute: `data-at` inside its cluster after
+ * `relax` pushed it, or `data-phone` on the phone's middle column. Writing `at` back into the
+ * attribute reproduces the layout exactly; `scale` is what the layout multiplied it by (more
+ * air on large screens, the phone's scale), so a drag of d px moves `at` by d / scale.
+ * Used by the composition tool (`?edit`, compose.ts).
+ */
+export interface Settled {
+  attr: "data-at" | "data-phone";
+  at: Point;
+  scale: number;
+  /** Objects laid out together: a cluster, or the phone's middle column. */
+  set: string;
 }
 
 export interface Camera {
