@@ -18,8 +18,8 @@
  */
 import { clamp, rotatedBox, union } from "./geometry.js";
 /** Minimum distance between two objects, in world px. */
-const GAP_LARGE = 34;
-const GAP_SMALL = 12;
+export const GAP_LARGE = 34;
+export const GAP_SMALL = 12;
 /**
  * Breakpoint under which the table becomes the hand-made phone composition. Shared with
  * the SCSS ($narrow). From here up, tablets and landscape phones get the camera table,
@@ -75,6 +75,12 @@ const buildCluster = (items, air) => {
     const boxes = items.map((item) => boxOf(item, item.rel, air));
     relax(boxes);
     return { boxes, bounds: union(boxes) };
+};
+/** Where the boxes of a cluster settled after relax, back in `data-at` units (see Settled). */
+const settleCluster = (settled, boxes, scale, set) => {
+    for (const box of boxes) {
+        settled.set(box.item.id, { attr: "data-at", at: { x: box.x / scale, y: box.y / scale }, scale, set });
+    }
 };
 /** Gaps between areas: about three times the gap between clusters, so areas read apart. */
 const AREA_GAP_X = 320;
@@ -252,6 +258,8 @@ export const layoutMessy = (items, opts) => {
         : zoom;
     const placements = new Map();
     const placed = [];
+    const settled = new Map();
+    clusters.forEach((c, i) => settleCluster(settled, c.boxes, air, keys[i]));
     const x0 = margin / openZoom;
     const y0 = (frame ? OPENING_TOP : TABLE_TOP) / openZoom;
     clusters.forEach((c, i) => {
@@ -262,7 +270,7 @@ export const layoutMessy = (items, opts) => {
             placed.push(shifted);
         }
     });
-    return { placements, bounds: union(placed), labels: new Map(), zoom: openZoom };
+    return { placements, bounds: union(placed), labels: new Map(), zoom: openZoom, settled };
 };
 /** Phone spacing: between objects side by side, between rows, between groups (about 3x). */
 const COLUMN_GAP = 20;
@@ -328,6 +336,7 @@ export const phoneScale = (viewportWidth) => clamp(viewportWidth / PHONE_BASE_WI
 export const layoutComposed = (items, opts) => {
     const k = phoneScale(opts.viewportWidth);
     const placements = new Map();
+    const settled = new Map();
     const loose = [];
     let bottom = 0;
     for (const item of items) {
@@ -335,6 +344,7 @@ export const layoutComposed = (items, opts) => {
             loose.push(item);
             continue;
         }
+        settled.set(item.id, { attr: "data-phone", at: item.phoneAt, scale: k, set: "phone" });
         const y = item.phoneAt.y * k;
         placements.set(item.id, { x: opts.side + item.phoneAt.x * k, y, rotation: item.rotation * 0.6 });
         bottom = Math.max(bottom, y + item.size.h);
@@ -344,7 +354,7 @@ export const layoutComposed = (items, opts) => {
         for (const [id, p] of flow.placements)
             placements.set(id, { ...p, x: p.x + opts.side });
     }
-    return { placements, bounds: boundsOf(items, placements), labels: new Map(), zoom: 1 };
+    return { placements, bounds: boundsOf(items, placements), labels: new Map(), zoom: 1, settled };
 };
 /** Phone grid spacing: wider than the plain column, so objects get air (13/11/2026). */
 const PHONE_GRID_GAPS = { column: 28, row: 40, section: 110 };
@@ -370,6 +380,7 @@ export const layoutPhoneGrid = (items, opts) => {
     const areaOf = (i) => i.phoneArea ?? i.cluster;
     const used = new Set();
     const placements = new Map();
+    const settled = new Map();
     const of = (keys) => (keys ?? []).flatMap((key) => items.filter((i) => areaOf(i) === key && !used.has(i.id)));
     // Middle: hand-made spots first, the rest flows under them. Returns [top, bottom].
     const middle = (keys, from) => {
@@ -380,6 +391,7 @@ export const layoutPhoneGrid = (items, opts) => {
         let top = Infinity;
         let bottom = from;
         for (const i of own.filter((i) => i.phoneAt)) {
+            settled.set(i.id, { attr: "data-phone", at: i.phoneAt, scale: k, set: "phone" });
             const y = i.phoneAt.y * k;
             placements.set(i.id, { x: opts.side + i.phoneAt.x * k, y, rotation: i.rotation * 0.6 });
             top = Math.min(top, y);
@@ -405,6 +417,7 @@ export const layoutPhoneGrid = (items, opts) => {
                 continue;
             own.forEach((i) => used.add(i.id));
             const group = buildCluster(own, k);
+            settleCluster(settled, group.boxes, k, key);
             const b = group.bounds;
             const x = dir < 0 ? opts.side - PHONE_SIDE_GAP - b.w : opts.side + vw + PHONE_SIDE_GAP;
             for (const box of group.boxes) {
@@ -434,7 +447,7 @@ export const layoutPhoneGrid = (items, opts) => {
         for (const [id, p] of flow.placements)
             placements.set(id, { ...p, x: p.x + opts.side });
     }
-    return { placements, bounds: boundsOf(items, placements), labels: new Map(), zoom: 1 };
+    return { placements, bounds: boundsOf(items, placements), labels: new Map(), zoom: 1, settled };
 };
 /** Grid used by "Tidy up"; also tells the DOM which widths to apply before measuring. */
 export const tidyGrid = (viewportWidth, phonePadding = 20) => {
