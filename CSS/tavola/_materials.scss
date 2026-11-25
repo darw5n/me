@@ -493,6 +493,16 @@
     font: italic 400 1.05rem / 1.2 var(--font-text);
     margin-top: 0.55em;
   }
+
+  // One line on what the project is: real text on the table, so people and search engines read it
+  // (the viewer's caption lives in an attribute, which they don't)
+  .sheet__note {
+    display: block;
+    margin-top: 0.3em;
+    font: 400 0.86rem / 1.35 var(--font-text);
+    color: var(--ink-soft);
+    text-wrap: pretty;
+  }
 }
 
 // ---- Slide (small square frame, Lab) ---------------------------------------------
