@@ -27,5 +27,3 @@ tests/              ← unit tests of the pure layout functions
 sh scripts/build.sh              # TypeScript + SCSS + tests
 python3 -m http.server 4142      # then open http://127.0.0.1:4142/
 ```
-
-Decisions: `DECISIONS.md`.
