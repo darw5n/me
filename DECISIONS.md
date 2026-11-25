@@ -460,7 +460,12 @@ the bar sits under it), and wants it at 100% where it fits: 100% from about 1710
   place, in the lab, a card about the table itself: the project visitors already have in
   front of them, and the one that shows the frontend side.
 - The design repository sheet opens the public Notion board in a new tab (it used to open a
-  screenshot in the viewer). The large screenshot `Img/tools/design-repository.webp` is no
-  longer used by the page.
+  screenshot in the viewer); the large screenshot it used is removed, the thumbnail stays.
+- The table card links to the public repo (`darw5n/me`), with the arrow next to its title:
+  the card says how the site is made, the link lets the curious check.
 - Football sticker and controller redrawn (a real ball pattern with some volume; the
   DualSense with its real parts: black core, light bars, create/options, mute).
+- The opening view on a computer had an empty lower left: the chalk line, the pencil, the
+  bulb and "Open to new roles" sat to the right and further down. Now the chalk sits right
+  under the intro, pencil and bulb below it, the green sticker under the "Now" post-it: the
+  first screen is full from 1280×720 (91%) to 1440×900 (100%), above the bar.

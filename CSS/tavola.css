@@ -1006,6 +1006,20 @@ body.is-leaving .curtain {
   color: var(--red);
 }
 
+.card--link {
+  display: block;
+  color: var(--ink);
+}
+.card--link h3 {
+  display: flex;
+  align-items: center;
+  gap: 0.3em;
+}
+.card--link .arrow {
+  width: 0.8em;
+  height: 0.8em;
+}
+
 .quote {
   position: relative;
   background: var(--paper);

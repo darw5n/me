@@ -584,6 +584,23 @@
   }
 }
 
+// A card that leads somewhere else: block like the others, the arrow next to the title
+.card--link {
+  display: block;
+  color: var(--ink);
+
+  h3 {
+    display: flex;
+    align-items: center;
+    gap: 0.3em;
+  }
+
+  .arrow {
+    width: 0.8em;
+    height: 0.8em;
+  }
+}
+
 .quote {
   position: relative;
   background: var(--paper);
