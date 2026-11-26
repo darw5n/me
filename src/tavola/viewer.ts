@@ -51,10 +51,10 @@ export const installViewer = (root: ParentNode, sound: Sound): void => {
   box.innerHTML = `
     <div class="viewer__stage"><img class="viewer__image" alt="" draggable="false"></div>
     <p class="strip viewer__caption"></p>
-    <div class="controls viewer__bar" role="toolbar" aria-label="Photo controls">
+    <div class="controls viewer__bar" role="group" aria-label="Photo controls">
       <span class="controls__steps viewer__steps" role="group" aria-label="Photos">
         <button type="button" class="viewer__prev" aria-label="Previous photo">‹</button>
-        <output class="viewer__count" aria-live="polite"></output>
+        <output class="viewer__count"></output>
         <button type="button" class="viewer__next" aria-label="Next photo">›</button>
       </span>
       <button type="button" class="controls__primary viewer__close">Close</button>

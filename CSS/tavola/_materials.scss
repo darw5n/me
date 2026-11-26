@@ -195,7 +195,10 @@
 }
 
 // The big orange one: "Ask for the portfolio"
+// A <button> (it opens the form): as wide as its object, text on the left like a note
 .ask {
+  width: 100%;
+  text-align: start;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -578,6 +581,7 @@
   background-position: 0 44px;
   font: 400 1.08rem/28px var(--font-text);
 
+  h2,
   h3 {
     font: 500 1rem/28px var(--font-ui);
     color: var(--red);
@@ -589,6 +593,7 @@
   display: block;
   color: var(--ink);
 
+  h2,
   h3 {
     display: flex;
     align-items: center;
@@ -671,6 +676,7 @@
     }
   }
 
+  h2,
   h3 {
     font: 500 1.5rem/1.06 var(--font-ui);
     letter-spacing: -0.02em;
@@ -1457,6 +1463,7 @@ html.is-zooming :is(.chalk:not(.group-label), .chalk-drawing) {
 // with a non-breaking space.
 .item {
   h1,
+  h2,
   h3,
   b,
   .chalk {

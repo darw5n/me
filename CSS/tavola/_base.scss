@@ -88,7 +88,8 @@ button {
 
 a:focus-visible,
 button:focus-visible {
-  outline: 2px solid var(--yellow);
+  // --focus: yellow on the dark mats, ink on kraft and on paper cards (_surfaces, _ui)
+  outline: 2px solid var(--focus, var(--yellow));
   outline-offset: 3px;
 }
 

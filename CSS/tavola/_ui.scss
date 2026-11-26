@@ -55,6 +55,8 @@
   box-shadow: 0 10px 28px rgba(0, 0, 0, 0.4);
   max-width: calc(100% - 16px);
   white-space: nowrap;
+  // The bar is black on every surface: the ring stays yellow, kraft included
+  --focus: var(--yellow);
 
   button {
     min-height: 44px;
@@ -76,6 +78,11 @@
   .controls__primary {
     background: var(--yellow);
     color: #000;
+
+    // The ring is drawn inside the button: yellow on yellow would not show
+    &:focus-visible {
+      outline-color: #000;
+    }
     // Air after the main action, so it does not read as one block with See all
     margin-right: 6px;
 
@@ -498,6 +505,14 @@ html.has-dialog body > .controls {
 // "Tidy up": yellow for the main action, warm grey for the others, side by side at
 // the bottom of the card (in the flow, so they stay above the phone keyboard).
 .request {
+  // Paper card: an ink ring, the yellow one would vanish on it
+  --focus: var(--ink);
+
+  // "Almost done" takes focus only so it is read (request.ts): it is not a control,
+  // and a ring would make it look like one
+  .request__sent h2:focus {
+    outline: none;
+  }
   border: 0;
   padding: 0;
   width: min(440px, calc(100vw - 32px));
@@ -823,6 +838,8 @@ html.no-js .preloader {
 
 // The card that lists every shortcut: an index card on the veil, like the form
 .shortcuts {
+  // Paper card: an ink ring, the yellow one would vanish on it
+  --focus: var(--ink);
   border: 0;
   padding: 0;
   width: min(460px, calc(100vw - 32px));

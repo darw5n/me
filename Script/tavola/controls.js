@@ -32,7 +32,7 @@ export const attachControls = (host) => {
         if (!sound)
             return;
         sound.setAttribute("aria-pressed", String(host.sound.on));
-        sound.setAttribute("aria-label", host.sound.on ? "Sound on. Turn it off" : "Sound off. Turn it on");
+        // The name stays "Sound": aria-pressed alone says whether it is on
         sound.classList.toggle("is-on", host.sound.on);
     };
     paintSound();
