@@ -507,6 +507,12 @@ html.has-dialog body > .controls {
 .request {
   // Paper card: an ink ring, the yellow one would vanish on it
   --focus: var(--ink);
+
+  // "Almost done" takes focus only so it is read (request.ts): it is not a control,
+  // and a ring would make it look like one
+  .request__sent h2:focus {
+    outline: none;
+  }
   border: 0;
   padding: 0;
   width: min(440px, calc(100vw - 32px));
