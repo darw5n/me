@@ -490,7 +490,8 @@ html.has-cursor * {
 }
 
 // One bar at a time: while a dialog is open the table's bar would show through the blur
-html.has-dialog body > .controls {
+// (read from the page itself: any modal dialog open, no class to keep in step)
+html:has(dialog:modal) body > .controls {
   visibility: hidden;
 }
 

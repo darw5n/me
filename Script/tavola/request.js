@@ -96,7 +96,6 @@ export const installRequest = (root, sound) => {
         showSent(false);
         setError(false);
         dialog.showModal();
-        document.documentElement.classList.add("has-dialog");
         name.focus();
         sound.play("lift");
     };
@@ -154,7 +153,6 @@ export const installRequest = (root, sound) => {
     dialog.addEventListener("close", () => {
         // The address leaves the page again with the dialog
         form.querySelector(".request__address").textContent = "";
-        document.documentElement.classList.remove("has-dialog");
         opener?.focus();
     });
 };
