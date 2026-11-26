@@ -103,6 +103,7 @@
 
   img {
     -webkit-user-drag: none;
+    -webkit-user-select: none; // Safari still needs the prefix
     user-select: none;
     pointer-events: none;
   }
@@ -113,6 +114,7 @@
   }
 
   @include wide {
+    -webkit-user-select: none; // Safari still needs the prefix
     user-select: none;
   }
 }

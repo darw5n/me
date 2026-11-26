@@ -18,7 +18,6 @@ import { installEmailLinks } from "./email.js";
 import { viewportSize } from "./geometry.js";
 import { attachInput } from "./input.js";
 import { runPreloader } from "./preloader.js";
-import { installComposer } from "./compose.js";
 import { createSound } from "./sound.js";
 import { installRequest } from "./request.js";
 import { installViewer } from "./viewer.js";
@@ -85,7 +84,10 @@ const boot = (): void => {
   installViewer(world, sound);
   installEmailLinks(document);
   installRequest(document, sound);
-  installComposer(board, board.items.length);
+  // The composition tool is for whoever edits the table: loaded only with ?edit
+  if (new URLSearchParams(location.search).has("edit")) {
+    void import("./compose.js").then(({ installComposer }) => installComposer(board, board.items.length));
+  }
 
   board.relayout();
   board.home(0);

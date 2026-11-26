@@ -132,3 +132,13 @@ $tri-tile-strong: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' 
 [data-surface="plum"] .swatch {
   background-image: url($tri-tile-strong);
 }
+
+// Browser-drawn parts of the table (the phone's scrollbars) match the mat: dark on the
+// dark mats, light on kraft. Only on the table: the paper dialogs keep the light defaults.
+.view {
+  color-scheme: dark;
+}
+
+[data-surface="kraft"] .view {
+  color-scheme: light;
+}

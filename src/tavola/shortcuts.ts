@@ -39,6 +39,9 @@ const buildCard = (): HTMLDialogElement => {
   const dialog = document.createElement("dialog");
   dialog.className = "shortcuts";
   dialog.setAttribute("aria-labelledby", "shortcuts-title");
+  // A click outside closes it, natively; the listener below only where closedby is
+  // missing (Safari). Esc closes it everywhere.
+  dialog.setAttribute("closedby", "any");
   const list = rows
     .map(([keys, what]) => `<div><dt>${keys.map((k) => `<kbd>${k}</kbd>`).join(" ")}</dt><dd>${what}</dd></div>`)
     .join("");
@@ -49,10 +52,11 @@ const buildCard = (): HTMLDialogElement => {
       <button type="button" class="shortcuts__close">Close</button>
     </div>`;
   dialog.querySelector(".shortcuts__close")?.addEventListener("click", () => dialog.close());
-  dialog.addEventListener("click", (e) => {
-    if (e.target === dialog) dialog.close(); // on the veil
-  });
-  dialog.addEventListener("close", () => document.documentElement.classList.remove("has-dialog"));
+  if (!("closedBy" in HTMLDialogElement.prototype)) {
+    dialog.addEventListener("click", (e) => {
+      if (e.target === dialog) dialog.close(); // on the veil
+    });
+  }
   document.body.append(dialog);
   return dialog;
 };
@@ -85,7 +89,6 @@ export const installShortcuts = (): void => {
       return;
     }
     card.showModal();
-    document.documentElement.classList.add("has-dialog");
   };
 
   addEventListener("keydown", (e) => {
