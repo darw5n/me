@@ -9,7 +9,7 @@
  * | note, post-it, card           | pencil (click draws the ring)  |
  * | photo, screen                 | magnifier (click looks closer) |
  * | other site, email, folder     | arrow ↗ + taped label          |
- * | sticker, prop, chalk          | yellow open hand (move only)   |
+ * | sticker, prop, chalk          | open hand, a little bigger (move only) |
  * | button down / dragging        | closed hand                    |
  * | photo viewer: on the picture  | magnifier "zoom in"; zoomed: hand, fist while dragging |
  * | dialogs: the veil, off a photo | open hand "close" (a click there closes)              |
@@ -27,21 +27,49 @@ import { clickActionOf } from "./actions.js";
 
 type CursorState = "hand" | "grab" | "fist" | "pen" | "lens" | "go";
 
-const hand = (fingers: number[][], thumb: number[], palm: number[], cls: string): string => {
-  const shapes =
-    fingers.map(([x = 0, y = 0, h = 0]) => `<rect x="${x}" y="${y}" width="4.2" height="${h}" rx="2.1"/>`).join("") +
-    `<rect x="${thumb[0]}" y="${thumb[1]}" width="4.4" height="${thumb[2]}" rx="2.2" transform="rotate(${thumb[3]} ${(thumb[0] ?? 0) + 2} ${(thumb[1] ?? 0) + (thumb[2] ?? 0) / 2})"/>` +
-    `<rect x="${palm[0]}" y="${palm[1]}" width="${palm[2]}" height="${palm[3]}" rx="6"/>`;
-  return `<svg class="cursor__${cls}" viewBox="0 0 32 32" aria-hidden="true"><g fill="#111" stroke="#111" stroke-width="3" stroke-linejoin="round">${shapes}</g><g fill="currentColor">${shapes}</g></svg>`;
+// The drawings share one style (Darwin, 26/11/2026): a thin ink line, a chalk halo
+// outside it so it reads on the dark mats, chalk inside so it reads on paper and on
+// yellow, and the yellow accents of the site. Fixed colours: they do not follow the
+// surface (on kraft the chalk is dark, and a yellow hand vanished on a yellow post-it).
+const INK = "#111";
+const CHALK = "#f4f1e4";
+const YELLOW = "#ffe24d";
+const LINE = 1.7;
+const HALO = LINE + 2.8;
+
+/*
+ * The two hands are Clarity's "cursor-hand-open-line" and "cursor-hand-grab-line"
+ * (github.com/vmware/clarity-assets), filled and haloed here.
+ * Copyright (c) 2018 VMware, Inc. MIT License.
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this
+ * software and associated documentation files (the "Software"), to deal in the Software
+ * without restriction, including without limitation the rights to use, copy, modify,
+ * merge, publish, distribute, sublicense, and/or sell copies of the Software, and to
+ * permit persons to whom the Software is furnished to do so, subject to the following
+ * conditions: The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software. THE SOFTWARE IS PROVIDED "AS IS",
+ * WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+ * WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
+ * NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+ * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT
+ * OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ */
+const HAND_OPEN = "M31.46 8.57A3.11 3.11 0 0 0 27 5.75a3.19 3.19 0 0 0-4.66-2.64a3.29 3.29 0 0 0-6.42-.76a3.23 3.23 0 0 0-1.66-.46A3.27 3.27 0 0 0 11 5.18v12.66c-1.28-1.6-2.53-3.18-2.72-3.45a3.19 3.19 0 0 0-2.72-1.49a3.37 3.37 0 0 0-3.47 3.48C2.18 18.18 5.66 24.54 8 28c3.54 5.24 6.92 6 7.07 6h10.52a.92.92 0 0 0 .55-.19a13.13 13.13 0 0 0 3.75-6.13c1-3.09 1.53-7.53 1.58-13.56Zm-3.28 18.55a12.46 12.46 0 0 1-2.94 5.08h-9.91c-.47-.14-3.07-1.1-5.87-5.25s-5.52-9.68-5.57-10.66a1.5 1.5 0 0 1 .45-1.13a1.52 1.52 0 0 1 1.14-.46a1.43 1.43 0 0 1 1.32.71c.29.43 2.36 3 3.57 4.53l2.43-1.64V5.18a1.48 1.48 0 1 1 2.95 0v11.14h1.8v-13a1.51 1.51 0 0 1 3 0v13.13h1.8V6a1.43 1.43 0 1 1 2.85 0v11.44H27v-8.9a1.33 1.33 0 0 1 2.65 0v5.55c-.03 5.91-.51 10.12-1.47 13.03";
+const HAND_GRAB = "M28.09 9.74a4 4 0 0 0-1.16.19c-.19-1.24-1.55-2.18-3.27-2.18a4 4 0 0 0-1.53.25A3.37 3.37 0 0 0 19 6.3a3.45 3.45 0 0 0-2.87 1.32a3.65 3.65 0 0 0-1.89-.51A3.05 3.05 0 0 0 11 9.89v.91c-1.06.4-4.11 1.8-4.91 4.84s.34 8 2.69 11.78a25.2 25.2 0 0 0 5.9 6.41a.9.9 0 0 0 .53.17h10.34a.92.92 0 0 0 .55-.19a13.13 13.13 0 0 0 3.75-6.13A25.8 25.8 0 0 0 31.41 18v-5.5a3.08 3.08 0 0 0-3.32-2.76M29.61 18a24 24 0 0 1-1.47 9.15a12.46 12.46 0 0 1-2.94 5.05h-9.73a23.8 23.8 0 0 1-5.2-5.72c-2.37-3.86-3-8.23-2.48-10.39A5.7 5.7 0 0 1 11 12.76v7.65a.9.9 0 0 0 1.8 0V9.89c0-.47.59-1 1.46-1s1.49.52 1.49 1v5.72h1.8v-6.8c0-.28.58-.71 1.46-.71s1.53.48 1.53.75v6.89h1.8V10l.17-.12a2.1 2.1 0 0 1 1.18-.32c.93 0 1.5.44 1.5.68v6.5H27v-4.87a1.9 1.9 0 0 1 1.12-.33c.86 0 1.52.51 1.52.94Z";
+
+/** A Clarity line drawing: chalk halo, chalk silhouette (its first subpath), the ink line. */
+const hand = (d: string, cls: string): string => {
+  const silhouette = d.split(/(?=[Mm])/)[0] ?? d;
+  return `<svg class="cursor__${cls}" viewBox="0 0 36 36" aria-hidden="true"><path d="${d}" fill="none" stroke="${CHALK}" stroke-width="2.6" stroke-linejoin="round"/><path d="${silhouette}" fill="${CHALK}"/><path d="${d}" fill="${INK}"/></svg>`;
 };
 
 const PENCIL = `<svg class="cursor__pen" viewBox="0 0 40 40" aria-hidden="true"><g stroke="#fff" stroke-width="3" stroke-linejoin="round" fill="#fff"><path d="M2 2 11 6 33 28 28 33 6 11Z"/><path d="M33 28l5 5-5 5-5-5Z"/></g><path d="M2 2 11 6 6 11Z" fill="#7f1d0d"/><path d="M11 6 33 28 28 33 6 11Z" fill="#e2361b"/><path d="M15 10l-5 5M21 16l-5 5M27 22l-5 5" stroke="#7f1d0d" stroke-width="1.2" fill="none"/><path d="M33 28l5 5-5 5-5-5Z" fill="#f4f1e4" stroke="#7f1d0d" stroke-width="1"/></svg>`;
 
 // A magnifier: the hot spot is the centre of the lens
-const LENS = `<svg class="cursor__lens" viewBox="0 0 40 40" aria-hidden="true"><path d="M24 24l11 11" stroke="#111" stroke-width="8" stroke-linecap="round"/><path d="M24 24l11 11" stroke="#f4f1e4" stroke-width="4.5" stroke-linecap="round"/><circle cx="15" cy="15" r="11" fill="rgba(255,255,255,.25)" stroke="#111" stroke-width="5"/><circle cx="15" cy="15" r="11" fill="none" stroke="#ffe24d" stroke-width="2.6"/><path d="M10 11a6 6 0 0 1 5-4" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg>`;
+const LENS = `<svg class="cursor__lens" viewBox="0 0 40 40" aria-hidden="true"><path d="M24 24l10.5 10.5" stroke="${CHALK}" stroke-width="${6 + HALO}" stroke-linecap="round"/><circle cx="15" cy="15" r="11.5" fill="${CHALK}" stroke="${CHALK}" stroke-width="${HALO}"/><path d="M24 24l10.5 10.5" stroke="${INK}" stroke-width="${6 + LINE}" stroke-linecap="round"/><path d="M24 24l10.5 10.5" stroke="${CHALK}" stroke-width="6" stroke-linecap="round"/><circle cx="15" cy="15" r="11.5" fill="${CHALK}" stroke="${INK}" stroke-width="${LINE}"/><circle cx="15" cy="15" r="9.2" fill="rgba(255,255,255,.35)" stroke="${YELLOW}" stroke-width="2.6"/><circle cx="15" cy="15" r="7.9" fill="none" stroke="${INK}" stroke-width="${LINE * 0.8}"/><path d="M11 11.5a5 5 0 0 1 4-3" fill="none" stroke="${INK}" stroke-width="1.2" stroke-linecap="round"/></svg>`;
 
 // An arrow out of a yellow disc: "this takes you somewhere"
-const GO = `<svg class="cursor__go" viewBox="0 0 36 36" aria-hidden="true"><circle cx="18" cy="18" r="15" fill="#ffe24d" stroke="#111" stroke-width="2.5"/><path d="M12 24 24 12M15 12h9v9" fill="none" stroke="#111" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+const GO = `<svg class="cursor__go" viewBox="0 0 36 36" aria-hidden="true"><circle cx="18" cy="18" r="14" fill="${CHALK}" stroke="${CHALK}" stroke-width="${HALO}"/><circle cx="18" cy="18" r="14" fill="${YELLOW}" stroke="${INK}" stroke-width="${LINE}"/><path d="M12.5 23.5 23.5 12.5M15.5 12.5h8v8" fill="none" stroke="${INK}" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
 
 const DEFAULT_WORDS: Record<string, string> = { view: "look closer" };
 
@@ -59,8 +87,8 @@ export const installCursor = ({ view }: CursorOptions): void => {
   el.setAttribute("aria-hidden", "true");
   el.dataset["state"] = "hand";
   el.innerHTML =
-    hand([[8.6, 7, 14], [12.9, 3.4, 16], [17.2, 4.2, 16], [21.5, 7.4, 13]], [3.4, 13, 11, -34], [8.6, 13, 17.1, 15], "open") +
-    hand([[8.6, 11, 9], [12.9, 10, 10], [17.2, 10, 10], [21.5, 11, 9]], [5.6, 15, 8, -22], [8.6, 14, 17.1, 13], "fist") +
+    hand(HAND_OPEN, "open") +
+    hand(HAND_GRAB, "fist") +
     PENCIL +
     LENS +
     GO +

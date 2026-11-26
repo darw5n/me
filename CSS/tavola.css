@@ -1950,17 +1950,11 @@ html.has-cursor .cursor {
   width: 32px;
   height: 32px;
   left: -16px;
-  top: -14px;
-  color: var(--chalk);
+  top: -19px;
   transition: transform 0.14s var(--ease-spring);
 }
 .cursor[data-state=grab] .cursor__open {
-  color: var(--yellow);
   transform: scale(1.14);
-}
-.cursor .cursor__fist {
-  color: var(--yellow);
-  transform: scale(1.06);
 }
 .cursor .cursor__pen {
   width: 40px;
