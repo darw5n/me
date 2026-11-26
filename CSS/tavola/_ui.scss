@@ -273,26 +273,20 @@ html.has-cursor * {
     display: block;
   }
 
-  // Hands: the hot spot is the palm
+  // Hands: the hot spot is the palm. Fixed colours, drawn in cursor.ts
   .cursor__open,
   .cursor__fist {
     width: 32px;
     height: 32px;
     left: -16px;
-    top: -14px;
-    color: var(--chalk);
+    top: -19px;
     transition: transform 0.14s var(--ease-spring);
   }
 
-  // On a sticker or a prop: yellow, a little bigger, ready to grab
+  // On a sticker or a prop: a little bigger, ready to grab (no longer yellow: it
+  // vanished on a yellow post-it)
   &[data-state="grab"] .cursor__open {
-    color: var(--yellow);
     transform: scale(1.14);
-  }
-
-  .cursor__fist {
-    color: var(--yellow);
-    transform: scale(1.06);
   }
 
   // Pencil: the hot spot is the tip
