@@ -133,6 +133,11 @@ export const runPreloader = async ({ overlay, images, items = [], reducedMotion 
 
   const stopPhrases = overlay ? animatePhrases(overlay, reducedMotion) : () => {};
 
+  // Under the cloth nothing can be reached: Tab would land on objects nobody sees (and
+  // the camera would fly to them). Set here, not in the HTML, so the page works without JS.
+  const covered = overlay ? [...document.querySelectorAll<HTMLElement>("#view, body > .controls")] : [];
+  for (const el of covered) el.inert = true;
+
   // Progress: fonts count as one step, every image as one; shown no faster than time
   const total = images.length + 1;
   let done = 0;
@@ -163,6 +168,7 @@ export const runPreloader = async ({ overlay, images, items = [], reducedMotion 
     window.setTimeout(() => root.classList.remove("is-entering"), PULL_MS + longest + 1000);
   }
   root.classList.add("is-ready");
+  for (const el of covered) el.inert = false;
   if (overlay) {
     overlay.setAttribute("aria-hidden", "true");
     // Remove it once pulled away; the timeout covers an animation that never ends

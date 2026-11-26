@@ -18,10 +18,13 @@ export const PENCIL_ENABLED = false;
 const MOVE_ONLY = new Set(["sticker", "prop", "chalk"]);
 /** True for links that take the visitor somewhere else. */
 export const leavesTheTable = (target) => {
+    // "Ask for the portfolio" is a button (it opens the form) but reads like a way out
+    if (target.closest("[data-request]"))
+        return true;
     const link = target.closest("a[href]");
     if (!link || link.hasAttribute("data-view"))
         return false;
-    if (link.matches("[data-open], [data-mail], [data-request], [target=_blank]"))
+    if (link.matches("[data-open], [data-mail], [target=_blank]"))
         return true;
     const href = link.getAttribute("href") ?? "";
     // A jump to another object: the ring goes on the destination, not here.

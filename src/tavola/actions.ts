@@ -23,9 +23,11 @@ const MOVE_ONLY = new Set(["sticker", "prop", "chalk"]);
 
 /** True for links that take the visitor somewhere else. */
 export const leavesTheTable = (target: Element): boolean => {
+  // "Ask for the portfolio" is a button (it opens the form) but reads like a way out
+  if (target.closest("[data-request]")) return true;
   const link = target.closest<HTMLAnchorElement>("a[href]");
   if (!link || link.hasAttribute("data-view")) return false;
-  if (link.matches("[data-open], [data-mail], [data-request], [target=_blank]")) return true;
+  if (link.matches("[data-open], [data-mail], [target=_blank]")) return true;
   const href = link.getAttribute("href") ?? "";
   // A jump to another object: the ring goes on the destination, not here.
   if (href.startsWith("#")) return href.length > 1;

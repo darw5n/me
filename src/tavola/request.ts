@@ -6,7 +6,7 @@
  * their own address. For those without an email app, the sent state shows the
  * message and Darwin's address with buttons to copy them.
  *
- * Markup: `#request-dialog` in index.html; any `a[data-request]` opens it. The
+ * Markup: `#request-dialog` in index.html; any `[data-request]` button opens it. The
  * address is encoded in the dialog's data-mail (mail.ts) and decoded only on
  * submit, so crawlers do not find it.
  */
@@ -33,20 +33,26 @@ export const bodyOf = (r: Request): string =>
     "Thanks!",
   ].join("\n");
 
-/** Copies text, with a fallback for browsers without the async clipboard. */
-const copy = async (text: string): Promise<boolean> => {
+/**
+ * Copies text, with a fallback for browsers without the async clipboard. The
+ * fallback's textarea goes inside `where` (the open dialog: the rest of the page is
+ * inert under a modal) and focus goes back to the button that asked.
+ */
+const copy = async (text: string, where: HTMLElement): Promise<boolean> => {
   try {
     await navigator.clipboard.writeText(text);
     return true;
   } catch {
+    const back = document.activeElement as HTMLElement | null;
     const area = document.createElement("textarea");
     area.value = text;
     area.setAttribute("readonly", "");
     area.className = "sr-only";
-    document.body.append(area);
+    where.append(area);
     area.select();
     const ok = document.execCommand("copy");
     area.remove();
+    back?.focus();
     return ok;
   }
 };
@@ -63,6 +69,7 @@ export const installRequest = (root: ParentNode, sound: Sound): void => {
   const submit = form.querySelector<HTMLButtonElement>(".request__submit")!;
   const cancel = form.querySelector<HTMLButtonElement>(".request__cancel")!;
   const name = form.elements.namedItem("name") as HTMLInputElement;
+  const sentTitle = sent.querySelector<HTMLElement>("h2");
   let opener: HTMLElement | null = null;
   let last: Request | null = null;
   // Decoded on demand, never kept in the page
@@ -77,9 +84,26 @@ export const installRequest = (root: ParentNode, sound: Sound): void => {
     status.textContent = "";
   };
 
+  // The error describes the field only while it is shown: a hidden element named by
+  // aria-describedby is still read, and aria-invalid="false" is noise
   const setError = (on: boolean): void => {
     error.hidden = !on;
-    name.setAttribute("aria-invalid", String(on));
+    if (on) {
+      name.setAttribute("aria-invalid", "true");
+      name.setAttribute("aria-describedby", error.id);
+    } else {
+      name.removeAttribute("aria-invalid");
+      name.removeAttribute("aria-describedby");
+    }
+  };
+
+  // Copy feedback: a success fades after a moment; the same words twice in a row get a
+  // trailing no-break space, or VoiceOver would stay silent the second time
+  let clearStatus = 0;
+  const say = (text: string, stay = false): void => {
+    clearTimeout(clearStatus);
+    status.textContent = status.textContent === text ? `${text}\u00a0` : text;
+    if (!stay) clearStatus = window.setTimeout(() => (status.textContent = ""), 2500);
   };
 
   const open = (from: HTMLElement): void => {
@@ -93,7 +117,7 @@ export const installRequest = (root: ParentNode, sound: Sound): void => {
   };
 
   root.addEventListener("click", (e) => {
-    const link = (e.target as Element | null)?.closest<HTMLElement>("a[data-request]");
+    const link = (e.target as Element | null)?.closest<HTMLElement>("[data-request]");
     if (!link || e.defaultPrevented) return;
     e.preventDefault();
     open(link);
@@ -124,17 +148,19 @@ export const installRequest = (root: ParentNode, sound: Sound): void => {
     form.querySelector<HTMLElement>(".request__address")!.textContent = address();
     location.href = `mailto:${address()}?subject=${encodeURIComponent(subjectOf(request))}&body=${encodeURIComponent(bodyOf(request))}`;
     showSent(true);
+    // The form gave way to "Almost done": focus goes to its title, so it is read
+    sentTitle?.focus();
     sound.play("press");
   });
 
   form.querySelector(".request__copy-message")?.addEventListener("click", async () => {
     if (!last) return;
-    const ok = await copy(`${subjectOf(last)}\n\n${bodyOf(last)}`);
-    status.textContent = ok ? "Message copied." : "Couldn't copy: select the text by hand.";
+    const ok = await copy(`${subjectOf(last)}\n\n${bodyOf(last)}`, dialog);
+    say(ok ? "Message copied." : "Couldn't copy: select the text by hand.", !ok);
   });
   form.querySelector(".request__copy-address")?.addEventListener("click", async () => {
-    const ok = await copy(address());
-    status.textContent = ok ? "Address copied." : "Couldn't copy: select the address by hand.";
+    const ok = await copy(address(), dialog);
+    say(ok ? "Address copied." : "Couldn't copy: select the address by hand.", !ok);
   });
 
   cancel.addEventListener("click", () => dialog.close());
